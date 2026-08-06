@@ -1,6 +1,15 @@
 # QCloudy_Addition
 
-QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It adds compact Hypixel SkyBlock maps and read-only HUD tools while deliberately avoiding gameplay automation, server-state mutation, remote APIs, and runtime network services.
+QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on readable SkyBlock maps, compact objective HUDs, passive visual helpers, pet information, and inventory quality-of-life tools. The mod is bilingual, English-first, and keeps Hypixel-provided names in their original form.
+
+## Quick links
+
+- [Feature list](docs/FEATURES.md)
+- [Implementation notes](docs/IMPLEMENTATION.md)
+- [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
+- [GitHub release notes](docs/GITHUB_RELEASE_1.5.1.md)
+- [Validation](docs/VALIDATION.md)
+- [Compliance](docs/COMPLIANCE.md)
 
 Default language: English. Press `O` (rebindable under Controls → Key Binds → QCloudy_Addition) or use `/aca`, `/qca`, `/ca`, or `/qc` to open the client-side settings, then switch to Simplified Chinese at any time. Command aliases are registered only when their client-command names are free. They open a local screen and are never sent to Hypixel.
 

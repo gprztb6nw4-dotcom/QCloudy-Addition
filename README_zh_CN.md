@@ -1,6 +1,15 @@
 # QCloudy_Addition
 
-QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。它为 Hypixel SkyBlock 提供地图与只读 HUD，同时明确排除游戏操作自动化、服务器状态修改、远程账户 API 和运行时网络服务。
+QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。它专注于更清晰的 SkyBlock 地图、简洁的目标 HUD、被动视觉辅助、宠物信息和背包质量优化。模组以英文为默认界面，并保留 Hypixel 发来的原始名称。
+
+## 快速入口
+
+- [功能总览](docs/FEATURES_zh_CN.md)
+- [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
+- [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
+- [GitHub 1.5.1 发布说明](docs/GITHUB_RELEASE_1.5.1_zh_CN.md)
+- [验收与验证](docs/VALIDATION_zh_CN.md)
+- [合规说明](docs/COMPLIANCE_zh_CN.md)
 
 默认语言为英文。按 `O`（可在“控制 → 按键绑定 → QCloudy_Addition”中改键）或输入 `/aca`、`/qca`、`/ca`、`/qc` 可打开客户端设置，并随时切换为简体中文。只有名称未被其他客户端命令占用时才会注册对应别名；这些命令只打开本地界面，不会发送给 Hypixel。
 
