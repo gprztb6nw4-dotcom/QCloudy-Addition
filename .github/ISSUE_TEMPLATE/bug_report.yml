@@ -1,0 +1,120 @@
+name: Bug report
+description: Report a QCloudy_Addition bug or visual issue
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a QCloudy_Addition issue. Please include screenshots or logs when possible.
+
+  - type: dropdown
+    id: bug_type
+    attributes:
+      label: Bug type
+      options:
+        - Display bug
+        - Crash
+        - Feature not working
+        - Wrong detection
+        - Performance issue
+        - Compatibility issue
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature
+    attributes:
+      label: Affected feature
+      options:
+        - Maps
+        - Mining HUD
+        - Crimson Isle tracker
+        - Torrhus / Foraging
+        - Hunting
+        - Safari
+        - Pet HUD
+        - Storage Overlay
+        - Settings / UI
+        - Hotkeys
+        - Sound / Alerts
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened?
+      description: Describe the bug clearly. Include any exact text shown on screen.
+      placeholder: The HUD shows..., the game crashes when..., the map overlaps...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should QCloudy_Addition have shown or done instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the steps needed to trigger the issue.
+      placeholder: |
+        1. Join SkyBlock
+        2. Go to ...
+        3. Enable ...
+        4. Observe ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: reproducibility
+    attributes:
+      label: Reproducibility
+      options:
+        - Always
+        - Sometimes
+        - Once
+        - Only after reconnect
+        - Only in a specific area
+        - Unknown
+    validations:
+      required: true
+
+  - type: input
+    id: qca_version
+    attributes:
+      label: QCloudy_Addition version
+      placeholder: 1.5.1+26.1.2
+    validations:
+      required: true
+
+  - type: input
+    id: minecraft_version
+    attributes:
+      label: Minecraft / Fabric versions
+      placeholder: Minecraft 26.1.2, Fabric Loader 0.19.3, Fabric API 0.155.2+26.1.2
+    validations:
+      required: true
+
+  - type: textarea
+    id: mods
+    attributes:
+      label: Other installed mods and resource packs
+      description: Include SkyHanni, Skyblocker, Firmament, BabyzombieAddons, Mod Menu, and resource packs if installed.
+    validations:
+      required: false
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots, videos, crash logs, or latest.log
+      description: Drag files here or paste the relevant log section.
+    validations:
+      required: false

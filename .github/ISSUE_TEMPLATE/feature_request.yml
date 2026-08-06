@@ -1,0 +1,57 @@
+name: Feature request
+description: Suggest a new QCloudy_Addition feature or improvement
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem should this solve?
+      description: Explain the player-facing issue or missing workflow.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe exactly what QCloudy_Addition should show or do.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature category
+      options:
+        - General
+        - Maps
+        - Mining
+        - Crimson Isle
+        - Foraging / Torrhus
+        - Hunting
+        - Safari
+        - Combat
+        - Pets
+        - Chat
+        - Inventory
+        - Settings / UI
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: data_source
+    attributes:
+      label: Possible client-side data source
+      description: If known, describe whether this can be read from Tab, scoreboard, chat, titles, inventory, loaded entities, or loaded blocks.
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References or examples
+      description: Add screenshots, wiki links, or examples from other mods if relevant.
+    validations:
+      required: false
