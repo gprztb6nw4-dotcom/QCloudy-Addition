@@ -1,0 +1,17 @@
+.DS_Store
+.firmament/
+.gradle/
+.gradle-user-home/
+.toolchains/
+build/
+run/
+run-standalone/
+release/
+config/
+logs/
+mods/
+references/
+*.jar
+*.zip
+crash-reports/
+!gradle/wrapper/gradle-wrapper.jar

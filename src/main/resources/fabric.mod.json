@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "qcloudy_addition",
+  "version": "${version}",
+  "name": "QCloudy_Addition",
+  "description": "Client-only mining, hunting, map, pet, inventory and visibility tools for Hypixel SkyBlock.",
+  "authors": ["QCloudy_Addition contributors"],
+  "license": "LGPL-3.0-or-later",
+  "icon": "assets/qcloudy_addition/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["cloudy.autume.addition.QCloudyAdditionClient"],
+    "modmenu": ["cloudy.autume.addition.compat.ModMenuEntry"]
+  },
+  "mixins": [
+    {
+      "config": "qcloudy_addition.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "fabric-api": ">=0.155.2+26.1.2",
+    "minecraft": "26.1.2",
+    "java": ">=25"
+  },
+  "suggests": {
+    "modmenu": "*",
+    "skyblocker": "*",
+    "skyhanni": "*",
+    "babyzombieaddons": "*"
+  }
+}

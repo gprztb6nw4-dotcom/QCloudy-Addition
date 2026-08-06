@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "cloudy.autume.addition.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "AbstractContainerScreenAccessor",
+    "AbstractContainerScreenMixin",
+    "ChatComponentMixin",
+    "EntityRendererMixin",
+    "KeyboardHandlerMixin",
+    "LocalPlayerDropMixin",
+    "MouseHandlerMixin",
+    "network.ConnectScreenMixin",
+    "network.DisconnectedScreenMixin",
+    "PlayerTabOverlayAccessor",
+    "SlotPositionAccessor",
+    "SoundEngineMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

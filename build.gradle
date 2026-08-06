@@ -1,0 +1,90 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+    id 'maven-publish'
+}
+
+version = "${project.mod_version}+${project.minecraft_version}"
+group = project.maven_group
+
+def expandedVersion = version.toString()
+def licenseArchiveName = "LICENSE_${project.archives_base_name}"
+
+base {
+    archivesName = project.archives_base_name
+}
+
+loom {
+    runs {
+        standaloneClient {
+            client()
+            runDir = "run-standalone"
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.terraformersmc.com/releases/' }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+processResources {
+    inputs.property 'version', expandedVersion
+    // Legacy pre-rendered pet PNGs caused stale/wrong fallbacks. Pet HUD icons
+    // now render only verified player-head profiles, so do not ship them.
+    exclude 'assets/qcloudy_addition/textures/gui/pets/**'
+    exclude 'assets/qcloudy_addition/textures/gui/pet_skins/**'
+    filesMatching('fabric.mod.json') {
+        expand version: expandedVersion
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release.set(25)
+    options.compilerArgs.add('-Xlint:deprecation')
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
+    withSourcesJar()
+}
+
+jar {
+    from('LICENSE') {
+        rename 'LICENSE', licenseArchiveName
+    }
+    from('THIRD_PARTY_NOTICES.md')
+}
+
+tasks.named('sourcesJar') {
+    inputs.property 'version', expandedVersion
+    exclude 'assets/qcloudy_addition/textures/gui/pets/**'
+    exclude 'assets/qcloudy_addition/textures/gui/pet_skins/**'
+    filesMatching('fabric.mod.json') {
+        expand version: expandedVersion
+    }
+    from('LICENSE') {
+        rename 'LICENSE', licenseArchiveName
+    }
+    from('THIRD_PARTY_NOTICES.md')
+}
+
+tasks.register('prepareRelease', Copy) {
+    dependsOn tasks.named('build')
+    from(layout.buildDirectory.dir('libs'))
+    into(layout.projectDirectory.dir('release'))
+    include "${project.archives_base_name}-${project.version}.jar"
+    include "${project.archives_base_name}-${project.version}-sources.jar"
+}

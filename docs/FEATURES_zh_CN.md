@@ -1,0 +1,138 @@
+# QCloudy_Addition 功能说明
+
+## 1. 地图
+
+### 1.1 矮人矿洞地图
+
+**目的：**在不展示实时隐藏地形的前提下，降低矮人矿洞复杂立体路线的认路成本。
+
+**功能：**仅显示一层简化总览图，以 12 个独立区域块呈现主要区域。区域顺序与大致范围依据公开路线节点，具体美术与拓扑布局为原创；区域按属性配色，粗边界在 HUD 缩放后仍清楚，标签使用 Minecraft 内置位图字体。所有点位固定保留 Hypixel 英文原名，不随 QCA 界面语言翻译。旧版密集路线网已移除。
+
+**玩家箭头：**每帧先用计分板已经显示的子地点选择对应区域块，再用本地 X/Z 坐标把箭头放进区域；当计分板只显示通用矮人矿洞地点时，本地 Y 用于区分皇家矿区、迷雾和皇家宫殿等垂直重叠区域，yaw 控制箭头朝向。背景是模组内置 PNG，不随服务器数据改变。
+
+### 1.2 冰川隧道分层地图
+
+**目的：**正确表达不同高度互相重叠的路线，而不是用一张平面图混在一起。
+
+**功能：**在低层（`Y ≤ 126`）、中层（`126 < Y ≤ 143`）和高层（`Y > 143`）三张图片间切换。所有图片均使用 X `-131..130`、Z `181..485`，切层时箭头不会跳位；非当前层路线会以低亮度保留作参照。英文点位标签在生成阶段自动避让，防止相邻地点文字重叠。
+
+## 2. 挖矿
+
+### 2.1 任务与三种粉尘追踪
+
+**目的：**无需一直按住 Tab，也能查看挖矿任务和三种粉尘。
+
+**功能：**每秒读取一次客户端排序后的 Tab 行，将 `Commissions:` Widget 中的内容显示为“完整任务名＋独立进度条”，不再使用省略号。进度条宽度跟随当前最宽的完整任务名，同时受紧凑最小值和面板边界限制，并保证完整进度数值有足够空间。测宽使用当前真正启用的普通/粗体样式，避免粗体穿出进度条或 HUD。进度条默认显示一位小数百分比，可在功能二级设置中切换为“当前数值/目标数值”。客户端直接收到的 `x/y` 数值拥有最高优先级；只有百分比时，才按当前矿区已记录的任务目标换算，未来未知任务继续显示百分比而不猜测目标。`Powders:` Widget 会解析为秘银、宝石和冰川粉尘；某些区域不再显示粉尘 Widget 时，保留本次游戏最后收到的数值，从未收到则显示 `—`。
+
+**地点：**矮人矿洞、水晶矿洞、冰川隧道和 Glacite Mineshaft。地点只依据带地点标记的计分板行和明确的官方子区域名称判断。
+
+**当前 HOTM 配置：**默认开启且可独立关闭。QCA 只读取 `Heart of the Mountain Slot` 菜单中的 `SELECTED` 标记，或 Loadouts 物品说明中客户端已收到的 `Current:` 行，缓存玩家可见的原始名称并显示为 `HOTM: <名称>`；不会为了获取它发送命令或点击菜单。
+
+## 3. 砍树、狩猎与 Safari
+
+设置界面把三类功能设为互斥归属：**砍树**包含 Torrhus Chapter/资源、Tree Critter 计时、Miria Contest、Benefactor 与 Tree Gift；**狩猎**包含 Beeheemoth、Lasso REEL、Critter 行为辅助，以及唯一的跨岛 Fairy Soul 功能；**Safari**包含 Cold、Doomspiral、Critter 高亮、Dashboard、Critterdex、Sparkling、Floor Drop/Quest Item、Wumpa、Snoozle 墙体覆盖与 Safari Belt。每张功能卡只声明一次，不会出现在多个分类中。
+
+### 3.1 Helia Chapter 与 Torrhus 资源
+
+**目的：**把当前 Torrhus 目标和相关资源集中到同一个清晰面板。
+
+**功能：**仅在带地点标记的计分板行属于 Torrhus Canyon 或官方子地点时，读取客户端已经收到的计分板与 Tab 文字，并把两者作为独立的有限来源解析，避免较后的 `SB Level` 分数串到前面的 Helia 标题下。玩家已经打开菜单时，会识别真实 `Helia's Chapters` 总览中的 `Tasks completed` 和章节详情物品中的 `Progress`，不点击菜单；短时间内分行收到的 Chapter 聊天状态也会在有限窗口内合并。已确认的 Chapter/资源状态用 Minecraft 账号 UUID 与客户端明确收到的 SkyBlock Profile 名称作为键（尚未收到时使用该账号自己的 fallback），进入 Profile 时载入，且仅在解析值实际变化时写盘。重复出现的 Tab、计分板和菜单快照一律作为绝对值，不会反复累加；只有格式明确的聊天获取提示才做增量更新。收到新 Chapter 后会清除上个 Chapter 的旧任务/进度，旧配置误存的非 Chapter 任务也会在载入时清理。默认显示当前 Chapter、完整任务名、准确收到的进度、Forest Whispers、Desert Whispers、Forest Essence、Safari Essence、Sweep 和 Forest Fortune；Safari Essence 只在这里显示。长任务会换行，绝不显示省略号。
+
+**Tree Critter 计时（默认开启）：**采用与 SkyHanni 获取砍树进度相同的被动思路，只扫描客户端已经渲染的实体显示名称。最近一棵已加载 Tree Protection Order 出现严格匹配的 `Critter in: <时间>` 时，把服务器实际时间加入同一个综合 HUD；名称牌消失、离开 Torrhus 或关闭功能时，此行同步消失。QCA 不猜测玩家用了哪个 Pot，也不另起一个可能漂移的本地时钟。当前本地物品仓库收录 Fun-Sized Pot of Honeycomb（60m）、Family-Sized Pot of Honeycomb（30m）、Jumbo Pot of Honeycomb（15m）与 Behemoth Pot of Honeycomb（立即出现）。直接读取服务器最终名称牌，也会自然包含 Honeycomb Artifact 的 15% 加速、Honey Serendipity 立即吸引、其他玩家的 Order 与未来新增 Pot。
+
+**Beeheemoth 辅助（默认开启）：**使用指定 BabyzombieAddons 中相同的窄范围特征：客户端已经加载、实体 scale 与 9.0 的差小于 0.01 的 Bee。QCA 把该实体加入原版轮廓路径；默认黄色轮廓可以通过统一 RGB/HSV 选择器与预设完全自定义。首次看到新 UUID 时，把首次观察到的方块记录为固定黄色信标位置。玩家进入 10 格半径、客户端收到本人精确的 `CAPTURE! You caught ... Beeheemoth ...` 确认，或者实体消失/已被抓走，都会为该实体永久关闭光柱。已加载实体 12 格内的 Bee 系声音以及实体消失后三秒内最近位置的捕捉声音使用独立音量控制，默认开启、64%；无关的普通 Bee 声音原样返回。实体消失时轮廓自然停止；不会选取目标、攻击、点击或交互。
+
+**Lasso REEL 提示音（默认开启、64%）：**沿用 SkyHanni 的关联方式，不扫描任意 `REEL` 文字。先要求一个已收到的 Leashable 实体确实拴在本地玩家身上，再只接受其预计名称牌位置两格内的精确 `REEL` ArmorStand。状态首次变为 REEL 时播放一次本地提示音；名称牌持续存在不会每 tick 重播，离开状态后才允许下一次正常提示。音量使用 0–100% 连续滑条，并继续受“通用”预警总静音控制。
+
+### 3.2 Miria Contest HUD
+
+读取客户端收到的 `Miria's Contest` 计分板/Tab 区块，包括 `COMMON with 151` 与 `Uncommon requires +99` 这类实时档位行；只在综合 Hunting HUD 中显示下一档、准确差值和预计 Safari Ticket。右侧计分板注入已经删除；竞赛倒计时也不解析、不重复显示，因为计分板本身已经提供。
+
+### 3.3 Critter 行为辅助
+
+只使用本地可见的自定义名称 Critter 与玩家自身移动。Blue Jay 与 Goldolot 在玩家手持已收到的 Lasso/Fishing Net 时显示 Wiki 记录的 8 秒/5 秒静止倒计时；Dustybit 与 Hideonsun 显示四次跳跃/三次弹射物回击提示，并在客户端名称或消息包含进度时显示准确数值。所有提示都在屏幕中央弹出；此功能有独立音效开关与音量设置，同时仍受“通用”总静音控制。收到精确的 `CAPTURE! You caught ...` 服务器确认后，只对这只已捕捉 Critter 的名称暂停三秒行为提示，避免已移除实体或替换名称牌 UUID 重复触发；不同种类仍可立即提示，三秒后仍真实存在的同种目标会正常恢复。每种 Critter 可单独关闭；不会自动瞄准、移动、用工具或捕捉。
+
+### 3.4 Benefactor 与稀有 Tree Gift
+
+Benefactor HUD 合并玩家自己的有限 Tab/计分板、已经打开的 Forest/Desert Temple 菜单，以及准确收到的 `BENEFACTOR: You donated ... will receive ... +Nd!` 消息。状态、多日剩余时间、寺庙对应效果和捐赠信息按账号/Profile 保存；重复的绝对倒计时不会延长时间，同一寺庙的新捐赠按收到时长累加，切换寺庙会改用新寺庙时长，新捐赠也不会被短暂未刷新的旧菜单清除。四项默认开启；状态变化与最后 30 秒使用统一中央提示。
+
+Tree Gift 不再错误限制于 Torrhus，同时监听正常显示的游戏聊天，以及被兼容聊天压缩模组取消显示但客户端已经收到的原始游戏聊天。精确的本人 `+N rewards gained! (hover)` 仍只允许解析同一组件自带的 `SHOW_TEXT`。独立 `BONUS GIFT` 百分比行和精确 `A <名称> fell from the Tree!` 行，只有在 15 秒、64 字符边框限定的同一 Gift 区块同时出现 `TREE GIFT`、本人 `You helped cut ...` 贡献和本人奖励汇总后才有效；每个区块内去重。附近玩家的单独公开行、Lasso 捕捉文本或不完整区块都不会触发。Firefox、Groundhog、Drybark、Puck、Grizzly Bear、Signal Enhancer、Chameleon Shard、Hummingbird Shard、Dreadwing 和 Enchanted Book (Karma I) 默认全部开启且可分别关闭。
+
+### 3.5 Safari Run Dashboard 与 Critterdex
+
+进入 Critter Safari 后开始本地计时。综合 Hunting HUD 统计本轮 Shard 数量、本轮时间和 Ticket Tier，不再重复已有的 Safari Essence 显示；并按官方 37 种 Critter 显示 Cavern、Forest、Haunted、Icy 四区进度。当前 Biome 的已捕捉/缺失名称会完整换行显示，其余各行默认开启。Loot Share 会计入 Shard 统计，但不会错误地标记为玩家亲自捕捉。
+
+### 3.6 Sparkling、Floor Drop、Quest Item 与 Wumpa
+
+- **Sparkling Critter：**识别官方生成聊天和可见 `SPARKLING` 名称，显示中央标题、Biome、独立音效与可选原版轮廓；全部默认开启，轮廓使用完整 RGB 选择器。
+- **Floor Drop 与 Quest Item：**每秒在横向 10 格、纵向 3 格的有限范围内检查 Safari Floor Drop 使用的 String/tripwire 方块，首次出现时中央提示并显示最近距离；同时列出玩家本地背包实际持有的官方 Quest Item。不会请求区块或交互方块。
+- **Wumpa：**综合 HUD 会完整列出寒冷区八个非 Wumpa 前置 Critter：Billygoat、Mantis Shrimp、Nozzlenose、Polaris、Shuddersquid、Strongarm、Tepid、Troodon，并逐项显示绿色勾或红色叉及准确的 `n/8`。玩家本人的锚定捕捉确认与收到的 `LOOT SHARE ... catching a <Critter>` 队友确认都会更新本次组队遭遇的前置；Loot Share 仍不会污染单独的本人 Critterdex。Wumpa 一旦生成，八行清单会折叠为 `Wumpa：已生成` 与实时阶段。达到 8/8 时通过现有 Wumpa 专属 64% 音量通道只弹出一次中央提示；官方巨大脚步/awoken 消息共用同一轮去重状态。本地运动与路线改为跟踪 Wumpa 名称附近真正的 Ravager 身体，不再跟踪 Armor Stand 名称载体，并用短暂的移动/静止确认避免单 tick 抖动。实验性红线仍默认关闭，只投影当前水平移动到本地第一个碰撞点，不控制玩家或投掷 Critter Capsule。
+- **Snoozle 可撞墙覆盖（默认开启）：**每秒只扫描附近已经加载的方块，寻找同时包含 Wiki 明确记录的 `Cobbled Deepslate` 与 `Tuff` 的小型连通墙体，并只覆盖与空气相邻的表面；过大的自然地层和单一材质区域会被拒绝。默认绿色，二级设置使用统一 RGB/HSV 选择器。不会点击、修改或向服务器请求方块。
+
+### 3.7 Cold、Doomspiral、Fairy Soul 与 Critter 高亮
+
+- **寒冷值安全预警（默认开启）：**只解析客户端收到的 `Cold` 数值，默认高于 80 第一次预警、高于 90 第二次预警；两项都可用滑条调整且会保持第一档低于第二档。首次收到严格高于第一档的数值时，会立即遍历客户端已加载区块中少量 Block Entity，选择最近的普通/灵魂篝火显示红色信标；需要期间每 40 个客户端 tick 刷新一次最近结果，下一次收到的 Cold 一旦下降立即关闭。不会请求区块或移动玩家。
+- **Doomspiral 条件预警（默认开启）：**有限本地背包扫描发现至少 4 个 `Soothing Incense` 时中央提示一次；4 个是 Wiki 明确记录的召唤需求，数量降到 4 以下后才重置提示。
+- **Warden 可抓捕预警（默认开启）：**只观察 Doomspiral 场地区域内客户端已经加载的 Warden。按照指定 BabyzombieAddons 的实现，以 140 个客户端 tick 加收到的玩家延迟补偿判断冷却，并排除 emerging/digging 姿态；每个实体只在“未就绪→可抓捕”时显示一次中央大字与独立的默认开启 64% 音效。140 tick 是指定参考模组的实现阈值；Wiki 对 Doomspiral 的说明是逃出 Capsule 后约五秒的 Enraged/不可抓捕阶段。
+- **Fairy Soul 点位（默认关闭）：**在官方列出的 Torrhus Canyon 12 个与 Critter Safari 4 个坐标显示粉色信标，两组可分别关闭。客户端收到 `SOUL! You found a Fairy Soul!` 或“已经找到”服务器确认后，QCA 会把十格内最近的已列出魂标记为当前 profile 已收集、保存到本地并立即停止渲染该光柱；不会点击或查询 Fairy Soul。
+- **Safari Critter 高亮（默认开启）：**按对应 Shard 的官方品质标准颜色为本地可见的真实 Critter 实体添加原版轮廓；内置表覆盖全部 37 种。由于当前渲染版本无法稳定把 Armor Stand 支架身体与装备的捕捉模型分开，普通与 Sparkling 两条高亮路径都会明确排除 Armor Stand 捕捉道具。这一安全兜底会避免捕捉时出现细长支架轮廓；真实的非 Armor Stand Critter 仍使用品质色或单独设置的 Sparkling 颜色。不会修改实体数据。
+
+### 3.8 Safari Belt 物品提示
+
+仅当物品 ID 精确为 `SAFARI_BELT` 时，嵌入本地观察到的四区 Safari Milestone 等级。共享解析器同时支持合并行和 `Cavern Milestone` 加 `Current Level: IV` 这类标题/lore 分行格式，忽略未解锁要求和捕捉进度分数，并对重复条目取最高确认值。等级按 Minecraft 账号/SkyBlock Profile 分开保存，只有从玩家已经打开的 Safari Milestones 菜单或收到的物品说明观察到更高等级时才更新。属性值只重复物品实际说明中的数值，避免在 Wiki 表格与物品显示可能不一致时猜测 Sweep 总值。Milestone 与属性区均默认开启且可分别关闭。
+
+### 3.9 中央预警样式
+
+全部 Hunting 预警/提示使用原版屏幕中央标题与副标题。Critter Behavior、Benefactor、Tree Gift、Sparkling、Floor Drop、Wumpa、Cold、Doomspiral 与 Warden 就绪分别拥有独立音效开关和 0–100% 音量滑条，全部默认开启并为 64%；“通用”分类只提供总静音。持续存在的实体、名称或 Tab 行会去重，不会每 tick 重复播放。
+
+### 3.10 手动重连
+
+“通用”分类中的默认开启功能会在 `DisconnectedScreen` 加入一个原版宽度的“重新连接”按钮。正常 `ConnectScreen` 尝试开始时，QCA 记录本次客户端运行中的地址、显示名称、服务器类型与资源包偏好，因此首次连接失败和后续断线都能保留目标。玩家点击后只创建一次新的原版 `ServerData` 并发起一次正常连接；没有倒计时、后台重试、循环、自动加入、聊天或命令。
+
+## 4. Crimson Isle
+
+### 3.1 阵营任务追踪
+
+**目的：**无需一直按住 Tab，也能查看岛上的已接阵营任务。
+
+**功能：**仅当地点被识别为 Crimson Isle 或其明确子区域时，读取客户端已经收到的 `Faction Quests:` Widget。每条符合固定格式的行会完整保留服务器的 `✖`/`✔` 状态、任务原名和可选 `xN` 需求；未知行也按收到的原文显示，不推测隐藏进度、不翻译游戏名称。该功能可独立开关，并与不可能同时加载的挖矿任务 HUD 共用外观和位置。
+
+## 5. 战斗
+
+### 4.1 末影龙高亮
+
+**目的：**在 The End 战斗中更清楚地追踪快速移动的大型末影龙。
+
+**功能：**仅当客户端解析到 The End 或 Dragon's Nest 时，在原版实体渲染状态末尾设置末影龙轮廓色；完整 RGB 颜色选择器和预设色位于该功能的二级设置页。不会修改实体数据、碰撞箱、移动、瞄准或战斗输入。
+
+## 6. 宠物
+
+### 5.1 当前宠物 HUD
+
+**目的：**不打开 Pets 菜单即可看到当前宠物和服务器已经展示的升级进度。
+
+**功能：**严格匹配召唤、收回和 Autopet 提示，并每秒解析 `Pet:` Tab Widget。QCA 只用已验证 Profile 构造普通 player head，并刻意不写入合成 `petInfo`，防止外部物品模型判定替换 HUD 头像。Pets 菜单和附近已渲染宠物可以提供属于同一宠物的 Profile，但不会把整个 ItemStack 交给 HUD。模组内置 88 个基础 Profile、352 个皮肤 Profile、5,422 条仅限宠物的当前/动态纹理映射和 87 个配件定义；动态变体按最长真实皮肤家族前缀归属，仅 Baby Spinosaurus 就可识别 60 个当前/动画纹理。运行时不下载纹理，也不要求安装 Firmament。包括粗体在内的所有宠物文本都先完整测量，绝不使用省略号。“当前等级经验”和“到满级进度”默认开启；满级只隐藏后者，不影响配件行。通过 Pets 菜单、Tab 或已收到聊天确认的配件会按宠物持久保存到 QCA 本地配置，重登后继续可用。支持皮肤名称、Ancient Golden Dragon 装饰溢出等级；配件默认“图标＋名称”，也可只显示图标或名称。大数统一保留一位小数并使用 `k`、`m`、`b` 或 `t`。
+
+## 7. 聊天
+
+### 6.1 聊天偷窥
+
+**功能：**当玩家真实按住已设置的按键/组合键且没有打开界面时，QCA 让原版聊天使用前景状态和完整高度；松开立即恢复。按键默认未绑定。偷窥时滚轮默认翻聊天历史，玩家可改为保持原版快捷栏切换。该功能不会发送、复制、打开或修改任何聊天消息。
+
+## 8. 配置与 HUD 外观
+
+按可改绑的 `O` 键，或输入 `/aca`、`/qca`、`/ca`、`/qc`，即可打开唯一的“功能”设置页。只有客户端命令名称未被占用时才注册相应别名；这些本地命令只打开界面，不向服务器发送任何聊天或命令内容。安装 Mod Menu 后也能打开同一个页面。“通用”是第一个分类，其中放界面动画、预警音效总开关和手动重连开关。左键切换功能，左侧蓝条表示开启，右键进入有实际选项的二级设置；卡片与二级菜单都不再重复功能开关。语言开关独立于 Minecraft 全局语言，只改变 QCA 自身文字。
+
+每个 HUD 分别拥有背景透明度/颜色、边框开关/宽度/颜色、标题颜色、粗体、文字阴影和 50–200% 缩放。所有可编辑颜色共用带预设色的 RGB/HSV 颜色选择器，并且每一个背景颜色选择器都有明确的“透明”选项。左下角“编辑 HUD”打开的编辑页只显示当前位置/状态下实际已加载的 HUD；拖住边框或四角即可等比缩放，每个面板右下角有小齿轮。鼠标松开即保存位置和缩放，全部样式持久化至 `config/qcloudy_addition.json`。打开动画默认开启且可关闭。
+
+所有热键都直接在对应功能的二级设置行内捕获，不再打开独立组合键界面。等待输入的行支持键盘键、鼠标 1–5 以及更多 GLFW 侧键，并可同时记录 Ctrl、Shift、Alt、Cmd/Super；按 `Esc`、Backspace 或 Delete 会清空绑定。Storage 覆盖默认关闭；启用后使用当前材质包的 `generic_54.png` 绘制。锁定物品只显示左上角小星标。菜单中键替代默认关闭，首次开启只转换玩家真实左键。
+
+永久可用的本地 `/th` 与 `/helia` 没有设置项。只有玩家明确输入时才分别发送精确内容 `warp torrhus` 与 `chapter torrhus`，等同手动输入 `/warp torrhus` 与 `/chapter torrhus`，不会自动触发。
+
+跨度大的数值统一使用拖动条：HUD 透明度与缩放、Storage 高度/滚动速度/间距/边距、光标记忆时间，以及传送声音的音量和音调。拖动时连续更新，松开鼠标即保存。边框宽度、Storage 列数、任务显示模式和声音预设等少量离散选项仍使用直接循环按钮。
+
+### 8.1 AOTE/AOTV 传送声音自定义
+
+**目的：**允许玩家替换干扰较强的传送声音，但不强制静音传送工具。
+
+**具体功能：**总功能和两种传送类型均默认保留原声。普通传送与 Etherwarp 可分别改为六种本地 Minecraft 预设：紫颂果传送、末影人传送、紫水晶清响、经验球、末地传送门填充或潜影贝传送；每种自定义声音独立保存 10–200% 音量和 50–200% 音调。QCA 只在本地玩家手持 `ASPECT_OF_THE_END` 或 `ASPECT_OF_THE_VOID` 时替换已识别的附近声音，不修改网络包、物品使用、冷却、传送距离或移动。旧版静音配置会迁移为保留原声。

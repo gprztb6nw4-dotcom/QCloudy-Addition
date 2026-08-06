@@ -1,0 +1,524 @@
+{
+  "ALL_SKILLS_SUPER_BOOST": {
+    "base_item": "minecraft:diamond",
+    "item_model": "minecraft:diamond",
+    "name": "All Skills Exp Super-Boost",
+    "texture": ""
+  },
+  "ANTIQUE_REMEDIES": {
+    "base_item": "minecraft:azure_bluet",
+    "item_model": "minecraft:azure_bluet",
+    "name": "Antique Remedies",
+    "texture": ""
+  },
+  "BARREL_OF_RICHES": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Barrel of Riches",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc3MzM2NzEzNDk5OSwKICAicHJvZmlsZUlkIiA6ICIwM2FlZmNjYWE2NzE0ZDFhOThhY2Q2N2QxNjA0NzQyZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJUYXpyaXh4IiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2E4YzMzMmQ2YTAwMzJjYjM3ZTNkMmRlN2JkN2ZhNjcyZDFmYmYwZDY3YmViMDIzODgxNzRhMDFlZDQ0ZGU3MmIiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+  },
+  "BEJEWELED_COLLAR": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Bejeweled Collar",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY5MjI5MjA4MDgxMSwKICAicHJvZmlsZUlkIiA6ICJmMTYwZTMxMzJjYWM0YjRiOWM5OTk2NDQ1OGIxOWM0ZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJGYWNrX1JvbiIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS85Y2EyZmRhMDI5MDYyNmYzMzdlOTZhZGJiNTcwZmM0NzZkNTQwMzM0NGZiMzk1MzVhYTdkYWNmZTg1ZDAxNjQwIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "BIGGER_TEETH": {
+    "base_item": "minecraft:ghast_tear",
+    "item_model": "minecraft:ghast_tear",
+    "name": "Bigger Teeth",
+    "texture": ""
+  },
+  "BROWN_BANDANA": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Brown Bandana",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcyMDA1MjkwMjA1NiwKICAicHJvZmlsZUlkIiA6ICJhNTdmZDE5MGZmM2U0YjBkYTEzMmY2OGUzOTU3ZjViMSIsCiAgInByb2ZpbGVOYW1lIiA6ICJ4SGFubmFoNyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS82NzRlMDYxZTZkODUzODIyYmJhZDU2ZDA3OTM1N2MyNDhjOWE0MGRlNDk0ZjIwZWFlMDA3OGEwYTAyZWYwZGE3IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "BURNT_TEXTS": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Burnt Texts",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTczOTY2NjM2MzI2MSwKICAicHJvZmlsZUlkIiA6ICI2MTU1NTMyOTY2OWM0ZDA5YmFiOGJlNDNkYWUwYTRjMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJmaTAxNSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS83OGJkMTg4OWJmOGE2MzVlYzcxZmMwNWIxZWQ1NDg3NjM3NzhlM2QzNzE5MjZkMzlhNjJjMjlkMzUwYzQ4YjQ5IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "CRETAN_URN": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Cretan Urn",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc1MTY1ODU3Mzk0MywKICAicHJvZmlsZUlkIiA6ICJjN2Y2Nzk3ZmE4ZGM0NTdiYTkxNTU0NWIwMGU3M2UzMSIsCiAgInByb2ZpbGVOYW1lIiA6ICJlZGd5c3BlbmNlIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzg5NWRmNDIwNTZkNzk2MDJhNjkxNWZlYzZlZjgwNGJiZTU3YjQ1MGEwYTQ4NGNlOTk5NzQwM2QwYzkwNGQzNTYiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+  },
+  "CROCHET_TIGER_PLUSHIE": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Crochet Tiger Plushie",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTU5MDcxNDc3MjE0NiwKICAicHJvZmlsZUlkIiA6ICIyMWUzNjdkNzI1Y2Y0ZTNiYjI2OTJjNGEzMDBhNGRlYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJHZXlzZXJNQyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9mNjZmYjRkOWU2YWUwYzVlNjFlYzZiOTEzMWUwMTVmYjg5NzkyODUyZTE5NWU5Njg2NDY2MmJhNDIyZWYyNmUyIgogICAgfQogIH0KfQ=="
+  },
+  "DEAD_CAT_FOOD": {
+    "base_item": "minecraft:cooked_cod",
+    "item_model": "minecraft:cooked_cod",
+    "name": "Tasty Cat Food",
+    "texture": ""
+  },
+  "DWARF_TURTLE_SHELMET": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Dwarf Turtle Shelmet",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcwODcyMzE0MDkwMiwKICAicHJvZmlsZUlkIiA6ICI5NDczNjdlMTE1N2Q0ZjQzYTZmYmY0MGQwOTY3MjY3MyIsCiAgInByb2ZpbGVOYW1lIiA6ICJ2ZXJzeXNtYXN0ZXIiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmFjMTUxMDYxMGQ1MDQ0M2ZkOTdmMzRhNmU5NGUyMWQwYjkzZDVjNzUyOWYzZDk1YzE4MTZjZTI0YTEzZGM4NCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "EDIBLE_SEAWEED": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Edible Seaweed",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc0MDMyMTg4NzE4NCwKICAicHJvZmlsZUlkIiA6ICIyZDUxZmI0ZmJjM2Y0MjJjOTMyYzIzMDg5NGU2YmM1MiIsCiAgInByb2ZpbGVOYW1lIiA6ICJGR0ZTX3N0dWRpbyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9lZjc3MzQ2ZjU4OTRjZjBmNWVmZjJhNGMwNmNiOWI2ZWFiMGJmMzlkNzg5MTkxYjcwY2Y3YzA4ZDM2ZmRhMjQ4IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "EERIE_TOY": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Eerie Toy",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcyMDA0MTE3MjM2MSwKICAicHJvZmlsZUlkIiA6ICJlZTg4M2RmMjM0ZWI0YWM1YTFlNDEwODhhYzZkZWIxNyIsCiAgInByb2ZpbGVOYW1lIiA6ICJUdW5lc0Jsb2NrIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzViMmI3NTVlMDFmZjcyMjljMDJhYjIxZjgyYjUyNTJlODA5YjhiODE3OGFkNzk4MGM4ODZjZGU1ZTU1NWU1OGEiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+  },
+  "EERIE_TREAT": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Eerie Treat",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcwMDcwODY3Mjc5MCwKICAicHJvZmlsZUlkIiA6ICJmOGIzYzVlYzhiODc0NjM1Yjk5Y2QyMjA5NjZhNDRjYyIsCiAgInByb2ZpbGVOYW1lIiA6ICJkZWFkY2hyaXN0IiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2UxYmRkZmU5YjJiZDBmNDg3ZDJmMzdjOTQwZDRhNTBlMTcyNmFiYzMyNzNhZjQ3YTcwMjg1NTU0MDI1NWUxMzIiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+  },
+  "FOUR_EYED_FISH": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Four-Eyed Fish",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY4MDIxNzQ3ODIwMSwKICAicHJvZmlsZUlkIiA6ICJhNWVmNzE3YWI0MjA0MTQ4ODlhOTI5ZDA5OTA0MzcwMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJkZXBsZXRpbmciLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliOWY0M2I1MWJkNDViZWRmMDllNDU4MmQ3NjJkMjZjMDMxODQ3ZmM4ZjMwZDI1MzA1NzkyYzU3NDE4MWQzZiIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "GIANT_FROG_TREAT": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Giant Frog Treat",
+    "texture": "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzhlM2Q2YWE5ODgwYjViYTYzMmUzYzJmNDc2NmMzMDcxOTM2MDczYTc1ZGNlZGQ0NDVhZTdhYTU3MmE1MDk4ZSJ9fX0="
+  },
+  "GIANT_PIG_EAR": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Giant Pig's Ear",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgzMTUzNzcyMiwKICAicHJvZmlsZUlkIiA6ICIwMTIxYzFjZDUxOTM0M2NmYWM4YzgyZThiNjVjYTFjZiIsCiAgInByb2ZpbGVOYW1lIiA6ICJfVmV4X1RWIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzdhZThkZGUyOGE5ODcwYmQxYTEzOGZkNzcxMTZlZWY0NTllOTZhYjMyNWMzMGY1OTJlNGJiNzQxNTIxMGY4MCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "GIANT_SEAL_PLUSHIE": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Giant Seal Plushie",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgyMjk2Njk2MiwKICAicHJvZmlsZUlkIiA6ICIzZmM3ZmRmOTM5NjM0YzQxOTExOTliYTNmN2NjM2ZlZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJZZWxlaGEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWU3OWFiZjFiNTJlNDcwNzJmZTU4NDg0NzNlZTEzOTlmZTMyNDg3ODc5YzJkYTNiMWY1Y2JlMDc2OTNhZDU0YiIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "GIANT_WITCH_CAULDRON": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Giant Witch Cauldron",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgyMjk3MDU3MCwKICAicHJvZmlsZUlkIiA6ICJiOTc3ODUwYWMxMGE0Mjk4YmRiNWNhYjBhODA0NmM4YSIsCiAgInByb2ZpbGVOYW1lIiA6ICJTb3JheER1YmJlciIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9iMjc2OTJlMzc5YWIxMjk5ODJjNmE2ZDdmNTQzNGM0MDBiYzU4ZWNiOGUyNTA0NzM1YzYxNTc0MTkwMDliYTYwIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "GOLD_CLAWS": {
+    "base_item": "minecraft:gold_ingot",
+    "item_model": "minecraft:gold_ingot",
+    "name": "Gold Claws",
+    "texture": ""
+  },
+  "GRANDMAS_KNITTING_NEEDLE": {
+    "base_item": "minecraft:stick",
+    "item_model": "minecraft:stick",
+    "name": "Grandma's Knitting Needle",
+    "texture": ""
+  },
+  "GREEN_BANDANA": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Green Bandana",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY3ODgyMjE0MTY3OCwKICAicHJvZmlsZUlkIiA6ICIyMzFmNmU0NWQ3YTc0ZTFlYWU3NGFhMWU5NmZlNDVlMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJXaW5zdHJlYWtlcnMiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzUyMWNjY2RiYjg5MmRmZjE4M2Q5N2JiZGIxMmYyNjcxZTBjZDEyYjk0NWI4ZmNhMjExYTcwNjUzNTlhMDNhNSIKICAgIH0KICB9Cn0="
+  },
+  "HEPHAESTUS_PLUSHIE": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Hephaestus Plushie",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc1MTY2MTY5MDk3MCwKICAicHJvZmlsZUlkIiA6ICI4OGMyOGYwOTY3MjU0NmNkYTg3ZjVhMTc0ODU0MzExYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJOaXRlQ2F2ZSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8yMDg2YTJkMWYwYzM3ZWVlZTgxZmIxYjZhZmY3MTk5NzZmYTMwMjhjYmM3NjViZmI0MDUwNjIzNDY1YzZjOWFjIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "HEPHAESTUS_RELIC": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Hephaestus Relic",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc1MTY2MTk3OTg0MCwKICAicHJvZmlsZUlkIiA6ICJjNWVmOGQ1NDIwOWY0OTdlYWYzYzA1NjA3MjZhYTMwNSIsCiAgInByb2ZpbGVOYW1lIiA6ICJNaXNoX0RheCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS83NjljZDUzNTBhNjVlN2IyODkwMjcwNThkMmZmZDlkODJmZGFmODg0MDhjODJkNGRiZDViNWI1ZDMyNjJhMzIwIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "HEPHAESTUS_REMEDIES": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Hephaestus Remedies",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc1MTY2MTk4MTYxMCwKICAicHJvZmlsZUlkIiA6ICJmZDJlZDMzMzI0Mjk0ZThmOWVlZGNiN2RhMWJiNzlkZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJkcmFtYWdnIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2UwYzBmMmZlMmNjOGU3Mjk4ODFmYTgyNGNkOTVmMWIyYzE0YmQ0YjFhMWViOWU5NGZlNGRkYzZkNGQzNGFlYjUiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+  },
+  "HEPHAESTUS_SHELMET": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Hephaestus Shelmet",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc1MTY2MTk4NTM2MiwKICAicHJvZmlsZUlkIiA6ICI4NDIyMDRlNjY4ODA0ODdiYWU1YTA1OTUzOTRmOTk0OCIsCiAgInByb2ZpbGVOYW1lIiA6ICJuZWE4OW8iLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWIxOTJlY2ExMWUxNmUzNGQ1MmQ5ZmU2OWZhNTE2OWYxYmUzNTcwYWYyOWQ1OWVkNzg5ZDdlYTI4MDY5YzlhZSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "HEPHAESTUS_SOUVENIR": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Hephaestus Souvenir",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc1MTY2MTk4NjU0OSwKICAicHJvZmlsZUlkIiA6ICJhYzY1NDYwOWVkZjM0ODhmOTM0ZWNhMDRmNjlkNGIwMCIsCiAgInByb2ZpbGVOYW1lIiA6ICJzcGFjZUd1cmxTa3kiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTEyY2I0YmM4MmNlOWZlMDZlYzQwZTc5OGQxNGFjMmU5NTQ0MDViNWY2OWNjNjI3MmU3NDJlZjMxZDAwOGMxMCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "HEPHAESTUS_URN": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Hephaestus Urn",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc1MTY2MTk3ODcyMSwKICAicHJvZmlsZUlkIiA6ICJiZDNhNWRmY2ZkZjg0NDczOTViZDJiZmUwNGY0YzAzMiIsCiAgInByb2ZpbGVOYW1lIiA6ICJwcmVja3Jhc25vIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzQ1NWY4YmI1NzgyNDk4YTg0ZjRiZTkwNzFiOTI3MjZiYWM5YTU1ZGY3MzQyNmExYjlhZmM1OTFlNDdjOTgxZWYiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+  },
+  "LARGE_FROG_TREAT": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Large Frog Treat",
+    "texture": "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTFmMjczMzdkMWUxYTk3YjY3YmYzM2Q0NTE3Y2UwYzIxZGU4MmI3MGUzYmZkNDVhMjIyMDFhNGQwNTZiNjAwYyJ9fX0="
+  },
+  "LARGE_PIG_EAR": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Large Pig's Ear",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgyMjk2NTYwMywKICAicHJvZmlsZUlkIiA6ICJkMTNmODljZmRiMmY0OTUxOWE4YjgxMTUzN2FmZWU2ZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJ2ZXhsZWhhaGEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWQxOTViYWE2OTcwNmNkODRiOWVkZTc4YzQ4NTU4MTFmNjhlNTYyZmVjNTljNjE3YmQxNjljNDk3YTdjYjAyNiIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "LARGE_SEAL_PLUSHIE": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Large Seal Plushie",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgzMTU3Njg2MywKICAicHJvZmlsZUlkIiA6ICI2NDU4Mjc0MjEyNDg0MDY0YTRkMDBlNDdjZWM4ZjcyZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaDNtMXMiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTc1MTAzN2ZkZjE4NDdiZGUzMmE3YTI4ZWEyNGMxOTQ4ZWM2MWExNjNiMmVmZDM3NzJjNTA2YTlkNjcxZWM4NyIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "LARGE_WITCH_CAULDRON": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Large Witch Cauldron",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgzMTcwMTE2NiwKICAicHJvZmlsZUlkIiA6ICJhYTUwNjRmMDUzOWQ0YmFhYTVkOGMzODllY2JiNGFlMSIsCiAgInByb2ZpbGVOYW1lIiA6ICJ4WF9FbXBsb3ltZW50X1h4IiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2E4ODAyY2ViNTAwZTkwN2ZjNzk1OTRmMTgwNDg2YTBkOWI1OTA0ZTI1Y2E3ODlmMzUzYTg4M2ZiMTViNDQxNCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "LOTUS_CROWN": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Lotus Crown",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc3NTE0Nzk2OTI4MSwKICAicHJvZmlsZUlkIiA6ICI5ZjJiY2M1M2U4YzM0OTY4YTc5Yzc0NTExYWQ2NmQyYyIsCiAgInByb2ZpbGVOYW1lIiA6ICJLYWJveWlvIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzcyMTBjOGZiOGJkZmNkNTkyNmE3YWNiMDA2MzA1OTIyZmU4NjJjZDFlMjQ1MDVlNmVjZTliN2YxNzRkNWUzZDYiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+  },
+  "MEDIUM_FROG_TREAT": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Medium Frog Treat",
+    "texture": "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzI0NTAzNjc4MmM2YTdlMjVmZjg0YzUwODdhNjU5NjZkNjUwYzAzM2JhMzdlMDA5NjVlOGI5OTAyMWIzZWNhZSJ9fX0="
+  },
+  "MEDIUM_PIG_EAR": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Medium Pig's Ear",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgzMTUzODY2MiwKICAicHJvZmlsZUlkIiA6ICJhNjJmNGM0MWY5Y2M0ZDRhOGEyZjFkY2NjZjZkZmE5NyIsCiAgInByb2ZpbGVOYW1lIiA6ICJCMDBLWSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS80NTBlOTU5OThiODg0NTBjMGY3ODZjOTZjNDg2NjI2ZGQzNDg2YmZkZDRhZTA3NTNlNDQ1YTVkZGJkNTE0NDEzIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "MEDIUM_SEAL_PLUSHIE": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Medium Seal Plushie",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgzMTU3Nzg1NCwKICAicHJvZmlsZUlkIiA6ICJiM2E1M2VlMDgwMmI0NzE5OGVkM2VhMjRmYjZmNmQ3YSIsCiAgInByb2ZpbGVOYW1lIiA6ICJOZXRhbnlhaHVQdlAiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTEyNWI0ZGJmNGY3Zjk0OTY2YzkwZjZlYTIzZjM1MDdmOTRjMTUxY2NjNmEwN2ZiNzhkM2M0ZjJjNTJlYzE4MSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "MEDIUM_WITCH_CAULDRON": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Medium Witch Cauldron",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgzMTcwNjY1MSwKICAicHJvZmlsZUlkIiA6ICJiMGQ0YjI4YmMxZDc0ODg5YWYwZTg2NjFjZWU5NmFhYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJNaW5lU2tpbl9vcmciLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWQ4ZmFiZjlkMWU5NTIxZmM5M2RkYzZkZGFjZThjMGE1ZDc3MTk2MDQxNWM2MDc1OTZlMjA5ZjM0NzI0MTEzYSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "MINOS_RELIC": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Minos Relic",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcxOTQyMTgxMTI0MiwKICAicHJvZmlsZUlkIiA6ICIyMDZlMWZkYjI5Yzk0NGYxOTQ5OTg4NzAwNTQxMGQ2NyIsCiAgInByb2ZpbGVOYW1lIiA6ICJoNHlsMzMiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDBiNDY0OGNiZDgxN2M3YjVmYzY1NGM5YzA1NGUzNjBkODFiYmZlMWEwMGYyMTQ2NTdhMTc0ZTNlMGQwN2QyMSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "PET_ITEM_ALL_SKILLS_BOOST_COMMON": {
+    "base_item": "minecraft:diamond",
+    "item_model": "minecraft:diamond",
+    "name": "All Skills Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_BIG_TEETH_COMMON": {
+    "base_item": "minecraft:ghast_tear",
+    "item_model": "minecraft:ghast_tear",
+    "name": "Big Teeth",
+    "texture": ""
+  },
+  "PET_ITEM_BINGO_BOOSTER": {
+    "base_item": "minecraft:rabbit_foot",
+    "item_model": "minecraft:rabbit_foot",
+    "name": "Bingo Booster",
+    "texture": ""
+  },
+  "PET_ITEM_BUBBLEGUM": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Bubblegum",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTYyMzA3NDI5ODE3OSwKICAicHJvZmlsZUlkIiA6ICJiMGQ3MzJmZTAwZjc0MDdlOWU3Zjc0NjMwMWNkOThjYSIsCiAgInByb2ZpbGVOYW1lIiA6ICJPUHBscyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kMDU1ODRjNTM5NGViOTBmZjVmYmQxYjI1OTA5MzcxMjU4YjE1MjZlNmE0N2Y3MjQ1NWEzZjg0ZGQ3NjAzYThjIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "PET_ITEM_COMBAT_SKILL_BOOST_COMMON": {
+    "base_item": "minecraft:iron_sword",
+    "item_model": "minecraft:iron_sword",
+    "name": "Combat Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_COMBAT_SKILL_BOOST_EPIC": {
+    "base_item": "minecraft:iron_sword",
+    "item_model": "minecraft:iron_sword",
+    "name": "Combat Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_COMBAT_SKILL_BOOST_RARE": {
+    "base_item": "minecraft:iron_sword",
+    "item_model": "minecraft:iron_sword",
+    "name": "Combat Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_COMBAT_SKILL_BOOST_UNCOMMON": {
+    "base_item": "minecraft:iron_sword",
+    "item_model": "minecraft:iron_sword",
+    "name": "Combat Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_EXP_SHARE": {
+    "base_item": "minecraft:dandelion",
+    "item_model": "minecraft:dandelion",
+    "name": "Exp Share",
+    "texture": ""
+  },
+  "PET_ITEM_EXP_SHARE_DROP": {
+    "base_item": "minecraft:yellow_dye",
+    "item_model": "minecraft:yellow_dye",
+    "name": "Exp Share Core",
+    "texture": ""
+  },
+  "PET_ITEM_FARMING_SKILL_BOOST_COMMON": {
+    "base_item": "minecraft:iron_hoe",
+    "item_model": "minecraft:iron_hoe",
+    "name": "Farming Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_FARMING_SKILL_BOOST_EPIC": {
+    "base_item": "minecraft:iron_hoe",
+    "item_model": "minecraft:iron_hoe",
+    "name": "Farming Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_FARMING_SKILL_BOOST_RARE": {
+    "base_item": "minecraft:iron_hoe",
+    "item_model": "minecraft:iron_hoe",
+    "name": "Farming Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_FARMING_SKILL_BOOST_UNCOMMON": {
+    "base_item": "minecraft:iron_hoe",
+    "item_model": "minecraft:iron_hoe",
+    "name": "Farming Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_FISHING_SKILL_BOOST_COMMON": {
+    "base_item": "minecraft:cod",
+    "item_model": "minecraft:cod",
+    "name": "Fishing Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_FISHING_SKILL_BOOST_EPIC": {
+    "base_item": "minecraft:cod",
+    "item_model": "minecraft:cod",
+    "name": "Fishing Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_FISHING_SKILL_BOOST_RARE": {
+    "base_item": "minecraft:cod",
+    "item_model": "minecraft:cod",
+    "name": "Fishing Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_FISHING_SKILL_BOOST_UNCOMMON": {
+    "base_item": "minecraft:cod",
+    "item_model": "minecraft:cod",
+    "name": "Fishing Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_FLYING_PIG": {
+    "base_item": "minecraft:feather",
+    "item_model": "minecraft:feather",
+    "name": "Flying Pig",
+    "texture": ""
+  },
+  "PET_ITEM_FORAGING_SKILL_BOOST_COMMON": {
+    "base_item": "minecraft:iron_axe",
+    "item_model": "minecraft:iron_axe",
+    "name": "Foraging Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_FORAGING_SKILL_BOOST_EPIC": {
+    "base_item": "minecraft:iron_axe",
+    "item_model": "minecraft:iron_axe",
+    "name": "Foraging Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_HARDENED_SCALES_UNCOMMON": {
+    "base_item": "minecraft:prismarine_crystals",
+    "item_model": "minecraft:prismarine_crystals",
+    "name": "Hardened Scales",
+    "texture": ""
+  },
+  "PET_ITEM_IRON_CLAWS_COMMON": {
+    "base_item": "minecraft:iron_ingot",
+    "item_model": "minecraft:iron_ingot",
+    "name": "Iron Claws",
+    "texture": ""
+  },
+  "PET_ITEM_LUCKY_CLOVER": {
+    "base_item": "minecraft:lily_pad",
+    "item_model": "minecraft:lily_pad",
+    "name": "Lucky Clover",
+    "texture": ""
+  },
+  "PET_ITEM_LUCKY_CLOVER_DROP": {
+    "base_item": "minecraft:lime_dye",
+    "item_model": "minecraft:lime_dye",
+    "name": "Lucky Clover Core",
+    "texture": ""
+  },
+  "PET_ITEM_MINING_SKILL_BOOST_COMMON": {
+    "base_item": "minecraft:iron_pickaxe",
+    "item_model": "minecraft:iron_pickaxe",
+    "name": "Mining Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_MINING_SKILL_BOOST_RARE": {
+    "base_item": "minecraft:iron_pickaxe",
+    "item_model": "minecraft:iron_pickaxe",
+    "name": "Mining Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_MINING_SKILL_BOOST_UNCOMMON": {
+    "base_item": "minecraft:iron_pickaxe",
+    "item_model": "minecraft:iron_pickaxe",
+    "name": "Mining Exp Boost",
+    "texture": ""
+  },
+  "PET_ITEM_QUICK_CLAW": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Quick Claw",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcyMDA0MjcwODkzOCwKICAicHJvZmlsZUlkIiA6ICI4ZjE5NjJmYzE4NzY0MDU3ODYxMmIxMzNjODE4YmY5OSIsCiAgInByb2ZpbGVOYW1lIiA6ICJOaW9uXzkiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjMxMmE1YTEyZWNiMjRkNjg1MmRiMzg4ZTZhMzQ3MjFjYzY3ZjUyMmNjZGU3ZTgyNGI5Zjc1ZTk1MDM2YWM5MyIKICAgIH0KICB9Cn0="
+  },
+  "PET_ITEM_SADDLE": {
+    "base_item": "minecraft:saddle",
+    "item_model": "minecraft:saddle",
+    "name": "Saddle",
+    "texture": ""
+  },
+  "PET_ITEM_SHARPENED_CLAWS_UNCOMMON": {
+    "base_item": "minecraft:prismarine_shard",
+    "item_model": "minecraft:prismarine_shard",
+    "name": "Sharpened Claws",
+    "texture": ""
+  },
+  "PET_ITEM_SPOOKY_CUPCAKE": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Spooky Cupcake",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY2NTIxOTY0ODAxNSwKICAicHJvZmlsZUlkIiA6ICI2NmI0ZDRlMTFlNmE0YjhjYTFkN2Q5YzliZTBhNjQ5OSIsCiAgInByb2ZpbGVOYW1lIiA6ICJBcmFzdG9vWXNmIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzQ5N2FkOTlkNTNhYWNjZTZiN2E4NGQ4NzRlNjdiOGM1NmZhZGVkZmRmNmEyNTY1Yzc2MjZjZWZiZmMzMGMzNTEiCiAgICB9CiAgfQp9"
+  },
+  "PET_ITEM_TEXTBOOK": {
+    "base_item": "minecraft:book",
+    "item_model": "minecraft:book",
+    "name": "Textbook",
+    "texture": ""
+  },
+  "PET_ITEM_TIER_BOOST": {
+    "base_item": "minecraft:hopper",
+    "item_model": "minecraft:hopper",
+    "name": "Tier Boost",
+    "texture": ""
+  },
+  "PET_ITEM_TIER_BOOST_DROP": {
+    "base_item": "minecraft:red_dye",
+    "item_model": "minecraft:red_dye",
+    "name": "Tier Boost Core",
+    "texture": ""
+  },
+  "PET_ITEM_TITANIUM_MINECART": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Titanium Minecart",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcyMDA1NDE4MDgxMSwKICAicHJvZmlsZUlkIiA6ICIzY2I3YTA3YWY3ZjM0ZWZiYTlkNGI4ODQ3NDM4Mzc0ZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJNckthaWxldCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9jYWUwZDE1NTBmZGE2OTgzM2M2YWI4ODQ3NDZkMDM5YmQ3NTJhNGYyZTQ0NDcyY2MwYTNiMDVjNjk0ZjgwNTliIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "POIGNANT_LUCKY_CLOVER": {
+    "base_item": "minecraft:big_dripleaf",
+    "item_model": "minecraft:big_dripleaf",
+    "name": "Poignant Lucky Clover",
+    "texture": ""
+  },
+  "REAPER_GEM": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Reaper Gem",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTYwNzg1MjU5NjMwNCwKICAicHJvZmlsZUlkIiA6ICJlZDUzZGQ4MTRmOWQ0YTNjYjRlYjY1MWRjYmE3N2U2NiIsCiAgInByb2ZpbGVOYW1lIiA6ICI0MTQxNDE0MWgiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmIwNTVjODEwYmRkZmQxNjI2NGVjOGQ0MzljNDMyODNlMzViY2E3MWE1MDk4M2UxNWUzNjRjZDhhYjdjNjY4ZiIKICAgIH0KICB9Cn0="
+  },
+  "REINFORCED_SCALES": {
+    "base_item": "minecraft:prismarine_crystals",
+    "item_model": "minecraft:prismarine_crystals",
+    "name": "Reinforced Scales",
+    "texture": ""
+  },
+  "SERRATED_CLAWS": {
+    "base_item": "minecraft:prismarine_shard",
+    "item_model": "minecraft:prismarine_shard",
+    "name": "Serrated Claws",
+    "texture": ""
+  },
+  "SMALL_FROG_TREAT": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Small Frog Treat",
+    "texture": "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWZkODg4MWQwMmZlOWNlZTg1OWFjNTk3NzMxYjJkZjQ2YmVlNmQ1MmM0NDYyMDVmOWRhOWRmYTdiZDExMTY5NCJ9fX0="
+  },
+  "SMALL_PIG_EAR": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Small Pig's Ear",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgzMTU0MDExNSwKICAicHJvZmlsZUlkIiA6ICIxNzRjZmRiNGEzY2I0M2I1YmZjZGU0MjRjM2JiMmM2ZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJtYXJhZWwxOCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS81OWMxN2U4MDU4YTk1MjY2NDAwZTQ0ZGQzOTFlY2NlZTFlZTE2Nzc4MjZmYWI3NDU0Y2VlMWYxZTcxZDMzNjFhIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "SMALL_SEAL_PLUSHIE": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Small Seal Plushie",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgyMjk3OTMyNywKICAicHJvZmlsZUlkIiA6ICJhODEzMzJmNjA5MmE0NDQ1Yjk1YzVhZGFjNDA2OTQzYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJTbmFwcHliM2FzdCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9lZDU2MjNiZjdmNGY1YWUwOTY2OWFkYmU5ZTQwZjY1ZTQ2NTYyY2U5ZjA4Nzc4NzFkZjIxN2IxNTZjNTMyYjNiIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "SMALL_WITCH_CAULDRON": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Small Witch Cauldron",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc2NzgzMTcwNzg1NiwKICAicHJvZmlsZUlkIiA6ICI4MTFkNjM0NzUwY2Y0ZDI0OTJmZDcxYTViZjZhZjI3MSIsCiAgInByb2ZpbGVOYW1lIiA6ICJzcGlmZnRvcGlhbW1wMSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8zMWRhN2NjMWVkMWRiNjU1MDVmZmM3ZTJhY2JhNTMyNDk1N2JkZjhiMTdjNTlmZmZhYTg0OGQ2OThiNzNlYzc5IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "SNAKE_EYES": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Snake Eyes",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc3MzMyOTEwMjEzOCwKICAicHJvZmlsZUlkIiA6ICIyMWUzNjdkNzI1Y2Y0ZTNiYjI2OTJjNGEzMDBhNGRlYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJHZXlzZXJNQyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS84N2Y2NTg1MGMzN2JkZmY3ODAyYTdkZDFjZDRkYzY3OTgzMDgzMThlNTNkMTU4OGRmMGZiYTEwOGM5ZTRkNmZlIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "UNALLOYED_SPEED": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Unalloyed Speed",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc0OTE2NTE0NDc2MCwKICAicHJvZmlsZUlkIiA6ICI2YWVmMjM3Y2RhNDY0Y2QzYTdiZDcxYjg3YzFlMDEwNSIsCiAgInByb2ZpbGVOYW1lIiA6ICJLYWlqdW5va2kiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWFiYjFmYTQ3ZmUzZGM3NmVjODg2MTRiNGViNzY0NWU4ZTg4ZmNmMzZiYjYyYmMyYmZkZDE3ZWRlNzUwMmRkMSIKICAgIH0KICB9Cn0="
+  },
+  "UNCOMMON_PARTY_HAT": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Uncommon Party Hat",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY5MzcxNjc5MjU0NiwKICAicHJvZmlsZUlkIiA6ICJjMGIwZmRiZTJmNzU0ZmI1YmQ3NjJlOTIwOWVmN2YwOCIsCiAgInByb2ZpbGVOYW1lIiA6ICJKYW5DYW90aWMiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzhmMTI0NzBjMzY1YjJmMWYzYzgwZGYxYTYwNjg1OGE5ZGFmN2RjZDZlYmUwYzlhNGE2YzY4NGY2MmQyMWJjZiIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+  },
+  "WASHED_UP_SOUVENIR": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Washed-up Souvenir",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcxOTQyMTg2Njk5MywKICAicHJvZmlsZUlkIiA6ICI3MzE4MWQxZDRjYWQ0ZmU0YTcxNWNjNmUxOGNjYzVkNyIsCiAgInByb2ZpbGVOYW1lIiA6ICJaZmVybjRuZGl0byIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8zNzc3ZjA0NjQ0ZGVjNWY4MGJmZWFhNzQwMWFjZmJiYzE1MGViMjVkM2ZmOGJlNDIyMGU3YzM0NDI2Y2Q3MjdjIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+  },
+  "YELLOW_BANDANA": {
+    "base_item": "minecraft:player_head",
+    "item_model": "minecraft:player_head",
+    "name": "Yellow Bandana",
+    "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY3ODgyMjE1OTcwMSwKICAicHJvZmlsZUlkIiA6ICI0NDAzZGM1NDc1YmM0YjE1YTU0OGNmZGE2YjBlYjdkOSIsCiAgInByb2ZpbGVOYW1lIiA6ICJHYXl0b3duIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzc5OWQxNjczN2I0ZjI2MzNmOWU3YzQ1Mzg5OTIxMTVjMTA3OTI4YTlhMDFhYmZmNDA3YzAyOTcxOTRiZDY4NjciCiAgICB9CiAgfQp9"
+  }
+}
