@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 .firmament/
 .gradle/
+.gradle-home/
 .gradle-user-home/
 .toolchains/
 build/

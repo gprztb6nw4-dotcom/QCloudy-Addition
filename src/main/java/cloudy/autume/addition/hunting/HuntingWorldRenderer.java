@@ -58,13 +58,13 @@ public final class HuntingWorldRenderer {
 
         var config = ConfigManager.get().hunting;
         if (config.fairySoulWaypoints) {
-            if (LocationTracker.area() == IslandArea.TORRHUS_CANYON && config.fairySoulTorrhus) {
+            if (LocationTracker.area() == IslandArea.TORRHUS_CANYON) {
                 for (BlockPos pos : TORRHUS_FAIRY_SOULS) {
                     if (!HuntingTracker.fairySoulFound(IslandArea.TORRHUS_CANYON, pos)) {
                         submitBeacon(context, pos, FAIRY_SOUL_COLOR);
                     }
                 }
-            } else if (LocationTracker.area() == IslandArea.CRITTER_SAFARI && config.fairySoulSafari) {
+            } else if (LocationTracker.area() == IslandArea.CRITTER_SAFARI) {
                 for (BlockPos pos : SAFARI_FAIRY_SOULS) {
                     if (!HuntingTracker.fairySoulFound(IslandArea.CRITTER_SAFARI, pos)) {
                         submitBeacon(context, pos, FAIRY_SOUL_COLOR);

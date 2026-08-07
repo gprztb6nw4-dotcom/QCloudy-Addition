@@ -16,7 +16,7 @@
 - 新增Mining、Crimson Isle、Torrhus、Hunting和Critter Safari追踪器。
 - 新增完整可配置Pet HUD，并修复动态宠物皮肤与头颅显示。
 - 新增受BLC信息层级启发的设置、每HUD拖动/缩放、RGB/HSV颜色、透明背景、滑条、动画及键盘/鼠标组合键行内编辑。
-- 独立实现槽位锁定、时间戳、Storage覆盖和光标记忆，不依赖Firmament。
+- 独立实现物品时间戳和光标记忆，不依赖Firmament。
 - 新增Ender Dragon、Critter、Sparkling和Beeheemoth高亮。
 - 新增Wumpa前置、Ravager身体路线预测、Snoozle墙面、Cold/篝火、Warden就绪、Lasso REEL音效及Fairy Soul。
 - 新增严格本人归属的Tree Gift稀有奖励解析，支持逐物品开关、聊天压缩兼容和附近玩家排除。
@@ -29,7 +29,7 @@
 - 默认英文，可切换简体中文。
 - 每项预警声音默认开启并设为64%。
 - Wumpa路线预测与Fairy Soul总开关默认关闭。
-- Storage覆盖与菜单中键转换默认关闭。
+- 菜单中键转换默认关闭。
 - AOTE/AOTV声音保持原版，除非玩家主动选择替代音效。
 - Chat Peek功能开启，但按住热键默认未绑定。
 

@@ -1,6 +1,6 @@
 # QCloudy_Addition
 
-QCloudy_Addition is a client-only Fabric mod for Hypixel SkyBlock on Minecraft 26.1.2. It combines readable mining maps, objective HUDs, Torrhus and Critter Safari helpers, pet information, inventory protection, and configurable visual alerts in one bilingual interface.
+QCloudy_Addition is a client-only Fabric mod for Hypixel SkyBlock on Minecraft 26.1.2. It combines readable mining maps, objective HUDs, Torrhus and Critter Safari helpers, pet information, menu quality-of-life tools, and configurable visual alerts in one bilingual interface.
 
 English is the default interface language. Simplified Chinese can be selected from the QCA settings. Names received from Hypixel—including locations, items, pets, tasks, skins, accessories, and player-renamed HOTM slots—stay in their original form to avoid misleading translations.
 
@@ -16,7 +16,7 @@ English is the default interface language. Simplified Chinese can be selected fr
 - Critter Safari dashboard, Critterdex, Cold/campfire safety, Wumpa, Warden, Sparkling, Floor Drop, quest-item, Snoozle-wall, and Safari Belt helpers
 - Equipped Pet HUD with real pet/skin heads, rarity-colored names, XP, level-200 overflow, skin name, and held-item icon/name
 - Ender Dragon outline with a configurable color
-- Slot/item locking, item timestamps, cursor memory, optional Storage Overlay, configurable AOTE/AOTV sounds, and optional menu middle-click conversion
+- Item timestamps, cursor memory, configurable AOTE/AOTV sounds, Chat Peek, and optional menu middle-click conversion
 - Chat Peek with keyboard or mouse-button chords
 - BLC-inspired searchable settings and a dedicated drag/resize HUD editor
 - Manual reconnect button with no automatic retry loop
@@ -43,7 +43,7 @@ Place the QCloudy_Addition JAR in the instance's `mods` folder. Press `O` by def
 
 QCA has no runtime web service, telemetry, remote updater, Hypixel API dependency, macro, automatic movement, automatic combat, automatic capture, or hidden server-data request. Tracking features use only information already received by the client: Tab, scoreboard, chat, titles, open-menu contents, local inventory, loaded entities, and already-loaded blocks.
 
-The only server command payloads in the mod are physically user-triggered Storage navigation (`storage`, `enderchest <1-9>`, `backpack <1-18>`), `/th` (`warp torrhus`), and `/helia` (`chapter torrhus`). QCA contains no `sendChat` call. Manual reconnect starts one normal Minecraft connection only after the player clicks the button; it has no timer or background retry.
+The only server command payloads in the mod are `/th` (`warp torrhus`) and `/helia` (`chapter torrhus`), both triggered only when the player explicitly enters the local shortcut. QCA contains no `sendChat` call. Manual reconnect starts one normal Minecraft connection only after the player clicks the button; it has no timer or background retry.
 
 All Minecraft modifications are used at the player's own risk. Entity outlines, waypoint beams, wall overlays, and route projections are passive client renders, but passive rendering is not the same as official Hypixel approval. Review Hypixel's current modification rules and disable any feature you are not comfortable using.
 

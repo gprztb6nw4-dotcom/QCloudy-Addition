@@ -4,13 +4,10 @@ import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ConfigScreen;
 import cloudy.autume.addition.hud.HudRenderer;
 import cloudy.autume.addition.input.HotkeyInputs;
-import cloudy.autume.addition.inventory.InventoryDataManager;
 import cloudy.autume.addition.inventory.ItemTimestampTooltip;
 import cloudy.autume.addition.hunting.HuntingTracker;
 import cloudy.autume.addition.hunting.HuntingWorldRenderer;
-import cloudy.autume.addition.inventory.SlotLockManager;
 import cloudy.autume.addition.inventory.SafariBeltTooltip;
-import cloudy.autume.addition.inventory.storage.StorageController;
 import cloudy.autume.addition.tracker.LocationTracker;
 import cloudy.autume.addition.tracker.HotmSlotTracker;
 import cloudy.autume.addition.tracker.PetTracker;
@@ -42,12 +39,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
             Identifier.fromNamespaceAndPath(MOD_ID, "controls"));
     private static final KeyMapping OPEN_CONFIG = KeyMappingHelper.registerKeyMapping(new KeyMapping(
             "key.qcloudy_addition.open_config", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_O, KEY_CATEGORY));
-    private static final KeyMapping LOCK_SLOT = KeyMappingHelper.registerKeyMapping(new KeyMapping(
-            "key.qcloudy_addition.lock_slot", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_L, KEY_CATEGORY));
-    private static final KeyMapping LOCK_ITEM = KeyMappingHelper.registerKeyMapping(new KeyMapping(
-            "key.qcloudy_addition.lock_item", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_L, KEY_CATEGORY));
-    private static final KeyMapping BIND_SLOT = KeyMappingHelper.registerKeyMapping(new KeyMapping(
-            "key.qcloudy_addition.bind_slot", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_B, KEY_CATEGORY));
     private static final KeyMapping PEEK_CHAT = KeyMappingHelper.registerKeyMapping(new KeyMapping(
             "key.qcloudy_addition.peek_chat", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, KEY_CATEGORY));
     private static final String[] COMMAND_ALIASES = {"aca", "qca", "ca", "qc"};
@@ -56,7 +47,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ConfigManager.load();
-        InventoryDataManager.load();
         ItemTimestampTooltip.register();
         SafariBeltTooltip.register();
         HuntingWorldRenderer.register();
@@ -70,8 +60,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
                 HotmSlotTracker.update(client);
                 PetSkinTracker.update(client);
             }
-            InventoryDataManager.tick();
-            StorageController.tick(client);
             HuntingTracker.tick(client);
         });
 
@@ -84,8 +72,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         // and GAME_CANCELED are mutually exclusive for one received message.
         ClientReceiveMessageEvents.GAME_CANCELED.register(HuntingTracker::onMessage);
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-            StorageController.reset(client);
-            InventoryDataManager.saveNow();
             resetTrackers();
         });
 
@@ -103,15 +89,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
                     client.execute(() -> client.setScreen(new ConfigScreen(client.screen)));
                     return 1;
                 }));
-            }
-            if (dispatcher.getRoot().getChild("acastorage") == null) {
-                dispatcher.register(ClientCommands.literal("acastorage").executes(context -> {
-                    var connection = context.getSource().getClient().getConnection();
-                    if (connection != null) connection.sendCommand("storage");
-                    return 1;
-                }));
-            } else {
-                LOGGER.warn("Skipping client command /acastorage because another mod already registered it");
             }
             if (dispatcher.getRoot().getChild("th") == null) {
                 dispatcher.register(ClientCommands.literal("th").executes(context -> {
@@ -134,18 +111,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         });
 
         LOGGER.info("QCloudy_Addition initialized in client-side mode");
-    }
-
-    public static KeyMapping lockSlotKey() {
-        return LOCK_SLOT;
-    }
-
-    public static KeyMapping lockItemKey() {
-        return LOCK_ITEM;
-    }
-
-    public static KeyMapping bindSlotKey() {
-        return BIND_SLOT;
     }
 
     public static boolean matchesChord(ChordAction action, KeyEvent event) {
@@ -207,9 +172,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
     private static KeyMapping key(ChordAction action) {
         return switch (action) {
             case OPEN_CONFIG -> OPEN_CONFIG;
-            case LOCK_SLOT -> LOCK_SLOT;
-            case LOCK_ITEM -> LOCK_ITEM;
-            case BIND_SLOT -> BIND_SLOT;
             case PEEK_CHAT -> PEEK_CHAT;
         };
     }
@@ -218,9 +180,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         var keybinds = ConfigManager.get().keybinds;
         return switch (action) {
             case OPEN_CONFIG -> keybinds.openConfigModifiers;
-            case LOCK_SLOT -> keybinds.lockSlotModifiers;
-            case LOCK_ITEM -> keybinds.lockItemModifiers;
-            case BIND_SLOT -> keybinds.bindSlotModifiers;
             case PEEK_CHAT -> keybinds.peekChatModifiers;
         };
     }
@@ -229,9 +188,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         var keybinds = ConfigManager.get().keybinds;
         switch (action) {
             case OPEN_CONFIG -> keybinds.openConfigModifiers = modifiers;
-            case LOCK_SLOT -> keybinds.lockSlotModifiers = modifiers;
-            case LOCK_ITEM -> keybinds.lockItemModifiers = modifiers;
-            case BIND_SLOT -> keybinds.bindSlotModifiers = modifiers;
             case PEEK_CHAT -> keybinds.peekChatModifiers = modifiers;
         }
     }
@@ -271,9 +227,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
 
     public enum ChordAction {
         OPEN_CONFIG,
-        LOCK_SLOT,
-        LOCK_ITEM,
-        BIND_SLOT,
         PEEK_CHAT
     }
 
@@ -283,6 +236,5 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         PetTracker.reset();
         PetSkinTracker.reset();
         HuntingTracker.reset();
-        SlotLockManager.resetTransient();
     }
 }

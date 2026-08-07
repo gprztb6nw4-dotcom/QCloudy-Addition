@@ -1,6 +1,6 @@
 # QCloudy_Addition
 
-QCloudy_Addition 是一个面向 Minecraft 26.1.2 Hypixel SkyBlock 的纯客户端 Fabric 模组。它把清晰的挖矿地图、任务 HUD、Torrhus 与 Critter Safari 辅助、宠物信息、物品栏保护和可自定义视觉提示整合进一套中英双语界面。
+QCloudy_Addition 是一个面向 Minecraft 26.1.2 Hypixel SkyBlock 的纯客户端 Fabric 模组。它把清晰的挖矿地图、任务 HUD、Torrhus 与 Critter Safari 辅助、宠物信息、菜单便捷功能和可自定义视觉提示整合进一套中英双语界面。
 
 界面默认英文，可在 QCA 设置中切换简体中文。Hypixel 返回的地点、物品、宠物、任务、皮肤、配件和玩家自定义 HOTM 槽位名称始终保留原文，避免错误翻译。
 
@@ -16,7 +16,7 @@ QCloudy_Addition 是一个面向 Minecraft 26.1.2 Hypixel SkyBlock 的纯客户�
 - Critter Safari Dashboard、Critterdex、Cold/篝火、Wumpa、Warden、Sparkling、Floor Drop、Quest Item、Snoozle 墙体与 Safari Belt 辅助
 - 使用真实宠物/皮肤头颅的 Pet HUD，支持品质色名称、经验、200级溢出等级、皮肤名与宠物用品图标/名称
 - 可自定义颜色的 Ender Dragon 高亮
-- 槽位/物品锁定、物品时间戳、光标位置记忆、可选 Storage 覆盖、AOTE/AOTV 声音和可选菜单中键转换
+- 物品时间戳、光标位置记忆、AOTE/AOTV 声音自定义、聊天偷窥和可选菜单中键转换
 - 支持键盘、鼠标按键和组合键的 Chat Peek
 - BLC 风格的信息层级、搜索和独立 HUD 拖动/缩放界面
 - 不含自动重试循环的手动重新连接按钮
@@ -43,7 +43,7 @@ QCloudy_Addition 是一个面向 Minecraft 26.1.2 Hypixel SkyBlock 的纯客户�
 
 QCA 不包含运行时网络服务、遥测、远程更新、Hypixel API依赖、宏、自动移动、自动战斗、自动捕捉或隐藏服务器数据请求。追踪功能只读取客户端已经收到的 Tab、计分板、聊天、标题、已打开菜单、本地物品栏、已加载实体和已加载方块。
 
-模组中唯一的服务器命令载荷是玩家实际操作触发的 Storage 导航（`storage`、`enderchest <1-9>`、`backpack <1-18>`）、`/th` 对应的 `warp torrhus`，以及 `/helia` 对应的 `chapter torrhus`。QCA 没有 `sendChat` 调用。手动重连只会在玩家点击按钮后发起一次普通 Minecraft 连接，没有定时或后台重试。
+模组中唯一的服务器命令载荷是 `/th` 对应的 `warp torrhus`，以及 `/helia` 对应的 `chapter torrhus`，并且都只在玩家明确输入本地快捷命令时触发。QCA 没有 `sendChat` 调用。手动重连只会在玩家点击按钮后发起一次普通 Minecraft 连接，没有定时或后台重试。
 
 所有 Minecraft 模组都由玩家自行承担使用风险。实体高亮、信标路径、墙体覆盖和路线预测都是被动客户端渲染，但“被动”不等于获得 Hypixel 官方批准。请阅读最新规则，并关闭任何你不愿承担风险的功能。
 

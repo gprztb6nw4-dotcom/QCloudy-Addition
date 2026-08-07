@@ -288,15 +288,7 @@ Tab / 计分板 / 聊天 / 已打开菜单 / 标题 / 已加载实体 / 本地�
 
 ## 12. 物品栏与菜单
 
-### 12.1 槽位/物品锁定与绑定
-
-- **用途：**避免误移动或丢弃重要物品，并可绑定背包与快捷栏槽位。
-- **读取内容：**实际容器点击、丢弃操作、本地槽位/物品UUID和快捷键。
-- **实现：**`AbstractContainerScreenMixin`、`LocalPlayerDropMixin`只取消被保护的本地操作；`SlotLockManager`按账号/Profile/维度保存槽位锁，按SkyBlock UUID保存物品锁。左上角小星代替遮挡整格的颜色。可配置安装Firmament时让出重复功能。
-- **效果：**误操作被阻止并可播放本地提示；显示小星和绑定线/框。
-- **默认/对外：**保护开启；没有自动物品栏操作。
-
-### 12.2 物品时间戳
+### 12.1 物品时间戳
 
 - **用途：**显示创建时间和支持的完成倒计时。
 - **读取内容：**本地ItemStack已经拥有的组件/lore。
@@ -304,15 +296,7 @@ Tab / 计分板 / 聊天 / 已打开菜单 / 标题 / 已加载实体 / 本地�
 - **效果：**正常物品说明下增加时间/倒数行。
 - **默认/对外：**开启；纯Tooltip。
 
-### 12.3 Storage覆盖
-
-- **用途：**把多页Storage做得更大、可滚动、可搜索并遵循材质包。
-- **读取内容：**玩家已打开的Storage总览/页面、本地ItemStack与滚轮。
-- **实现：**`StorageController`只识别精确Storage标题并缓存收到页面；`StorageOverlayScreen`使用原版/材质包物品与GUI渲染，不自造箱子背景。视口任意位置可滚动，玩家物品栏放大。`StorageCacheManager`检测Registry变化，按资源键重绑定附魔，并按槽位隔离序列化失败，避免一个旧动态组件使渲染线程崩溃。
-- **效果：**多列页面、保存滚动、当前页边框、搜索高亮、非当前页Tooltip和更大玩家物品栏。
-- **默认/对外：**默认关闭；玩家实际点击页面时只发送对应Storage命令。
-
-### 12.4 光标记忆
+### 12.2 光标记忆
 
 - **用途：**短时间重开兼容界面时回到上次位置。
 - **读取内容：**本地Screen身份、鼠标坐标和时间。
@@ -320,7 +304,7 @@ Tab / 计分板 / 聊天 / 已打开菜单 / 标题 / 已加载实体 / 本地�
 - **效果：**重开匹配界面时光标回到保存点。
 - **默认/对外：**开启，500ms；只移动本地指针。
 
-### 12.5 AOTE/AOTV声音
+### 12.3 AOTE/AOTV声音
 
 - **用途：**自定义而非默认静音Instant Transmission和Etherwarp。
 - **读取内容：**手持SkyBlock物品ID、本地声音事件/解析路径、声源坐标和设置。
@@ -328,19 +312,17 @@ Tab / 计分板 / 聊天 / 已打开菜单 / 标题 / 已加载实体 / 本地�
 - **效果：**默认原声；可选Chorus、Enderman、Amethyst、XP Orb、End Portal Fill或Shulker，并调音量/音调。
 - **默认/对外：**两类保持VANILLA；纯本地声音。
 
-### 12.6 菜单中键转换
+### 12.4 菜单中键转换
 
 - **用途：**让实际主键点击用Minecraft中键/Clone容器动作激活物品按钮，减少先拿起物品的可见延迟。
 - **读取内容：**物理左右键、ChestMenu槽位、光标携带状态和SkyBlock状态。
-- **实现：**`MiddleClickMenus`只接受非玩家栏、非空、`PICKUP`的Chest槽位，排除真实Storage/Vault；默认只转换物理左键，并默认要求光标为空。只对这次物理点击调用 `handleContainerInput(..., button2, CLONE, ...)`。
+- **实现：**`MiddleClickMenus`只接受非玩家栏、非空、`PICKUP`的Chest槽位；默认只转换物理左键，并默认要求光标为空。只对这次物理点击调用 `handleContainerInput(..., button2, CLONE, ...)`。
 - **效果：**支持的菜单物品不会先显示到光标上。
 - **默认/对外：**功能关闭；开启后每次容器动作仍必须由玩家实际点击。
 
 ## 13. 本地保存内容
 
 - `config/qcloudy_addition.json`：语言、功能开关、HUD外观/位置/缩放、宠物确认信息、Hunting资源/Chapter/Benefactor/Safari Belt状态和已确认Fairy Soul。旧 `autumecloudyaddition.json` 只用于迁移。
-- `config/qcloudy_addition-inventory.json`：按Profile保存的物品UUID锁、按维度保存的槽位锁/绑定和Storage自定义名。
-- Storage缓存：只来自玩家实际打开后收到的页面；写入使用异常隔离。
 - 配置先写临时文件，再尽可能原子替换。
 
 QCA不会在磁盘保存密码、Token、Hypixel API Key、聊天历史、远程账号数据或重连地址。
@@ -352,9 +334,6 @@ QCA不会在磁盘保存密码、Token、Hypixel API Key、聊天历史、远程
 | `/aca`、`/qca`、`/ca`、`/qc` | 打开本地QCA设置 | 无服务器载荷 |
 | 玩家输入 `/th` | `sendCommand("warp torrhus")` | 否 |
 | 玩家输入 `/helia` | `sendCommand("chapter torrhus")` | 否 |
-| 玩家操作Storage总览 | `sendCommand("storage")` | 否 |
-| 玩家选择Ender Chest第1–9页 | `sendCommand("enderchest <页码>")` | 否 |
-| 玩家选择Backpack第1–18页 | `sendCommand("backpack <页码>")` | 否 |
 | 玩家使用已开启的中键转换 | 对实际点击槽位发送一次正常 `CLONE` 容器输入 | 否 |
 | 玩家点击“重新连接” | 对本次内存中记录的目标发起一次普通Minecraft连接 | 否 |
 

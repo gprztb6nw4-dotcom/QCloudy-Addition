@@ -16,7 +16,7 @@ This is the first publication-ready QCloudy_Addition build. It is a client-only 
 - Added Mining, Crimson Isle, Torrhus, Hunting, and Critter Safari trackers.
 - Added the full configurable Pet HUD and corrected dynamic pet-skin/head handling.
 - Added BLC-inspired settings, per-HUD drag/resize, RGB/HSV colors, transparent backgrounds, sliders, animations, and inline keyboard/mouse chord editing.
-- Added Firmament-inspired—but independently implemented—slot locking, timestamps, Storage Overlay, and cursor memory without a Firmament dependency.
+- Added independently implemented item timestamps and cursor memory without a Firmament dependency.
 - Added configurable Ender Dragon, Critter, Sparkling, and Beeheemoth outlines.
 - Added Wumpa prerequisite tracking, Ravager-body route prediction, Snoozle wall surfaces, Cold/campfire safety, Warden readiness, Lasso REEL audio, and Fairy Soul waypoints.
 - Added personal Tree Gift rare-loot parsing with per-loot controls, canceled-chat compatibility, and nearby-player rejection.
@@ -29,7 +29,7 @@ This is the first publication-ready QCloudy_Addition build. It is a client-only 
 - English UI; Simplified Chinese is selectable.
 - Alert sounds are enabled at 64% and configured per feature.
 - Wumpa route prediction and Fairy Soul waypoints are off by default.
-- Storage Overlay and menu middle-click conversion are off by default.
+- Menu middle-click conversion is off by default.
 - AOTE/AOTV sounds remain vanilla until the player selects a replacement.
 - Chat Peek is enabled, but its hold key is unbound by default.
 

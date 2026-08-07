@@ -4,10 +4,8 @@ import cloudy.autume.addition.QCloudyAdditionClient;
 import cloudy.autume.addition.chat.ChatPeekManager;
 import cloudy.autume.addition.config.ConfigScreen;
 import cloudy.autume.addition.inventory.CursorPositionSaver;
-import cloudy.autume.addition.inventory.SlotLockManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
 import org.lwjgl.glfw.GLFW;
@@ -49,14 +47,6 @@ public abstract class MouseHandlerMixin {
     @Inject(method = "onButton", at = @At("HEAD"), cancellable = true)
     private void aca$handleMouseChords(long window, MouseButtonInfo button, int action, CallbackInfo ci) {
         MouseButtonEvent event = new MouseButtonEvent(xpos, ypos, button);
-        if (minecraft.screen instanceof AbstractContainerScreen<?> screen) {
-            var hovered = ((AbstractContainerScreenAccessor) screen).aca$getHoveredSlot();
-            boolean handled = action == GLFW.GLFW_PRESS
-                    ? SlotLockManager.mousePressed(screen, hovered, event)
-                    : action == GLFW.GLFW_RELEASE && SlotLockManager.mouseReleased(screen, hovered, event);
-            if (handled) ci.cancel();
-            return;
-        }
         if (action != GLFW.GLFW_PRESS || minecraft.screen != null || minecraft.getOverlay() != null) return;
         if (QCloudyAdditionClient.matchesMouseChord(
                 QCloudyAdditionClient.ChordAction.OPEN_CONFIG, event)) {

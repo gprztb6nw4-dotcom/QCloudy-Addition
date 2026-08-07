@@ -303,15 +303,7 @@ All information rows on; icon+name accessory mode; read/render only; no runtime 
 
 ## 12. Inventory and menu tools
 
-### 12.1 Slot/item locking and bindings
-
-- **Purpose:** prevent accidental movement or dropping of important items and optionally bind inventory slots.
-- **Inputs:** physical container clicks, drop attempts, local slot/item identifiers, and configured hotkeys.
-- **Implementation:** `AbstractContainerScreenMixin` and `LocalPlayerDropMixin` cancel only a protected local action. `SlotLockManager` stores locked slots by account/profile/dimension and item locks by SkyBlock UUID. The visual indicator is a small top-left star rather than an obscuring tint. Firmament handoff can disable QCA's duplicate inventory helpers when configured.
-- **Expected effect:** blocked action with optional local message/sound; lock star and binding lines/boxes.
-- **Default/outbound:** slot/item protection on; no automatic inventory action.
-
-### 12.2 Item timestamps
+### 12.1 Item timestamps
 
 - **Purpose:** show item creation time and supported completion countdowns.
 - **Inputs:** item components/lore already present in the local ItemStack.
@@ -319,15 +311,7 @@ All information rows on; icon+name accessory mode; read/render only; no runtime 
 - **Expected effect:** timestamp/countdown beneath the normal tooltip.
 - **Default/outbound:** on; local tooltip only.
 
-### 12.3 Storage Overlay
-
-- **Purpose:** make multi-page Storage browsing larger, scrollable, searchable, and resource-pack-consistent.
-- **Inputs:** Storage overview/page menus already opened by the player, local item stacks, mouse scrolling, and resource-pack GUI/item rendering.
-- **Implementation:** `StorageController` recognizes exact Storage titles and caches received pages. `StorageOverlayScreen` renders actual items and uses vanilla/resource-pack-backed rendering instead of a custom chest texture. Scrolling works across the viewport and the player inventory is enlarged. `StorageCacheManager` fingerprints serialized items, detects registry replacement, rebinds enchantments by resource key, and isolates a failed slot so one stale dynamic component cannot crash the render thread.
-- **Expected effect:** multi-column pages, persistent scroll, active-page outline, search highlights, inactive-page tooltips, and a larger player inventory.
-- **Default/outbound:** feature off. A physical page click sends only the exact documented Storage navigation command.
-
-### 12.4 Cursor memory
+### 12.2 Cursor memory
 
 - **Purpose:** return the pointer near its last useful position when reopening a compatible screen.
 - **Inputs:** local screen identity, cursor coordinates, elapsed local time.
@@ -335,7 +319,7 @@ All information rows on; icon+name accessory mode; read/render only; no runtime 
 - **Expected effect:** cursor returns to the saved position when the matching screen reopens soon enough.
 - **Default/outbound:** on,500ms tolerance; local pointer positioning only.
 
-### 12.5 AOTE/AOTV sound customization
+### 12.3 AOTE/AOTV sound customization
 
 - **Purpose:** replace, rather than indiscriminately mute, Instant Transmission and Etherwarp sounds.
 - **Inputs:** held SkyBlock item ID, local sound event/resolved sound path, source coordinates, and selected sound settings.
@@ -343,19 +327,17 @@ All information rows on; icon+name accessory mode; read/render only; no runtime 
 - **Expected effect:** vanilla sound by default, or Chorus, Enderman, Amethyst, XP Orb, End Portal Fill, or Shulker sound at the chosen volume/pitch.
 - **Default/outbound:** customization available but both modes remain vanilla; local sound only.
 
-### 12.6 Menu middle-click conversion
+### 12.4 Menu middle-click conversion
 
 - **Purpose:** let a physical primary-button press activate an item-button with Minecraft's clone/middle-click container action, avoiding the visible pickup-first delay of item-based SkyBlock menus.
 - **Inputs:** physical left/right click, exact chest-menu slot, carried cursor state, and current SkyBlock/location state.
-- **Implementation:** `MiddleClickMenus` accepts only non-player-inventory, nonempty chest slots using `PICKUP`; it excludes real Storage/Vault screens. The default conversion mode is physical left-click only, and an optional empty-cursor guard is on. It calls the normal `handleContainerInput(..., button 2, CLONE, ...)` only for that physical click.
+- **Implementation:** `MiddleClickMenus` accepts only non-player-inventory, nonempty chest slots using `PICKUP`; the default conversion mode is physical left-click only, and an optional empty-cursor guard is on. It calls the normal `handleContainerInput(..., button 2, CLONE, ...)` only for that physical click.
 - **Expected effect:** supported menu items behave like a middle-click activation without first appearing on the cursor.
 - **Default/outbound:** feature off; when enabled, every converted container action still requires one physical click.
 
 ## 13. Persistence
 
 - `config/qcloudy_addition.json`: language, feature settings, per-HUD appearance/position/scale, remembered pet details, Hunting resources/Chapter/Benefactor/Safari Belt state, and collected Fairy Soul keys. The old `autumecloudyaddition.json` is read once for migration.
-- `config/qcloudy_addition-inventory.json`: profile-aware item UUID locks, dimension-specific slot locks/bindings, and Storage custom names.
-- Storage cache: only pages explicitly received after the player opens Storage; serialization is atomic and failure-isolated.
 - Configuration writes use a temporary file followed by atomic replacement when supported.
 
 QCA stores no password, access token, Hypixel API key, chat history, remote account data, or reconnect address on disk.
@@ -367,7 +349,6 @@ QCA stores no password, access token, Hypixel API key, chat history, remote acco
 | `/aca`, `/qca`, `/ca`, `/qc` | Opens the local QCA settings screen | No server payload |
 | Player types `/th` | `sendCommand("warp torrhus")` | No |
 | Player types `/helia` | `sendCommand("chapter torrhus")` | No |
-| Player activates Storage overview | `sendCommand("storage")` | No |
 | Player selects Ender Chest page1–9 | `sendCommand("enderchest <page>")` | No |
 | Player selects Backpack page1–18 | `sendCommand("backpack <page>")` | No |
 | Player uses enabled middle-click conversion | One normal container `CLONE` input for the physically clicked slot | No |
