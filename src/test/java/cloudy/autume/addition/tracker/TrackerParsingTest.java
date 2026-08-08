@@ -123,6 +123,14 @@ final class TrackerParsingTest {
     }
 
     @Test
+    void detectsCompletedCrimsonFactionQuestsForHudFiltering() {
+        assertTrue(TabListTracker.isCompletedCrimsonQuest("Heavy Pearls: COMPLETED"));
+        assertTrue(TabListTracker.isCompletedCrimsonQuest(" Rescue Mission: DONE"));
+        assertFalse(TabListTracker.isCompletedCrimsonQuest(" ✔ Rescue Mission"));
+        assertFalse(TabListTracker.isCompletedCrimsonQuest(" ✖ Digested Mushrooms x20"));
+    }
+
+    @Test
     void parsesPetProgressAndNoPetState() {
         PetTracker.updateFromTab(List.of("Pet:", " [Lvl 200] [122✦] Golden Dragon", " 931,886.2/1.4M XP (67.2%)"));
         PetTracker.PetSnapshot pet = PetTracker.current();

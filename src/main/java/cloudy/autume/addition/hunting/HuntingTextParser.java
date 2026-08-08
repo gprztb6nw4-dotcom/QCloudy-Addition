@@ -24,6 +24,8 @@ public final class HuntingTextParser {
             "(?i)(" + RESOURCE_NAME + ")\\s*(:|x)?\\s*([+]?" + NUMBER + ")(?:x)?\\b");
     private static final Pattern RESOURCE_BEFORE = Pattern.compile(
             "(?i)([+]?" + NUMBER + ")\\s+(" + RESOURCE_NAME + ")");
+    private static final Pattern SWEEP_RESOURCE = Pattern.compile(
+            "(?i)^\\s*Sweep\\s*(:|x)?\\s*([+]?" + NUMBER + ")(?:x)?\\b");
     private static final Pattern CHAPTER = Pattern.compile(
             "(?i)\\b(?:Helia'?s?\\s+)?Chapter\\s*:?[ \\t]*([IVXLCDM]+|[0-9]+)(?:\\s*[:\\-]\\s*(.*))?");
     private static final Pattern FRACTION = Pattern.compile("([0-9][0-9,]*)\\s*/\\s*([0-9][0-9,]*)");
@@ -92,11 +94,19 @@ public final class HuntingTextParser {
         List<ResourceUpdate> result = new ArrayList<>();
         for (String raw : lines) {
             String line = plain(raw);
+            Matcher sweep = SWEEP_RESOURCE.matcher(line);
+            if (sweep.find()) {
+                boolean additive = "x".equalsIgnoreCase(sweep.group(1)) || gainLanguage(line);
+                result.add(new ResourceUpdate(Resource.SWEEP, sweep.group(2).replace("+", ""), additive));
+                continue;
+            }
             Matcher matcher = RESOURCE_AFTER.matcher(line);
             while (matcher.find()) {
+                Resource resource = Resource.from(matcher.group(1));
+                if (resource == Resource.SWEEP) continue;
                 String amount = matcher.group(3);
                 boolean additive = "x".equalsIgnoreCase(matcher.group(2)) || gainLanguage(line);
-                result.add(new ResourceUpdate(Resource.from(matcher.group(1)), amount.replace("+", ""), additive));
+                result.add(new ResourceUpdate(resource, amount.replace("+", ""), additive));
             }
             Matcher before = RESOURCE_BEFORE.matcher(line);
             while (before.find()) {

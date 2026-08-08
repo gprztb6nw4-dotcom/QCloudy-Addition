@@ -94,6 +94,27 @@ final class HuntingTextParserTest {
     }
 
     @Test
+    void parsesSweepFromMainValueBeforeLogReductionText() {
+        var updates = HuntingTextParser.resources(List.of(
+                "Sweep: 952.84, 13.78 logs (-50%) (-50%) -> 5.46 logs"));
+
+        assertEquals(1, updates.size());
+        assertEquals(HuntingTextParser.Resource.SWEEP, updates.get(0).resource());
+        assertEquals("952.84", updates.get(0).amount());
+        assertFalse(updates.get(0).additive());
+    }
+
+    @Test
+    void parsesSweepAdditiveOnlyWhenSweepStartsTheLine() {
+        var updates = HuntingTextParser.resources(List.of("Sweep x4"));
+
+        assertEquals(1, updates.size());
+        assertEquals(HuntingTextParser.Resource.SWEEP, updates.get(0).resource());
+        assertEquals("4", updates.get(0).amount());
+        assertTrue(updates.get(0).additive());
+    }
+
+    @Test
     void doesNotTreatUnrelatedSkyblockProgressAsAChapterTask() {
         assertTrue(HuntingTextParser.chapter(List.of(
                 "SB Level: [430] 78/100 XP",

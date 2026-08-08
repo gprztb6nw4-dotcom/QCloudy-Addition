@@ -19,6 +19,7 @@ public final class TabListTracker {
     private static final Pattern COMMISSION_NUMERIC = Pattern.compile("^(.+?):\\s*([0-9,]+)\\s*/\\s*([0-9,]+)$");
     private static final Pattern COMMISSION_DONE = Pattern.compile("(?i)^(.+?):\\s*(?:DONE|COMPLETE|COMPLETED)$");
     private static final Pattern CRIMSON_QUEST = Pattern.compile("^\\s*([✖✔])\\s+(.+?)(?:\\s+x([0-9]+))?$");
+    private static final Pattern CRIMSON_QUEST_DONE = Pattern.compile("(?i).*\\b(?:DONE|COMPLETE|COMPLETED)\\b.*");
     private static List<String> lines = List.of();
     private static List<String> commissions = List.of();
     private static List<CommissionProgress> commissionProgress = List.of();
@@ -59,6 +60,7 @@ public final class TabListTracker {
                 .map(raw -> parseCommission(raw, LocationTracker.area()))
                 .toList();
         crimsonQuests = extractWidget(current, "Faction Quests:", 8).stream()
+                .filter(raw -> !isCompletedCrimsonQuest(raw))
                 .map(TabListTracker::parseCrimsonQuest)
                 .toList();
         petWidget = extractWidget(current, "Pet:", 6);
@@ -227,6 +229,10 @@ public final class TabListTracker {
         if (!matcher.matches()) return new CrimsonQuest(raw.trim(), 1, false);
         int amount = matcher.group(3) == null ? 1 : Integer.parseInt(matcher.group(3));
         return new CrimsonQuest(matcher.group(2).trim(), amount, "✔".equals(matcher.group(1)));
+    }
+
+    static boolean isCompletedCrimsonQuest(String raw) {
+        return CRIMSON_QUEST_DONE.matcher(strip(raw).trim()).matches();
     }
 
     public record CommissionProgress(String name, double percentage, long current, long target) {

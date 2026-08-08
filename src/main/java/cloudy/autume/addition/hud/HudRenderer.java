@@ -42,16 +42,14 @@ public final class HudRenderer {
         if (client.player == null || client.options.hideGui || !LocationTracker.isSkyBlock()) return;
         var config = ConfigManager.get();
 
-        if ((LocationTracker.area() == IslandArea.DWARVEN_MINES && config.maps.dwarvenMines)
-                || (LocationTracker.area() == IslandArea.GLACITE_TUNNELS && config.maps.glaciteTunnels)) {
+        if (isMapLoaded()) {
             float scale = style(ModConfig.HudType.MAP).scale;
             int x = resolveX(config.hudStyle.mapX, MAP_SIZE, graphics.guiWidth(), scale);
             int y = resolveY(config.hudStyle.mapY, MAP_PANEL_HEIGHT, graphics.guiHeight(), scale);
             renderScaled(graphics, x, y, scale, () -> renderMap(graphics, client));
         }
 
-        if ((LocationTracker.area().isMiningIsland() && config.mining.taskAndPowderTracker)
-                || (LocationTracker.area() == IslandArea.CRIMSON_ISLE && config.crimsonIsle.taskTracker)) {
+        if (isMiningLoaded()) {
             float scale = style(ModConfig.HudType.MINING).scale;
             int height = currentMiningHeight();
             int x = resolveX(config.hudStyle.miningX, MINING_WIDTH, graphics.guiWidth(), scale);
@@ -87,12 +85,18 @@ public final class HudRenderer {
                 if (client.player != null && isMapLoaded()) renderMap(graphics, client);
             }
             case MINING -> {
-                int height = currentMiningHeight();
-                if (LocationTracker.area() == IslandArea.CRIMSON_ISLE) renderCrimsonTasks(graphics, height);
-                else renderMining(graphics, height);
+                if (isMiningLoaded()) {
+                    int height = currentMiningHeight();
+                    if (LocationTracker.area() == IslandArea.CRIMSON_ISLE) renderCrimsonTasks(graphics, height);
+                    else renderMining(graphics, height);
+                }
             }
-            case HUNTING -> HuntingHudRenderer.render(graphics);
-            case PET -> renderPet(graphics);
+            case HUNTING -> {
+                if (isHuntingLoaded()) HuntingHudRenderer.render(graphics);
+            }
+            case PET -> {
+                if (isPetLoaded()) renderPet(graphics);
+            }
         }
     }
 
@@ -448,9 +452,25 @@ public final class HudRenderer {
     }
 
     public static boolean isMiningLoaded() {
-        return LocationTracker.area().isMiningIsland() && ConfigManager.get().mining.taskAndPowderTracker
-                || LocationTracker.area() == IslandArea.CRIMSON_ISLE
-                && ConfigManager.get().crimsonIsle.taskTracker;
+        var config = ConfigManager.get();
+        if (LocationTracker.area() == IslandArea.CRIMSON_ISLE) {
+            return config.crimsonIsle.taskTracker && !TabListTracker.crimsonQuests().isEmpty();
+        }
+        return LocationTracker.area().isMiningIsland()
+                && config.mining.taskAndPowderTracker
+                && hasMiningHudContent(config);
+    }
+
+    static boolean hasMiningHudContent(ModConfig config) {
+        return !TabListTracker.commissionProgress().isEmpty()
+                || hasPowder(TabListTracker.mithrilPowder())
+                || hasPowder(TabListTracker.gemstonePowder())
+                || hasPowder(TabListTracker.glacitePowder())
+                || config.mining.showHotmSlot && !HotmSlotTracker.currentName().isBlank();
+    }
+
+    private static boolean hasPowder(String value) {
+        return value != null && !value.isBlank() && !"—".equals(value);
     }
 
     public static boolean isPetLoaded() {
