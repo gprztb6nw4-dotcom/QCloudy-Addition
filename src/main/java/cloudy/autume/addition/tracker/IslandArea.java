@@ -7,6 +7,7 @@ public enum IslandArea {
     GLACITE_TUNNELS,
     MINESHAFT,
     TORRHUS_CANYON,
+    GALATEA,
     CRITTER_SAFARI,
     CRIMSON_ISLE,
     THE_END;

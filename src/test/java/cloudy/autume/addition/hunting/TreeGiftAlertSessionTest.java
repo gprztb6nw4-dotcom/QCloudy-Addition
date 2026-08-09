@@ -32,6 +32,8 @@ final class TreeGiftAlertSessionTest {
                 session.accept(Component.literal("Chameleon (0.08%)"), enabled, now++));
         assertEquals(List.of("Dreadwing"),
                 session.accept(Component.literal("A Dreadwing fell from the Tree!"), enabled, now++));
+        assertEquals(List.of("Groundhog"),
+                session.accept(Component.literal("-A wild Groundhog appeared!"), enabled, now++));
         assertEquals(List.of(),
                 session.accept(Component.literal("A Dreadwing fell from the Tree!"), enabled, now++));
     }
@@ -49,7 +51,9 @@ final class TreeGiftAlertSessionTest {
         assertEquals(List.of(), session.accept(
                 Component.literal("A Dreadwing fell from the Tree!"), enabled, 1_004L));
         assertEquals(List.of(), session.accept(
-                Component.literal("CAPTURE! You caught a Dreadwing!"), enabled, 1_005L));
+                Component.literal("-A wild Groundhog appeared!"), enabled, 1_005L));
+        assertEquals(List.of(), session.accept(
+                Component.literal("CAPTURE! You caught a Dreadwing!"), enabled, 1_006L));
     }
 
     @Test
@@ -69,6 +73,7 @@ final class TreeGiftAlertSessionTest {
     private static Map<String, Boolean> enabledLoot() {
         Map<String, Boolean> result = new LinkedHashMap<>();
         result.put("Signal Enhancer", true);
+        result.put("Groundhog", true);
         result.put("Chameleon Shard", true);
         result.put("Dreadwing", true);
         return result;

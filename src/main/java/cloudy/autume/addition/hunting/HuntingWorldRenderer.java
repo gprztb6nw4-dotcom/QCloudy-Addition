@@ -11,6 +11,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
@@ -81,6 +84,10 @@ public final class HuntingWorldRenderer {
         if (LocationTracker.area() == IslandArea.CRITTER_SAFARI && config.snoozleWallOverlay) {
             submitWallOverlay(context, HuntingTracker.snoozleWallFaces(), config.snoozleWallOverlayColor);
         }
+
+        if (LocationTracker.area() == IslandArea.CRITTER_SAFARI && config.safariCritterHighlight) {
+            submitSafariCritterHighlights(context, client);
+        }
     }
 
     static List<BlockPos> fairySouls(IslandArea area) {
@@ -133,6 +140,56 @@ public final class HuntingWorldRenderer {
         context.submitNodeCollector().submitCustomGeometry(pose, RenderTypes.debugQuads(),
                 (entry, buffer) -> faces.forEach(face -> submitWallFace(entry, buffer, face, color)));
         pose.popPose();
+    }
+
+    private static void submitSafariCritterHighlights(LevelRenderContext context, Minecraft client) {
+        if (client.level == null) return;
+        Vec3 camera = context.levelState().cameraRenderState.pos;
+        PoseStack pose = context.poseStack();
+        pose.pushPose();
+        pose.translate(-camera.x, -camera.y, -camera.z);
+        context.submitNodeCollector().submitCustomGeometry(pose, RenderTypes.LINES_TRANSLUCENT,
+                (entry, buffer) -> {
+                    for (Entity entity : client.level.entitiesForRendering()) {
+                        if (entity.isRemoved() || entity instanceof ArmorStand || !entity.hasCustomName()
+                                || entity.getCustomName() == null) continue;
+                        HuntingTextParser.ShardRarity rarity = HuntingTextParser.critterRarity(
+                                entity.getCustomName().getString());
+                        if (rarity == null) continue;
+                        submitBox(entry, buffer, entity.getBoundingBox().inflate(0.06), 0xFF000000 | rarity.color);
+                    }
+                });
+        pose.popPose();
+    }
+
+    private static void submitBox(PoseStack.Pose pose, VertexConsumer buffer, AABB box, int color) {
+        float x0 = (float) box.minX;
+        float y0 = (float) box.minY;
+        float z0 = (float) box.minZ;
+        float x1 = (float) box.maxX;
+        float y1 = (float) box.maxY;
+        float z1 = (float) box.maxZ;
+        addBoxLine(pose, buffer, color, x0, y0, z0, x1, y0, z0);
+        addBoxLine(pose, buffer, color, x1, y0, z0, x1, y0, z1);
+        addBoxLine(pose, buffer, color, x1, y0, z1, x0, y0, z1);
+        addBoxLine(pose, buffer, color, x0, y0, z1, x0, y0, z0);
+        addBoxLine(pose, buffer, color, x0, y1, z0, x1, y1, z0);
+        addBoxLine(pose, buffer, color, x1, y1, z0, x1, y1, z1);
+        addBoxLine(pose, buffer, color, x1, y1, z1, x0, y1, z1);
+        addBoxLine(pose, buffer, color, x0, y1, z1, x0, y1, z0);
+        addBoxLine(pose, buffer, color, x0, y0, z0, x0, y1, z0);
+        addBoxLine(pose, buffer, color, x1, y0, z0, x1, y1, z0);
+        addBoxLine(pose, buffer, color, x1, y0, z1, x1, y1, z1);
+        addBoxLine(pose, buffer, color, x0, y0, z1, x0, y1, z1);
+    }
+
+    private static void addBoxLine(PoseStack.Pose pose, VertexConsumer buffer, int color,
+                                   float ax, float ay, float az, float bx, float by, float bz) {
+        Vector3f normal = new Vector3f(bx - ax, by - ay, bz - az);
+        if (normal.lengthSquared() <= 1.0E-5f) normal.set(0.0f, 1.0f, 0.0f);
+        else normal.normalize();
+        buffer.addVertex(pose, ax, ay, az).setColor(color).setNormal(pose, normal.x(), normal.y(), normal.z()).setLineWidth(2.0f);
+        buffer.addVertex(pose, bx, by, bz).setColor(color).setNormal(pose, normal.x(), normal.y(), normal.z()).setLineWidth(2.0f);
     }
 
     private static void submitWallFace(PoseStack.Pose pose, VertexConsumer buffer,

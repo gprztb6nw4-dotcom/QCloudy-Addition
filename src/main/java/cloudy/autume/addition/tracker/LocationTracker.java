@@ -72,6 +72,9 @@ public final class LocationTracker {
         } else if (containsAny(evidence, "critter safari", "safari zone", "cavern biome", "forest biome",
                 "haunted biome", "icy biome")) {
             return IslandArea.CRITTER_SAFARI;
+        } else if (containsAny(evidence, "galatea", "agatha's contest", "agathas contest",
+                "hina chapter", "hina's chapter", "hinas chapter")) {
+            return IslandArea.GALATEA;
         } else if (containsAny(evidence, "torrhus canyon", "torrhus heights", "miria's hut",
                 "pangolin hideaway", "spring path", "torrhus springs", "spring shallows",
                 "spring depths", "ant's cave", "hotspot haven", "desert temple",

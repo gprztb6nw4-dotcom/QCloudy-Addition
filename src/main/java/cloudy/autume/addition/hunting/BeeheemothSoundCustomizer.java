@@ -1,13 +1,15 @@
 package cloudy.autume.addition.hunting;
 
 import cloudy.autume.addition.config.ConfigManager;
+import cloudy.autume.addition.tracker.IslandArea;
+import cloudy.autume.addition.tracker.LocationTracker;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.util.RandomSource;
 
 import java.util.Locale;
 
-/** Scales only Bee sounds spatially associated with the loaded scale-9 Beeheemoth. */
+/** Scales Beeheemoth-related bee sounds using only client-received sound events. */
 public final class BeeheemothSoundCustomizer {
     private BeeheemothSoundCustomizer() {
     }
@@ -16,7 +18,8 @@ public final class BeeheemothSoundCustomizer {
         if (original == null || original.isRelative()) return original;
         var config = ConfigManager.get().hunting;
         if (!config.beeheemothHelper || !beeSound(original)) return original;
-        if (!HuntingTracker.beeheemothSoundSourceNear(original.getX(), original.getY(), original.getZ())) {
+        IslandArea area = LocationTracker.area();
+        if (area != IslandArea.TORRHUS_CANYON && area != IslandArea.CRITTER_SAFARI) {
             return original;
         }
 

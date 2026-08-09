@@ -27,7 +27,7 @@ public final class HuntingTextParser {
     private static final Pattern SWEEP_RESOURCE = Pattern.compile(
             "(?i)^\\s*Sweep\\s*(:|x)?\\s*([+]?" + NUMBER + ")(?:x)?\\b");
     private static final Pattern CHAPTER = Pattern.compile(
-            "(?i)\\b(?:Helia'?s?\\s+)?Chapter\\s*:?[ \\t]*([IVXLCDM]+|[0-9]+)(?:\\s*[:\\-]\\s*(.*))?");
+            "(?i)\\b(?:(?:Helia|Hina)'?s?\\s+)?Chapter\\s*:?[ \\t]*([IVXLCDM]+|[0-9]+)(?:\\s*[:\\-]\\s*(.*))?");
     private static final Pattern FRACTION = Pattern.compile("([0-9][0-9,]*)\\s*/\\s*([0-9][0-9,]*)");
     private static final Pattern PERCENT = Pattern.compile("([0-9]+(?:\\.[0-9]+)?)%");
     private static final Pattern SCORE = Pattern.compile(
@@ -60,6 +60,8 @@ public final class HuntingTextParser {
             "(?i)^(.+?)\\s*\\([0-9]+(?:\\.[0-9]+)?%\\)$");
     private static final Pattern TREE_GIFT_PHANTOM = Pattern.compile(
             "(?i)^A (.+?) fell from the Tree!$");
+    private static final Pattern TREE_GIFT_WILD_CREATURE = Pattern.compile(
+            "(?i)^-?\\s*A wild (.+?) appeared!$");
     private static final Pattern BENEFACTOR_WORD = Pattern.compile("(?i)\\bBenefactor\\b");
     private static final Pattern BENEFACTOR_DONATION = Pattern.compile(
             "(?i)^BENEFACTOR\\s*:\\s*You donated to the (Forest|Desert) Temple "
@@ -137,7 +139,9 @@ public final class HuntingTextParser {
             if (line.isBlank()) continue;
             String lower = line.toLowerCase(Locale.ROOT);
             boolean explicitContext = lower.contains("helia") && lower.contains("chapter")
-                    || lower.contains("torrhus") && lower.contains("chapter");
+                    || lower.contains("hina") && lower.contains("chapter")
+                    || lower.contains("torrhus") && lower.contains("chapter")
+                    || lower.contains("galatea") && lower.contains("chapter");
             if (explicitContext) {
                 chapterContext = true;
                 contextUntil = lineIndex + 10;
@@ -158,7 +162,7 @@ public final class HuntingTextParser {
             }
             Matcher chapterMatcher = CHAPTER.matcher(line);
             if (chapterMatcher.find() && (chapterContext || lower.startsWith("chapter")
-                    || lower.contains("torrhus canyon"))) {
+                    || lower.contains("torrhus canyon") || lower.contains("galatea"))) {
                 chapterContext = true;
                 contextUntil = lineIndex + 10;
                 chapter = "Chapter " + chapterMatcher.group(1);
@@ -203,7 +207,8 @@ public final class HuntingTextParser {
         String title = plain(rawTitle);
         String lowerTitle = title.toLowerCase(Locale.ROOT);
         if (!(lowerTitle.contains("chapter") && (lowerTitle.contains("helia")
-                || lowerTitle.contains("torrhus")))) return ChapterSnapshot.EMPTY;
+                || lowerTitle.contains("hina") || lowerTitle.contains("torrhus")
+                || lowerTitle.contains("galatea")))) return ChapterSnapshot.EMPTY;
 
         List<String> items = new ArrayList<>();
         for (String item : itemTexts) if (item != null && !item.isBlank()) items.add(item);
@@ -319,6 +324,7 @@ public final class HuntingTextParser {
             String line = plain(raw);
             String lower = line.toLowerCase(Locale.ROOT);
             if (lower.contains("miria's contest") || lower.contains("mirias contest")
+                    || lower.contains("agatha's contest") || lower.contains("agathas contest")
                     || lower.contains("starlyn contest")) active = true;
             Matcher scoreMatcher = SCORE.matcher(line);
             if (scoreMatcher.find()) score = whole(scoreMatcher.group(1));
@@ -496,8 +502,10 @@ public final class HuntingTextParser {
 
     /** Parses only exact Tree Gift bonus rows from an already-open personal gift block. */
     public static String treeGiftChatLoot(String raw, Map<String, Boolean> enabled, boolean bonusSection) {
-        if (!bonusSection) return "";
         String line = plain(raw);
+        Matcher wild = TREE_GIFT_WILD_CREATURE.matcher(line);
+        if (wild.matches()) return trackedTreeGiftLoot(wild.group(1), enabled);
+        if (!bonusSection) return "";
         Matcher phantom = TREE_GIFT_PHANTOM.matcher(line);
         if (phantom.matches()) return trackedTreeGiftLoot(phantom.group(1), enabled);
         Matcher reward = TREE_GIFT_BONUS_REWARD.matcher(line);

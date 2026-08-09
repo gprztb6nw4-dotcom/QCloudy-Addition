@@ -53,12 +53,18 @@ public final class HuntingHudRenderer {
 
     public static boolean loaded() {
         return (LocationTracker.area() == IslandArea.TORRHUS_CANYON
+                || LocationTracker.area() == IslandArea.GALATEA
                 || LocationTracker.area() == IslandArea.CRITTER_SAFARI)
                 && !lines().isEmpty();
     }
 
     private static List<Line> lines() {
-        return LocationTracker.area() == IslandArea.CRITTER_SAFARI ? safariLines() : torrhusLines();
+        return switch (LocationTracker.area()) {
+            case CRITTER_SAFARI -> safariLines();
+            case GALATEA -> galateaLines();
+            case TORRHUS_CANYON -> torrhusLines();
+            default -> List.of();
+        };
     }
 
     private static List<Line> torrhusLines() {
@@ -80,7 +86,7 @@ public final class HuntingHudRenderer {
             appendSectionIfPresent(content, "Tree Protection Order", 0xFFFF6B6B,
                     List.of(Line.value("Critter in", HuntingTracker.treeCritterTimer().display())));
         }
-        if (config.miriaContest) appendContest(content, config);
+        if (config.miriaContest) appendContest(content, config, "Miria's Contest");
         if (config.critterBehavior && !HuntingTracker.behaviorName().isBlank()) {
             appendSectionIfPresent(content, ModText.get("hud.hunting.behavior"), 0xFFFFB866,
                     List.of(Line.value(HuntingTracker.behaviorName(), value(HuntingTracker.behaviorStatus()))));
@@ -89,13 +95,32 @@ public final class HuntingHudRenderer {
         return withTitle("Torrhus Canyon", content);
     }
 
+    private static List<Line> galateaLines() {
+        var config = ConfigManager.get().hunting;
+        List<Line> content = new ArrayList<>();
+        if (config.galateaTracker) {
+            List<Line> chapterLines = new ArrayList<>();
+            var chapter = HuntingTracker.chapter();
+            if (config.showChapter) addValueIfPresent(chapterLines, "Hina Chapter", chapter.chapter());
+            if (config.showCurrentTask) addValueIfPresent(chapterLines, ModText.get("hud.hunting.task"), chapter.task());
+            if (config.showTaskProgress) addValueIfPresent(chapterLines, ModText.get("hud.hunting.progress"), chapter.progress());
+            if (config.showCompletedTasks) addValueIfPresent(chapterLines, ModText.get("hud.hunting.completed"), chapter.completed());
+            if (config.showChapterTotalProgress) addValueIfPresent(chapterLines, ModText.get("hud.hunting.total_progress"), chapter.totalProgress());
+            if (config.showNextUnlock) addValueIfPresent(chapterLines, ModText.get("hud.hunting.next_unlock"), chapter.nextUnlock());
+            appendSectionIfPresent(content, "Hina Chapter", 0xFFFFD45A, chapterLines);
+            appendTorrhusResources(content, config);
+        }
+        if (config.agathaContest) appendContest(content, config, "Agatha's Contest");
+        return withTitle("Galatea", content);
+    }
+
     private static void appendTorrhusResources(List<Line> lines, ModConfig.Hunting config) {
         List<Line> resources = new ArrayList<>();
         if (config.showForestWhispers) appendResource(resources, "Forest Whispers", HuntingTextParser.Resource.FOREST_WHISPERS, 0xFF55E3C0);
         if (config.showDesertWhispers) appendResource(resources, "Desert Whispers", HuntingTextParser.Resource.DESERT_WHISPERS, 0xFFFFC55C);
         if (config.showForestEssence) appendResource(resources, "Forest Essence", HuntingTextParser.Resource.FOREST_ESSENCE, 0xFF67E87A);
         if (config.showSafariEssenceTorrhus) appendResource(resources, "Safari Essence", HuntingTextParser.Resource.SAFARI_ESSENCE, 0xFFFFB35C);
-        if (config.showSweep) appendResource(resources, "Sweep", HuntingTextParser.Resource.SWEEP, 0xFF8FE3FF);
+        if (config.showSweep) appendResource(resources, "Sweep", HuntingTextParser.Resource.SWEEP, 0xFFFFAA00);
         if (config.showForestFortune) appendResource(resources, "Forest Fortune", HuntingTextParser.Resource.FOREST_FORTUNE, 0xFFB9F78A);
         appendSectionIfPresent(lines, ModText.get("hud.hunting.resources"), 0xFFFFD45A, resources);
     }
@@ -106,7 +131,7 @@ public final class HuntingHudRenderer {
         lines.add(new Line(name + ": " + CompactNumbers.format(amount), color, 3, false));
     }
 
-    private static void appendContest(List<Line> lines, ModConfig.Hunting config) {
+    private static void appendContest(List<Line> lines, ModConfig.Hunting config, String title) {
         var contest = HuntingTracker.contest();
         if (!contest.active() && contest.nextScore() < 0 && contest.remaining() < 0 && contest.ticket().isBlank()) return;
         List<Line> contestLines = new ArrayList<>();
@@ -123,7 +148,7 @@ public final class HuntingHudRenderer {
                 contestLines.add(Line.value(ModText.get("hud.hunting.score_remaining"), CompactNumbers.format(contest.remaining())));
             }
         }
-        appendSectionIfPresent(lines, "Miria's Contest", 0xFFFF72DB, contestLines);
+        appendSectionIfPresent(lines, title, 0xFFFF72DB, contestLines);
     }
 
     private static void appendBenefactor(List<Line> lines, ModConfig.Hunting config) {
@@ -146,13 +171,6 @@ public final class HuntingHudRenderer {
         List<Line> content = new ArrayList<>();
         if (config.safariDashboard) {
             List<Line> dashboard = new ArrayList<>();
-            if (config.safariShards) {
-                if (HuntingTracker.safariShardCount() > 0) {
-                    dashboard.add(Line.value(ModText.get("hud.hunting.shards"), Integer.toString(HuntingTracker.safariShardCount())));
-                }
-                String breakdown = joinedCounts(HuntingTracker.shardDrops());
-                if (!breakdown.isBlank()) dashboard.add(new Line(breakdown, 0xFFC7D3DA, 6, false));
-            }
             if (config.safariRunTime && HuntingTracker.safariRunMillis() > 0) {
                 dashboard.add(Line.value(ModText.get("hud.hunting.run_time"),
                         HuntingTracker.durationText(HuntingTracker.safariRunMillis() / 1_000)));
@@ -190,10 +208,11 @@ public final class HuntingHudRenderer {
     private static void appendCritterdex(List<Line> lines, ModConfig.Hunting config) {
         Set<String> captured = HuntingTracker.capturedCritters();
         List<Line> critterdexLines = new ArrayList<>();
+        if (config.safariShards) appendGroupedShardDrops(critterdexLines);
         if (config.critterdexBiomeProgress) {
             for (Map.Entry<String, List<String>> entry : HuntingTextParser.SAFARI_CRITTERS.entrySet()) {
                 long count = entry.getValue().stream().filter(captured::contains).count();
-                critterdexLines.add(new Line(entry.getKey() + ": " + count + "/" + entry.getValue().size(), 0xFFD8E4EB, 3, false));
+                critterdexLines.add(new Line(entry.getKey() + ": " + count + "/" + entry.getValue().size(), biomeColor(entry.getKey()), 3, false));
             }
         }
         String biome = HuntingTracker.safariBiome();
@@ -209,6 +228,36 @@ public final class HuntingHudRenderer {
             critterdexLines.add(Line.value(ModText.get("hud.hunting.missing"), names.length() == 0 ? ModText.get("hud.hunting.none") : names.toString()));
         }
         appendSectionIfPresent(lines, "Safari Run Critterdex", 0xFF9FF5B2, critterdexLines);
+    }
+
+    private static void appendGroupedShardDrops(List<Line> lines) {
+        Map<String, Integer> drops = HuntingTracker.shardDrops();
+        if (drops.isEmpty()) return;
+        lines.add(Line.value(ModText.get("hud.hunting.shards"), Integer.toString(HuntingTracker.safariShardCount())));
+        for (Map.Entry<String, List<String>> biome : HuntingTextParser.SAFARI_CRITTERS.entrySet()) {
+            List<Line> biomeDrops = new ArrayList<>();
+            for (String critter : biome.getValue()) {
+                String shard = critter + " Shard";
+                int count = drops.getOrDefault(shard, 0);
+                if (count <= 0) continue;
+                HuntingTextParser.ShardRarity rarity = HuntingTextParser.critterRarity(critter);
+                int color = rarity == null ? 0xFFD8E4EB : 0xFF000000 | rarity.color;
+                biomeDrops.add(new Line(shard + (count > 1 ? " x" + count : ""), color, 9, false));
+            }
+            if (biomeDrops.isEmpty()) continue;
+            lines.add(new Line(biome.getKey(), biomeColor(biome.getKey()), 6, false));
+            lines.addAll(biomeDrops);
+        }
+    }
+
+    private static int biomeColor(String biome) {
+        return switch (biome) {
+            case "Cavern" -> 0xFFB8B8B8;
+            case "Forest" -> 0xFF55FF55;
+            case "Haunted" -> 0xFFAA55FF;
+            case "Icy" -> 0xFF55FFFF;
+            default -> 0xFFD8E4EB;
+        };
     }
 
     private static void appendSafariItems(List<Line> lines, ModConfig.Hunting config) {

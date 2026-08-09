@@ -133,7 +133,7 @@ public final class HuntingTracker {
         List<String> combined = new ArrayList<>(tabLines.size() + scoreboardLines.size());
         combined.addAll(tabLines);
         combined.addAll(scoreboardLines);
-        if (LocationTracker.area() == IslandArea.TORRHUS_CANYON) {
+        if (isForagingChapterArea(LocationTracker.area())) {
             rememberReceivedChapter(tabLines);
             rememberReceivedChapter(scoreboardLines);
             HuntingTextParser.ContestSnapshot parsedContest = HuntingTextParser.contest(combined);
@@ -162,7 +162,7 @@ public final class HuntingTracker {
             beeheemothSpawn = null;
         }
         applyResources(HuntingTextParser.resources(List.of(line)), true);
-        if (LocationTracker.area() == IslandArea.TORRHUS_CANYON) {
+        if (isForagingChapterArea(LocationTracker.area())) {
             rememberChapterMessage(line);
             HuntingTextParser.ContestSnapshot parsedContest = HuntingTextParser.contest(List.of(line));
             if (parsedContest.active()) contest = parsedContest;
@@ -217,7 +217,7 @@ public final class HuntingTracker {
             onAreaChanged(lastArea, area);
             lastArea = area;
         }
-        if (area == IslandArea.TORRHUS_CANYON || area == IslandArea.CRITTER_SAFARI) {
+        if (isForagingChapterArea(area) || area == IslandArea.CRITTER_SAFARI) {
             tickLassoReelSound(client);
         } else {
             lassoReelActive = false;
@@ -435,7 +435,7 @@ public final class HuntingTracker {
         } else if (previous == IslandArea.CRITTER_SAFARI) {
             resetSafariSession();
         }
-        if (current != IslandArea.TORRHUS_CANYON) {
+        if (!isForagingChapterArea(current)) {
             contest = HuntingTextParser.ContestSnapshot.EMPTY;
             treeCritterTimer = null;
             recentChapterChat.clear();
@@ -1318,7 +1318,8 @@ public final class HuntingTracker {
         List<String> itemTexts = new ArrayList<>();
         List<String> resourceLines = new ArrayList<>();
         boolean chapterMenu = lowerTitle.contains("chapter")
-                && (lowerTitle.contains("helia") || lowerTitle.contains("torrhus"));
+                && (lowerTitle.contains("helia") || lowerTitle.contains("hina")
+                || lowerTitle.contains("torrhus") || lowerTitle.contains("galatea"));
         for (var slot : client.player.containerMenu.slots) {
             ItemStack stack = slot.getItem();
             if (stack.isEmpty()) continue;
@@ -1332,7 +1333,8 @@ public final class HuntingTracker {
                 menuLines.add(line);
                 boundedItemLines.add(line);
                 String lower = line.toLowerCase(Locale.ROOT);
-                if (lower.contains("helia") && lower.contains("chapter")) chapterMenu = true;
+                if ((lower.contains("helia") || lower.contains("hina") || lower.contains("galatea"))
+                        && lower.contains("chapter")) chapterMenu = true;
                 if (lower.matches("^(?:current )?(?:forest|desert) whispers?\\s*:.*")
                         || lower.matches("^(?:forest|safari) essence\\s*:.*")
                         || lower.matches("^(?:forest fortune|sweep)\\s*:.*")) {
@@ -1398,6 +1400,10 @@ public final class HuntingTracker {
         if (lower.contains("economy safari")) return "Economy";
         if (lower.contains("basic safari")) return "Basic";
         return "";
+    }
+
+    private static boolean isForagingChapterArea(IslandArea area) {
+        return area == IslandArea.TORRHUS_CANYON || area == IslandArea.GALATEA;
     }
 
     private static String afterColon(String value) {

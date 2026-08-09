@@ -17,6 +17,8 @@ final class TrackerParsingTest {
     void classifiesTorrhusAndSafariWithoutConfusingTheEntrance() {
         assertEquals(IslandArea.TORRHUS_CANYON, LocationTracker.classifyEvidence("⏣ Torrhus Springs"));
         assertEquals(IslandArea.TORRHUS_CANYON, LocationTracker.classifyEvidence("⏣ Critter Safari Entrance"));
+        assertEquals(IslandArea.GALATEA, LocationTracker.classifyEvidence("⏣ Galatea"));
+        assertEquals(IslandArea.GALATEA, LocationTracker.classifyEvidence("Agatha's Contest"));
         assertEquals(IslandArea.CRITTER_SAFARI, LocationTracker.classifyEvidence("⏣ Critter Safari"));
         assertEquals(IslandArea.CRITTER_SAFARI, LocationTracker.classifyEvidence("⏣ Haunted Biome"));
     }

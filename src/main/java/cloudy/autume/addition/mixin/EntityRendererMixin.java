@@ -1,7 +1,6 @@
 package cloudy.autume.addition.mixin;
 
 import cloudy.autume.addition.config.ConfigManager;
-import cloudy.autume.addition.hunting.HuntingTextParser;
 import cloudy.autume.addition.hunting.HuntingTracker;
 import cloudy.autume.addition.tracker.IslandArea;
 import cloudy.autume.addition.tracker.LocationTracker;
@@ -27,15 +26,6 @@ public class EntityRendererMixin {
                 && LocationTracker.area() == IslandArea.THE_END
                 && entity instanceof EnderDragon) {
             state.outlineColor = ARGB.opaque(ConfigManager.get().combat.enderDragonHighlightColor);
-        }
-        if (ConfigManager.get().hunting.safariCritterHighlight
-                && LocationTracker.area() == IslandArea.CRITTER_SAFARI
-                && entity.hasCustomName() && entity.getCustomName() != null) {
-            HuntingTextParser.ShardRarity rarity = HuntingTextParser.critterRarity(
-                    entity.getCustomName().getString());
-            if (rarity != null && !(entity instanceof ArmorStand)) {
-                state.outlineColor = ARGB.opaque(rarity.color);
-            }
         }
         if (ConfigManager.get().hunting.beeheemothHelper
                 && ConfigManager.get().hunting.beeheemothOutline

@@ -474,7 +474,9 @@ public final class HudRenderer {
     }
 
     public static boolean isPetLoaded() {
-        return ConfigManager.get().pets.equippedPetHud && PetTracker.current() != null;
+        return LocationTracker.area() != IslandArea.CRITTER_SAFARI
+                && ConfigManager.get().pets.equippedPetHud
+                && PetTracker.current() != null;
     }
 
     public static boolean isHuntingLoaded() {

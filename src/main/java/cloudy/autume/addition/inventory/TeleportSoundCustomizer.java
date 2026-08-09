@@ -42,8 +42,7 @@ public final class TeleportSoundCustomizer {
 
         SoundEvent replacement = soundEvent(customSound(config, kind));
         float volume = volume(config, kind) / 100.0f;
-        float pitch = pitch(config, kind) / 100.0f;
-        SimpleSoundInstance custom = new SimpleSoundInstance(replacement, sound.getSource(), volume, pitch,
+        SimpleSoundInstance custom = new SimpleSoundInstance(replacement, sound.getSource(), volume, 1.0f,
                 SoundInstance.createUnseededRandom(), sound.getX(), sound.getY(), sound.getZ());
         PLAYING_REPLACEMENT.set(true);
         try {
@@ -85,11 +84,6 @@ public final class TeleportSoundCustomizer {
     private static int volume(ModConfig.Inventory config, TeleportKind kind) {
         return kind == TeleportKind.INSTANT_TRANSMISSION
                 ? config.instantTransmissionSoundVolume : config.etherwarpSoundVolume;
-    }
-
-    private static int pitch(ModConfig.Inventory config, TeleportKind kind) {
-        return kind == TeleportKind.INSTANT_TRANSMISSION
-                ? config.instantTransmissionSoundPitch : config.etherwarpSoundPitch;
     }
 
     private static SoundEvent soundEvent(String name) {

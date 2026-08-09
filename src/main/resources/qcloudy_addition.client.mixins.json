@@ -3,7 +3,6 @@
   "package": "cloudy.autume.addition.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "AbstractContainerScreenMixin",
     "ChatComponentMixin",
     "EntityRendererMixin",
     "KeyboardHandlerMixin",
