@@ -1,0 +1,614 @@
+package cloudy.autume.addition.config;
+
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+public final class ModConfig {
+    public int configVersion;
+    public String language = "en_us";
+    public boolean manualReconnectButton = true;
+
+    public Maps maps = new Maps();
+    public Mining mining = new Mining();
+    public Hunting hunting = new Hunting();
+    public CrimsonIsle crimsonIsle = new CrimsonIsle();
+    public Combat combat = new Combat();
+    public Pets pets = new Pets();
+    public Chat chat = new Chat();
+    public Inventory inventory = new Inventory();
+    public Keybinds keybinds = new Keybinds();
+    public HudStyle hudStyle = new HudStyle();
+
+    public void normalize() {
+        if (!"en_us".equals(language) && !"zh_cn".equals(language)) language = "en_us";
+        if (maps == null) maps = new Maps();
+        if (mining == null) mining = new Mining();
+        if (hunting == null) hunting = new Hunting();
+        if (crimsonIsle == null) crimsonIsle = new CrimsonIsle();
+        if (combat == null) combat = new Combat();
+        if (pets == null) pets = new Pets();
+        if (chat == null) chat = new Chat();
+        if (inventory == null) inventory = new Inventory();
+        if (keybinds == null) keybinds = new Keybinds();
+        if (hudStyle == null) hudStyle = new HudStyle();
+        hudStyle.ensurePanels();
+        if (configVersion < 2) {
+            hudStyle.copyLegacyAppearanceToPanels();
+            configVersion = 2;
+        }
+        if (configVersion < 3) {
+            configVersion = 3;
+        }
+        if (configVersion < 4) {
+            // Sound muting was replaced by non-destructive per-teleport sound
+            // customization. Existing installs return to the original sounds.
+            inventory.teleportSoundCustomization = true;
+            inventory.instantTransmissionSoundMode = "VANILLA";
+            inventory.etherwarpSoundMode = "VANILLA";
+            configVersion = 4;
+        }
+        if (configVersion < 5) {
+            // Pet menu/chat details are now retained locally so a max-level
+            // pet does not lose its held-item row after reconnecting.
+            configVersion = 5;
+        }
+        if (configVersion < 6) {
+            // Rewriting version-5 configs drops fields retired from ACA.
+            configVersion = 6;
+        }
+        if (configVersion < 7) {
+            // Safari Essence now belongs only to the Torrhus resource HUD;
+            // rewriting removes the retired Safari Dashboard toggle.
+            configVersion = 7;
+        }
+        if (configVersion < 8) {
+            // The alert system now stores sound/volume per alert source.
+            configVersion = 8;
+        }
+        if (configVersion < 9) {
+            // Persist Fairy Soul confirmations so collected waypoints stay hidden.
+            configVersion = 9;
+        }
+        if (configVersion < 10) {
+            // Move Hunting progression from one transient/global snapshot to
+            // account + SkyBlock-profile memories. The first real profile seen
+            // receives any legacy Safari Belt levels exactly once.
+            hunting.legacySafariBeltMigrationPending = hunting.safariBeltCavernLevel > 0
+                    || hunting.safariBeltForestLevel > 0 || hunting.safariBeltHauntedLevel > 0
+                    || hunting.safariBeltIcyLevel > 0;
+            configVersion = 10;
+        }
+        if (configVersion < 11) {
+            // Keep reconnects explicitly player-triggered while making the
+            // disconnect-screen button available to existing installations.
+            manualReconnectButton = true;
+            hunting.beeheemothSound = true;
+            hunting.beeheemothSoundVolume = 64;
+            configVersion = 11;
+        }
+        if (configVersion < 12) {
+            // Fairy Soul waypoints are now one map-owned toggle. Legacy split
+            // fields are intentionally discarded when the config is rewritten.
+            configVersion = 12;
+        }
+        if (configVersion < 13) {
+            // Slot Locking and Storage Overlay were removed from this mod.
+            // Gson drops their old stored fields when the config is rewritten.
+            configVersion = 13;
+        }
+        if (configVersion < 14) {
+            // Middle-click menu conversion was removed. Teleport sound volumes
+            // now use the same 0-100 scale and 64% default as alert volumes.
+            inventory.instantTransmissionSoundVolume = 64;
+            inventory.etherwarpSoundVolume = 64;
+            configVersion = 14;
+        }
+        if (configVersion < 15) {
+            // Galatea uses a separate feature group and toggles while sharing
+            // the same client-received chapter/resource parsing model.
+            hunting.galateaTracker = true;
+            hunting.agathaContest = true;
+            configVersion = 15;
+        }
+        if (configVersion < 16) {
+            // Captured Safari Shards are now a separate HUD feature, not part
+            // of the Critterdex toggle, and default to off.
+            hunting.safariShards = false;
+            configVersion = 16;
+        }
+        hudStyle.map.normalize();
+        hudStyle.mining.normalize();
+        hudStyle.hunting.normalize();
+        hudStyle.pet.normalize();
+        combat.enderDragonHighlightColor &= 0xFFFFFF;
+        mining.normalize();
+        hunting.normalize();
+        pets.normalize();
+        chat.normalize();
+        inventory.normalize();
+        keybinds.normalize();
+    }
+
+    public static final class Keybinds {
+        public int openConfigModifiers;
+        public int peekChatModifiers;
+
+        private void normalize() {
+            openConfigModifiers &= 0x0F;
+            peekChatModifiers &= 0x0F;
+        }
+    }
+
+    public static final class Maps {
+        public boolean dwarvenMines = true;
+        public boolean glaciteTunnels = true;
+    }
+
+    public static final class Mining {
+        public boolean taskAndPowderTracker = true;
+        public boolean showHotmSlot = true;
+        public String lastHotmSlotName = "";
+        public String commissionProgressMode = "PERCENT";
+
+        private void normalize() {
+            if (lastHotmSlotName == null) lastHotmSlotName = "";
+            if (!"PERCENT".equals(commissionProgressMode) && !"NUMERIC".equals(commissionProgressMode)) {
+                commissionProgressMode = "PERCENT";
+            }
+        }
+    }
+
+    public static final class CrimsonIsle {
+        public boolean taskTracker = true;
+    }
+
+    public static final class Hunting {
+        /** General master mute. Individual alert features own their volume. */
+        public boolean alertSound = true;
+        public AlertAudio critterBehaviorAudio = new AlertAudio();
+        public AlertAudio benefactorAudio = new AlertAudio();
+        public AlertAudio treeGiftAudio = new AlertAudio();
+        public AlertAudio sparklingAudio = new AlertAudio();
+        public AlertAudio floorDropAudio = new AlertAudio();
+        public AlertAudio wumpaAudio = new AlertAudio();
+        public AlertAudio coldAudio = new AlertAudio();
+        public AlertAudio doomspiralAudio = new AlertAudio();
+        public AlertAudio lassoReelAudio = new AlertAudio();
+        public AlertAudio wardenReadyAudio = new AlertAudio();
+
+        public boolean torrhusTracker = true;
+        public boolean galateaTracker = true;
+        public boolean treeCritterTimer = true;
+        public boolean beeheemothHelper = true;
+        public boolean beeheemothOutline = true;
+        public boolean beeheemothBeacon = true;
+        public int beeheemothOutlineColor = 0xFFD45A;
+        public boolean beeheemothSound = true;
+        public int beeheemothSoundVolume = 64;
+        public boolean showChapter = true;
+        public boolean showCurrentTask = true;
+        public boolean showTaskProgress = true;
+        public boolean showCompletedTasks;
+        public boolean showChapterTotalProgress;
+        public boolean showNextUnlock;
+        public boolean showForestWhispers = true;
+        public boolean showDesertWhispers = true;
+        public boolean showForestEssence = true;
+        public boolean showSafariEssenceTorrhus = true;
+        public boolean showSweep = true;
+        public boolean showForestFortune = true;
+
+        public boolean miriaContest = true;
+        public boolean agathaContest = true;
+        public boolean contestNextBracket = true;
+        public boolean contestExpectedTicket = true;
+        public boolean contestRemainingScore = true;
+
+        public boolean critterBehavior = true;
+        public boolean blueJayAssistant = true;
+        public boolean goldolotAssistant = true;
+        public boolean dustybitAssistant = true;
+        public boolean hideonsunAssistant = true;
+
+        public boolean benefactorHud = true;
+        public boolean benefactorStatus = true;
+        public boolean benefactorTimer = true;
+        public boolean benefactorEffects = true;
+        public boolean benefactorDonation = true;
+
+        public boolean treeGiftAlerts = true;
+        public Map<String, Boolean> treeGiftLoot = defaultTreeGiftLoot();
+
+        public boolean safariDashboard = true;
+        public boolean safariShards;
+        public boolean safariRunTime = true;
+        public boolean safariTicketTier = true;
+
+        public boolean safariCritterdex = true;
+        public boolean critterdexBiomeProgress = true;
+        public boolean critterdexCapturedNames = true;
+        public boolean critterdexMissingNames = true;
+
+        public boolean sparklingAlert = true;
+        public boolean sparklingShowBiome = true;
+        public boolean sparklingOutline = true;
+        public int sparklingOutlineColor = 0xFF9B26;
+
+        public boolean floorDropAssistant = true;
+        public boolean floorDropAlert = true;
+        public boolean floorDropDistance = true;
+        public boolean questItemTracker = true;
+
+        public boolean wumpaHud = true;
+        public boolean wumpaRequirements = true;
+        public boolean wumpaPhase = true;
+        public boolean wumpaAlerts = true;
+        public boolean wumpaFailureWarning = true;
+        public boolean wumpaRoutePrediction;
+
+        public boolean snoozleWallOverlay = true;
+        public int snoozleWallOverlayColor = 0x55FF55;
+
+        public boolean coldSafety = true;
+        public int coldFirstThreshold = 80;
+        public int coldSecondThreshold = 90;
+        public boolean coldCampfireBeacon = true;
+
+        public boolean doomspiralReadyAlert = true;
+        public boolean wardenReadyAlert = true;
+
+        public boolean fairySoulWaypoints;
+        public Map<String, Set<String>> foundFairySoulsByProfile = new LinkedHashMap<>();
+
+        public boolean safariCritterHighlight = true;
+
+        public boolean safariBeltTooltip = true;
+        public boolean safariBeltMilestones = true;
+        public boolean safariBeltBonuses = true;
+        public int safariBeltCavernLevel;
+        public int safariBeltForestLevel;
+        public int safariBeltHauntedLevel;
+        public int safariBeltIcyLevel;
+        public boolean legacySafariBeltMigrationPending;
+        public Map<String, HuntingProgressMemory> rememberedProgressByProfile = new LinkedHashMap<>();
+
+        private void normalize() {
+            if (critterBehaviorAudio == null) critterBehaviorAudio = new AlertAudio();
+            if (benefactorAudio == null) benefactorAudio = new AlertAudio();
+            if (treeGiftAudio == null) treeGiftAudio = new AlertAudio();
+            if (sparklingAudio == null) sparklingAudio = new AlertAudio();
+            if (floorDropAudio == null) floorDropAudio = new AlertAudio();
+            if (wumpaAudio == null) wumpaAudio = new AlertAudio();
+            if (coldAudio == null) coldAudio = new AlertAudio();
+            if (doomspiralAudio == null) doomspiralAudio = new AlertAudio();
+            if (lassoReelAudio == null) lassoReelAudio = new AlertAudio();
+            if (wardenReadyAudio == null) wardenReadyAudio = new AlertAudio();
+            critterBehaviorAudio.normalize();
+            benefactorAudio.normalize();
+            treeGiftAudio.normalize();
+            sparklingAudio.normalize();
+            floorDropAudio.normalize();
+            wumpaAudio.normalize();
+            coldAudio.normalize();
+            doomspiralAudio.normalize();
+            lassoReelAudio.normalize();
+            wardenReadyAudio.normalize();
+            coldFirstThreshold = Math.clamp(coldFirstThreshold, 0, 98);
+            coldSecondThreshold = Math.clamp(coldSecondThreshold, 1, 99);
+            if (coldFirstThreshold >= coldSecondThreshold) {
+                coldFirstThreshold = coldSecondThreshold - 1;
+            }
+            sparklingOutlineColor &= 0xFFFFFF;
+            beeheemothOutlineColor &= 0xFFFFFF;
+            beeheemothSoundVolume = Math.clamp(beeheemothSoundVolume, 0, 100);
+            snoozleWallOverlayColor &= 0xFFFFFF;
+            safariBeltCavernLevel = Math.clamp(safariBeltCavernLevel, 0, 10);
+            safariBeltForestLevel = Math.clamp(safariBeltForestLevel, 0, 10);
+            safariBeltHauntedLevel = Math.clamp(safariBeltHauntedLevel, 0, 10);
+            safariBeltIcyLevel = Math.clamp(safariBeltIcyLevel, 0, 10);
+            Map<String, HuntingProgressMemory> repairedProgress = new LinkedHashMap<>();
+            if (rememberedProgressByProfile != null) {
+                for (var entry : rememberedProgressByProfile.entrySet()) {
+                    if (entry.getKey() == null || entry.getValue() == null || repairedProgress.size() >= 64) {
+                        continue;
+                    }
+                    String key = entry.getKey().trim().toLowerCase(Locale.ROOT)
+                            .replaceAll("[^a-z0-9_-]", "_");
+                    if (key.isBlank()) continue;
+                    HuntingProgressMemory memory = entry.getValue();
+                    memory.normalize();
+                    repairedProgress.put(key, memory);
+                }
+            }
+            rememberedProgressByProfile = repairedProgress;
+            Map<String, Boolean> repaired = defaultTreeGiftLoot();
+            if (treeGiftLoot != null) {
+                for (String name : repaired.keySet()) {
+                    Boolean enabled = treeGiftLoot.get(name);
+                    if (enabled != null) repaired.put(name, enabled);
+                }
+            }
+            treeGiftLoot = repaired;
+            Map<String, Set<String>> repairedFairySouls = new LinkedHashMap<>();
+            if (foundFairySoulsByProfile != null) {
+                foundFairySoulsByProfile.forEach((profile, positions) -> {
+                    if (profile == null || profile.isBlank() || positions == null) return;
+                    LinkedHashSet<String> cleaned = new LinkedHashSet<>();
+                    positions.stream().filter(position -> position != null && !position.isBlank())
+                            .limit(64).forEach(cleaned::add);
+                    repairedFairySouls.put(profile.toLowerCase(Locale.ROOT), cleaned);
+                });
+            }
+            foundFairySoulsByProfile = repairedFairySouls;
+        }
+
+        private static Map<String, Boolean> defaultTreeGiftLoot() {
+            Map<String, Boolean> result = new LinkedHashMap<>();
+            result.put("Firefox", true);
+            result.put("Groundhog", true);
+            result.put("Drybark", true);
+            result.put("Puck", true);
+            result.put("Grizzly Bear", true);
+            result.put("Signal Enhancer", true);
+            result.put("Chameleon Shard", true);
+            result.put("Hummingbird Shard", true);
+            result.put("Dreadwing", true);
+            result.put("Enchanted Book (Karma I)", true);
+            return result;
+        }
+    }
+
+    public static final class AlertAudio {
+        public boolean sound = true;
+        public int volume = 64;
+
+        private void normalize() {
+            volume = Math.clamp(volume, 0, 100);
+        }
+    }
+
+    /** Last confirmed Hunting values for one Minecraft account + SkyBlock profile. */
+    public static final class HuntingProgressMemory {
+        private static final Set<String> RESOURCE_KEYS = Set.of(
+                "FOREST_WHISPERS", "DESERT_WHISPERS", "FOREST_ESSENCE", "SAFARI_ESSENCE",
+                "FOREST_FORTUNE", "SWEEP");
+
+        public Map<String, Double> resources = new LinkedHashMap<>();
+        public int safariBeltCavernLevel;
+        public int safariBeltForestLevel;
+        public int safariBeltHauntedLevel;
+        public int safariBeltIcyLevel;
+        public String chapter = "";
+        public String currentTask = "";
+        public String taskProgress = "";
+        public String completedTasks = "";
+        public String chapterTotalProgress = "";
+        public String nextUnlock = "";
+        public long benefactorExpiresAt;
+        public String benefactorTemple = "";
+        public String benefactorEffect = "";
+        public String benefactorDonation = "";
+
+        private void normalize() {
+            Map<String, Double> repairedResources = new LinkedHashMap<>();
+            if (resources != null) {
+                for (String key : RESOURCE_KEYS) {
+                    Double value = resources.get(key);
+                    if (value != null && Double.isFinite(value) && value >= 0.0) {
+                        repairedResources.put(key, value);
+                    }
+                }
+            }
+            resources = repairedResources;
+            safariBeltCavernLevel = Math.clamp(safariBeltCavernLevel, 0, 10);
+            safariBeltForestLevel = Math.clamp(safariBeltForestLevel, 0, 10);
+            safariBeltHauntedLevel = Math.clamp(safariBeltHauntedLevel, 0, 10);
+            safariBeltIcyLevel = Math.clamp(safariBeltIcyLevel, 0, 10);
+            if (chapter == null) chapter = "";
+            if (currentTask == null) currentTask = "";
+            if (taskProgress == null) taskProgress = "";
+            if (completedTasks == null) completedTasks = "";
+            if (chapterTotalProgress == null) chapterTotalProgress = "";
+            if (nextUnlock == null) nextUnlock = "";
+            if (benefactorExpiresAt < 0) benefactorExpiresAt = 0;
+            if (benefactorTemple == null) benefactorTemple = "";
+            if (benefactorEffect == null) benefactorEffect = "";
+            if (benefactorDonation == null) benefactorDonation = "";
+        }
+    }
+
+    public static final class Combat {
+        public boolean enderDragonHighlight = true;
+        public int enderDragonHighlightColor = 0xFF405C;
+    }
+
+    public static final class Pets {
+        public boolean equippedPetHud = true;
+        public boolean showPetIcon = true;
+        public boolean showLevelProgress = true;
+        public boolean showMaxProgress = true;
+        public boolean showOverflowLevel = true;
+        public boolean showSkinName = true;
+        public String petAccessoryDisplay = "ICON_AND_NAME";
+        public Map<String, PetMemory> rememberedDetails = new LinkedHashMap<>();
+
+        private void normalize() {
+            if (!"ICON_AND_NAME".equals(petAccessoryDisplay) && !"ICON_ONLY".equals(petAccessoryDisplay)
+                    && !"NAME_ONLY".equals(petAccessoryDisplay)) petAccessoryDisplay = "ICON_AND_NAME";
+            if (rememberedDetails == null) rememberedDetails = new LinkedHashMap<>();
+            Map<String, PetMemory> repaired = new LinkedHashMap<>();
+            for (var entry : rememberedDetails.entrySet()) {
+                if (entry.getKey() == null || entry.getValue() == null || repaired.size() >= 128) continue;
+                String key = entry.getKey().trim().toLowerCase(Locale.ROOT)
+                        .replace('-', '_').replace(' ', '_');
+                if (key.isBlank()) continue;
+                PetMemory memory = entry.getValue();
+                memory.normalize();
+                if (!memory.isEmpty()) repaired.put(key, memory);
+            }
+            rememberedDetails = repaired;
+        }
+    }
+
+    public static final class PetMemory {
+        public String skinKey = "";
+        public String heldItemId = "";
+        public double totalExperience;
+
+        public PetMemory() {
+        }
+
+        public PetMemory(String skinKey, String heldItemId, double totalExperience) {
+            this.skinKey = skinKey;
+            this.heldItemId = heldItemId;
+            this.totalExperience = totalExperience;
+            normalize();
+        }
+
+        private void normalize() {
+            if (skinKey == null) skinKey = "";
+            if (heldItemId == null) heldItemId = "";
+            if (!Double.isFinite(totalExperience) || totalExperience < 0.0) totalExperience = 0.0;
+        }
+
+        public boolean isEmpty() {
+            return skinKey.isBlank() && heldItemId.isBlank() && totalExperience <= 0.0;
+        }
+    }
+
+    public static final class Chat {
+        public boolean chatPeek = true;
+        public String peekScrollTarget = "CHAT";
+
+        private void normalize() {
+            if (!"CHAT".equals(peekScrollTarget) && !"HOTBAR".equals(peekScrollTarget)) {
+                peekScrollTarget = "CHAT";
+            }
+        }
+    }
+
+    public static final class Inventory {
+        public boolean yieldToFirmament = true;
+
+        public boolean itemTimestamps = true;
+        public boolean showCreationTimestamp = true;
+        public boolean showCountdownCompletion = true;
+        public String timestampFormat = "LOCAL_24H";
+
+        public boolean saveCursorPosition = true;
+        public int cursorToleranceMs = 500;
+
+        public boolean teleportSoundCustomization = true;
+        public String instantTransmissionSoundMode = "VANILLA";
+        public String instantTransmissionCustomSound = "CHORUS";
+        public int instantTransmissionSoundVolume = 64;
+        public String etherwarpSoundMode = "VANILLA";
+        public String etherwarpCustomSound = "AMETHYST";
+        public int etherwarpSoundVolume = 64;
+
+        private void normalize() {
+            cursorToleranceMs = Math.clamp(cursorToleranceMs, 50, 5000);
+            instantTransmissionSoundVolume = Math.clamp(instantTransmissionSoundVolume, 0, 100);
+            etherwarpSoundVolume = Math.clamp(etherwarpSoundVolume, 0, 100);
+            if (!"LOCAL_24H".equals(timestampFormat) && !"LOCAL_12H".equals(timestampFormat)
+                    && !"ISO".equals(timestampFormat) && !"RFC".equals(timestampFormat)) {
+                timestampFormat = "LOCAL_24H";
+            }
+            if (!"VANILLA".equals(instantTransmissionSoundMode)
+                    && !"CUSTOM".equals(instantTransmissionSoundMode)) {
+                instantTransmissionSoundMode = "VANILLA";
+            }
+            if (!"VANILLA".equals(etherwarpSoundMode) && !"CUSTOM".equals(etherwarpSoundMode)) {
+                etherwarpSoundMode = "VANILLA";
+            }
+            if (!validTeleportSound(instantTransmissionCustomSound)) instantTransmissionCustomSound = "CHORUS";
+            if (!validTeleportSound(etherwarpCustomSound)) etherwarpCustomSound = "AMETHYST";
+        }
+
+        private static boolean validTeleportSound(String value) {
+            return "CHORUS".equals(value) || "ENDERMAN".equals(value) || "AMETHYST".equals(value)
+                    || "ORB".equals(value) || "PORTAL".equals(value) || "SHULKER".equals(value);
+        }
+    }
+
+    public enum HudType { MAP, MINING, HUNTING, PET }
+
+    public static final class HudStyle {
+        public boolean animations = true;
+        public PanelStyle map = new PanelStyle();
+        public PanelStyle mining = new PanelStyle();
+        public PanelStyle hunting = new PanelStyle();
+        public PanelStyle pet = new PanelStyle();
+
+        public int mapX = 8;
+        public int mapY = 8;
+        public int miningX = -196;
+        public int miningY = 8;
+        public int huntingX = -304;
+        public int huntingY = 8;
+        public int petX = 8;
+        public int petY = 196;
+
+        // Version 1 fields are retained solely to migrate existing user configs.
+        @Deprecated public int backgroundOpacity = 120;
+        @Deprecated public boolean border = true;
+        @Deprecated public int borderThickness = 1;
+        @Deprecated public boolean boldText;
+        @Deprecated public boolean textShadow = true;
+        @Deprecated public float scale = 1.0f;
+
+        public PanelStyle style(HudType type) {
+            ensurePanels();
+            return switch (type) {
+                case MAP -> map;
+                case MINING -> mining;
+                case HUNTING -> hunting;
+                case PET -> pet;
+            };
+        }
+
+        private void ensurePanels() {
+            if (map == null) map = new PanelStyle();
+            if (mining == null) mining = new PanelStyle();
+            if (hunting == null) hunting = new PanelStyle();
+            if (pet == null) pet = new PanelStyle();
+        }
+
+        private void copyLegacyAppearanceToPanels() {
+            ensurePanels();
+            for (PanelStyle panel : new PanelStyle[]{map, mining, hunting, pet}) {
+                panel.backgroundOpacity = backgroundOpacity;
+                panel.border = border;
+                panel.borderThickness = borderThickness;
+                panel.boldText = boldText;
+                panel.textShadow = textShadow;
+                panel.scale = scale;
+            }
+        }
+    }
+
+    public static final class PanelStyle {
+        public int backgroundOpacity = 120;
+        public int backgroundColor = 0x08111C;
+        public boolean border = true;
+        public int borderThickness = 1;
+        public int borderColor = 0x50C8FF;
+        public boolean boldText;
+        public boolean textShadow = true;
+        public int titleColor = 0x7FDBFF;
+        public float scale = 1.0f;
+
+        public void normalize() {
+            backgroundOpacity = Math.clamp(backgroundOpacity, 0, 255);
+            backgroundColor &= 0xFFFFFF;
+            borderThickness = Math.clamp(borderThickness, 1, 4);
+            borderColor &= 0xFFFFFF;
+            titleColor &= 0xFFFFFF;
+            if (!Float.isFinite(scale)) scale = 1.0f;
+            scale = Math.clamp(scale, 0.5f, 2.0f);
+        }
+    }
+}

@@ -178,6 +178,7 @@ public final class HuntingHudRenderer {
             if (config.safariTicketTier) addValueIfPresent(dashboard, ModText.get("hud.hunting.ticket_tier"), HuntingTracker.safariTicketTier());
             appendSectionIfPresent(content, ModText.get("hud.hunting.run_dashboard"), 0xFFFFD45A, dashboard);
         }
+        if (config.safariShards) appendShardStats(content);
         if (config.safariCritterdex) appendCritterdex(content, config);
         if (config.floorDropAssistant || config.questItemTracker) appendSafariItems(content, config);
         if (config.wumpaHud) {
@@ -208,7 +209,6 @@ public final class HuntingHudRenderer {
     private static void appendCritterdex(List<Line> lines, ModConfig.Hunting config) {
         Set<String> captured = HuntingTracker.capturedCritters();
         List<Line> critterdexLines = new ArrayList<>();
-        if (config.safariShards) appendGroupedShardDrops(critterdexLines);
         if (config.critterdexBiomeProgress) {
             for (Map.Entry<String, List<String>> entry : HuntingTextParser.SAFARI_CRITTERS.entrySet()) {
                 long count = entry.getValue().stream().filter(captured::contains).count();
@@ -228,6 +228,12 @@ public final class HuntingHudRenderer {
             critterdexLines.add(Line.value(ModText.get("hud.hunting.missing"), names.length() == 0 ? ModText.get("hud.hunting.none") : names.toString()));
         }
         appendSectionIfPresent(lines, "Safari Run Critterdex", 0xFF9FF5B2, critterdexLines);
+    }
+
+    private static void appendShardStats(List<Line> lines) {
+        List<Line> shardLines = new ArrayList<>();
+        appendGroupedShardDrops(shardLines);
+        appendSectionIfPresent(lines, ModText.get("hud.hunting.captured_shards"), 0xFF9FF5B2, shardLines);
     }
 
     private static void appendGroupedShardDrops(List<Line> lines) {

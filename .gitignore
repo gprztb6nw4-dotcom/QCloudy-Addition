@@ -10,7 +10,7 @@ build/
 run/
 run-standalone/
 release/
-config/
+/config/
 logs/
 mods/
 references/
