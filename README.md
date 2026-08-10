@@ -7,7 +7,7 @@ QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [GitHub Beta 2.6.6 release notes](docs/GITHUB_RELEASE_2.6.6.md)
+- [GitHub Beta 2.6.7 release notes](docs/GITHUB_RELEASE_2.6.7.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -23,7 +23,7 @@ The language option translates QCA interface labels only. Hypixel location names
 
 ### Maps
 
-- **Dwarven Mines Map** — an original single-layer overview with 12 individually shaped region blocks, material-themed colors, thick readable boundaries, Minecraft bitmap labels, and a live red player arrow. It omits the old internal route web. The arrow is projected from the local player's X/Y/Z/yaw and the already-visible scoreboard sub-location. Point-of-interest labels always use Hypixel's original English names.
+- **Dwarven Mines Map** — the supplied single-layer overview with 12 individually shaped region blocks and a live red player arrow. Each named region has been recalibrated to the replacement image. The arrow uses only the local player's X/Z/yaw and the already-visible scoreboard sub-location; Dwarven projection never uses Y. Point-of-interest labels remain English.
 - **Glacite Tunnels Layer Map** — low, middle, and high tunnel images share one coordinate system. The displayed layer changes at Y 126 and Y 143; the live arrow remains spatially consistent between layers. Generated English point-of-interest cards use collision avoidance so nearby locations never overlap.
 
 ### Mining
@@ -113,7 +113,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-GitHub Beta 2.6.6 release notes: [docs/GITHUB_RELEASE_2.6.6.md](docs/GITHUB_RELEASE_2.6.6.md)
+GitHub Beta 2.6.7 release notes: [docs/GITHUB_RELEASE_2.6.7.md](docs/GITHUB_RELEASE_2.6.7.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 

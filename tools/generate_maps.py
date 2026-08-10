@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Generate readable ACA maps from the graph bundled in the local SkyHanni reference JAR.
+"""Generate readable QCA support textures from local source data.
 
-The Dwarven Mines output intentionally collapses Y into one original, blocky topological
-overview. Its region order and approximate footprint are derived from the public graph,
-while its labels use Minecraft's bundled bitmap fonts. Glacite keeps its three Y bands.
-No hidden blocks, entities, or live server data are used.
+The supplied Dwarven Mines map is a maintained source asset and is deliberately not
+regenerated here. Glacite keeps its three Y bands. No hidden blocks, entities, or live
+server data are used.
 """
 
 from __future__ import annotations
@@ -448,20 +447,6 @@ def generate_color_wheel():
 
 def main():
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    generate_dwarven({
-        "village": "Village",
-        "upper": "Upper\nMines",
-        "rampart": "Rampart\nQuarry",
-        "forge": "Forge",
-        "lava": "Lava\nSprings",
-        "cliffside": "Cliffside",
-        "reserve": "Far\nReserve",
-        "goblin": "Goblin\nBurrows",
-        "royal_mines": "Royal\nMines",
-        "mist": "The Mist",
-        "ice": "Ice Wall",
-        "palace": "Royal\nPalace",
-    })
     generate_glacite({
         "Dwarven Base Camp": "Base Camp",
         "Great Glacite Lake": "Lake",

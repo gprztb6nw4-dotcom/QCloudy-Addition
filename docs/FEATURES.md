@@ -6,9 +6,9 @@
 
 **Purpose:** reduce navigation friction in the large, vertically complex Dwarven Mines without exposing live hidden terrain.
 
-**What it does:** shows one deliberately simple layer with 12 individually shaped blocks: Village, Upper Mines, Rampart Quarry, Forge, Lava Springs, Cliffside, Far Reserve, Goblin Burrows, Royal Mines, The Mist, Ice Wall, and Royal Palace. Their order and approximate footprint follow public route-node extents, but the artwork and topology are original. Region colors reflect their identity, boundaries stay thick at HUD scale, and labels use Minecraft's bundled bitmap font. Point-of-interest labels remain the original English names regardless of QCA interface language. The internal route web is omitted.
+**What it does:** shows the supplied single-layer image with 12 individually shaped blocks: Village, Upper Mines, Rampart Quarry, Forge, Lava Springs, Cliffside, Far Reserve, Goblin Burrows, Royal Mines, The Mist, Ice Wall, and Royal Palace. Point-of-interest labels remain English regardless of QCA interface language.
 
-**Player marker:** every rendered frame, the currently visible scoreboard sub-location selects the corresponding schematic block and local X/Z coordinates place the arrow within it. Local Y disambiguates vertically overlapping areas such as Royal Mines, The Mist, and Royal Palace when only the generic Dwarven Mines location is visible. Yaw rotates the arrow. The background is a bundled PNG and never changes from server data.
+**Player marker:** every rendered frame, the currently visible scoreboard sub-location selects its recalibrated image region and local X/Z coordinates place the arrow within it. Y is deliberately ignored because this map is one layer. If only the generic Dwarven Mines label is visible, the nearest X/Z region center provides the fallback. Yaw rotates the arrow. The background is a bundled PNG and never changes from server data.
 
 ### 1.2 Glacite Tunnels Layer Map
 

@@ -6,13 +6,13 @@ QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, 
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Beta 2.6.6.** Beta means the build has passed automated and archive validation, but still needs broader real-server, resource-pack, GUI-scale, operating-system, and modpack testing.
+> **Current channel: Beta 2.6.7.** Beta means the build has passed automated and archive validation, but still needs broader real-server, resource-pack, GUI-scale, operating-system, and modpack testing.
 
 ## Main features
 
 ### Maps
 
-- A deliberately simple, single-layer **Dwarven Mines map** with individually shaped regions and a live player arrow.
+- The supplied single-layer **Dwarven Mines map**, recalibrated region by region for an X/Z-synchronized live player arrow without Y-layer switching.
 - Three coordinate-aligned **Glacite Tunnels maps** that switch automatically by player elevation.
 - Optional pink **Fairy Soul waypoint beams** for Torrhus and Critter Safari, with locally saved collected state.
 
@@ -84,7 +84,7 @@ Optional:
 
 - Mod Menu **18.0.0**
 
-Put the playable `QCloudy_Addition-Beta-2.6.6+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
+Put the playable `QCloudy_Addition-Beta-2.6.7+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
 
 Press `O`, open QCA through Mod Menu, or enter `/aca`, `/qca`, `/ca`, or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 

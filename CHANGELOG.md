@@ -2,6 +2,21 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.7] - 2026-08-10
+
+Beta map update for Minecraft 26.1.2.
+
+### Changed
+
+- Replaced the bundled Dwarven Mines artwork with the newly supplied single-layer 12-region map.
+- Recalibrated every named Dwarven region to the replacement image so the live player arrow follows the correct region and local X/Z position.
+- Removed Y from Dwarven map selection and projection. The map now uses only received sub-location text, local X/Z, and yaw; a generic `Dwarven Mines` label falls back to the nearest X/Z region center.
+- Bumped the Beta patch version to `2.6.7`; playable and source artifacts now use `QCloudy_Addition-Beta-2.6.7+26.1.2`.
+
+### Safety
+
+- The map remains client-only and render-only. It reads no hidden terrain, sends no packet, chat, command, click, movement, or other server interaction.
+
 ## [2.6.6] - 2026-08-10
 
 Beta promotion for Minecraft 26.1.2.

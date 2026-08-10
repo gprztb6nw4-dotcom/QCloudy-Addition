@@ -7,7 +7,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [GitHub 2.6.6 Beta 发布说明](docs/GITHUB_RELEASE_2.6.6_zh_CN.md)
+- [GitHub 2.6.7 Beta 发布说明](docs/GITHUB_RELEASE_2.6.7_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
@@ -23,7 +23,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 
 ### 地图
 
-- **矮人矿洞地图**：原创的单层总览图，以 12 个独立区域块呈现主要地点；区域按属性配色，使用粗边界与 Minecraft 位图字体，移除旧版密集路线网。红色箭头仅根据本地玩家 X/Y/Z、朝向以及计分板已经显示的子地点投影；地图点位固定使用 Hypixel 英文原名。
+- **矮人矿洞地图**：使用本次提供的单层 12 区域总览图和实时红色玩家箭头。每个地点均按替换图的实际位置重新校准。箭头只使用本地玩家 X/Z、朝向和计分板已显示的子地点；Dwarven 投影完全不使用 Y。地图点位保持英文。
 - **冰川隧道分层地图**：低层、中层和高层图片使用完全相同的坐标边界；在 Y=126 与 Y=143 切层，切换后玩家箭头位置保持一致。地图点位固定使用英文原名，并在生成阶段自动检测、避让相邻标签，防止文字重叠。
 
 ### 挖矿
@@ -111,7 +111,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-GitHub 2.6.6 Beta 发布说明：[docs/GITHUB_RELEASE_2.6.6_zh_CN.md](docs/GITHUB_RELEASE_2.6.6_zh_CN.md)
+GitHub 2.6.7 Beta 发布说明：[docs/GITHUB_RELEASE_2.6.7_zh_CN.md](docs/GITHUB_RELEASE_2.6.7_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

@@ -4,7 +4,7 @@
 
 | Feature | Client input | Local output | Outgoing traffic |
 |---|---|---|---|
-| Dwarven map | Player X/Y/Z/yaw, parsed visible sub-location | Static PNG + arrow HUD | None |
+| Dwarven map | Player X/Z/yaw, parsed visible sub-location; Y deliberately unused | Static PNG + arrow HUD | None |
 | Glacite map | Player X/Y/Z/yaw, parsed location | Static layer PNG + arrow HUD | None |
 | Mining tasks/powders/HOTM slot | Received Tab display names and already-open menu item names/lore | Text/progress-bar HUD and cached selected slot name | None |
 | Crimson Isle tasks | Received `Faction Quests:` Tab display names | Text HUD | None |

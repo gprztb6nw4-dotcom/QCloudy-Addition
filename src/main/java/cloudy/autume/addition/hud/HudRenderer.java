@@ -117,8 +117,8 @@ public final class HudRenderer {
             maxX = 210;
             minZ = -183;
             maxZ = 291;
-            dwarvenPoint = DwarvenMapProjection.project(client.player.getX(), client.player.getY(),
-                    client.player.getZ(), LocationTracker.visibleLocation());
+            dwarvenPoint = DwarvenMapProjection.project(client.player.getX(), client.player.getZ(),
+                    LocationTracker.visibleLocation());
         } else {
             double y = client.player.getY();
             if (y <= 126) {

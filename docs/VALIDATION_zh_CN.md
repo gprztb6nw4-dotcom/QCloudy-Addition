@@ -1,3 +1,37 @@
+# QCloudy_Addition Beta 2.6.7 Dwarven 地图验证
+
+验证日期：2026-08-10
+
+已验证产物：
+
+- `release/QCloudy_Addition-Beta-2.6.7+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.7+26.1.2-sources.jar`
+
+## 结果
+
+Beta 2.6.7 将 Dwarven Mines 纹理替换为本次提供的单层 12 区域图，并按实际图像几何重新校准玩家箭头投影。Dwarven 投影现在只读取 X/Z、朝向与已可见子地点；投影 API 和回退计算中均不存在 Y。
+
+## 自动、坐标与产物检查
+
+- Java 25 `clean test build prepareRelease` 成功完成。最新 XML 报告为 123 个测试、0 failures、0 errors、0 skips；class major 为 69。
+- 提供的 `2000×2000` PNG（`cb714dc325ae4971088ade84846d9ad97af0e3966553d7d1f63931c3be1ef15a`）已重采样为 HUD 原生的 `200×200` RGBA 纹理。源码、二进制 JAR 和 Sources JAR 内的最终纹理哈希均为 `639492c458d4acd232cf57fd250cf1d2548f4c07f95ca48bcc83a96417fb85c0`。
+- 投影测试覆盖替换图上全部 12 个命名区域、明确子地点选择、Royal Mines 与 Royal Palace 之间只使用 X/Z 的通用地点回退、区域边界夹取，以及确认每个校准箭头中心均落在非透明地图内容上的坐标网格。每个区域都使用内缩的 X/Z 双线性校准，不使用 Y 分层，也不使用单一全图矩形。
+- 资源测试验证 200×200 纹理尺寸、外部角透明，以及 Village、Upper Mines、Rampart Quarry、Forge、Lava Springs、Cliffside、Far Reserve、Goblin Burrows、The Mist、Ice Wall、Royal Mines 和 Royal Palace 的精确填充色。
+- 展开的 Fabric 元数据为 `Beta-2.6.7+26.1.2`，环境为纯客户端，声明 Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+ 与 Java 25+。
+- 二进制 JAR 与 Sources JAR 均通过 JDK 25 `jar --validate` 和 `unzip -t`；`release` 副本与 `build/libs` 逐字节一致。
+- Dwarven 地图路径保持为 `assets/qcloudy_addition/textures/gui/dwarven_mines.png`；地图生成器会明确保留这个维护中的提供资源，不再覆盖它。
+
+## 验证边界
+
+本次检查验证源码/配置一致性、全部 12 个投影校准、自动行为、归档完整性、元数据、文件名、校验和与 build/release 一致性。它不声称已完成 Hypixel 登录实服视觉回归。还需要在用户的 GUI Scale 与每个命名地点中实际检查；如发现实服偏移，应同时提供当时的子地点文本和玩家 X/Z。
+
+## SHA-256
+
+- 二进制 JAR：`97d7a9df937075eb071a77bb80c700cf865a91eac909a8b7982aac4e57c895ef`
+- Sources JAR：`55bc0b309c7faafab5f19bcbb434e22f0f69da70607b404083f826b9deea8905`
+
+---
+
 # QCloudy_Addition Beta 2.6.6 晋级验证
 
 验证日期：2026-08-10

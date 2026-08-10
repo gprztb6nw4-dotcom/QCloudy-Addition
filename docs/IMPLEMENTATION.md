@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.6.6+26.1.2`.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.6.7+26.1.2`.
 
 ## 1. Runtime architecture
 
@@ -85,9 +85,9 @@ On by default. One physical click starts one ordinary server connection. No save
 ### 4.1 Dwarven Mines
 
 - **Purpose:** replace an unreadable route web with a compact regional overview.
-- **Inputs:** local player X/Y/Z/yaw and received scoreboard sub-location.
-- **Implementation:** `DwarvenMapProjection` maps coordinates and named regions into one original schematic texture containing 12 shaped areas. Y and the received sub-location disambiguate vertically overlapping regions, but the displayed map remains one layer.
-- **Expected effect:** material-colored region shapes, thick borders, clear Minecraft-font English labels, and a live red directional arrow.
+- **Inputs:** local player X/Z/yaw and received scoreboard sub-location. Y is not read for this map.
+- **Implementation:** `DwarvenMapProjection` maps X/Z and named regions into the supplied single-layer texture containing 12 shaped areas. Every region's image bounds were recalibrated to the replacement artwork; a generic location falls back to the nearest normalized X/Z region center.
+- **Expected effect:** the supplied English-labelled regional map and a live red directional arrow that stays synchronized with its named region and local X/Z position.
 - **Default/outbound:** on; render only.
 
 ### 4.2 Glacite Tunnels

@@ -1,3 +1,37 @@
+# QCloudy_Addition Beta 2.6.7 Dwarven map validation
+
+Validation date: 2026-08-10
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Beta-2.6.7+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.7+26.1.2-sources.jar`
+
+## Result
+
+Beta 2.6.7 replaces the Dwarven Mines texture with the supplied one-layer 12-region map and recalibrates the marker projection to its image geometry. Dwarven projection now reads X/Z, yaw, and the already-visible sub-location only; Y is absent from both the projection API and fallback calculation.
+
+## Automated, coordinate, and artifact checks
+
+- Java 25 `clean test build prepareRelease` completed successfully. Fresh XML reports 123 tests, 0 failures, 0 errors, and 0 skips; class files use major version 69.
+- The supplied `2000×2000` PNG (`cb714dc325ae4971088ade84846d9ad97af0e3966553d7d1f63931c3be1ef15a`) was resampled to the HUD's native `200×200` RGBA texture. The packaged texture hash is `639492c458d4acd232cf57fd250cf1d2548f4c07f95ca48bcc83a96417fb85c0` in source, binary JAR, and Sources JAR.
+- Projection tests cover all 12 named regions on the replacement image, explicit sub-location selection, X/Z-only generic-location fallback between Royal Mines and Royal Palace, clamping at region bounds, and a coordinate grid that confirms every calibrated marker centre remains on opaque map content. Each region uses an inset bilinear X/Z calibration rather than a Y layer or a single global rectangle.
+- Resource tests verify the 200×200 texture dimensions, transparent outside corner, and the exact fill colours for Village, Upper Mines, Rampart Quarry, Forge, Lava Springs, Cliffside, Far Reserve, Goblin Burrows, The Mist, Ice Wall, Royal Mines, and Royal Palace.
+- Expanded Fabric metadata declares `Beta-2.6.7+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+.
+- Both binary and Sources JARs pass JDK 25 `jar --validate` and `unzip -t`; their `release` copies are byte-identical to `build/libs`.
+- The Dwarven map path remains `assets/qcloudy_addition/textures/gui/dwarven_mines.png`; the map generator deliberately leaves this maintained supplied asset untouched.
+
+## Validation boundary
+
+This audit verifies source/configuration consistency, all 12 projection calibrations, automated behavior, archive integrity, metadata, filenames, checksums, and build/release identity. It does not claim an authenticated Hypixel visual regression. The replacement should still be checked in-game at the user's GUI scale and in each named region; any real-server offset report should include the displayed sub-location and player X/Z.
+
+## SHA-256
+
+- Binary JAR: `97d7a9df937075eb071a77bb80c700cf865a91eac909a8b7982aac4e57c895ef`
+- Sources JAR: `55bc0b309c7faafab5f19bcbb434e22f0f69da70607b404083f826b9deea8905`
+
+---
+
 # QCloudy_Addition Beta 2.6.6 promotion validation
 
 Validation date: 2026-08-10
