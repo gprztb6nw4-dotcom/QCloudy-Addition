@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `1.5.1+26.1.2`.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `alpha-2.5.6-26.1.2`.
 
 ## 1. Runtime architecture
 
@@ -327,13 +327,15 @@ All information rows on; icon+name accessory mode; read/render only; no runtime 
 - **Expected effect:** vanilla sound by default, or Chorus, Enderman, Amethyst, XP Orb, End Portal Fill, or Shulker sound at the chosen volume/pitch.
 - **Default/outbound:** customization available but both modes remain vanilla; local sound only.
 
-### 12.4 Menu middle-click conversion
+### 12.4 Attribute Shard Fusion Guide
 
-- **Purpose:** let a physical primary-button press activate an item-button with Minecraft's clone/middle-click container action, avoiding the visible pickup-first delay of item-based SkyBlock menus.
-- **Inputs:** physical left/right click, exact chest-menu slot, carried cursor state, and current SkyBlock/location state.
-- **Implementation:** `MiddleClickMenus` accepts only non-player-inventory, nonempty chest slots using `PICKUP`; the default conversion mode is physical left-click only, and an optional empty-cursor guard is on. It calls the normal `handleContainerInput(..., button 2, CLONE, ...)` only for that physical click.
-- **Expected effect:** supported menu items behave like a middle-click activation without first appearing on the cursor.
-- **Default/outbound:** feature off; when enabled, every converted container action still requires one physical click.
+- **Purpose:** provide a complete local answer for both reverse recipe lookup and forward uses lookup without guessing an order-sensitive Attribute Fusion pair.
+- **Bundled inputs:** `assets/qcloudy_addition/data/shard_fusions.json`, generated offline from the current [Hypixel SkyBlock Wiki Attributes](https://hypixelskyblock.minecraft.wiki/w/Attributes) effect/acquisition tables and [Attribute Fusion rules](https://hypixelskyblock.minecraft.wiki/w/Attribute_Fusion), with identities cross-checked against [SkyShards](https://github.com/Campionnn/SkyShards), the [NotEnoughUpdates item repository](https://github.com/NotEnoughUpdates/NotEnoughUpdates-REPO), and the [official Bazaar product list](https://api.hypixel.net/v2/skyblock/bazaar). The 320 local Shard PNGs are generated from SkyShards `public/shardIcons` at reviewed MIT commit `9688031dbc4e726168ffceb0f44884ff26e6e728`; the 321-source set is filtered through the catalog allow-list, excluding Rainbug.
+- **Data calibration:** the runtime catalog is required to contain exactly 320 official Bazaar-listed Shards. Compared with the stale 317-item snapshot, Anteater, Zombuddy, Troodon, and Ghost Crab are present, Goldolot uses `R92`, and Rainbug is excluded because it is not in the official Bazaar Shard allow-list. The Wiki Attributes list is treated as supporting documentation rather than the cardinality authority because that page marks itself incomplete/outdated.
+- **Implementation:** `ShardFusionCatalog` loads and validates the committed JSON once, including normalized rich-text effect spans, acquisition methods, mob types, and semantic colours. Its search index covers name/ID/attribute/effect/rarity/category/family/skill/mob type/acquisition; ordered-pair indexes serve both Recipes and Uses, so a Shard with natural sources (for example Queen Bee) still exposes every Fusion recipe. Special rules are checked symmetrically while remaining ID outputs retain first/second-input order. Chameleon follows numeric ID stepping and rarity rollover. `ShardItemResolver` keeps a session-wide native-ItemStack cache: a matching stack already received in an open menu/inventory overrides the bundled item model, while every unseen catalog entry resolves to its own offline Shard texture instead of amethyst. QCA performs no HTTP or texture request; an already-received player head continues through Minecraft's normal item renderer.
+- **Recipe arithmetic:** Chameleon consumes `1`; Reptile, Amphibian, and Elemental consume `2`; all other Shards consume `5`. An ID/Chameleon result yields `1`, a special-rule result yields `2`, and Pure Reptile displays its received level's 2–20% double-output chance. Up to three selectable outputs are shown in their actual order and never equal either input.
+- **Presentation:** `ShardFusionScreen` supplies Details/Recipes/Uses tabs, searchable result rows, Back/Forward history, page controls, item icons, input amounts, outputs, yields, and an explicit order note. Details presents exact effect and acquisition lines, explicitly labels Fusion-only Shards, and shows the verified Fusion-recipe count whenever nonzero. Epic is Minecraft `§5`; other rarity/stat/category/mob-type/acquisition text uses reviewed semantic colours. Hovering clickable Shard text darkens and underlines only the visible text. Clicking outside search, `Esc`, or `Tab` releases text focus; clicking search restores it. Input pairs and output candidates are measured as compact centered clusters, and hitboxes are derived from the same visible bounds. Text wraps or scales instead of using ellipses.
+- **Entry points/default/outbound:** the feature is enabled by default. Its secondary setting contains **Open Guide** and an optional unbound keyboard/mouse chord. `/qshard [English query]` is a local client command that opens the same screen with the query prefilled. It sends no server command, chat, packet, menu input, Wiki request, Bazaar request, or other network traffic.
 
 ## 13. Persistence
 
@@ -347,11 +349,9 @@ QCA stores no password, access token, Hypixel API key, chat history, remote acco
 | Trigger | Exact action | Automatic? |
 |---|---|---|
 | `/aca`, `/qca`, `/ca`, `/qc` | Opens the local QCA settings screen | No server payload |
+| `/qshard [English query]` | Opens the local offline Shard Fusion Guide and pre-fills its search | No server payload |
 | Player types `/th` | `sendCommand("warp torrhus")` | No |
 | Player types `/helia` | `sendCommand("chapter torrhus")` | No |
-| Player selects Ender Chest page1–9 | `sendCommand("enderchest <page>")` | No |
-| Player selects Backpack page1–18 | `sendCommand("backpack <page>")` | No |
-| Player uses enabled middle-click conversion | One normal container `CLONE` input for the physically clicked slot | No |
 | Player clicks Reconnect | One normal Minecraft server connection to the remembered in-memory target | No |
 
 `sendChat` calls: none. Automatically generated chat: none. Automatic commands: none. Automatic movement, combat, capture, item use, block interaction, or reconnect: none.

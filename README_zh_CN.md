@@ -7,7 +7,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [GitHub 1.5.1 发布说明](docs/GITHUB_RELEASE_1.5.1_zh_CN.md)
+- [GitHub 2.5.6 Alpha 发布说明](docs/GITHUB_RELEASE_2.5.6_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
@@ -64,6 +64,10 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 
 - **当前宠物 HUD**：用召唤、收回和 Autopet 提示立即更新，再以客户端收到的 `Pet:` Tab Widget 校正。HUD 只用 QCA 内置且已验证的 Profile 构造普通 player head，不再写入合成 `petInfo`，因此其他模组无法把 HUD 头像替换成无关物品模型。动态皮肤家族的每一帧都会归回正确皮肤，包括 Baby Spinosaurus 已发布的全部变体。头像由 Minecraft 原生物品渲染器按整数 2× 清晰绘制；宠物、皮肤、经验和配件文本完整测量，粗体也不会溢出或省略。“当前等级经验”和“到满级进度”默认开启；满级只隐藏后者，不会隐藏宠物配件。通过 Pets 菜单、Tab 或已收到聊天确认的配件会按宠物保存在本地，重登后继续显示。皮肤名称和 Ancient Golden Dragon 装饰溢出等级默认开启。内置当前 87 种宠物配件资源，可选“图标＋名称”（默认）、“仅图标”或“仅名称”。
 
+### 物品与菜单
+
+- **Attribute Shard Fusion Guide**：受 JEI 信息结构启发、完全离线的 320 种当前 Bazaar Shard 浏览器。可按原始英文名称、Shard ID、属性/效果、品质、分类、家族、Skill、生物类型或获取文字搜索。**详细信息**显示 Wiki 已记录的完整效果和所有自然/Fusion 获取方式；**合成来源**显示能产出目标 Shard 的全部有序输入组合，其中也包括 Queen Bee 这类同时拥有自然来源的 Shard；**可合成内容**显示所选 Shard 能继续合成什么。配方卡保留输入顺序，显示数量、可选输出、普通/特殊产量和 Pure Reptile。Epic 使用 Minecraft 深紫色（`§5`），品质、属性、分类、生物类型与获取方式使用对应游戏语义颜色；鼠标悬停于可点击 Shard 文字时，文字会变深并添加下划线。目录与专属图标在发布前离线生成并随模组打包；客户端已经收到的原生 `ItemStack` 仍优先用于材质包显示。本地 `/qshard [英文查询]` 只打开本地界面，不发送聊天或服务器命令。QCA 运行时不访问 Wiki/API/图标服务，也不会自动执行 Fusion。
+
 ### 聊天
 
 - **聊天偷窥**：按住用户设置的按键或组合键，在不打开聊天界面的情况下临时显示完整高度的聊天历史。偷窥时鼠标滚轮默认翻聊天记录；二级设置可改为继续切换快捷栏。为避免按键冲突，偷窥键默认未绑定。
@@ -81,7 +85,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 
 设置页采用受 BLC 信息层级启发、但没有复制其素材或界面代码的紧凑结构：顶部只保留“功能”，左侧第一个分类为“通用”，其中放“界面动画”、预警音效总开关和手动重连开关；HUD 位置继续从左下角“编辑 HUD”进入。功能卡片不再重复绘制右上角开关和右下角右键提示，二级设置也不再重复一级功能开关。侧栏没有“全部”分类，每项功能只出现在自己的分类下。
 
-物品与菜单工具包括物品时间戳、光标位置记忆、AOTE/AOTV 声音自定义、聊天偷窥和可选菜单中键替代。所有 QCA 热键都直接在原有二级设置行内进入等待输入，不再跳转到独立捕获菜单；支持键盘、鼠标 1–5/侧键以及 Ctrl、Shift、Alt、Cmd/Super 组合，等待输入时按 `Esc` 会像原版一样清空绑定。菜单中键替代整体默认关闭；首次开启时只把玩家真实左键物品按钮转换为中键，右键保持原样，也可在二级设置中改模式。
+物品与菜单工具包括 Attribute Shard Fusion Guide、物品时间戳、光标位置记忆、AOTE/AOTV 声音自定义和聊天偷窥。所有 QCA 热键都直接在原有二级设置行内进入等待输入，不再跳转到独立捕获菜单；支持键盘、鼠标 1–5/侧键以及 Ctrl、Shift、Alt、Cmd/Super 组合，等待输入时按 `Esc` 会像原版一样清空绑定。
 
 **AOTE/AOTV 传送声音**不会默认静音。普通传送与 Etherwarp 分别默认保留原声，也可独立改成紫颂果传送、末影人传送、紫水晶清响、经验球、末地传送门填充或潜影贝传送；自定义音量使用 10–200% 滑条，音调使用 50–200% 滑条。HUD 透明度/缩放和光标记忆时间等跨度大的数值也统一使用 Windows 风格拖动条，松开即保存；少量离散档位仍保留按钮切换。
 
@@ -97,7 +101,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 
 ## 安全边界
 
-发布版不包含 `sendChat`、Hypixel Mod API 订阅、WebSocket、HTTP 请求、宏、自动移动或区块请求代码。普通 HUD 只读取客户端已收到的数据。存储控件只会在玩家真实选择页面后发送 `storage`、`enderchest <1-9>` 或 `backpack <1-18>`。永久可用的本地 `/th` 与 `/helia` 只会在玩家输入时分别发送准确内容 `warp torrhus` 与 `chapter torrhus`，等同手动输入 `/warp torrhus` 与 `/chapter torrhus`。没有真实用户输入时，模组不会生成命令、聊天、点击或移动。
+发布版不包含 `sendChat`、Hypixel Mod API 订阅、WebSocket、HTTP 请求、运行时 Shard 数据请求、宏、自动移动或区块请求代码。普通 HUD 只读取客户端已收到的数据；`/qshard` 只打开本地界面，不发送任何内容。永久可用的本地 `/th` 与 `/helia` 只会在玩家输入时分别发送准确内容 `warp torrhus` 与 `chapter torrhus`，等同手动输入 `/warp torrhus` 与 `/chapter torrhus`。没有真实用户输入时，模组不会生成命令、聊天、点击或移动。
 
 Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确列出的功能也不代表获得许可。使用前请阅读 [docs/COMPLIANCE_zh_CN.md](docs/COMPLIANCE_zh_CN.md) 和最新的 [Hypixel Allowed Modifications 说明](https://support.hypixel.net/hc/en-us/articles/6472550754962-Hypixel-Allowed-Modifications)。
 
@@ -107,7 +111,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-GitHub 1.5.1 发布说明：[docs/GITHUB_RELEASE_1.5.1_zh_CN.md](docs/GITHUB_RELEASE_1.5.1_zh_CN.md)
+GitHub 2.5.6 Alpha 发布说明：[docs/GITHUB_RELEASE_2.5.6_zh_CN.md](docs/GITHUB_RELEASE_2.5.6_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

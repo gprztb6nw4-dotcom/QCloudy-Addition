@@ -82,6 +82,24 @@ final class ConfigScreenFeatureTest {
     }
 
     @Test
+    void shardFusionIsAnEnabledInventoryFeatureInItsOwnGroup() {
+        ModConfig config = new ModConfig();
+        ConfigScreen.Feature feature = ConfigScreen.Feature.SHARD_FUSION_HELPER;
+
+        assertEquals(ConfigScreen.Category.INVENTORY, feature.category);
+        assertEquals(ConfigScreen.FeatureGroup.SHARD_FUSION, feature.group);
+        assertTrue(feature.enabled(config));
+        assertTrue(feature.hasSettings());
+        assertEquals(null, feature.hudType());
+        assertTrue(FeatureSettingsScreen.shardGuideEntryEnabled(config));
+
+        feature.toggle(config);
+        assertFalse(config.inventory.shardFusionHelper);
+        assertFalse(feature.enabled(config));
+        assertFalse(FeatureSettingsScreen.shardGuideEntryEnabled(config));
+    }
+
+    @Test
     void requestedSidebarCategoriesOwnEachFeatureOnce() {
         assertEquals(ConfigScreen.Category.FORAGING, ConfigScreen.Feature.TORRHUS_TRACKER.category);
         assertEquals(ConfigScreen.Category.FORAGING, ConfigScreen.Feature.GALATEA_TRACKER.category);

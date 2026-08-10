@@ -1,0 +1,16 @@
+QCloudy_Addition Attribute Shard reference data notice
+
+The normalized Attribute effect and acquisition summaries in shard_fusions.json
+are derived from the Hypixel SkyBlock Wiki Attributes tables and Attribute
+Fusion page, verified on 2026-08-10. The Wiki content is available under
+CC BY-NC-SA 3.0:
+
+https://hypixelskyblock.minecraft.wiki/w/Attributes
+https://hypixelskyblock.minecraft.wiki/w/Attribute_Fusion
+https://creativecommons.org/licenses/by-nc-sa/3.0/
+
+The official Hypixel Bazaar resource list is used as the 320-Shard identity
+allow-list. Fusion identities and rules are cross-validated against the
+MIT-licensed SkyShards data described in the repository's
+THIRD_PARTY_NOTICES.md. QCloudy_Addition program code remains licensed under
+the repository's LGPL-3.0-or-later license.

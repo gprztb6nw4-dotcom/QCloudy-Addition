@@ -37,12 +37,13 @@ final class ModConfigTest {
         config.hudStyle.map.scale = 1.75f;
         config.mining.commissionProgressMode = "invalid";
         config.mining.lastHotmSlotName = null;
+        config.keybinds.openShardFusionModifiers = 0x7F;
         config.normalize();
         assertEquals(255, config.hudStyle.pet.backgroundOpacity);
         assertEquals(1, config.hudStyle.pet.borderThickness);
         assertEquals(1.0f, config.hudStyle.pet.scale);
         assertEquals(1.75f, config.hudStyle.map.scale);
-        assertEquals(16, config.configVersion);
+        assertEquals(17, config.configVersion);
         assertEquals(true, config.manualReconnectButton);
         assertEquals(true, config.pets.showMaxProgress);
         assertEquals(true, config.pets.showOverflowLevel);
@@ -52,6 +53,8 @@ final class ModConfigTest {
         assertEquals("", config.mining.lastHotmSlotName);
         assertEquals(true, config.mining.showHotmSlot);
         assertEquals(true, config.inventory.yieldToFirmament);
+        assertEquals(true, config.inventory.shardFusionHelper);
+        assertEquals(0x0F, config.keybinds.openShardFusionModifiers);
         assertEquals(true, config.chat.chatPeek);
         assertEquals("CHAT", config.chat.peekScrollTarget);
         assertEquals(true, config.inventory.teleportSoundCustomization);
@@ -119,10 +122,11 @@ final class ModConfigTest {
 
         migrated.normalize();
 
-        assertEquals(16, migrated.configVersion);
+        assertEquals(17, migrated.configVersion);
         assertEquals("VANILLA", migrated.inventory.instantTransmissionSoundMode);
         assertEquals("VANILLA", migrated.inventory.etherwarpSoundMode);
         assertEquals(false, migrated.hunting.safariShards);
+        assertEquals(true, migrated.inventory.shardFusionHelper);
 
         migrated.inventory.instantTransmissionSoundMode = "invalid";
         migrated.inventory.instantTransmissionCustomSound = "invalid";

@@ -1,6 +1,7 @@
 package cloudy.autume.addition.mixin;
 
 import cloudy.autume.addition.QCloudyAdditionClient;
+import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ConfigScreen;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
@@ -22,6 +23,12 @@ public abstract class KeyboardHandlerMixin {
         if (QCloudyAdditionClient.matchesChord(
                 QCloudyAdditionClient.ChordAction.OPEN_CONFIG, event)) {
             minecraft.setScreen(new ConfigScreen(null));
+            ci.cancel();
+            return;
+        }
+        if (ConfigManager.get().inventory.shardFusionHelper && QCloudyAdditionClient.matchesChord(
+                QCloudyAdditionClient.ChordAction.OPEN_SHARD_FUSION, event)) {
+            QCloudyAdditionClient.openShardFusionGuide(minecraft, null, "");
             ci.cancel();
         }
     }

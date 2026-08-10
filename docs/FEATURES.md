@@ -115,25 +115,41 @@ The default-on General feature adds a vanilla-width `Reconnect` button to `Disco
 
 **What it does:** reacts immediately to anchored summon/despawn/Autopet messages and parses the received `Pet:` Tab widget once per second. QCA constructs a plain player head from a verified profile and deliberately omits synthetic `petInfo`, preventing external item-model predicates from replacing the HUD icon. The active Pets menu and nearby rendered pet may provide a matching Profile, but their entire ItemStack is never reused. Bundled offline metadata contains 88 base profiles, 352 skin profiles, 5,422 pet-only current/animated texture mappings, and 87 accessory definitions. Dynamic variants are assigned by the longest exact skin-family prefix; Baby Spinosaurus alone has 60 recognized current/animation textures. No runtime texture download or Firmament installation is required. All pet text is fully measured, including bold style, and is never shortened with an ellipsis. The current-level and progress-to-max lines default on; the latter hides at max level without affecting the held-item row. A held item confirmed through the Pets menu, Tab, or received chat is retained per pet in QCA's local config and remains available after reconnecting. Skin name and Ancient Golden Dragon overflow level are supported. Pet items are shown as icon + name by default, with icon-only and name-only modes. Large values use one decimal with `k`, `m`, `b`, or `t`.
 
-## 7. Chat
+## 7. Items and menus
 
-### 6.1 Chat Peek
+### 7.1 Attribute Shard Fusion Guide
+
+**Purpose:** answer both “what makes this Shard?” and “what can I make with this Shard?” without leaving Minecraft or guessing an order-sensitive recipe.
+
+**What it does:** opens a JEI-inspired browser backed by a bundled offline catalog of exactly 320 current Bazaar-listed Shards. Search accepts the original English name, internal Shard ID, attribute/effect, rarity, category, family, related skill, mob type, or acquisition text. The **Details** tab presents the complete normalized Wiki effect, semantic classifications, and each documented natural or Fusion acquisition method. The **Recipes** tab enumerates every ordered input pair that can produce the selected Shard; this includes Shards such as Queen Bee that have both natural sources and Fusion recipes. The **Uses** tab enumerates every ordered pair containing the selected Shard and the outputs it can produce. Left-clicking a result opens Details, right-clicking opens Uses, and Back/Forward history preserves the browsing chain. No line is shortened with an ellipsis.
+
+Recipe cards preserve first/second-input order, show the amount consumed from each side, show up to three selectable outputs in the algorithm's real order, distinguish ID/Chameleon output (`1`) from special-rule output (`2`), and note the Pure Reptile 2–20% chance to double output. The input amounts follow the documented rule: Chameleon Shard uses `1`, Reptile/Amphibian/Elemental Shards use `2`, and all others use `5`.
+
+The data generator follows the [Wiki-documented Attribute Fusion rules](https://hypixelskyblock.minecraft.wiki/w/Attribute_Fusion) and current [Attributes tables](https://hypixelskyblock.minecraft.wiki/w/Attributes), then uses the [official Bazaar endpoint](https://api.hypixel.net/v2/skyblock/bazaar) as the exact 320-item allow-list. The current Wiki tables contain 321 rows; legacy Rainbug is excluded because it is absent from the official Bazaar Shard universe. Every catalog Shard has effect and acquisition data; where the current table does not document a method (currently Wild Hog), the UI says so instead of inventing one. The generated JSON is committed with the mod. Runtime never contacts the Wiki, Bazaar API, NEU, or another mod.
+
+All 320 catalog IDs have their corresponding bundled Shard icon generated offline from the reviewed MIT-licensed SkyShards icon set; the generic amethyst placeholder is not used. Shards that intentionally share the same upstream in-game appearance retain that shared icon. After the client receives a matching native Shard `ItemStack` in an already-open menu or inventory, that stack takes priority and is retained in a session-wide cache so its resource-pack/server presentation remains authoritative across guide pages. QCA does not download an icon at runtime; an already-received player head remains subject to Minecraft's normal renderer.
+
+Epic names use Minecraft's dark-purple `§5` instead of light-purple `§d`. Rarity, stat, category, mob-type, skill, and acquisition lines use the corresponding SkyBlock/Minecraft semantic colours. Clickable Shard text darkens and underlines only while its visible text is hovered. The search field releases focus when the player clicks outside it, presses `Esc`, or presses `Tab`, and it accepts input again after a direct click. Recipe inputs and candidate outputs are compact content-width groups centered inside the card; their click regions match the visible icon/text bounds rather than distant card halves. The local `/qshard [English query]` command and the feature's **Open Guide** setting open this screen only. The optional key chord is unbound by default. None of these entry points sends chat, a server command, a packet, a menu click, or an API request.
+
+## 8. Chat
+
+### 8.1 Chat Peek
 
 **What it does:** while the configured key/chord is physically held and no screen is open, QCA asks the vanilla chat renderer to use its foreground/focused height. Releasing the key restores normal chat immediately. The key defaults to unbound. While peeking, the wheel target defaults to chat history; the player may switch it to the normal hotbar. No message is sent, copied, opened, or modified.
 
-## 8. Configuration and HUD styling
+## 9. Configuration and HUD styling
 
 Press the rebindable `O` key or run `/aca`, `/qca`, `/ca`, or `/qc` to open the single **Features** configuration tab. Each alias is added only if its client-command name is unoccupied. These local commands open a screen and send no chat or command content to the server. Mod Menu can open the same screen when installed. **General** is the first category and contains UI animations plus the alert master mute. Left-click toggles a card, its left blue strip indicates the enabled state, and right-click opens meaningful secondary settings. Cards and secondary pages do not repeat an enable switch. The language switch controls QCA UI text independently of the Minecraft client language.
 
 Every HUD has independent background alpha/color, border visibility/width/color, title color, bold, shadow, and 50–200% scale. Editable colors share an RGB/HSV picker with presets, and every background picker includes an explicit Transparent choice. The bottom-left **Edit HUD** button opens the layout screen, which shows only HUDs actually loaded in the current location/state. Dragging a border or corner uniformly resizes that HUD; each has a small settings gear. Mouse release immediately saves position and scale, and every style persists in `config/qcloudy_addition.json`. Opening animations default to on and are optional.
 
-Every hotkey is captured inline on its existing feature-settings row; QCA no longer opens a dedicated chord screen. The listening row accepts a keyboard key or mouse button (including buttons 1–5 and additional GLFW side buttons) plus any combination of Ctrl, Shift, Alt, and Cmd/Super. `Esc`, Backspace, or Delete clears the binding and leaves the player on the same settings page. Middle-click conversion is disabled by default and initially converts only physical left-click item buttons.
+Every hotkey is captured inline on its existing feature-settings row; QCA no longer opens a dedicated chord screen. The listening row accepts a keyboard key or mouse button (including buttons 1–5 and additional GLFW side buttons) plus any combination of Ctrl, Shift, Alt, and Cmd/Super. `Esc`, Backspace, or Delete clears the binding and leaves the player on the same settings page.
 
 The permanently available local `/th` and `/helia` commands have no settings. Explicit player invocations send exactly `warp torrhus` and `chapter torrhus`, equivalent to manually entering `/warp torrhus` and `/chapter torrhus`; they are never triggered automatically.
 
 Broad numeric ranges use draggable sliders: HUD opacity and scale, cursor-memory duration, and teleport-sound volume and pitch. Values update continuously while dragging and persist on mouse release. Small discrete sets such as border width, progress-display modes, and sound presets remain direct cycle controls.
 
-### 8.1 AOTE/AOTV sound customization
+### 9.1 AOTE/AOTV sound customization
 
 **Purpose:** let players change intrusive teleport sounds without forcing the tools to be silent.
 

@@ -1,6 +1,6 @@
 # QCloudy_Addition 功能实现与数据流细致说明
 
-本文对应 `1.5.1+26.1.2`，逐项说明每个公开功能的用途、读取的客户端信息、实现方式、应呈现的效果、默认状态，以及是否会产生对外操作。
+本文对应 `alpha-2.5.6-26.1.2`，逐项说明每个公开功能的用途、读取的客户端信息、实现方式、应呈现的效果、默认状态，以及是否会产生对外操作。
 
 ## 1. 总体架构
 
@@ -312,13 +312,15 @@ Tab / 计分板 / 聊天 / 已打开菜单 / 标题 / 已加载实体 / 本地�
 - **效果：**默认原声；可选Chorus、Enderman、Amethyst、XP Orb、End Portal Fill或Shulker，并调音量/音调。
 - **默认/对外：**两类保持VANILLA；纯本地声音。
 
-### 12.4 菜单中键转换
+### 12.4 Attribute Shard Fusion Guide
 
-- **用途：**让实际主键点击用Minecraft中键/Clone容器动作激活物品按钮，减少先拿起物品的可见延迟。
-- **读取内容：**物理左右键、ChestMenu槽位、光标携带状态和SkyBlock状态。
-- **实现：**`MiddleClickMenus`只接受非玩家栏、非空、`PICKUP`的Chest槽位；默认只转换物理左键，并默认要求光标为空。只对这次物理点击调用 `handleContainerInput(..., button2, CLONE, ...)`。
-- **效果：**支持的菜单物品不会先显示到光标上。
-- **默认/对外：**功能关闭；开启后每次容器动作仍必须由玩家实际点击。
+- **用途：**完整提供反向配方查询与正向用途查询，避免玩家猜测存在输入顺序区别的 Attribute Fusion 组合。
+- **打包数据来源：**`assets/qcloudy_addition/data/shard_fusions.json` 在构建前从当前 [Hypixel SkyBlock Wiki Attributes](https://hypixelskyblock.minecraft.wiki/w/Attributes) 效果/获取表与 [Attribute Fusion](https://hypixelskyblock.minecraft.wiki/w/Attribute_Fusion) 规则离线生成；Shard 身份用 [SkyShards](https://github.com/Campionnn/SkyShards)、[NotEnoughUpdates 物品仓库](https://github.com/NotEnoughUpdates/NotEnoughUpdates-REPO) 和 [Hypixel 官方 Bazaar 产品列表](https://api.hypixel.net/v2/skyblock/bazaar) 交叉检查。320 张本地 Shard PNG 来自 SkyShards 审核 MIT commit `9688031dbc4e726168ffceb0f44884ff26e6e728` 的 `public/shardIcons`；源集合共 321 张，生成时按目录允许列表筛选并排除 Rainbug。
+- **数据校准：**运行时目录必须严格包含 320 个官方 Bazaar Shard。相对过时的 317 项快照，补入 Anteater、Zombuddy、Troodon 与 Ghost Crab；Goldolot 使用 `R92`；Rainbug 因不在官方 Bazaar Shard 允许列表中而排除。Wiki Attributes 列表页面明确标注不完整/可能过时，因此只作为规则和属性说明，不作为数量权威。
+- **实现：**`ShardFusionCatalog` 一次载入并校验随模组提交的 JSON，包括规范化富文本效果片段、获取方式、生物类型和语义颜色；搜索覆盖名称/ID/属性/效果/品质/分类/家族/Skill/生物类型/获取文字。有序输入索引同时服务 Recipes 与 Uses，因此拥有自然来源的 Shard（例如 Queen Bee）仍会显示全部 Fusion 配方。特殊规则对两种输入顺序对称检查；其余 ID 输出保留第一/第二输入顺序。Chameleon 按数字 ID 递增并在需要时滚入下一品质。`ShardItemResolver` 使用整次会话共享的原生 ItemStack 缓存：已经在打开菜单/物品栏收到的匹配物品会覆盖内置模型；未观察到的每个目录条目都解析到自身离线 Shard 纹理，不再回退成紫水晶。QCA 不发起 HTTP 或纹理请求；已经收到的玩家头继续交由 Minecraft 正常物品渲染管线处理。
+- **数量逻辑：**Chameleon 消耗 `1`；Reptile、Amphibian、Elemental 消耗 `2`；其他 Shard 消耗 `5`。ID/Chameleon 结果产出 `1`，特殊规则结果产出 `2`；Pure Reptile 显示按收到等级计算的 2–20% 双倍产出概率。最多三个可选输出按真实顺序显示，且不会等于任一输入。
+- **界面：**`ShardFusionScreen` 提供详细信息/合成来源/可合成内容标签、搜索结果、前进/后退历史、分页、物品图标、输入数量、候选输出、产量及明确顺序提示。详情显示完整效果与获取行，单独标注 Fusion-only，并在存在配方时显示已验证 Fusion 配方数量。Epic 使用 Minecraft `§5`；其他品质/属性/分类/生物类型/获取文字使用已审核语义颜色。鼠标悬停可点击 Shard 文字时只让可见文字变深并添加下划线。点击搜索框外、按 `Esc` 或 `Tab` 释放文字焦点，点击搜索框重新获得焦点。输入组合与候选输出按实际内容宽度紧凑居中，点击区域由相同可见边界生成。文字换行或缩放，不使用省略号。
+- **入口/默认/对外：**功能默认开启。二级设置只包含“打开指南”和默认未绑定的键盘/鼠标组合键。本地 `/qshard [英文查询]` 打开同一界面并预填搜索。它不会发送服务器命令、聊天、数据包、菜单输入，也不会请求 Wiki、Bazaar 或任何网络资源。
 
 ## 13. 本地保存内容
 
@@ -332,9 +334,9 @@ QCA不会在磁盘保存密码、Token、Hypixel API Key、聊天历史、远程
 | 玩家触发 | 精确行为 | 是否自动 |
 |---|---|---|
 | `/aca`、`/qca`、`/ca`、`/qc` | 打开本地QCA设置 | 无服务器载荷 |
+| `/qshard [英文查询]` | 打开本地离线 Shard Fusion Guide 并预填搜索 | 无服务器载荷 |
 | 玩家输入 `/th` | `sendCommand("warp torrhus")` | 否 |
 | 玩家输入 `/helia` | `sendCommand("chapter torrhus")` | 否 |
-| 玩家使用已开启的中键转换 | 对实际点击槽位发送一次正常 `CLONE` 容器输入 | 否 |
 | 玩家点击“重新连接” | 对本次内存中记录的目标发起一次普通Minecraft连接 | 否 |
 
 `sendChat`：无。自动生成聊天：无。自动命令：无。自动移动、战斗、捕捉、物品使用、方块交互或重连：无。

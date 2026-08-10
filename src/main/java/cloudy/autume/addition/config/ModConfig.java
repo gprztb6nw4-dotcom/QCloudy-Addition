@@ -119,6 +119,11 @@ public final class ModConfig {
             hunting.safariShards = false;
             configVersion = 16;
         }
+        if (configVersion < 17) {
+            // Shard Fusion is a local recipe guide and is enabled by default.
+            inventory.shardFusionHelper = true;
+            configVersion = 17;
+        }
         hudStyle.map.normalize();
         hudStyle.mining.normalize();
         hudStyle.hunting.normalize();
@@ -135,10 +140,12 @@ public final class ModConfig {
     public static final class Keybinds {
         public int openConfigModifiers;
         public int peekChatModifiers;
+        public int openShardFusionModifiers;
 
         private void normalize() {
             openConfigModifiers &= 0x0F;
             peekChatModifiers &= 0x0F;
+            openShardFusionModifiers &= 0x0F;
         }
     }
 
@@ -492,6 +499,7 @@ public final class ModConfig {
 
     public static final class Inventory {
         public boolean yieldToFirmament = true;
+        public boolean shardFusionHelper = true;
 
         public boolean itemTimestamps = true;
         public boolean showCreationTimestamp = true;

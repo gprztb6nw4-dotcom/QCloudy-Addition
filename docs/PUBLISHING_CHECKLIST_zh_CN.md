@@ -6,8 +6,8 @@
 |---|---|
 | 名称 | QCloudy_Addition |
 | 建议slug | `qcloudy-addition` |
-| 版本 | `1.5.1+26.1.2` |
-| 发布通道 | 在完成登录Hypixel回归前建议Beta |
+| 版本 | `alpha-2.5.6-26.1.2` |
+| 发布通道 | Alpha；只有项目所有者明确同意后才能更名为 Beta 或 Release |
 | 环境 | 纯客户端 |
 | Loader | Fabric |
 | Minecraft | 26.1.2 |
@@ -19,9 +19,9 @@
 
 建议Modrinth简短描述：
 
-> 面向Fabric 26.1.2的纯客户端Hypixel SkyBlock地图、Mining/Torrhus/Safari追踪、Pet HUD、物品保护与可自定义视觉提示。
+> 面向 Fabric 26.1.2 的纯客户端 Hypixel SkyBlock 地图、追踪、Pet HUD、离线 Shard Fusion 配方与可自定义视觉提示。
 
-建议Modrinth分类：Adventure、Utility、Transportation。
+建议 Modrinth 分类：Utility、Optimization、Game Mechanics。
 
 建议GitHub Topics：`minecraft`、`fabric`、`hypixel-skyblock`、`skyblock`、`client-side`、`hud`、`minecraft-mod`、`java`。
 
@@ -29,7 +29,7 @@
 
 - 英文主描述使用 `docs/MODRINTH_DESCRIPTION.md`。
 - 中文页面或英文描述下方使用 `docs/MODRINTH_DESCRIPTION_zh_CN.md`。
-- 只把 `release/QCloudy_Addition-1.5.1+26.1.2.jar` 标为可运行主文件。
+- 只把 `release/QCloudy_Addition-alpha-2.5.6-26.1.2.jar` 标为可运行主文件。
 - Fabric API标为必需，Mod Menu标为可选。
 - Client环境标为必需，Server标为不支持。
 - 不要把Firmament、SkyHanni、Skyblocker或BabyzombieAddons标为依赖。
@@ -46,20 +46,24 @@
 - 不提交 `run/`、`run-standalone/`、`.gradle/`、`.gradle-user-home/`、本地配置、日志、崩溃ZIP或四个参考JAR。
 - 首次commit前确认 `.gitignore` 覆盖本地构建/运行文件。
 
-## GitHub Release 1.5.1
+## GitHub Alpha 2.5.6
 
-- 标题：`QCloudy_Addition 1.5.1 for Minecraft 26.1.2`
-- Tag：`v1.5.1+26.1.2`
-- 英文正文使用 `docs/GITHUB_RELEASE_1.5.1.md`，中文正文使用 `docs/GITHUB_RELEASE_1.5.1_zh_CN.md`。
+- 标题：`QCloudy_Addition Alpha 2.5.6 for Minecraft 26.1.2`
+- Tag：`v2.5.6-alpha-26.1.2`
+- 英文正文使用 `docs/GITHUB_RELEASE_2.5.6.md`，中文正文使用 `docs/GITHUB_RELEASE_2.5.6_zh_CN.md`。
 - 上传二进制JAR，可选附加Sources JAR。
 - 上传后重新下载一次，并与 `docs/VALIDATION.md` 中哈希比较。
-- 在实服回归完成前标记Pre-release/Beta。
+- 保持 Pre-release/Alpha，直到项目所有者明确提升版本通道。
 
 ## 最终安全与质量门槛
 
 - 任何代码、资源、元数据或版本变化后都用Java 25重跑 `clean test build prepareRelease`。
 - 重跑 `jar --validate`、`unzip -t`、元数据、class major与release/build哈希检查。
-- 确认当前98项测试仍全部通过；只有从真实XML统计后才能修改公开测试数。
+- 从本次新生成的 XML 统计最终通过测试数，不复用 2.5.4 的数量。
+- 确认恰好打包 320 张 Shard 纹理、320 个物品模型定义与 320 个物品定义；目录和图标 ID 集合完全一致且不存在 Rainbug。
+- 确认点击外部、`Esc` 与 `Tab` 均可退出搜索焦点，点击搜索可恢复输入，而且配方导航快捷键不会被搜索框持续拦截。
+- 在支持的 GUI Scale 下确认紧凑输入/输出边界与点击范围保持对齐。
+- 确认 Epic 使用 `§5`、详情页完整换行显示效果/获取方式、悬停样式只作用于可见可点击文字，并且自然＋Fusion 双来源 Shard 同时显示两类来源。
 - 至少启动一次独立实例和一次四参考模组实例。
 - 重新核对 `docs/COMPLIANCE_zh_CN.md` 中每个命令/聊天载荷。
 - 确认上传图标四角透明，32×32下仍可识别。

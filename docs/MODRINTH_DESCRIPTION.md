@@ -16,7 +16,8 @@ English is the default interface language. Simplified Chinese can be selected fr
 - Critter Safari dashboard, Critterdex, Cold/campfire safety, Wumpa, Warden, Sparkling, Floor Drop, quest-item, Snoozle-wall, and Safari Belt helpers
 - Equipped Pet HUD with real pet/skin heads, rarity-colored names, XP, level-200 overflow, skin name, and held-item icon/name
 - Ender Dragon outline with a configurable color
-- Item timestamps, cursor memory, configurable AOTE/AOTV sounds, Chat Peek, and optional menu middle-click conversion
+- Offline 320-Shard Attribute Fusion Guide with Shard-specific icons, semantic-colour Details, complete documented acquisition methods, Recipes/Uses (including natural-plus-Fusion Shards), ordered inputs, compact cards, and local `/qshard` search
+- Item timestamps, cursor memory, configurable AOTE/AOTV sounds, and Chat Peek
 - Chat Peek with keyboard or mouse-button chords
 - BLC-inspired searchable settings and a dedicated drag/resize HUD editor
 - Manual reconnect button with no automatic retry loop

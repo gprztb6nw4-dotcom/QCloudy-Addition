@@ -92,7 +92,8 @@ final class FeatureSettingsScreen extends Screen {
 
     private void drawRow(GuiGraphicsExtractor graphics, Setting setting, int x, int y, int rowWidth,
                          int mouseX, int mouseY) {
-        boolean hovered = AcaUiTheme.contains(mouseX, mouseY, x, y, rowWidth, ROW_HEIGHT);
+        boolean available = setting.available();
+        boolean hovered = available && AcaUiTheme.contains(mouseX, mouseY, x, y, rowWidth, ROW_HEIGHT);
         boolean listening = setting.chordAction() != null && setting.chordAction() == listeningChord;
         graphics.fill(x, y, x + rowWidth, y + ROW_HEIGHT,
                 listening ? 0xFF263D47 : hovered ? AcaUiTheme.CARD_HOVER : AcaUiTheme.CARD);
@@ -124,7 +125,8 @@ final class FeatureSettingsScreen extends Screen {
                     AcaUiTheme.TEXT_MUTED, false);
             return;
         }
-        graphics.text(font, setting.label(), x + 10, y + 9, AcaUiTheme.TEXT, false);
+        graphics.text(font, setting.label(), x + 10, y + 9,
+                available ? AcaUiTheme.TEXT : AcaUiTheme.TEXT_DIM, false);
         if (setting.color()) {
             int swatchX = valueX - 18;
             if (setting.kind == Kind.BACKGROUND_COLOR && panelStyle().backgroundOpacity == 0) {
@@ -136,7 +138,8 @@ final class FeatureSettingsScreen extends Screen {
             }
             graphics.outline(swatchX, y + 7, 13, 13, AcaUiTheme.BORDER);
         }
-        graphics.text(font, value, valueX, y + 9, AcaUiTheme.TEXT_MUTED, false);
+        graphics.text(font, value, valueX, y + 9,
+                available ? AcaUiTheme.TEXT_MUTED : AcaUiTheme.TEXT_DIM, false);
     }
 
     private void drawFittedText(GuiGraphicsExtractor graphics, String text, int x, int y, int availableWidth) {
@@ -180,6 +183,11 @@ final class FeatureSettingsScreen extends Screen {
                 rows.add(new Setting(Kind.SCALE, "config.setting.scale"));
                 rows.add(new Setting(Kind.EDIT_LAYOUT, "config.layout"));
             }
+            return rows;
+        }
+        if (feature == ConfigScreen.Feature.SHARD_FUSION_HELPER) {
+            rows.add(new Setting(Kind.OPEN_SHARD_GUIDE, "config.setting.open_shard_guide"));
+            rows.add(new Setting(Kind.SHARD_GUIDE_KEY, "config.setting.shard_guide_key"));
             return rows;
         }
         if (feature.inventoryFeature()) {
@@ -263,6 +271,7 @@ final class FeatureSettingsScreen extends Screen {
         }
         for (Hit hit : hits) {
             if (hit.contains(click.x(), click.y())) {
+                if (!hit.setting.available()) return true;
                 if (hit.setting.slider() && hit.sliderContains(click.x(), click.y())) {
                     draggingSlider = hit;
                     updateSlider(hit, click.x());
@@ -345,6 +354,8 @@ final class FeatureSettingsScreen extends Screen {
         }
         ModConfig.PanelStyle style = panelStyle();
         switch (setting.kind) {
+            case OPEN_SHARD_GUIDE -> QCloudyAdditionClient.openShardFusionGuide(minecraft, this, "");
+            case SHARD_GUIDE_KEY -> listeningChord = QCloudyAdditionClient.ChordAction.OPEN_SHARD_FUSION;
             case YIELD_FIRMAMENT -> config.inventory.yieldToFirmament = !config.inventory.yieldToFirmament;
             case OPEN_CONFIG_KEY -> listeningChord = QCloudyAdditionClient.ChordAction.OPEN_CONFIG;
             case SHOW_CREATION -> config.inventory.showCreationTimestamp = !config.inventory.showCreationTimestamp;
@@ -463,11 +474,16 @@ final class FeatureSettingsScreen extends Screen {
         DRAGON_COLOR, OPACITY, BACKGROUND_COLOR, BORDER, BORDER_SIZE, BORDER_COLOR,
         TITLE_COLOR, BOLD, SHADOW, SCALE, PET_ICON, PET_LEVEL_XP, PET_MAX_XP, PET_OVERFLOW_LEVEL,
         PET_SKIN_NAME, PET_ACCESSORY, COMMISSION_PROGRESS, HOTM_SLOT, EDIT_LAYOUT,
+        OPEN_SHARD_GUIDE, SHARD_GUIDE_KEY,
         YIELD_FIRMAMENT, OPEN_CONFIG_KEY, SHOW_CREATION, SHOW_COUNTDOWNS,
         TIMESTAMP_FORMAT, CURSOR_TOLERANCE,
         INSTANT_SOUND_MODE, INSTANT_CUSTOM_SOUND, INSTANT_SOUND_VOLUME,
         ETHERWARP_SOUND_MODE, ETHERWARP_CUSTOM_SOUND, ETHERWARP_SOUND_VOLUME,
         CHAT_PEEK_KEY, CHAT_SCROLL_TARGET
+    }
+
+    static boolean shardGuideEntryEnabled(ModConfig config) {
+        return config.inventory.shardFusionHelper;
     }
 
     private final class Setting {
@@ -502,8 +518,9 @@ final class FeatureSettingsScreen extends Screen {
             }
             ModConfig.PanelStyle style = panelStyle();
             return switch (kind) {
+                case OPEN_SHARD_GUIDE -> ModText.get(available() ? "config.open" : "config.disabled");
                 case YIELD_FIRMAMENT -> onOff(config.inventory.yieldToFirmament);
-                case OPEN_CONFIG_KEY, CHAT_PEEK_KEY -> {
+                case SHARD_GUIDE_KEY, OPEN_CONFIG_KEY, CHAT_PEEK_KEY -> {
                     QCloudyAdditionClient.ChordAction action = chordAction();
                     yield action == listeningChord ? ModText.get("config.key.waiting")
                             : QCloudyAdditionClient.chordName(action);
@@ -546,6 +563,10 @@ final class FeatureSettingsScreen extends Screen {
             };
         }
 
+        boolean available() {
+            return kind != Kind.OPEN_SHARD_GUIDE || shardGuideEntryEnabled(ConfigManager.get());
+        }
+
         boolean color() {
             if (huntingOption != null) return huntingOption.type == HuntingOption.Type.COLOR;
             return kind == Kind.DRAGON_COLOR || kind == Kind.BACKGROUND_COLOR
@@ -555,6 +576,7 @@ final class FeatureSettingsScreen extends Screen {
         QCloudyAdditionClient.ChordAction chordAction() {
             if (huntingOption != null) return null;
             return switch (kind) {
+                case SHARD_GUIDE_KEY -> QCloudyAdditionClient.ChordAction.OPEN_SHARD_FUSION;
                 case OPEN_CONFIG_KEY -> QCloudyAdditionClient.ChordAction.OPEN_CONFIG;
                 case CHAT_PEEK_KEY -> QCloudyAdditionClient.ChordAction.PEEK_CHAT;
                 default -> null;

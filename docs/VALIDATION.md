@@ -1,3 +1,110 @@
+# QCloudy_Addition Alpha 2.5.6 Shard details and semantic-colour validation
+
+Validation date: 2026-08-10
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-alpha-2.5.6-26.1.2.jar`
+- `release/QCloudy_Addition-alpha-2.5.6-26.1.2-sources.jar`
+
+## Result
+
+Alpha 2.5.6 adds a dedicated Details view to all 320 Shards. It shows the Wiki-listed effect, semantic classification, and documented acquisition methods without replacing missing facts with guesses. Epic uses Minecraft's `§5` dark purple; stats, categories, mob types, acquisition methods, and rarities use their corresponding semantic colours. Clickable Shard names darken and underline only while the visible text is hovered. Recipes remain indexed independently from natural acquisition: Queen Bee, for example, keeps its Honeyhive/Honeycomb Collection acquisition details and also exposes every verified ordered Fusion recipe that can produce it.
+
+## Automated, data, and artifact checks
+
+- Java 25 `clean test build prepareRelease` completed successfully. Fresh XML reports 120 tests, 0 failures, 0 errors, and 0 skips; class files use major version 69.
+- The catalog contains 320 unique Shard IDs, names, Bazaar IDs, internal IDs, detail records, and Shard-specific icon resource sets. Rainbug/L49 is absent.
+- Every Shard has a non-empty effect and acquisition display. The current Wiki tables provide a documented acquisition for 319 catalog Shards; Wild Hog is the only current table gap and is explicitly labelled as not documented instead of receiving a fabricated source.
+- Gemzie is regression-tested as Epic, with `+0.25–2.5 Gemstone Spread`, a yellow Gemstone Spread label, and the Critter Capsule/Cavern Biome capture source. Defense and Animal/Aquatic semantic colours are covered by catalog tests.
+- Pandarai is regression-tested as Fusion-only. Queen Bee is regression-tested as having both natural acquisition data and non-empty reverse Fusion recipes. The same reverse index powers the Recipes view for every possible output Shard.
+- Search is regression-tested across canonical name, ID, family/category metadata, effect text, acquisition text, and mob type. Generated detail text contains no residual Wiki templates, links, HTML tags, or bold markers.
+- English and Simplified Chinese resources each contain 373 keys with identical key sets. The bundled `SHARD_DATA_NOTICE.txt` and third-party notices document the Wiki-data and icon-source licences.
+- Both binary and Sources JARs pass JDK 25 `jar --validate` and `unzip -t`; their `release` copies are byte-identical to `build/libs`.
+- Metadata is client-only and declares `alpha-2.5.6-26.1.2`, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+.
+- Static inspection finds no Shard-guide runtime HTTP/API client, packet send, chat/command send, inventory click, Fusion action, or automation. Wiki/API data generation happens offline before packaging.
+
+## Validation boundary
+
+This pass validates source, generated data, unit tests, build outputs, archive integrity, and static client-only boundaries. It does not claim an authenticated Hypixel regression or pixel-level acceptance at every GUI scale/resource pack. Those live checks remain required before promoting this alpha to beta or release. The 2.5.5 report below remains historical evidence only.
+
+## SHA-256
+
+- Binary JAR: `d4ed9ba609a64787b4de247f6561c1e5d1961f8359bdf9f25df3ba053a9b82ce`
+- Sources JAR: `13251eaafe50c00ab4f10554dd8ca1b78dca6d65ca011191d5d5f7ffbf41fca0`
+
+---
+
+# QCloudy_Addition Alpha 2.5.5 Shard icon and interaction validation
+
+Validation date: 2026-08-10
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-alpha-2.5.5-26.1.2.jar`
+- `release/QCloudy_Addition-alpha-2.5.5-26.1.2-sources.jar`
+
+## Scope
+
+Alpha 2.5.5 replaces the amethyst fallback with a bundled, Shard-specific icon for every one of the 320 catalog IDs, while keeping an already-received native ItemStack as the session-cached priority. It also releases search focus on outside click, `Esc`, or `Tab`, restores focus on a direct search-field click, and centers each input pair/output set as a compact group whose hitboxes follow the rendered bounds. Six pairs intentionally share the same PNG because the reviewed upstream Shard icon set gives those Shards the same in-game appearance.
+
+## Automated, data, and artifact checks
+
+- Java 25 `clean test build prepareRelease` completed successfully. Fresh XML reports 116 tests, 0 failures, 0 errors, and 0 skips across 22 suites; class files use major version 69.
+- The 320 catalog IDs, 320 bundled Shard PNGs, 320 item models, and 320 item definitions have exactly equal ID sets. Every PNG decoded successfully, every dimension is between 16 and 64 pixels with alpha, and Rainbug/L49 is absent.
+- The generic amethyst fallback was removed. Static inspection confirms that an already-received native Shard ItemStack is cached by Shard ID for the session and takes priority over the bundled local model; the fallback itself is a Shard-specific `PLAYER_HEAD` with an overrideable `qcloudy_addition:shards/<id>` model.
+- Regression tests cover search-focus exit keys, compact input/output geometry at wide and constrained widths, catalog/icon completeness, recipe invariants, and responsive-layout bounds. The outside-click/refocus branches and rendered-hitbox wiring were also inspected directly.
+- Both renumbered binary and Sources JARs pass JDK 25 `jar --validate` and `unzip -t`. A full extracted-payload comparison against the corresponding pre-renumbering archives confirms that only `fabric.mod.json` version metadata changed.
+- Metadata is client-only and declares `alpha-2.5.5-26.1.2`, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+.
+- English and Simplified Chinese resources both contain 362 keys with identical key sets. `git diff --check`, JSON parsing, and a static scan of the Shard package for network clients, packets, commands, chat, inventory clicks, fusion automation, and the removed amethyst fallback found no match.
+- A fresh combined development-client smoke launch initialized QCloudy_Addition alongside BabyzombieAddons, Firmament, Skyblocker, SkyHanni, and Mod Menu, completed the combined resource reload, created the item atlas, and started the sound engine. The log contains no missing or failed `qcloudy_addition:shards/*` model/texture load and no QCloudy exception. The observed errors came from the unauthenticated development account and SkyHanni rejecting current NEU constants (`HUNTING_FORTUNE` and `FISHING_NET`), not from QCloudy_Addition.
+
+## Validation boundary
+
+This pass includes a fresh combined initialization/resource smoke launch, but it does not claim an authenticated Hypixel regression or an in-game pixel-level acceptance check at every GUI scale/resource pack. Those live visual and server checks remain required before promoting this alpha to beta or release. The 2.5.4 report below remains historical evidence only.
+
+## SHA-256
+
+- Binary JAR: `b7ca1fa7477e31f86bd4f97c045e17238d3a7920138ebe6364d1a63689042f56`
+- Sources JAR: `ba050233e7dabe0ee8c65d5784f38ca40fec8ca00e6aac446a0c33d539f09095`
+
+---
+
+# QCloudy_Addition Alpha 2.5.4 Shard Fusion validation addendum
+
+Validation date: 2026-08-10
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-alpha-2.5.4-26.1.2.jar`
+- `release/QCloudy_Addition-alpha-2.5.4-26.1.2-sources.jar`
+
+## Result
+
+The standalone, client-only Shard Fusion guide is included in Alpha 2.5.4. It provides JEI-inspired search, Recipes and Uses views, ordered-input swapping, one-to-three output slots, responsive narrow-screen layouts, bilingual UI labels, and resource-pack-aware observed item icons without depending on JEI or another SkyBlock mod. The runtime reads only its bundled, versioned catalog and client-visible item data; it performs no Wiki/API request, packet send, inventory click, chat send, command send, or fusion automation.
+
+## Automated, data, and artifact checks
+
+- Java 25 clean testing passed 108 tests with zero failures, errors, or skips.
+- Java 25 `./gradlew clean build prepareRelease` completed successfully; the new class files use major version 69.
+- The catalog contains 320 unique Shard IDs, names, and Bazaar IDs and exactly matches the 320 `SHARD_*` products in the reviewed official Bazaar snapshot. Anteater, Zombuddy, Troodon, Goldolot (`R92`), and Ghost Crab are present; Rainbug is absent.
+- Fusion invariants, ordered input behavior, first-input quantities, Chameleon stepping/exclusions, reverse Recipes/Uses indexes, shared recipe-instance indexing, and separate same-Shard ID/Special output slots are covered by tests.
+- Both renumbered JARs pass JDK 25 `jar --validate` and `unzip -t`. A full extracted-payload comparison against the corresponding pre-renumbering archives confirms that only `fabric.mod.json` version metadata changed.
+- Metadata is client-only and declares `alpha-2.5.4-26.1.2`, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+.
+- English and Simplified Chinese resources both contain 362 keys with identical key sets.
+- `git diff --check`, JSON parsing, and static scans of the new Shard code completed without an error.
+
+## Validation boundary
+
+This addendum does not claim an authenticated Hypixel regression, pixel-level acceptance at every GUI scale/resource pack, or a fresh combined launch with all four supplied reference mods. Those live checks remain required before promoting the alpha to beta or release. The older 1.5.1 report below is retained as historical evidence and must not be read as a 2.5.4 live-test result.
+
+## SHA-256
+
+- Binary JAR: `4a26801c3d63cfb2cf4ae10f0249efd761fe6e1264caedb239133e9a698fb773`
+- Sources JAR: `a2a3232c5d6342da89037225e3ec78302d8a0910a72c3cbe56a313f409720025`
+
+---
+
 # QCloudy_Addition 1.5.1 release validation
 
 Validation date: 2026-08-06

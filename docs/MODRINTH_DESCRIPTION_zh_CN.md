@@ -16,7 +16,8 @@ QCloudy_Addition 是一个面向 Minecraft 26.1.2 Hypixel SkyBlock 的纯客户�
 - Critter Safari Dashboard、Critterdex、Cold/篝火、Wumpa、Warden、Sparkling、Floor Drop、Quest Item、Snoozle 墙体与 Safari Belt 辅助
 - 使用真实宠物/皮肤头颅的 Pet HUD，支持品质色名称、经验、200级溢出等级、皮肤名与宠物用品图标/名称
 - 可自定义颜色的 Ender Dragon 高亮
-- 物品时间戳、光标位置记忆、AOTE/AOTV 声音自定义、聊天偷窥和可选菜单中键转换
+- 完全离线的 320-Shard Attribute Fusion Guide，支持专属图标、语义配色详情、完整已记录获取方式、Recipes/Uses（包括自然＋Fusion 双来源 Shard）、有序输入、紧凑卡片与本地 `/qshard` 搜索
+- 物品时间戳、光标位置记忆、AOTE/AOTV 声音自定义和聊天偷窥
 - 支持键盘、鼠标按键和组合键的 Chat Peek
 - BLC 风格的信息层级、搜索和独立 HUD 拖动/缩放界面
 - 不含自动重试循环的手动重新连接按钮

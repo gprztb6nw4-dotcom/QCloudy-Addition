@@ -6,8 +6,8 @@
 |---|---|
 | Name | QCloudy_Addition |
 | Suggested slug | `qcloudy-addition` |
-| Version | `1.5.1+26.1.2` |
-| Release channel | Beta is recommended until authenticated Hypixel regressions are complete |
+| Version | `alpha-2.5.6-26.1.2` |
+| Release channel | Alpha; do not rename to Beta or Release until the project owner explicitly approves it |
 | Environment | Client only |
 | Loader | Fabric |
 | Minecraft | 26.1.2 |
@@ -19,9 +19,9 @@
 
 Suggested Modrinth summary:
 
-> Client-only Hypixel SkyBlock maps, mining/Torrhus/Safari trackers, pet HUD, inventory protection, and configurable visual alerts for Fabric 26.1.2.
+> Client-only Hypixel SkyBlock maps, trackers, pet HUD, offline Shard Fusion recipes, and configurable visual alerts for Fabric 26.1.2.
 
-Suggested Modrinth categories: Adventure, Utility, Transportation.
+Suggested Modrinth categories: Utility, Optimization, Game Mechanics.
 
 Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, `client-side`, `hud`, `minecraft-mod`, `java`.
 
@@ -29,7 +29,7 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 
 - Use `docs/MODRINTH_DESCRIPTION.md` as the English project description.
 - Keep English as the primary description; place `docs/MODRINTH_DESCRIPTION_zh_CN.md` in a linked Chinese page or below the English copy if desired.
-- Upload only `release/QCloudy_Addition-1.5.1+26.1.2.jar` as the playable file.
+- Upload only `release/QCloudy_Addition-alpha-2.5.6-26.1.2.jar` as the playable file.
 - Mark Fabric API as required and Mod Menu as optional.
 - Mark client environment as required and server environment as unsupported.
 - Do not mark Firmament, SkyHanni, Skyblocker, or BabyzombieAddons as required.
@@ -46,20 +46,24 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 - Do not commit `run/`, `run-standalone/`, `.gradle/`, `.gradle-user-home/`, local configs, logs, crash ZIPs, or the supplied reference JARs.
 - Confirm `.gitignore` covers local build/runtime files before the first commit.
 
-## GitHub Release 1.5.1
+## GitHub Alpha 2.5.6
 
-- Title: `QCloudy_Addition 1.5.1 for Minecraft 26.1.2`
-- Tag: `v1.5.1+26.1.2`
-- Use `docs/GITHUB_RELEASE_1.5.1.md` as the release body.
+- Title: `QCloudy_Addition Alpha 2.5.6 for Minecraft 26.1.2`
+- Tag: `v2.5.6-alpha-26.1.2`
+- Use `docs/GITHUB_RELEASE_2.5.6.md` as the release body.
 - Attach the binary JAR and optionally the Sources JAR.
 - Verify uploaded hashes against `docs/VALIDATION.md` after downloading the release once.
-- Mark as pre-release/beta until live Hypixel testing covers the remaining validation boundary.
+- Mark as pre-release/alpha until the project owner explicitly promotes the channel.
 
 ## Final safety and quality gate
 
 - Re-run `clean test build prepareRelease` with Java 25 after any code, resource, metadata, or version change.
 - Re-run `jar --validate`, `unzip -t`, metadata inspection, class-major inspection, and release/build hash comparison.
-- Confirm all 98 current tests still pass, or update the published test count only from actual XML results.
+- Derive the final passing-test count from the fresh XML results; do not reuse the 2.5.4 count.
+- Confirm exactly 320 bundled Shard textures, item-model definitions, and item definitions are present; confirm the catalog-to-icon ID sets match and Rainbug is absent.
+- Confirm search focus exits through outside click, `Esc`, and `Tab`, can be restored by clicking search, and does not block recipe navigation shortcuts.
+- Confirm compact input/output bounds and their click targets remain aligned at the supported GUI scales.
+- Confirm Epic uses `§5`, Details wraps every effect/acquisition line, hover styling applies only to visible clickable text, and natural-plus-Fusion Shards expose both source types.
 - Test at least one standalone launch and one launch with the four reference mods.
 - Recheck every command/chat payload in `docs/COMPLIANCE.md`.
 - Confirm the uploaded icon has transparent corners and remains recognizable at 32×32.

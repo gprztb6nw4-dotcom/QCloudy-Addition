@@ -3,8 +3,10 @@ package cloudy.autume.addition;
 import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ConfigScreen;
 import cloudy.autume.addition.hud.HudRenderer;
+import cloudy.autume.addition.i18n.ModText;
 import cloudy.autume.addition.input.HotkeyInputs;
 import cloudy.autume.addition.inventory.ItemTimestampTooltip;
+import cloudy.autume.addition.inventory.ShardFusionScreen;
 import cloudy.autume.addition.hunting.HuntingTracker;
 import cloudy.autume.addition.hunting.HuntingWorldRenderer;
 import cloudy.autume.addition.inventory.SafariBeltTooltip;
@@ -16,6 +18,7 @@ import cloudy.autume.addition.tracker.TabListTracker;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
@@ -23,7 +26,10 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import com.mojang.blaze3d.platform.MacosUtil;
@@ -41,6 +47,9 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
             "key.qcloudy_addition.open_config", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_O, KEY_CATEGORY));
     private static final KeyMapping PEEK_CHAT = KeyMappingHelper.registerKeyMapping(new KeyMapping(
             "key.qcloudy_addition.peek_chat", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, KEY_CATEGORY));
+    private static final KeyMapping OPEN_SHARD_FUSION = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+            "key.qcloudy_addition.open_shard_fusion", InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_UNKNOWN, KEY_CATEGORY));
     private static final String[] COMMAND_ALIASES = {"aca", "qca", "ca", "qc"};
     private int ticks;
 
@@ -108,6 +117,15 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
             } else {
                 LOGGER.warn("Skipping client command /helia because another mod already registered it");
             }
+            if (dispatcher.getRoot().getChild("qshard") == null) {
+                dispatcher.register(ClientCommands.literal("qshard")
+                        .executes(context -> openShardFusionCommand(context.getSource(), ""))
+                        .then(ClientCommands.argument("name", StringArgumentType.greedyString())
+                                .executes(context -> openShardFusionCommand(context.getSource(),
+                                        StringArgumentType.getString(context, "name").trim()))));
+            } else {
+                LOGGER.warn("Skipping client command /qshard because another mod already registered it");
+            }
         });
 
         LOGGER.info("QCloudy_Addition initialized in client-side mode");
@@ -162,6 +180,22 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         setChord(action, InputConstants.Type.KEYSYM.getOrCreate(GLFW.GLFW_KEY_UNKNOWN), 0);
     }
 
+    public static boolean openShardFusionGuide(Minecraft client, Screen parent, String initialQuery) {
+        if (!ConfigManager.get().inventory.shardFusionHelper) return false;
+        client.setScreen(new ShardFusionScreen(parent, initialQuery));
+        return true;
+    }
+
+    private static int openShardFusionCommand(FabricClientCommandSource source, String query) {
+        if (!ConfigManager.get().inventory.shardFusionHelper) {
+            source.sendError(ModText.component("shard.disabled"));
+            return 0;
+        }
+        Minecraft client = source.getClient();
+        client.execute(() -> openShardFusionGuide(client, client.screen, query));
+        return 1;
+    }
+
     private static void setChord(ChordAction action, InputConstants.Key input, int modifiers) {
         key(action).setKey(input);
         setModifiers(action, modifierMask(modifiers));
@@ -173,6 +207,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         return switch (action) {
             case OPEN_CONFIG -> OPEN_CONFIG;
             case PEEK_CHAT -> PEEK_CHAT;
+            case OPEN_SHARD_FUSION -> OPEN_SHARD_FUSION;
         };
     }
 
@@ -181,6 +216,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         return switch (action) {
             case OPEN_CONFIG -> keybinds.openConfigModifiers;
             case PEEK_CHAT -> keybinds.peekChatModifiers;
+            case OPEN_SHARD_FUSION -> keybinds.openShardFusionModifiers;
         };
     }
 
@@ -189,6 +225,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         switch (action) {
             case OPEN_CONFIG -> keybinds.openConfigModifiers = modifiers;
             case PEEK_CHAT -> keybinds.peekChatModifiers = modifiers;
+            case OPEN_SHARD_FUSION -> keybinds.openShardFusionModifiers = modifiers;
         }
     }
 
@@ -227,7 +264,8 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
 
     public enum ChordAction {
         OPEN_CONFIG,
-        PEEK_CHAT
+        PEEK_CHAT,
+        OPEN_SHARD_FUSION
     }
 
     private static void resetTrackers() {

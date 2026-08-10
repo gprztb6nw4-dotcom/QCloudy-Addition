@@ -440,6 +440,7 @@ public final class ConfigScreen extends Screen {
         CRIMSON_OBJECTIVES(Category.COMBAT, "config.group.crimson_objectives"),
         COMBAT_VISIBILITY(Category.COMBAT, "config.group.combat_visibility"),
         PET_DISPLAY(Category.INVENTORY, "config.group.pet_display"),
+        SHARD_FUSION(Category.INVENTORY, "config.group.shard_fusion"),
         CHAT_UI(Category.GENERAL, "config.group.chat_ui"),
         INVENTORY_TOOLS(Category.INVENTORY, "config.group.inventory_tools");
 
@@ -485,6 +486,7 @@ public final class ConfigScreen extends Screen {
         CRIMSON_TASKS(FeatureGroup.CRIMSON_OBJECTIVES, "config.crimson_tasks", "config.desc.crimson_tasks"),
         DRAGON_HIGHLIGHT(FeatureGroup.COMBAT_VISIBILITY, "config.dragon_highlight", "config.desc.dragon_highlight"),
         PET_HUD(FeatureGroup.PET_DISPLAY, "config.pet_hud", "config.desc.pet_hud"),
+        SHARD_FUSION_HELPER(FeatureGroup.SHARD_FUSION, "config.shard_fusion", "config.desc.shard_fusion"),
         CHAT_PEEK(FeatureGroup.CHAT_UI, "config.chat_peek", "config.desc.chat_peek"),
         ITEM_TIMESTAMPS(FeatureGroup.INVENTORY_TOOLS, "config.item_timestamps", "config.desc.item_timestamps"),
         CURSOR_MEMORY(FeatureGroup.INVENTORY_TOOLS, "config.cursor_memory", "config.desc.cursor_memory"),
@@ -536,6 +538,7 @@ public final class ConfigScreen extends Screen {
                 case CRIMSON_TASKS -> config.crimsonIsle.taskTracker;
                 case DRAGON_HIGHLIGHT -> config.combat.enderDragonHighlight;
                 case PET_HUD -> config.pets.equippedPetHud;
+                case SHARD_FUSION_HELPER -> config.inventory.shardFusionHelper;
                 case CHAT_PEEK -> config.chat.chatPeek;
                 case ITEM_TIMESTAMPS -> config.inventory.itemTimestamps;
                 case CURSOR_MEMORY -> config.inventory.saveCursorPosition;
@@ -581,6 +584,7 @@ public final class ConfigScreen extends Screen {
                 case CRIMSON_TASKS -> config.crimsonIsle.taskTracker = !config.crimsonIsle.taskTracker;
                 case DRAGON_HIGHLIGHT -> config.combat.enderDragonHighlight = !config.combat.enderDragonHighlight;
                 case PET_HUD -> config.pets.equippedPetHud = !config.pets.equippedPetHud;
+                case SHARD_FUSION_HELPER -> config.inventory.shardFusionHelper = !config.inventory.shardFusionHelper;
                 case CHAT_PEEK -> config.chat.chatPeek = !config.chat.chatPeek;
                 case ITEM_TIMESTAMPS -> config.inventory.itemTimestamps = !config.inventory.itemTimestamps;
                 case CURSOR_MEMORY -> config.inventory.saveCursorPosition = !config.inventory.saveCursorPosition;
@@ -601,7 +605,7 @@ public final class ConfigScreen extends Screen {
                         FAIRY_SOUL_WAYPOINTS, SAFARI_CRITTER_HIGHLIGHT, BEEHEEMOTH_HELPER,
                         LASSO_REEL_SOUND, TREE_GIFT_ALERTS,
                         SPARKLING_ALERT, SNOOZLE_WALL_OVERLAY, SAFARI_BELT, DRAGON_HIGHLIGHT, CHAT_PEEK -> null;
-                case ITEM_TIMESTAMPS, CURSOR_MEMORY, TELEPORT_SOUNDS -> null;
+                case SHARD_FUSION_HELPER, ITEM_TIMESTAMPS, CURSOR_MEMORY, TELEPORT_SOUNDS -> null;
             };
         }
 

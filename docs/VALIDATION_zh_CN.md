@@ -1,3 +1,110 @@
+# QCloudy_Addition Alpha 2.5.6 Shard 详情与语义颜色验证
+
+验证日期：2026-08-10
+
+验证产物：
+
+- `release/QCloudy_Addition-alpha-2.5.6-26.1.2.jar`
+- `release/QCloudy_Addition-alpha-2.5.6-26.1.2-sources.jar`
+
+## 结论
+
+Alpha 2.5.6 为 320 个 Shard 全部加入独立详情页，显示 Wiki 当前列出的效果、语义分类与已记录获取方式，不用猜测填补缺失事实。Epic 使用 Minecraft 的 `§5` 深紫色；属性、分类、生物类型、获取方式与品质采用对应语义颜色。可点击 Shard 名称仅在鼠标悬停于可见文字时变深并添加下划线。配方索引与自然获取相互独立：例如 Queen Bee 会保留 Honeyhive/Honeycomb Collection 的自然来源，同时显示每一条可以产出它的已验证有序 Fusion 配方。
+
+## 自动测试、数据与产物检查
+
+- Java 25 下执行 `clean test build prepareRelease` 成功。本次 XML 共统计 120 项测试，0 失败、0 错误、0 跳过；class 文件 major version 为 69。
+- 目录包含 320 个唯一 Shard ID、名称、Bazaar ID、internal ID、详情记录及与 ID 对应的图标资源组；不存在 Rainbug/L49。
+- 每个 Shard 都有非空效果与获取方式显示。当前 Wiki 表为其中 319 个目录 Shard 提供了获取记录；Wild Hog 是当前唯一缺口，界面会明确标为 Wiki 尚未记录，而不会虚构来源。
+- Gemzie 回归测试确认其为 Epic，效果为 `+0.25–2.5 Gemstone Spread`，Gemstone Spread 使用黄色，并显示 Critter Capsule/Cavern Biome 捕捉来源。Defense 以及 Animal/Aquatic 的语义颜色也有目录测试覆盖。
+- Pandarai 回归测试确认为仅能通过 Fusion 获取。Queen Bee 回归测试确认同时拥有自然获取信息和非空的反向 Fusion 配方；所有可作为产物的 Shard 都由同一反向索引驱动“合成来源”页面。
+- 搜索回归测试覆盖原始名称、ID、家族/分类元数据、效果文字、获取方式文字和生物类型。生成后的详情文字不含残留 Wiki 模板、链接、HTML 标签或粗体标记。
+- 英文与简体中文资源各有 373 个键且键集合相同。JAR 内置 `SHARD_DATA_NOTICE.txt` 与第三方声明会说明 Wiki 数据和图标来源许可。
+- 二进制与 Sources JAR 均通过 JDK 25 `jar --validate` 和 `unzip -t`；`release` 副本与 `build/libs` 逐字节一致。
+- 元数据为纯客户端，版本为 `alpha-2.5.6-26.1.2`，声明 Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+ 与 Java 25+。
+- 静态检查没有发现 Shard 指南运行时 HTTP/API 客户端、数据包发送、聊天/命令发送、物品栏点击、Fusion 动作或自动操作；Wiki/API 数据只在打包前离线生成。
+
+## 验证边界
+
+本次检查覆盖源码、生成数据、单元测试、构建产物、归档完整性与纯客户端静态边界，但不代表已经完成登录 Hypixel 的实服回归，也不代表覆盖所有 GUI Scale/材质包的游戏内像素级验收。Alpha 升级为 beta 或 release 前仍需完成这些实测。下方 2.5.5 报告仅作为历史证据保留。
+
+## SHA-256
+
+- 二进制 JAR：`d4ed9ba609a64787b4de247f6561c1e5d1961f8359bdf9f25df3ba053a9b82ce`
+- Sources JAR：`13251eaafe50c00ab4f10554dd8ca1b78dca6d65ca011191d5d5f7ffbf41fca0`
+
+---
+
+# QCloudy_Addition Alpha 2.5.5 Shard 图标与交互验证
+
+验证日期：2026-08-10
+
+验证产物：
+
+- `release/QCloudy_Addition-alpha-2.5.5-26.1.2.jar`
+- `release/QCloudy_Addition-alpha-2.5.5-26.1.2-sources.jar`
+
+## 范围
+
+Alpha 2.5.5 为 320 个目录 ID 分别提供与对应 Shard 匹配的内置图标，用它们替换紫水晶回退，同时保留“客户端已收到原生 ItemStack 优先，并在本次会话缓存”的逻辑。搜索框可通过点击外部、`Esc` 或 `Tab` 释放焦点，直接点击搜索框可恢复输入；每组配方输入/输出按内容宽度紧凑居中，点击范围跟随实际渲染边界。已审核的上游图标集本身有 6 对 Shard 使用相同的游戏外观，因此这些对应 PNG 会保持一致。
+
+## 自动测试、数据与产物检查
+
+- Java 25 下执行 `clean test build prepareRelease` 成功。本次 XML 共统计 22 个 suite、116 项测试，0 失败、0 错误、0 跳过；class 文件 major version 为 69。
+- 320 个目录 ID、320 张内置 Shard PNG、320 个物品模型和 320 个物品定义的 ID 集合完全相同。每张 PNG 都能正常解码，尺寸均在 16–64 像素之间且带透明通道；不存在 Rainbug/L49。
+- 通用紫水晶回退已删除。静态检查确认：客户端已经收到的原生 Shard ItemStack 会按 Shard ID 缓存在本次会话中，并优先于内置模型；离线回退本身是带有可被材质包覆盖的 `qcloudy_addition:shards/<id>` 模型的专属 `PLAYER_HEAD`。
+- 回归测试覆盖搜索焦点退出键、宽屏/受限宽度下的紧凑输入输出几何、目录与图标完整性、合成不变量和响应式布局边界；同时直接检查了点击外部、重新聚焦和实际渲染点击范围的连接逻辑。
+- 重编号后的二进制与 Sources JAR 均通过 JDK 25 `jar --validate` 和 `unzip -t`。与对应的重编号前归档进行完整解包内容对比后，确认只有 `fabric.mod.json` 版本元数据发生变化。
+- 元数据为纯客户端，版本为 `alpha-2.5.5-26.1.2`，声明 Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+ 与 Java 25+。
+- 英文和简体中文资源各有 362 个键，键集合完全一致。`git diff --check`、JSON 解析均通过；针对 Shard 包的网络客户端、数据包、命令、聊天、物品栏点击、自动合成与已删除紫水晶回退的静态扫描没有匹配项。
+- 新进行的联合开发客户端冒烟启动同时加载了 QCloudy_Addition、BabyzombieAddons、Firmament、Skyblocker、SkyHanni 与 Mod Menu，完成组合资源重载、物品图集创建和声音引擎启动。日志中没有 `qcloudy_addition:shards/*` 模型/纹理缺失或加载失败，也没有 QCloudy 异常。出现的错误来自未认证开发账号，以及 SkyHanni 无法接受当前 NEU 常量（`HUNTING_FORTUNE` 与 `FISHING_NET`），并非 QCloudy_Addition。
+
+## 验证边界
+
+本次验证已包含新的联合初始化/资源冒烟启动，但不代表已经完成登录 Hypixel 的实服回归，也不代表覆盖所有 GUI Scale 与材质包的游戏内像素级验收。Alpha 升级为 beta 或 release 前仍需完成这些实服与视觉测试。下方 2.5.4 报告仅作为历史证据保留。
+
+## SHA-256
+
+- 二进制 JAR：`b7ca1fa7477e31f86bd4f97c045e17238d3a7920138ebe6364d1a63689042f56`
+- Sources JAR：`ba050233e7dabe0ee8c65d5784f38ca40fec8ca00e6aac446a0c33d539f09095`
+
+---
+
+# QCloudy_Addition Alpha 2.5.4 Shard 合成辅助验证补充
+
+验证日期：2026-08-10
+
+验证产物：
+
+- `release/QCloudy_Addition-alpha-2.5.4-26.1.2.jar`
+- `release/QCloudy_Addition-alpha-2.5.4-26.1.2-sources.jar`
+
+## 结论
+
+Alpha 2.5.4 已包含可独立运行、纯客户端的 Shard 合成辅助：提供类似 JEI 的搜索、配方/用途视图、有序输入交换、1–3 个输出槽、窄屏响应式布局、双语界面标签和遵循材质包的已观察物品图标，不依赖 JEI 或其他 SkyBlock 模组。运行时只读取随模组打包的版本化目录与客户端可见物品数据，不访问 Wiki/API，不发送数据包、容器点击、聊天或命令，也不会自动执行合成。
+
+## 自动测试、数据与产物检查
+
+- Java 25 干净测试共 108 项全部通过，0 失败、0 错误、0 跳过。
+- Java 25 下执行 `./gradlew clean build prepareRelease` 成功；新 class 文件 major version 为 69。
+- 目录包含 320 个唯一 Shard ID、名称和 Bazaar ID，并与已审核官方 Bazaar 快照中的 320 个 `SHARD_*` 产品完全一致。包含 Anteater、Zombuddy、Troodon、Goldolot（`R92`）和 Ghost Crab，不包含 Rainbug。
+- 测试覆盖合成不变量、有序输入、由第一个输入决定的数量、Chameleon 递进/排除、配方/用途反向索引、共享配方对象索引，以及同一 Shard 的 ID/Special 输出槽分别保留。
+- 重编号后的二进制与 Sources JAR 均通过 JDK 25 `jar --validate` 和 `unzip -t`。与对应的重编号前归档进行完整解包内容对比后，确认只有 `fabric.mod.json` 版本元数据发生变化。
+- 元数据为纯客户端，版本为 `alpha-2.5.4-26.1.2`，声明 Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+ 与 Java 25+。
+- 英文和简体中文资源各有 362 个键，键集合完全一致。
+- `git diff --check`、JSON 解析和新 Shard 代码静态扫描均未发现错误。
+
+## 验证边界
+
+本补充不代表已经完成登录 Hypixel 的实服回归、所有 GUI Scale/材质包的像素级验收，或与四个指定参考模组的本次全新联合启动。Alpha 升级为 beta 或 release 前仍需完成这些实测。下方 1.5.1 报告仅作为历史证据保留，不能当作 2.5.4 的实服测试结果。
+
+## SHA-256
+
+- 二进制 JAR：`4a26801c3d63cfb2cf4ae10f0249efd761fe6e1264caedb239133e9a698fb773`
+- Sources JAR：`a2a3232c5d6342da89037225e3ec78302d8a0910a72c3cbe56a313f409720025`
+
+---
+
 # QCloudy_Addition 1.5.1 发布验收报告
 
 验证日期：2026-08-06

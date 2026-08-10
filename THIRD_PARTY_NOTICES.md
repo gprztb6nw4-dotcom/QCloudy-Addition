@@ -8,6 +8,7 @@ QCloudy_Addition's Java implementation and visual design are original. The follo
 | Skyblocker | `v6.8.2+26.1.2` / `0f53a9cb7cafc4fd94f20de5e84e84168dde90a9` | LGPL-3.0-or-later | Reference for current HUD extraction, player-map transform, and vanilla outline integration; QCA code is independently written |
 | SkyHanni | `7.41.0` / `3d047fc5a4683f51d73215ee31e8392f8a2f4c5c` | LGPL-2.1 | Reference for current Tab/chat formats |
 | BabyzombieAddons | `v3.4.1` / `821fc044e336c551c8e2d27b627c8782793a68a1` | LGPL-3.0 | Reference for current client event/accessor patterns and bounded loaded-entity scanning; QCA code is independently written |
+| SkyShards / SkyShards Parser | `9688031dbc4e726168ffceb0f44884ff26e6e728` | MIT, Copyright (c) 2026 Campion | Shard identifiers/properties and special-fusion table cross-check; 320 PNGs from `public/shardIcons` are transformed and bundled, but no SkyShards code is included |
 | NotEnoughUpdates item repository | local 2026-08-04 snapshot | MIT, Copyright (c) 2020 Moulberry | Pet identifiers, rarity XP offsets, special level-200 pet metadata, and fallback skin texture references |
 | Mod Menu API | 18.0.0 | MIT | Optional compile-only configuration entrypoint; Mod Menu is not bundled |
 
@@ -16,6 +17,28 @@ QCloudy_Addition's Java implementation and visual design are original. The follo
 Compact offline metadata for 88 base-pet profiles, 352 applied-pet-skin profiles, 5,422 pet-owned current/animated texture mappings, and 87 pet accessories is generated from the local NotEnoughUpdates item-repository snapshot. QCA constructs a normal Minecraft player head from the verified profile at runtime. It does not ship or select pre-rendered pet PNG fallbacks, does not add synthetic SkyBlock `petInfo`, and does not reuse an unrelated nearby item stack. These resources are used only to interpret and present client-received pet data. No Wiki, item-repository, Hypixel API, or texture request occurs while the mod is running.
 
 The [Hypixel SkyBlock Wiki pet leveling table](https://hypixelskyblock.minecraft.wiki/w/Pets) was used to verify the rarity-adjusted level 1–100 XP curve. Local item-repository constants were used to verify Golden Dragon, Jade Dragon, and Rose Dragon level-200 extensions. Minecraft and Hypixel visual assets remain the property of their respective owners and are used subject to the applicable site terms, Minecraft EULA, and usage guidelines.
+
+## Attribute Shard Fusion reference data
+
+The bundled `assets/qcloudy_addition/data/shard_fusions.json` is generated before release. Fusion quantities, ordered ID-output behavior, special outputs, Chameleon stepping/rarity rollover, the three-output limit, and the Pure Reptile double-output rule were verified against the community [Attribute Fusion](https://hypixelskyblock.minecraft.wiki/w/Attribute_Fusion) documentation. Normalized effect and acquisition summaries are derived from the current community [Attributes tables](https://hypixelskyblock.minecraft.wiki/w/Attributes). Shard names, IDs, rarities, attributes, categories, families, skills, and special-rule pairs were cross-checked against [SkyShards](https://github.com/Campionnn/SkyShards), its parser data at commit `9688031dbc4e726168ffceb0f44884ff26e6e728`, and the [NotEnoughUpdates item repository](https://github.com/NotEnoughUpdates/NotEnoughUpdates-REPO). QCA's Java implementation, indexes, fusion evaluation, caches, and UI are independently written.
+
+The final catalog is an exact allow-list intersection with the Shard products returned by the [official Hypixel Bazaar endpoint](https://api.hypixel.net/v2/skyblock/bazaar) in the offline source snapshot. This produces 320 current Bazaar-listed Shards. It corrects the earlier 317-entry snapshot by including Anteater, Zombuddy, Troodon, and Ghost Crab, assigning Goldolot to `R92`, and excluding Rainbug because no Rainbug Shard product exists in that official Bazaar universe. The Wiki [Attributes list](https://hypixelskyblock.minecraft.wiki/w/Attributes) is explicitly marked incomplete/outdated, so it is used for human-readable rule verification rather than as the cardinality authority.
+
+`tools/generate_shard_fusion_data.py` records the reviewed offline data transformation and performs strict identity/count validation before writing the committed JSON. The Shard-icon generator reads SkyShards `public/shardIcons/<Shard ID>.png` at reviewed commit `9688031dbc4e726168ffceb0f44884ff26e6e728`, filters the 321-source set through QCA's exact 320-Shard allow-list (excluding Rainbug), downscales each image to a maximum 64-pixel side, and emits local Minecraft item textures/models. The running QCA code contains no HTTP client and never contacts the Wiki, Bazaar API, SkyShards, NEU, or an icon service. When available, the guide gives an already-received native ItemStack priority over the bundled local model; QCA does not request that stack or initiate an additional texture fetch.
+
+The transformed SkyShards icon resources are redistributed under the following MIT License:
+
+> MIT License
+>
+> Copyright (c) 2026 Campion
+>
+> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+>
+> The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+>
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+The linked Hypixel SkyBlock Wiki pages are published under [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/). The normalized effect/acquisition strings in `shard_fusions.json` are attributed to that Wiki and distributed under the same terms; `assets/qcloudy_addition/data/SHARD_DATA_NOTICE.txt` carries this attribution inside the JAR. QCA does not bundle Wiki images. The program code remains under the repository's LGPL-3.0-or-later license.
 
 ## SkyHanni-REPO map graph
 

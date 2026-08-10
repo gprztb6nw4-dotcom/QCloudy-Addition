@@ -7,7 +7,7 @@ QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [GitHub release notes](docs/GITHUB_RELEASE_1.5.1.md)
+- [GitHub release notes](docs/GITHUB_RELEASE_2.5.6.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -64,6 +64,10 @@ Foraging, Hunting, and Safari are mutually exclusive settings categories: every 
 
 - **Equipped Pet HUD** — uses summon/despawn/Autopet chat notices for immediate state changes, then treats the received `Pet:` Tab widget as the source of truth. It constructs a plain player head from QCA's bundled verified profile and never adds synthetic `petInfo`, so another mod cannot replace the HUD icon with an unrelated item model. Dynamic skin-family frames—including all published Baby Spinosaurus variants—map back to their real skin. The HUD never shortens a pet, skin, XP, or accessory line with an ellipsis; bold text is measured before sizing. Current-level and max-level XP lines are independently switchable and default to on, while the max-level line is automatically hidden for a maxed pet without hiding its held item. A held item confirmed through the Pets menu, Tab, or received chat is retained locally across reconnects. Optional skin-name and cosmetic-overflow-level display are enabled by default. Ancient Golden Dragon overflow levels are derived only from received total/overflow XP. All 87 current pet-item resources are indexed; the held item can be shown as icon + name (default), icon only, or name only. Standard pets use their rarity-adjusted level-100 curve; Golden, Jade, and Rose Dragons use their level-200 curve.
 
+### Items & Menus
+
+- **Attribute Shard Fusion Guide** — a JEI-inspired, completely offline browser for all 320 current Bazaar-listed Attribute Shards. Search by original English name, Shard ID, attribute/effect, rarity, category, family, skill, mob type, or acquisition text. **Details** shows the Wiki-listed effect and all documented natural/Fusion acquisition methods; **Recipes** shows every ordered input pair that can produce the selected Shard, including Queen Bee and other Shards that also have natural sources; **Uses** shows what the selected Shard can make. Recipe cards preserve input order and show quantities, selectable outputs, normal/special yield, and Pure Reptile. Epic uses Minecraft dark purple (`§5`), while rarity, stats, categories, mob types, and acquisition methods retain semantic game colours. Clickable Shard text darkens and underlines on hover. The catalog and Shard-specific icons are generated offline from reviewed sources and committed into the mod; a matching native `ItemStack` already received by the client still takes priority for resource-pack presentation. Local `/qshard [English query]` opens the screen without sending chat or a server command. QCA makes no runtime Wiki, API, or icon request and never performs a Fusion.
+
 ### Chat
 
 - **Chat Peek** — hold a user-defined key or modifier combination to temporarily render the focused-height chat history without opening Chat. While peeking, the mouse wheel defaults to scrolling chat; the secondary setting can leave it controlling the hotbar instead. The peek key is intentionally unbound by default to avoid conflicts.
@@ -81,7 +85,7 @@ Foraging, Hunting, and Safari are mutually exclusive settings categories: every 
 
 The configuration screen uses a compact BLC-inspired information hierarchy—not copied assets or layout code—with one **Features** tab, category navigation, and searchable feature cards. **General** is the first category and contains **UI animations**, the alert master mute, and the manual reconnect toggle; HUD position editing remains available from the bottom-left **Edit HUD** button. Feature cards no longer repeat a top-right switch or bottom-right right-click hint, and secondary pages do not repeat the primary enable switch. There is deliberately no catch-all `ALL` category: every feature appears only under its own category.
 
-Inventory and menu tools include item timestamps, cursor position memory, configurable AOTE/AOTV sounds, Chat Peek, and optional menu middle-click conversion. Every QCA hotkey is edited inline on its existing secondary-settings page instead of opening a separate capture screen. Keyboard keys, mouse buttons 1–5/side buttons, and Ctrl/Shift/Alt/Cmd-Super combinations are supported; while a row is listening, `Esc` clears it to unbound. Middle-click menu conversion is default-off; when first enabled it converts only physical left-click item buttons unless the player selects another mode.
+Inventory and menu tools include the Attribute Shard Fusion Guide, item timestamps, cursor position memory, configurable AOTE/AOTV sounds, and Chat Peek. Every QCA hotkey is edited inline on its existing secondary-settings page instead of opening a separate capture screen. Keyboard keys, mouse buttons 1–5/side buttons, and Ctrl/Shift/Alt/Cmd-Super combinations are supported; while a row is listening, `Esc` clears it to unbound.
 
 **AOTE/AOTV sound settings** never silence teleport tools by default. Instant Transmission and Etherwarp each default to their original sound and can independently use Chorus Teleport, Enderman Teleport, Amethyst Chime, Experience Orb, End Portal Fill, or Shulker Teleport. Custom volume and pitch are continuous 10–200% and 50–200% sliders. Other broad numeric settings—including HUD opacity/scale and cursor-memory duration—use Windows-style draggable sliders and save on release; short discrete choices remain buttons.
 
@@ -97,7 +101,7 @@ Install JDK 25 and run `./gradlew clean build`. The repository includes its own 
 
 ## Safety boundary
 
-The release contains no `sendChat`, Hypixel Mod API subscription, WebSocket, HTTP client, macro, automatic movement, or chunk-request code. Its normal HUD features consume only client-received state. Explicit Storage controls send only `storage`, `enderchest <1-9>`, or `backpack <1-18>` for the page physically selected by the player. The always-available local `/th` and `/helia` shortcuts send exactly `warp torrhus` and `chapter torrhus`, equivalent to entering `/warp torrhus` and `/chapter torrhus`; they run only when the player types the corresponding shortcut. No command, chat, click, or movement action is generated without physical user input.
+The release contains no `sendChat`, Hypixel Mod API subscription, WebSocket, HTTP client, runtime Shard-data request, macro, automatic movement, or chunk-request code. Its normal HUD features consume only client-received state. `/qshard` is a local screen command and sends nothing. The always-available local `/th` and `/helia` shortcuts send exactly `warp torrhus` and `chapter torrhus`, equivalent to entering `/warp torrhus` and `/chapter torrhus`; they run only when the player types the corresponding shortcut. No command, chat, click, or movement action is generated without physical user input.
 
 Hypixel states that all modifications are used at the player's own risk and that an unlisted feature is not guaranteed to be allowed. Review [docs/COMPLIANCE.md](docs/COMPLIANCE.md) and the current [Hypixel Allowed Modifications guide](https://support.hypixel.net/hc/en-us/articles/6472550754962-Hypixel-Allowed-Modifications) before use.
 
@@ -109,7 +113,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-GitHub release notes: [docs/GITHUB_RELEASE_1.5.1.md](docs/GITHUB_RELEASE_1.5.1.md)
+GitHub release notes: [docs/GITHUB_RELEASE_2.5.6.md](docs/GITHUB_RELEASE_2.5.6.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 
