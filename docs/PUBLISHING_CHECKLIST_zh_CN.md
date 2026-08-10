@@ -6,8 +6,8 @@
 |---|---|
 | 名称 | QCloudy_Addition |
 | 建议slug | `qcloudy-addition` |
-| 版本 | `alpha-2.5.6-26.1.2` |
-| 发布通道 | Alpha；只有项目所有者明确同意后才能更名为 Beta 或 Release |
+| 版本 | `Beta-2.6.6+26.1.2` |
+| 发布通道 | Beta；项目所有者已于 2026-08-10 明确批准本次晋级 |
 | 环境 | 纯客户端 |
 | Loader | Fabric |
 | Minecraft | 26.1.2 |
@@ -29,7 +29,8 @@
 
 - 英文主描述使用 `docs/MODRINTH_DESCRIPTION.md`。
 - 中文页面或英文描述下方使用 `docs/MODRINTH_DESCRIPTION_zh_CN.md`。
-- 只把 `release/QCloudy_Addition-alpha-2.5.6-26.1.2.jar` 标为可运行主文件。
+- 只把 `release/QCloudy_Addition-Beta-2.6.6+26.1.2.jar` 标为可运行主文件。
+- 版本更新日志使用 `docs/MODRINTH_RELEASE_2.6.6.md`，中文配套文件为 `docs/MODRINTH_RELEASE_2.6.6_zh_CN.md`。
 - Fabric API标为必需，Mod Menu标为可选。
 - Client环境标为必需，Server标为不支持。
 - 不要把Firmament、SkyHanni、Skyblocker或BabyzombieAddons标为依赖。
@@ -46,14 +47,15 @@
 - 不提交 `run/`、`run-standalone/`、`.gradle/`、`.gradle-user-home/`、本地配置、日志、崩溃ZIP或四个参考JAR。
 - 首次commit前确认 `.gitignore` 覆盖本地构建/运行文件。
 
-## GitHub Alpha 2.5.6
+## GitHub Beta 2.6.6
 
-- 标题：`QCloudy_Addition Alpha 2.5.6 for Minecraft 26.1.2`
-- Tag：`v2.5.6-alpha-26.1.2`
-- 英文正文使用 `docs/GITHUB_RELEASE_2.5.6.md`，中文正文使用 `docs/GITHUB_RELEASE_2.5.6_zh_CN.md`。
+- 标题：`QCloudy_Addition Beta 2.6.6 for Minecraft 26.1.2`
+- Tag：`v2.6.6-beta+26.1.2`
+- 英文正文使用 `docs/GITHUB_RELEASE_2.6.6.md`，中文正文使用 `docs/GITHUB_RELEASE_2.6.6_zh_CN.md`。
 - 上传二进制JAR，可选附加Sources JAR。
 - 上传后重新下载一次，并与 `docs/VALIDATION.md` 中哈希比较。
-- 保持 Pre-release/Alpha，直到项目所有者明确提升版本通道。
+- GitHub 勾选 **Pre-release**，因为这是 Beta 而不是稳定 Release。
+- Modrinth 的 Version type 选择 **Beta**。
 
 ## 最终安全与质量门槛
 

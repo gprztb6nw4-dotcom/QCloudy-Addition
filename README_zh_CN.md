@@ -7,7 +7,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [GitHub 2.5.6 Alpha 发布说明](docs/GITHUB_RELEASE_2.5.6_zh_CN.md)
+- [GitHub 2.6.6 Beta 发布说明](docs/GITHUB_RELEASE_2.6.6_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
@@ -111,7 +111,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-GitHub 2.5.6 Alpha 发布说明：[docs/GITHUB_RELEASE_2.5.6_zh_CN.md](docs/GITHUB_RELEASE_2.5.6_zh_CN.md)
+GitHub 2.6.6 Beta 发布说明：[docs/GITHUB_RELEASE_2.6.6_zh_CN.md](docs/GITHUB_RELEASE_2.6.6_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

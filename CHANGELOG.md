@@ -2,6 +2,29 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.6] - 2026-08-10
+
+Beta promotion for Minecraft 26.1.2.
+
+### Changed
+
+- Promoted the reviewed `2.5.6` feature set from Alpha to Beta without adding new gameplay automation or server interaction.
+- Changed the version line to `2.6.6`, following the project's rule that Beta updates increment the second version component.
+- Standardized the playable artifact as `QCloudy_Addition-Beta-2.6.6+26.1.2.jar` and the source artifact as `QCloudy_Addition-Beta-2.6.6+26.1.2-sources.jar`.
+- Updated GitHub, Modrinth, implementation, validation, and publication documentation for the Beta channel.
+- Rewrote the Modrinth project description around the actual seven-category settings structure, current Beta scope, dependencies, HUD customization, and explicit client/server-command boundaries.
+
+### Included from the 2.5.x Alpha line
+
+- The standalone offline Attribute Shard Fusion Guide for the official 320-Shard set, with Recipes, Uses, Details, ordered inputs, quantities, selectable outputs, acquisition information, semantic colours, and Shard-specific icons.
+- Search-focus, compact recipe-layout, Epic-colour, clickable-link, Wiki-formatting, reverse-recipe, and natural-plus-Fusion source fixes from Alpha 2.5.4 through 2.5.6.
+- Complete removal of slot locking, Storage Overlay, and menu middle-click conversion.
+
+### Safety
+
+- The Beta remains client-only and passive. The Shard guide performs no runtime Wiki/API request, packet send, inventory click, Fusion, chat send, server command, or automation.
+- `/th` and `/helia` remain explicit user-triggered shortcuts documented in the compliance notes; no command is sent without direct player input.
+
 ## [2.5.6] - 2026-08-10
 
 Alpha update for Minecraft 26.1.2.

@@ -6,8 +6,8 @@
 |---|---|
 | Name | QCloudy_Addition |
 | Suggested slug | `qcloudy-addition` |
-| Version | `alpha-2.5.6-26.1.2` |
-| Release channel | Alpha; do not rename to Beta or Release until the project owner explicitly approves it |
+| Version | `Beta-2.6.6+26.1.2` |
+| Release channel | Beta; the project owner explicitly approved this promotion on 2026-08-10 |
 | Environment | Client only |
 | Loader | Fabric |
 | Minecraft | 26.1.2 |
@@ -29,7 +29,8 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 
 - Use `docs/MODRINTH_DESCRIPTION.md` as the English project description.
 - Keep English as the primary description; place `docs/MODRINTH_DESCRIPTION_zh_CN.md` in a linked Chinese page or below the English copy if desired.
-- Upload only `release/QCloudy_Addition-alpha-2.5.6-26.1.2.jar` as the playable file.
+- Upload only `release/QCloudy_Addition-Beta-2.6.6+26.1.2.jar` as the playable file.
+- Use `docs/MODRINTH_RELEASE_2.6.6.md` as the version changelog; the Chinese companion is `docs/MODRINTH_RELEASE_2.6.6_zh_CN.md`.
 - Mark Fabric API as required and Mod Menu as optional.
 - Mark client environment as required and server environment as unsupported.
 - Do not mark Firmament, SkyHanni, Skyblocker, or BabyzombieAddons as required.
@@ -46,14 +47,15 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 - Do not commit `run/`, `run-standalone/`, `.gradle/`, `.gradle-user-home/`, local configs, logs, crash ZIPs, or the supplied reference JARs.
 - Confirm `.gitignore` covers local build/runtime files before the first commit.
 
-## GitHub Alpha 2.5.6
+## GitHub Beta 2.6.6
 
-- Title: `QCloudy_Addition Alpha 2.5.6 for Minecraft 26.1.2`
-- Tag: `v2.5.6-alpha-26.1.2`
-- Use `docs/GITHUB_RELEASE_2.5.6.md` as the release body.
+- Title: `QCloudy_Addition Beta 2.6.6 for Minecraft 26.1.2`
+- Tag: `v2.6.6-beta+26.1.2`
+- Use `docs/GITHUB_RELEASE_2.6.6.md` as the release body; the Chinese companion is `docs/GITHUB_RELEASE_2.6.6_zh_CN.md`.
 - Attach the binary JAR and optionally the Sources JAR.
 - Verify uploaded hashes against `docs/VALIDATION.md` after downloading the release once.
-- Mark as pre-release/alpha until the project owner explicitly promotes the channel.
+- Mark it as **Pre-release** on GitHub because this is a Beta, not a stable Release.
+- On Modrinth, choose **Beta** as the version type.
 
 ## Final safety and quality gate
 

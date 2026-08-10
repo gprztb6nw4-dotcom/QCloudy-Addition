@@ -1,3 +1,38 @@
+# QCloudy_Addition Beta 2.6.6 promotion validation
+
+Validation date: 2026-08-10
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Beta-2.6.6+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.6+26.1.2-sources.jar`
+
+## Result
+
+Beta 2.6.6 promotes the reviewed Alpha 2.5.6 implementation without changing Java feature behavior. The pre-promotion Alpha 2.5.6 baseline and the renamed Beta 2.6.6 build both completed the full Java 25 test/build pipeline. The Beta change is limited to the release channel, version, artifact naming, and publication documentation.
+
+## Automated, data, and artifact checks
+
+- Java 25 `clean test build prepareRelease` completed successfully for the original Alpha 2.5.6 baseline and again after the Beta promotion. The final XML reports 120 tests, 0 failures, 0 errors, and 0 skips; class files use major version 69.
+- The final playable artifact is exactly `QCloudy_Addition-Beta-2.6.6+26.1.2.jar`; the source artifact is exactly `QCloudy_Addition-Beta-2.6.6+26.1.2-sources.jar`.
+- Expanded Fabric metadata declares `Beta-2.6.6+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+.
+- Both binary and Sources JARs pass JDK 25 `jar --validate` and `unzip -t`; their `release` copies are byte-identical to `build/libs`.
+- The binary includes `LICENSE_QCloudy_Addition`, `THIRD_PARTY_NOTICES.md`, and `SHARD_DATA_NOTICE.txt`.
+- The binary contains exactly 320 Shard PNGs, 320 item definitions, and 320 item-model definitions. The catalog/resource invariants remain covered by the passing test suite.
+- English and Simplified Chinese resources each contain 373 keys with identical key sets and valid JSON.
+- No Java source or runtime resource behavior changed between Alpha 2.5.6 and this Beta; required and optional dependencies remain unchanged.
+
+## Validation boundary
+
+This audit verifies source/configuration consistency, automated behavior, generated data invariants, archive integrity, metadata, filenames, checksums, and build/release identity. It does not claim a fresh authenticated Hypixel regression or pixel-level visual acceptance with every GUI scale, resource pack, operating system, and modpack. Beta status is an owner-approved testing channel, not a claim of official Hypixel approval or stable-release completeness.
+
+## SHA-256
+
+- Binary JAR: `0871774cfa47641d220d18d53f9235ee1b02ff2abfc9ac586dd2a55a0adbc2fd`
+- Sources JAR: `2baa8c557826d2bdf69816576ba7891261d7cde48bdeb12fcf6ebcc480f75137`
+
+---
+
 # QCloudy_Addition Alpha 2.5.6 Shard details and semantic-colour validation
 
 Validation date: 2026-08-10

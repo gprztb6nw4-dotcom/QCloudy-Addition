@@ -7,7 +7,7 @@ QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [GitHub release notes](docs/GITHUB_RELEASE_2.5.6.md)
+- [GitHub Beta 2.6.6 release notes](docs/GITHUB_RELEASE_2.6.6.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -113,7 +113,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-GitHub release notes: [docs/GITHUB_RELEASE_2.5.6.md](docs/GITHUB_RELEASE_2.5.6.md)
+GitHub Beta 2.6.6 release notes: [docs/GITHUB_RELEASE_2.6.6.md](docs/GITHUB_RELEASE_2.6.6.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 

@@ -1,3 +1,38 @@
+# QCloudy_Addition Beta 2.6.6 晋级验证
+
+验证日期：2026-08-10
+
+验证产物：
+
+- `release/QCloudy_Addition-Beta-2.6.6+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.6+26.1.2-sources.jar`
+
+## 结论
+
+Beta 2.6.6 将已经审核的 Alpha 2.5.6 实现晋级到 Beta，没有改变 Java 功能行为。晋级前的 Alpha 2.5.6 基线和更名后的 Beta 2.6.6 均通过完整 Java 25 测试/构建流程。本次 Beta 变化只涉及发布通道、版本号、产物命名和发布文档。
+
+## 自动测试、数据与产物检查
+
+- 原始 Alpha 2.5.6 基线与 Beta 晋级后的版本均在 Java 25 下成功完成 `clean test build prepareRelease`。最终 XML 共 120 项测试，0 失败、0 错误、0 跳过；class 文件 major version 为 69。
+- 最终可运行产物精确命名为 `QCloudy_Addition-Beta-2.6.6+26.1.2.jar`；源码产物精确命名为 `QCloudy_Addition-Beta-2.6.6+26.1.2-sources.jar`。
+- 展开的 Fabric 元数据为 `Beta-2.6.6+26.1.2`，环境为纯客户端，并声明 Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+ 与 Java 25+。
+- 二进制与 Sources JAR 均通过 JDK 25 `jar --validate` 和 `unzip -t`；`release` 副本与 `build/libs` 逐字节一致。
+- 二进制内含 `LICENSE_QCloudy_Addition`、`THIRD_PARTY_NOTICES.md` 与 `SHARD_DATA_NOTICE.txt`。
+- 二进制恰好包含 320 张 Shard PNG、320 个物品定义与 320 个物品模型定义；目录/资源不变量继续由全部通过的测试覆盖。
+- 英文与简体中文资源各有 373 个键，键集合完全一致且 JSON 有效。
+- Alpha 2.5.6 与本 Beta 之间没有 Java 源码或运行时资源行为变化；必需与可选依赖保持不变。
+
+## 验证边界
+
+本次审计验证源码/配置一致性、自动行为、生成数据不变量、归档完整性、元数据、文件名、哈希和 build/release 一致性；不代表已经重新完成登录 Hypixel 的实服回归，也不代表覆盖每一种 GUI Scale、材质包、操作系统与模组组合的像素级视觉验收。Beta 是项目所有者批准的测试通道，不代表获得 Hypixel 官方认可，也不等同稳定 Release 已完成全部验收。
+
+## SHA-256
+
+- 二进制 JAR：`0871774cfa47641d220d18d53f9235ee1b02ff2abfc9ac586dd2a55a0adbc2fd`
+- Sources JAR：`2baa8c557826d2bdf69816576ba7891261d7cde48bdeb12fcf6ebcc480f75137`
+
+---
+
 # QCloudy_Addition Alpha 2.5.6 Shard 详情与语义颜色验证
 
 验证日期：2026-08-10

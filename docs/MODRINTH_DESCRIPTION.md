@@ -1,55 +1,108 @@
 # QCloudy_Addition
 
-QCloudy_Addition is a client-only Fabric mod for Hypixel SkyBlock on Minecraft 26.1.2. It combines readable mining maps, objective HUDs, Torrhus and Critter Safari helpers, pet information, menu quality-of-life tools, and configurable visual alerts in one bilingual interface.
+**A client-only Hypixel SkyBlock utility mod for Fabric on Minecraft 26.1.2.**
 
-English is the default interface language. Simplified Chinese can be selected from the QCA settings. Names received from Hypixel—including locations, items, pets, tasks, skins, accessories, and player-renamed HOTM slots—stay in their original form to avoid misleading translations.
+QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, pet information, an offline Attribute Shard Fusion browser, and deeply configurable HUDs into one clean bilingual interface.
 
-## Highlights
+The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-- Simple single-layer Dwarven Mines map with an accurate live player arrow
-- Three elevation-aware Glacite Tunnels maps
-- Mining commission, three-powder, and selected HOTM slot tracker
-- Crimson Isle faction quest tracker
-- Combined Torrhus Chapter, resource, Miria Contest, Benefactor, and Tree Critter HUD
-- Personal rare Tree Gift alerts with per-loot controls and nearby-player rejection
-- Beeheemoth outline, spawn beacon, and independent spatial sound volume
-- Critter Safari dashboard, Critterdex, Cold/campfire safety, Wumpa, Warden, Sparkling, Floor Drop, quest-item, Snoozle-wall, and Safari Belt helpers
-- Equipped Pet HUD with real pet/skin heads, rarity-colored names, XP, level-200 overflow, skin name, and held-item icon/name
-- Ender Dragon outline with a configurable color
-- Offline 320-Shard Attribute Fusion Guide with Shard-specific icons, semantic-colour Details, complete documented acquisition methods, Recipes/Uses (including natural-plus-Fusion Shards), ordered inputs, compact cards, and local `/qshard` search
-- Item timestamps, cursor memory, configurable AOTE/AOTV sounds, and Chat Peek
-- Chat Peek with keyboard or mouse-button chords
-- BLC-inspired searchable settings and a dedicated drag/resize HUD editor
-- Manual reconnect button with no automatic retry loop
+> **Current channel: Beta 2.6.6.** Beta means the build has passed automated and archive validation, but still needs broader real-server, resource-pack, GUI-scale, operating-system, and modpack testing.
 
-## HUD and accessibility
+## Main features
 
-Every HUD has its own saved position and 50–200% scale. Background color and transparency, border color/width, title color, bold text, and text shadow can be edited independently. The RGB/HSV picker includes common presets and a transparent background option. Only HUDs currently loaded by the player's location or state appear in the HUD editor.
+### Maps
 
-Alerts appear as center-screen titles. Each alert owns its own sound switch and 0–100% volume slider; alert volumes default to 64%. A General master mute is also available.
+- A deliberately simple, single-layer **Dwarven Mines map** with individually shaped regions and a live player arrow.
+- Three coordinate-aligned **Glacite Tunnels maps** that switch automatically by player elevation.
+- Optional pink **Fairy Soul waypoint beams** for Torrhus and Critter Safari, with locally saved collected state.
+
+### Items, menus, and pets
+
+- A standalone, JEI-inspired **Attribute Shard Fusion Guide** covering the official 320-Shard catalog.
+- Search by English Shard name, ID, effect, rarity, category, family, skill, mob type, or acquisition source.
+- Separate **Details**, **Recipes**, and **Uses** views with ordered inputs, quantities, selectable outputs, Special Fusion yields, Chameleon behavior, and Pure Reptile information.
+- Shard-specific bundled icons, documented natural/Fusion acquisition methods, semantic game colors, and complete reverse recipes—including Shards such as Queen Bee that have both natural and Fusion sources.
+- An equipped **Pet HUD** with verified pet/skin heads, rarity-colored names, XP, progress to maximum level, supported overflow levels, skin names, and pet-item icons/names.
+- Item creation timestamps, cursor-position memory, and configurable AOTE/AOTV teleport sounds.
+
+The Shard database and fallback icons are bundled with the mod. The guide performs no runtime Wiki/API request and never clicks a menu or executes a Fusion. Use `/qshard [English query]` to open it locally.
+
+### Combat
+
+- Configurable-color **Ender Dragon outlines** while in The End or Dragon's Nest.
+- A complete, non-truncating **Crimson Isle faction quest HUD** built from the received Tab widget; completed tasks are hidden once confirmed complete.
+
+### Mining
+
+- Full-name mining objectives with compact progress bars and percentage or current/target display modes.
+- Mithril, Gemstone, and Glacite Powder tracking.
+- Selected HOTM loadout-name display.
+- Support for Dwarven Mines, Crystal Hollows, Glacite Tunnels, and Glacite Mineshafts.
+
+### Foraging
+
+- A combined **Torrhus HUD** for Helia Chapter progress, Forest/Desert Whispers, Forest Essence, Safari Essence, Sweep, and Forest Fortune.
+- A separate **Galatea HUD** with Hina Chapter and Agatha's Contest information.
+- Tree Critter countdowns read from the visible Tree Protection Order state instead of a guessed local timer.
+- Miria Contest tier/remaining-score information, Benefactor state, and personal rare Tree Gift alerts with per-loot controls.
+
+### Hunting and Critter Safari
+
+- Beeheemoth outline, temporary spawn beacon, and independent spatial Beeheemoth-sound volume.
+- Lasso `REEL` cue and center-screen Critter behavior instructions.
+- Safari session dashboard, optional Shard statistics, Critterdex progress, and biome-grouped results.
+- Cold threshold alerts and nearest loaded campfire beacon.
+- Doomspiral readiness, Warden cooldown, Sparkling Critter, Floor Drop, Quest Item, Wumpa, Snoozle-wall, and Safari Belt helpers.
+- Real Critters use their Shard-rarity outline color; Armor Stand capture props are excluded.
+- Experimental Wumpa route projection is optional and disabled by default.
+
+### General and chat
+
+- A manual **Reconnect** button with no timer, retry loop, or automatic join.
+- **Chat Peek** with keyboard, mouse-button, and modifier combinations.
+- In-place hotkey editing, including mouse buttons and multi-key chords.
+- Searchable, collapsible feature groups with each feature appearing in exactly one category.
+
+## HUD customization
+
+Each HUD stores its own position and 50–200% scale. Background color and transparency, border visibility/width/color, title color, bold text, and text shadow are configured independently.
+
+The HUD editor only exposes panels that are currently loaded and have real content. Drag a panel to move it or drag its border/corner to resize it; changes persist across restarts. Empty panels do not leave title-only boxes on screen.
+
+Center-screen alerts have per-feature sound switches and 0–100% volume sliders. Alert volume defaults to 64%, with an additional General master mute.
 
 ## Installation
 
-Requirements:
+Required:
 
-- Minecraft 26.1.2
-- Fabric Loader 0.19.3 or newer
-- Fabric API 0.155.2+26.1.2 or newer
-- Java 25
-- Mod Menu is optional
+- Minecraft **26.1.2**
+- Fabric Loader **0.19.3+**
+- Fabric API **0.155.2+26.1.2 or newer**
+- Java **25**
 
-Place the QCloudy_Addition JAR in the instance's `mods` folder. Press `O` by default, use Mod Menu, or enter `/aca`, `/qca`, `/ca`, or `/qc` to open settings. These four aliases are local client commands and are registered only when no other client mod owns the name.
+Optional:
 
-## Client-only and safety boundary
+- Mod Menu **18.0.0**
 
-QCA has no runtime web service, telemetry, remote updater, Hypixel API dependency, macro, automatic movement, automatic combat, automatic capture, or hidden server-data request. Tracking features use only information already received by the client: Tab, scoreboard, chat, titles, open-menu contents, local inventory, loaded entities, and already-loaded blocks.
+Put the playable `QCloudy_Addition-Beta-2.6.6+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
 
-The only server command payloads in the mod are `/th` (`warp torrhus`) and `/helia` (`chapter torrhus`), both triggered only when the player explicitly enters the local shortcut. QCA contains no `sendChat` call. Manual reconnect starts one normal Minecraft connection only after the player clicks the button; it has no timer or background retry.
+Press `O`, open QCA through Mod Menu, or enter `/aca`, `/qca`, `/ca`, or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 
-All Minecraft modifications are used at the player's own risk. Entity outlines, waypoint beams, wall overlays, and route projections are passive client renders, but passive rendering is not the same as official Hypixel approval. Review Hypixel's current modification rules and disable any feature you are not comfortable using.
+## Client-only boundary
 
-## Compatibility
+QCA reads only information already available to the client, such as received Tab/scoreboard/chat/title text, currently open menus, local inventory, loaded entities, and already-loaded blocks. It contains no macro, automatic movement, automatic combat, automatic capture, telemetry, remote updater, hidden chunk request, or runtime Hypixel API dependency.
 
-QCA is standalone and does not require Firmament, SkyHanni, Skyblocker, or BabyzombieAddons. It has been initialized in a 94-mod local instance containing all four reference mods and Mod Menu. Optional inventory-feature handoff can avoid duplicating Firmament behavior when Firmament is installed.
+The only server-command payloads implemented by QCA are:
 
-QCloudy_Addition is not affiliated with or endorsed by Hypixel Studios or Mojang Studios.
+- `/th` → `warp torrhus`
+- `/helia` → `chapter torrhus`
+
+Both are sent only after the player explicitly enters the corresponding local shortcut. Manual reconnect creates one normal Minecraft connection only after the player clicks the button.
+
+## Compatibility and disclaimer
+
+QCloudy_Addition is standalone. Firmament, SkyHanni, Skyblocker, BabyzombieAddons, JEI, and Mod Menu are not required. When Firmament is installed, an optional handoff prevents selected duplicate inventory tools from running twice.
+
+All Minecraft modifications are used at the player's own risk. Passive HUDs, outlines, waypoint beams, overlays, and predictions are not the same as official Hypixel approval. Review Hypixel's current modification rules and disable any feature you are not comfortable using.
+
+QCloudy_Addition is not affiliated with or endorsed by Hypixel Studios, Mojang Studios, or Microsoft.
