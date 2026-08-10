@@ -63,7 +63,7 @@
   "config.manual_reconnect": "手动重连按钮",
   "config.desc.manual_reconnect": "在连接失败与断线界面加入重连按钮；不会自动重试。",
   "config.fishing.bite_alert": "钓鱼上钩提示音",
-  "config.desc.fishing.bite_alert": "自己的鱼钩显示 !!! 时播放一次内置 Ciallo 音频；默认关闭。",
+  "config.desc.fishing.bite_alert": "水钓或岩浆钓鱼的鱼钩显示 !!! 时播放一次内置 Ciallo 音频；默认关闭。",
   "config.setting.fishing_bite_volume": "上钩提示音量",
   "disconnect.reconnect": "重新连接",
   "config.desc.dwarven_map": "单层简洁区域图，并实时显示玩家箭头。",

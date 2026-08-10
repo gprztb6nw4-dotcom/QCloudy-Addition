@@ -1,3 +1,37 @@
+# QCloudy_Addition Beta 2.6.9 lava-fishing sound validation
+
+Validation date: 2026-08-11
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Beta-2.6.9+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.9+26.1.2-sources.jar`
+
+## Result
+
+Beta 2.6.9 fixes the missing bite cue on Hypixel lava-fishing casts whose Fishing Hook does not populate the local player's direct owner link. Directly owned water/lava hooks still take priority. A physical local fishing-rod use now opens a bounded 40-tick association window for one newly loaded local-owned or ownerless hook, while excluding every hook already present and every hook explicitly owned by another player. The existing exact nearby `!!!` marker and once-per-hook sound gate remain unchanged.
+
+## Automated, resource, and artifact checks
+
+- Java 25 `clean test build prepareRelease` completed successfully. Fresh XML reports 25 suites and 132 tests, with 0 failures, 0 errors, and 0 skips.
+- Focused resolver tests cover direct-water-hook priority, a newly loaded ownerless lava hook, preference for a locally owned candidate, rejection of pre-cast and other-player hooks, reel/reset behavior, the 40-tick expiry, and the no-idle-scan state.
+- English and Simplified Chinese resources each contain 378 keys with identical key sets and valid JSON.
+- Expanded Fabric metadata declares `Beta-2.6.9+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+.
+- The binary JAR contains `FishingBiteAlert`, `FishingBiteSession`, `FishingHookResolver`, `assets/qcloudy_addition/sounds.json`, and `assets/qcloudy_addition/sounds/fishing/ciallo.ogg`.
+- Both binary and Sources JARs pass JDK 25 `jar --validate` and `unzip -t`; their `release` copies are byte-identical to `build/libs`.
+- Static data-flow review confirms that the item-use callback returns `PASS`, the broader hook query is inactive while idle, and the feature contains no automatic cast/reel, click, movement, command, chat, packet, HTTP, or audio-download path.
+
+## Validation boundary
+
+This audit verifies compilation, resolver behavior, resource presence, bilingual configuration, archive integrity, metadata, filenames, checksums, and build/release identity. It does not claim an authenticated Hypixel lava-fishing regression. Before wider publication, the owner should test one real water bite and one real lava bite, confirm the Ciallo cue occurs once in each case, and confirm redistribution rights for the supplied recording.
+
+## SHA-256
+
+- Binary JAR: `b3ebf47ef848f629782784b22ef14e6d7e03fb9bbe86bb0222a8ab725518e3e9`
+- Sources JAR: `3d79108989509ffa1c02f4e663d33c067d1082f74b52741c2c52b4fb24e42e3f`
+
+---
+
 # QCloudy_Addition Beta 2.6.8 Fishing Bite Sound validation
 
 Validation date: 2026-08-11

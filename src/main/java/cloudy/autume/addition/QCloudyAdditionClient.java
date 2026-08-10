@@ -26,6 +26,7 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.client.KeyMapping;
@@ -60,6 +61,13 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         ItemTimestampTooltip.register();
         SafariBeltTooltip.register();
         HuntingWorldRenderer.register();
+
+        UseItemCallback.EVENT.register((player, level, hand) -> {
+            if (player == Minecraft.getInstance().player) {
+                FishingBiteAlert.onRodUse(Minecraft.getInstance(), player.getItemInHand(hand));
+            }
+            return net.minecraft.world.InteractionResult.PASS;
+        });
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             ticks++;

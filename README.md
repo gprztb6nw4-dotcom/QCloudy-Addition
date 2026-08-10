@@ -20,7 +20,7 @@ The language option translates QCA interface labels only. Hypixel location names
 ### General
 
 - **Manual Reconnect** — adds one vanilla-sized `Reconnect` button to connection-failed and disconnected screens. The target is captured when the normal connection attempt begins, so the button also works after an initial failure. It reconnects only after the player clicks it; there is no timer, loop, retry counter, command, or automatic join.
-- **Fishing Bite Sound** — an opt-in local cue for Hypixel's short bite window. It requires the exact visible `!!!` marker beside the local player's own loaded Fishing Hook, plays the bundled Ciallo OGG once per hook, and has an independent 0–100% volume slider at the 64% default. It never casts or reels automatically.
+- **Fishing Bite Sound** — an opt-in local cue for Hypixel's short bite window in water or lava. It prefers the local player's directly owned Fishing Hook and uses a short post-cast association window for Hypixel lava hooks whose owner link is absent, then requires the exact visible `!!!` marker beside that hook. It plays the bundled Ciallo OGG once per hook and has an independent 0–100% volume slider at the 64% default. It never casts or reels automatically.
 
 ### Maps
 

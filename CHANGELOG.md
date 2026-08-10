@@ -2,6 +2,20 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.9] - 2026-08-11
+
+Beta fishing compatibility fix for Minecraft 26.1.2.
+
+### Fixed
+
+- Fixed the Fishing Bite Sound not playing during some Hypixel lava-fishing casts. Water fishing continues to use the directly owned vanilla hook; after a physical local rod use, QCA can now briefly associate a newly loaded ownerless Fishing Hook used by the lava-fishing presentation.
+- The fallback rejects hooks that were already present before the cast and hooks explicitly owned by another player, then keeps the same associated hook until it disappears or the player reels it in.
+
+### Performance and safety
+
+- The broader hook lookup runs only during the bounded 40-tick association window or while the associated fallback hook remains loaded; idle gameplay does not scan for hooks every tick.
+- Detection remains passive and local. It does not cast, reel, click, move, cancel the rod use, send a packet, chat message, or command.
+
 ## [2.6.8] - 2026-08-11
 
 Beta client-audio update for Minecraft 26.1.2.

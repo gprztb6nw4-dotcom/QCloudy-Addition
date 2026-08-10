@@ -36,9 +36,9 @@
 
 **Purpose:** make Hypixel's short bite window audible without automating fishing.
 
-**What it does:** while enabled, QCA checks only the four-block box around the local player's own already-loaded Fishing Hook. An invisible, visible-named ArmorStand whose exact received name is `!!!` triggers the supplied Ciallo cue once for that cast. Persistent markers cannot replay the sound every tick; removing the hook arms the next cast. The feature defaults off and has its own continuous 0–100% volume slider at the project-wide 64% default.
+**What it does:** while enabled, QCA prefers the local player's directly owned, already-loaded Fishing Hook. After a physical local rod use, it can also associate a newly loaded ownerless hook during a bounded 40-tick window so Hypixel lava fishing receives the same cue. Hooks present before the cast and hooks owned by another player are rejected. An invisible, visible-named ArmorStand whose exact received name is `!!!` inside the selected hook's four-block box triggers the supplied Ciallo cue once for that cast. Persistent markers cannot replay the sound every tick; removing the hook arms the next cast. The feature defaults off and has its own continuous 0–100% volume slider at the project-wide 64% default.
 
-**Safety:** the detector reads loaded client entities and plays one bundled local OGG. It does not reel, cast, click, rotate, move, select an item, send a packet, chat message, or command.
+**Safety:** the detector reads loaded client entities and observes the player's physical rod use without cancelling or replacing it. The broader hook lookup runs only during the short association window or while that fallback hook remains loaded; idle gameplay does not scan for hooks every tick. It plays one bundled local OGG and does not reel, cast, click, rotate, move, select an item, send a packet, chat message, or command.
 
 ## 3. Foraging, Hunting, and Safari
 

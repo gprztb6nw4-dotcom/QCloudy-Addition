@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.6.8+26.1.2`.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.6.9+26.1.2`.
 
 ## 1. Runtime architecture
 
@@ -83,10 +83,10 @@ On by default. One physical click starts one ordinary server connection. No save
 ### 3.1 Fishing Bite Sound
 
 - **Purpose:** replace a missed visual bite window with a short local audio cue, without automating fishing.
-- **Inputs:** the local player's own `Player.fishing` hook, already-loaded entities inside that hook's bounding box expanded by four blocks, and exact received ArmorStand name/visibility state.
-- **Implementation:** `FishingBiteAlert` requires an invisible ArmorStand with a visible custom name exactly equal to `!!!`. `FishingBiteSession` keys the alert to the hook entity ID and permits one playback until the hook disappears or a new hook ID is observed. The supplied MP3 is converted before packaging to `assets/qcloudy_addition/sounds/fishing/ciallo.ogg` and registered by `sounds.json`.
+- **Inputs:** the directly owned `Player.fishing` hook when available; physical local fishing-rod use; already-loaded Fishing Hooks within a bounded association radius; entities inside the selected hook's bounding box expanded by four blocks; and exact received ArmorStand name/visibility state.
+- **Implementation:** directly owned water or lava hooks always win. `FishingHookResolver` records the hook IDs already present when the local player physically uses a fishing rod, then accepts only a newly loaded local-owned or ownerless candidate during the next 40 ticks; an explicit other-player owner is rejected. This covers Hypixel lava hooks whose owner link is absent without claiming arbitrary existing hooks. `FishingBiteAlert` then requires an invisible ArmorStand with a visible custom name exactly equal to `!!!`. `FishingBiteSession` keys the alert to the chosen hook entity ID and permits one playback until the hook disappears or a new hook ID is observed. The supplied MP3 is converted before packaging to `assets/qcloudy_addition/sounds/fishing/ciallo.ogg` and registered by `sounds.json`.
 - **Expected effect:** one Ciallo cue when the local hook becomes ready; no per-tick replay from a persistent marker.
-- **Default/outbound:** feature off, volume64% on a 0–100% slider; local sound only, with no cast, reel, click, movement, packet, chat, or command.
+- **Default/outbound:** feature off, volume64% on a 0–100% slider; local sound only. The rod-use callback always passes through and never casts, reels, clicks, moves, sends a packet, chat, or command. The wider hook lookup is inactive while idle.
 
 ## 4. Maps
 

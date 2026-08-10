@@ -1,3 +1,37 @@
+# QCloudy_Addition Beta 2.6.9 岩浆钓鱼提示音验证
+
+验证日期：2026-08-11
+
+验证产物：
+
+- `release/QCloudy_Addition-Beta-2.6.9+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.9+26.1.2-sources.jar`
+
+## 结论
+
+Beta 2.6.9 修复 Hypixel 岩浆钓鱼 Fishing Hook 没有写入本地玩家直接 owner 关联时缺少上钩提示音的问题。直接归属本地玩家的水钓/岩浆鱼钩仍始终优先。玩家真实使用钓竿后，会开启有限 40 tick 关联窗口，只接受一根新加载、归属本地玩家或 owner 为空的鱼钩；抛竿前已经存在的鱼钩以及明确属于其他玩家的鱼钩全部排除。原有附近精确 `!!!` 标记和每根鱼钩只响一次的去重逻辑保持不变。
+
+## 自动测试、资源与产物检查
+
+- Java 25 `clean test build prepareRelease` 成功；新生成 XML 报告共 25 个测试套件、132 项测试，0 失败、0 错误、0 跳过。
+- 聚焦测试覆盖水钓直接鱼钩优先、新加载 owner 为空的岩浆鱼钩、本地 owner 候选优先、拒绝旧鱼钩与其他玩家鱼钩、收杆/重置、40 tick 超时，以及空闲状态不需要扫描。
+- 英文和简体中文资源各 378 个键，键集合一致且 JSON 有效。
+- 展开的 Fabric 元数据为 `Beta-2.6.9+26.1.2`、纯客户端，声明 Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+ 与 Java 25+。
+- 二进制 JAR 包含 `FishingBiteAlert`、`FishingBiteSession`、`FishingHookResolver`、`assets/qcloudy_addition/sounds.json` 与 `assets/qcloudy_addition/sounds/fishing/ciallo.ogg`。
+- 二进制和 Sources JAR 均通过 JDK 25 `jar --validate` 与 `unzip -t`；`release` 副本与 `build/libs` 逐字节一致。
+- 静态数据流检查确认物品使用回调返回 `PASS`，空闲时较大范围鱼钩查找不运行，并且不存在自动抛竿/收杆、点击、移动、命令、聊天、数据包、HTTP 或音频下载路径。
+
+## 验证边界
+
+本次审核验证编译、鱼钩关联行为、资源存在性、双语配置、归档完整性、元数据、文件名、校验和及 build/release 一致性，但不等同于已经登录 Hypixel 完成岩浆钓鱼实服回归。正式广泛发布前，应各测试一次真实水钓与岩浆钓鱼上钩，确认两者都只播放一次 Ciallo，并确认所提供音频的再分发权利。
+
+## SHA-256
+
+- 二进制 JAR：`b3ebf47ef848f629782784b22ef14e6d7e03fb9bbe86bb0222a8ab725518e3e9`
+- Sources JAR：`3d79108989509ffa1c02f4e663d33c067d1082f74b52741c2c52b4fb24e42e3f`
+
+---
+
 # QCloudy_Addition Beta 2.6.8 钓鱼上钩提示音验证
 
 验证日期：2026-08-11

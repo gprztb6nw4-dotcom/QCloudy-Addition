@@ -7,7 +7,7 @@
 | 矮人矿洞地图 | 玩家 X/Z/yaw、解析到的可见子地点；明确不使用 Y | 固定 PNG 与箭头 HUD | 无 |
 | 冰川隧道地图 | 玩家 X/Y/Z/yaw、解析到的地点 | 固定分层 PNG 与箭头 HUD | 无 |
 | 挖矿任务/粉尘/HOTM 配置 | 已收到的 Tab 文本及玩家已打开菜单中的物品名/说明 | 文字与进度条 HUD、缓存的当前配置名 | 无 |
-| 钓鱼上钩提示音 | 本地玩家自己的已加载 Fishing Hook 与附近精确收到的 `!!!` ArmorStand | 每根鱼钩一次内置本地声音 | 无 |
+| 钓鱼上钩提示音 | 直接归属本地玩家的 Fishing Hook，或在真实使用钓竿后关联的新加载本地/owner 为空鱼钩；附近精确收到的 `!!!` ArmorStand | 每根鱼钩一次内置本地声音 | 无 |
 | Crimson Isle 任务 | 已收到的 `Faction Quests:` Tab 文本 | 文字 HUD | 无 |
 | Torrhus Chapter/资源/Contest/Benefactor | 已收到的计分板、Tab、聊天与已打开 HOTF/菜单文字 | 自动换行 HUD、本地档位计算、中央标题 | 无 |
 | Tree Critter 计时 | 最近已加载实体中严格匹配 `Critter in: <时间>` 的显示名称 | 综合 Hunting HUD 中的一行 | 无 |
@@ -49,7 +49,7 @@
 
 QCA 不包含 Hypixel Mod API、Hypixel 公共 API、WebSocket、HTTP 客户端、遥测、坐标共享、远程更新器、宏、模拟输入、自动点击/移动或方块交互。唯一的对外动作是上面明确记录、由玩家触发的 `/th` 传送命令、`/helia` Chapter 命令，以及玩家点击“重新连接”后的一次普通服务器连接；它们都不会自行运行。重连没有倒计时、重试循环、后台尝试或自动加入。
 
-钓鱼上钩提示音要求本地玩家自己的已加载鱼钩，只扫描鱼钩周围四格并精确匹配收到的 `!!!` ArmorStand，每根鱼钩最多播放一次内置本地提示音。它不会抛竿、收杆、点击、移动玩家，也不发送命令或数据包。
+钓鱼上钩提示音优先使用直接归属于本地玩家的已加载鱼钩。为了兼容 owner 关联可能缺失的 Hypixel 岩浆鱼钩，它只在玩家真实使用钓竿后开启有限 40 tick 窗口，排除抛竿前已经存在的全部鱼钩及明确属于其他玩家的鱼钩，然后才接受一根新加载、归属本地或 owner 为空的鱼钩。此后只扫描该选中鱼钩周围四格并精确匹配收到的 `!!!` ArmorStand，每根鱼钩最多播放一次内置本地提示音。回调会原样放行真实使用动作，不会抛竿、收杆、点击、移动玩家，也不发送命令或数据包；空闲时不会运行较大范围扫描。
 
 Shard Fusion Guide 是只读本地资料。320 项目录、规范化 Wiki 效果/获取摘要、合成规则、320 张 Shard 专属 PNG、物品模型与映射都在发布前生成并打包进 JAR；生成器使用 [Attributes 表格](https://hypixelskyblock.minecraft.wiki/w/Attributes)、[Attribute Fusion 规则](https://hypixelskyblock.minecraft.wiki/w/Attribute_Fusion)、[官方 Bazaar 产品列表](https://api.hypixel.net/v2/skyblock/bazaar) 与已审核 MIT 许可 SkyShards 图标集。运行中的 QCA 没有访问这些来源或图标服务的代码路径。搜索、切换焦点、打开详细信息/合成来源/可合成内容、使用历史、解析内置图标或渲染已经收到的原生 ItemStack，都不会点击容器、执行 Fusion、选择输出、向服务器发送 `/qshard` 或改变服务器状态。已经收到的原生玩家头继续走 Minecraft 正常渲染管线；QCA 不会额外发起纹理请求。该功能只提供信息，不自动决定或执行合成与游戏操作。
 

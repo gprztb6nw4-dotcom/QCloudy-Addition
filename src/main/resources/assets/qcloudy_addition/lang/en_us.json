@@ -63,7 +63,7 @@
   "config.manual_reconnect": "Manual Reconnect Button",
   "config.desc.manual_reconnect": "Adds a Reconnect button to connection-failed and disconnected screens. It never retries automatically.",
   "config.fishing.bite_alert": "Fishing Bite Sound",
-  "config.desc.fishing.bite_alert": "Plays the bundled Ciallo sound once when your own fishing hook shows !!!. Disabled by default.",
+  "config.desc.fishing.bite_alert": "Plays the bundled Ciallo sound once when your water or lava fishing hook shows !!!. Disabled by default.",
   "config.setting.fishing_bite_volume": "Fishing bite volume",
   "disconnect.reconnect": "Reconnect",
   "config.desc.dwarven_map": "Simple one-layer region map with a live player arrow.",
