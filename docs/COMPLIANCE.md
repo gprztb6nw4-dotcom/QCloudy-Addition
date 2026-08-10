@@ -7,6 +7,7 @@
 | Dwarven map | Player X/Z/yaw, parsed visible sub-location; Y deliberately unused | Static PNG + arrow HUD | None |
 | Glacite map | Player X/Y/Z/yaw, parsed location | Static layer PNG + arrow HUD | None |
 | Mining tasks/powders/HOTM slot | Received Tab display names and already-open menu item names/lore | Text/progress-bar HUD and cached selected slot name | None |
+| Fishing Bite Sound | Local player's own loaded Fishing Hook and an exact nearby received `!!!` ArmorStand | One bundled local sound per hook | None |
 | Crimson Isle tasks | Received `Faction Quests:` Tab display names | Text HUD | None |
 | Torrhus Chapter/resources/Contest/Benefactor | Received scoreboard, Tab, chat, and already-open HOTF/menu text | Wrapped HUD, local bracket calculation, center titles | None |
 | Tree Critter Timer | Nearest loaded entity display name matching `Critter in: <duration>` | One line in the combined Hunting HUD | None |
@@ -47,6 +48,8 @@
 ## Network and automation audit
 
 QCA contains no Hypixel Mod API, Hypixel public API, WebSocket, HTTP client, telemetry, coordinate sharing, remote updater, macro, simulated input, automatic click/movement helper, or block interaction. The only outbound actions are the documented user-triggered `/th` warp command, `/helia` chapter command, and one ordinary server connection when the player clicks `Reconnect`; none run without physical user input. Reconnect has no timer, retry loop, background attempt, or automatic join.
+
+The Fishing Bite Sound requires the local player's own loaded hook, scans only its four-block neighborhood for the exact received `!!!` ArmorStand, and plays the bundled local cue at most once per hook. It never casts, reels, clicks, moves the player, or sends a command or packet.
 
 The Shard Fusion Guide is a read-only local reference. Its 320-item catalog, normalized Wiki effect/acquisition summaries, fusion rules, 320 Shard-specific PNGs, item models, and mappings are generated before release and packaged in the JAR; the generator uses the [Attributes tables](https://hypixelskyblock.minecraft.wiki/w/Attributes), [Attribute Fusion rules](https://hypixelskyblock.minecraft.wiki/w/Attribute_Fusion), the [official Bazaar product list](https://api.hypixel.net/v2/skyblock/bazaar), and the reviewed MIT-licensed SkyShards icon set. The running QCA code has no path that contacts those sources or an icon service. Searching, changing focus, opening Details/Recipes/Uses, following history, resolving a bundled icon, or rendering an already-received native ItemStack do not click a container, perform a fusion, select an output, send `/qshard`, or otherwise affect server state. Native player-head stacks, when already received, continue through Minecraft's normal renderer; QCA does not initiate an additional texture request. The guide is informational only and does not automate crafting decisions or gameplay actions.
 

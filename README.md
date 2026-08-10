@@ -20,6 +20,7 @@ The language option translates QCA interface labels only. Hypixel location names
 ### General
 
 - **Manual Reconnect** — adds one vanilla-sized `Reconnect` button to connection-failed and disconnected screens. The target is captured when the normal connection attempt begins, so the button also works after an initial failure. It reconnects only after the player clicks it; there is no timer, loop, retry counter, command, or automatic join.
+- **Fishing Bite Sound** — an opt-in local cue for Hypixel's short bite window. It requires the exact visible `!!!` marker beside the local player's own loaded Fishing Hook, plays the bundled Ciallo OGG once per hook, and has an independent 0–100% volume slider at the 64% default. It never casts or reels automatically.
 
 ### Maps
 
@@ -83,7 +84,7 @@ Foraging, Hunting, and Safari are mutually exclusive settings categories: every 
 - UI opening animations are enabled by default and can be disabled
 - Optional Mod Menu integration opens QCA's settings directly when Mod Menu is installed
 
-The configuration screen uses a compact BLC-inspired information hierarchy—not copied assets or layout code—with one **Features** tab, category navigation, and searchable feature cards. **General** is the first category and contains **UI animations**, the alert master mute, and the manual reconnect toggle; HUD position editing remains available from the bottom-left **Edit HUD** button. Feature cards no longer repeat a top-right switch or bottom-right right-click hint, and secondary pages do not repeat the primary enable switch. There is deliberately no catch-all `ALL` category: every feature appears only under its own category.
+The configuration screen uses a compact BLC-inspired information hierarchy—not copied assets or layout code—with one **Features** tab, category navigation, and searchable feature cards. **General** is the first category and contains **UI animations**, the alert master mute, manual reconnect, and the Fishing group; HUD position editing remains available from the bottom-left **Edit HUD** button. Feature cards no longer repeat a top-right switch or bottom-right right-click hint, and secondary pages do not repeat the primary enable switch. There is deliberately no catch-all `ALL` category: every feature appears only under its own category.
 
 Inventory and menu tools include the Attribute Shard Fusion Guide, item timestamps, cursor position memory, configurable AOTE/AOTV sounds, and Chat Peek. Every QCA hotkey is edited inline on its existing secondary-settings page instead of opening a separate capture screen. Keyboard keys, mouse buttons 1–5/side buttons, and Ctrl/Shift/Alt/Cmd-Super combinations are supported; while a row is listening, `Esc` clears it to unbound.
 

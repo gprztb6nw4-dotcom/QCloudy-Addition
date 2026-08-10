@@ -2,6 +2,7 @@ package cloudy.autume.addition;
 
 import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ConfigScreen;
+import cloudy.autume.addition.fishing.FishingBiteAlert;
 import cloudy.autume.addition.hud.HudRenderer;
 import cloudy.autume.addition.i18n.ModText;
 import cloudy.autume.addition.input.HotkeyInputs;
@@ -70,6 +71,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
                 PetSkinTracker.update(client);
             }
             HuntingTracker.tick(client);
+            FishingBiteAlert.tick(client);
         });
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
@@ -274,5 +276,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         PetTracker.reset();
         PetSkinTracker.reset();
         HuntingTracker.reset();
+        FishingBiteAlert.reset();
     }
 }

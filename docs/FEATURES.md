@@ -30,6 +30,16 @@
 
 **Selected HOTM slot:** enabled by default and independently switchable. QCA reads `SELECTED` from the exact `Heart of the Mountain Slot` menu or `Current:` from the received loadout item lore, caches the original player-visible name, and displays `HOTM: <name>`. It does not issue a command or click a menu to obtain it.
 
+## 2.2 Fishing
+
+### Fishing Bite Sound
+
+**Purpose:** make Hypixel's short bite window audible without automating fishing.
+
+**What it does:** while enabled, QCA checks only the four-block box around the local player's own already-loaded Fishing Hook. An invisible, visible-named ArmorStand whose exact received name is `!!!` triggers the supplied Ciallo cue once for that cast. Persistent markers cannot replay the sound every tick; removing the hook arms the next cast. The feature defaults off and has its own continuous 0–100% volume slider at the project-wide 64% default.
+
+**Safety:** the detector reads loaded client entities and plays one bundled local OGG. It does not reel, cast, click, rotate, move, select an item, send a packet, chat message, or command.
+
 ## 3. Foraging, Hunting, and Safari
 
 The settings UI deliberately keeps these as three mutually exclusive categories. **Foraging** owns Torrhus Chapter/resources, Tree Critter Timer, Miria Contest, Benefactor, and Tree Gift. **Hunting** owns Beeheemoth, Lasso REEL, Critter Behavior, and the single cross-island Fairy Soul feature. **Safari** owns Cold, Doomspiral, Critter highlighting, Dashboard, Critterdex, Sparkling, Floor Drop/Quest Item, Wumpa, Snoozle wall overlay, and Safari Belt. A feature card is declared once and cannot appear in more than one category.
@@ -147,10 +157,10 @@ Every hotkey is captured inline on its existing feature-settings row; QCA no lon
 
 The permanently available local `/th` and `/helia` commands have no settings. Explicit player invocations send exactly `warp torrhus` and `chapter torrhus`, equivalent to manually entering `/warp torrhus` and `/chapter torrhus`; they are never triggered automatically.
 
-Broad numeric ranges use draggable sliders: HUD opacity and scale, cursor-memory duration, and teleport-sound volume and pitch. Values update continuously while dragging and persist on mouse release. Small discrete sets such as border width, progress-display modes, and sound presets remain direct cycle controls.
+Broad numeric ranges use draggable sliders: HUD opacity and scale, cursor-memory duration, Fishing Bite volume, and teleport-sound volume. Values update continuously while dragging and persist on mouse release. Small discrete sets such as border width, progress-display modes, and sound presets remain direct cycle controls.
 
 ### 9.1 AOTE/AOTV sound customization
 
 **Purpose:** let players change intrusive teleport sounds without forcing the tools to be silent.
 
-**What it does:** the master feature and both teleport types default to original audio. Instant Transmission and Etherwarp can independently switch from the received original sound to one of six local Minecraft presets: Chorus Teleport, Enderman Teleport, Amethyst Chime, Experience Orb, End Portal Fill, or Shulker Teleport. Each custom sound has its own volume (10–200%) and pitch (50–200%) slider. QCA replaces only a recognized nearby sound while the local player is holding `ASPECT_OF_THE_END` or `ASPECT_OF_THE_VOID`; it does not change packets, item use, cooldown, distance, or movement. Version-3 muting settings migrate to original audio.
+**What it does:** the master feature and both teleport types default to original audio. Instant Transmission and Etherwarp can independently switch from the received original sound to one of six local Minecraft presets: Chorus Teleport, Enderman Teleport, Amethyst Chime, Experience Orb, End Portal Fill, or Shulker Teleport. Each custom sound has its own 0–100% volume slider at the 64% default; pitch is not altered. QCA replaces only a recognized nearby sound while the local player is holding `ASPECT_OF_THE_END` or `ASPECT_OF_THE_VOID`; it does not change packets, item use, cooldown, distance, or movement. Version-3 muting settings migrate to original audio.

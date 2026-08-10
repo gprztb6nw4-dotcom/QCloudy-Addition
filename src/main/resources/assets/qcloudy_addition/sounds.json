@@ -1,0 +1,11 @@
+{
+  "fishing_bite": {
+    "subtitle": "subtitles.qcloudy_addition.fishing_bite",
+    "sounds": [
+      {
+        "name": "qcloudy_addition:fishing/ciallo",
+        "stream": false
+      }
+    ]
+  }
+}

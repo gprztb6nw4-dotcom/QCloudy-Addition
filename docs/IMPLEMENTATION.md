@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.6.7+26.1.2`.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.6.8+26.1.2`.
 
 ## 1. Runtime architecture
 
@@ -79,6 +79,14 @@ A `Reconnect`/`重新连接` button aligned with the existing disconnect-screen 
 ### Defaults and outbound behavior
 
 On by default. One physical click starts one ordinary server connection. No saved address, countdown, retry loop, background connection, command, chat, or authentication bypass.
+
+### 3.1 Fishing Bite Sound
+
+- **Purpose:** replace a missed visual bite window with a short local audio cue, without automating fishing.
+- **Inputs:** the local player's own `Player.fishing` hook, already-loaded entities inside that hook's bounding box expanded by four blocks, and exact received ArmorStand name/visibility state.
+- **Implementation:** `FishingBiteAlert` requires an invisible ArmorStand with a visible custom name exactly equal to `!!!`. `FishingBiteSession` keys the alert to the hook entity ID and permits one playback until the hook disappears or a new hook ID is observed. The supplied MP3 is converted before packaging to `assets/qcloudy_addition/sounds/fishing/ciallo.ogg` and registered by `sounds.json`.
+- **Expected effect:** one Ciallo cue when the local hook becomes ready; no per-tick replay from a persistent marker.
+- **Default/outbound:** feature off, volume64% on a 0–100% slider; local sound only, with no cast, reel, click, movement, packet, chat, or command.
 
 ## 4. Maps
 

@@ -25,6 +25,7 @@
   "config.category.hunting": "狩猎",
   "config.group.hud": "HUD",
   "config.group.connection": "连接",
+  "config.group.fishing": "钓鱼",
   "config.group.maps": "地图",
   "config.group.waypoints": "点位",
   "config.group.mining_objectives": "挖矿任务",
@@ -61,6 +62,9 @@
   "config.teleport_sounds": "AOTE/AOTV 传送声音",
   "config.manual_reconnect": "手动重连按钮",
   "config.desc.manual_reconnect": "在连接失败与断线界面加入重连按钮；不会自动重试。",
+  "config.fishing.bite_alert": "钓鱼上钩提示音",
+  "config.desc.fishing.bite_alert": "自己的鱼钩显示 !!! 时播放一次内置 Ciallo 音频；默认关闭。",
+  "config.setting.fishing_bite_volume": "上钩提示音量",
   "disconnect.reconnect": "重新连接",
   "config.desc.dwarven_map": "单层简洁区域图，并实时显示玩家箭头。",
   "config.desc.glacite_map": "清晰显示冰川隧道低、中、高三层。",
@@ -371,5 +375,6 @@
   "shard.info.fusion_only": "仅可 Fusion：当前没有记录到自然获取方式。",
   "shard.info.fusion_available": "存在 %s 个已验证的有序 Fusion 配方；打开“合成来源 (R)”可查看。",
   "shard.history.back": "‹",
-  "shard.history.forward": "›"
+  "shard.history.forward": "›",
+  "subtitles.qcloudy_addition.fishing_bite": "钓鱼上钩提示"
 }

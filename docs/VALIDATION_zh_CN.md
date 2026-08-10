@@ -1,3 +1,37 @@
+# QCloudy_Addition Beta 2.6.8 钓鱼上钩提示音验证
+
+验证日期：2026-08-11
+
+已验证产物：
+
+- `release/QCloudy_Addition-Beta-2.6.8+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.8+26.1.2-sources.jar`
+
+## 结果
+
+Beta 2.6.8 在“通用 > 钓鱼”中加入默认关闭的“钓鱼上钩提示音”。它只检查本地玩家自己已经加载的 Fishing Hook，精确匹配其附近、名称可见且为 `!!!` 的 Hypixel ArmorStand，并且每根鱼钩最多播放一次内置 Ciallo OGG。该功能拥有独立的 0–100% 连续音量滑块，默认遵循项目统一的 64%。
+
+## 自动测试、资源与产物检查
+
+- Java 25 `clean test build prepareRelease` 成功完成。最新 XML 共 24 个 suite、127 项测试，0 failures、0 errors、0 skips；class major version 为 69。
+- 聚焦测试覆盖每根鱼钩只播放一次、鱼钩消失或实体 ID 变化后重新待命、`sounds.json` 注册，以及内置资源的 OggS 文件头。
+- 英文与简体中文资源各有 378 个键，键集合完全一致且 JSON 有效。
+- 展开的 Fabric 元数据为 `Beta-2.6.8+26.1.2`，环境为纯客户端，声明 Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+ 与 Java 25+。
+- 二进制 JAR 内含 `assets/qcloudy_addition/sounds.json`、`assets/qcloudy_addition/sounds/fishing/ciallo.ogg` 以及钓鱼检测/会话类。最终音频为 44.1 kHz 立体声 Ogg Vorbis，由 QCA 自带客户端资源包加载，不需要另装材质包，也不会在运行时下载。
+- 二进制与 Sources JAR 均通过 JDK 25 `jar --validate` 和 `unzip -t`；`release` 副本与 `build/libs` 逐字节一致。
+- 静态数据流检查确认检测器只扫描 `Player.fishing` 周围四格并播放本地声音，不包含抛竿、收杆、点击、移动、命令、聊天、数据包、HTTP 或纹理/音频下载路径。
+
+## 验证边界
+
+本次检查验证编译、自动行为、资源存在与格式、双语配置、归档完整性、元数据、文件名、哈希和 build/release 一致性；不代表已经完成登录 Hypixel 的实服上钩时机与声音回归。扩大公开发布前，仍应使用预期 GUI/音频设置实际测试一次上钩，并由项目所有者确认所提供 `Ciallo.mp3` 录音的再分发权利。
+
+## SHA-256
+
+- 二进制 JAR：`e8806bfd92c6b4629e968dc636d3fc5e4af546d3b6361cb3a1237be83fdeb4e7`
+- Sources JAR：`aa9491473810f148f7cb15522e2119317416b922ec59477213bdfd8f634abb01`
+
+---
+
 # QCloudy_Addition Beta 2.6.7 Dwarven 地图验证
 
 验证日期：2026-08-10

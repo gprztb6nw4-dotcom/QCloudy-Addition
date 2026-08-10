@@ -13,6 +13,7 @@ public final class ModConfig {
 
     public Maps maps = new Maps();
     public Mining mining = new Mining();
+    public Fishing fishing = new Fishing();
     public Hunting hunting = new Hunting();
     public CrimsonIsle crimsonIsle = new CrimsonIsle();
     public Combat combat = new Combat();
@@ -26,6 +27,7 @@ public final class ModConfig {
         if (!"en_us".equals(language) && !"zh_cn".equals(language)) language = "en_us";
         if (maps == null) maps = new Maps();
         if (mining == null) mining = new Mining();
+        if (fishing == null) fishing = new Fishing();
         if (hunting == null) hunting = new Hunting();
         if (crimsonIsle == null) crimsonIsle = new CrimsonIsle();
         if (combat == null) combat = new Combat();
@@ -124,12 +126,20 @@ public final class ModConfig {
             inventory.shardFusionHelper = true;
             configVersion = 17;
         }
+        if (configVersion < 18) {
+            // The local fishing bite sound is opt-in. Existing users receive
+            // the same disabled state and the project-wide 64% sound default.
+            fishing.biteAlert = false;
+            fishing.biteAlertVolume = 64;
+            configVersion = 18;
+        }
         hudStyle.map.normalize();
         hudStyle.mining.normalize();
         hudStyle.hunting.normalize();
         hudStyle.pet.normalize();
         combat.enderDragonHighlightColor &= 0xFFFFFF;
         mining.normalize();
+        fishing.normalize();
         hunting.normalize();
         pets.normalize();
         chat.normalize();
@@ -165,6 +175,15 @@ public final class ModConfig {
             if (!"PERCENT".equals(commissionProgressMode) && !"NUMERIC".equals(commissionProgressMode)) {
                 commissionProgressMode = "PERCENT";
             }
+        }
+    }
+
+    public static final class Fishing {
+        public boolean biteAlert;
+        public int biteAlertVolume = 64;
+
+        private void normalize() {
+            biteAlertVolume = Math.clamp(biteAlertVolume, 0, 100);
         }
     }
 

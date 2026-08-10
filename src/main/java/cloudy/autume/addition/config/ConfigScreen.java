@@ -430,6 +430,7 @@ public final class ConfigScreen extends Screen {
     enum FeatureGroup {
         HUD(Category.GENERAL, "config.group.hud"),
         CONNECTION(Category.GENERAL, "config.group.connection"),
+        FISHING(Category.GENERAL, "config.group.fishing"),
         MAPS(Category.MAPS, "config.group.maps"),
         WAYPOINTS(Category.MAPS, "config.group.waypoints"),
         MINING_OBJECTIVES(Category.MINING, "config.group.mining_objectives"),
@@ -457,6 +458,7 @@ public final class ConfigScreen extends Screen {
         HUD_ANIMATIONS(FeatureGroup.HUD, "config.setting.animations", "config.desc.animations"),
         HUNTING_ALERT_SOUND(FeatureGroup.HUD, "config.hunting.alert_sound", "config.desc.hunting.alert_sound"),
         MANUAL_RECONNECT(FeatureGroup.CONNECTION, "config.manual_reconnect", "config.desc.manual_reconnect"),
+        FISHING_BITE_ALERT(FeatureGroup.FISHING, "config.fishing.bite_alert", "config.desc.fishing.bite_alert"),
         DWARVEN_MAP(FeatureGroup.MAPS, "config.dwarven_map", "config.desc.dwarven_map"),
         GLACITE_MAP(FeatureGroup.MAPS, "config.glacite_map", "config.desc.glacite_map"),
         FAIRY_SOUL_WAYPOINTS(FeatureGroup.WAYPOINTS, "config.hunting.fairy_souls", "config.desc.hunting.fairy_souls"),
@@ -508,6 +510,7 @@ public final class ConfigScreen extends Screen {
             return switch (this) {
                 case HUD_ANIMATIONS -> config.hudStyle.animations;
                 case MANUAL_RECONNECT -> config.manualReconnectButton;
+                case FISHING_BITE_ALERT -> config.fishing.biteAlert;
                 case DWARVEN_MAP -> config.maps.dwarvenMines;
                 case GLACITE_MAP -> config.maps.glaciteTunnels;
                 case MINING_TRACKER -> config.mining.taskAndPowderTracker;
@@ -550,6 +553,7 @@ public final class ConfigScreen extends Screen {
             switch (this) {
                 case HUD_ANIMATIONS -> config.hudStyle.animations = !config.hudStyle.animations;
                 case MANUAL_RECONNECT -> config.manualReconnectButton = !config.manualReconnectButton;
+                case FISHING_BITE_ALERT -> config.fishing.biteAlert = !config.fishing.biteAlert;
                 case DWARVEN_MAP -> config.maps.dwarvenMines = !config.maps.dwarvenMines;
                 case GLACITE_MAP -> config.maps.glaciteTunnels = !config.maps.glaciteTunnels;
                 case MINING_TRACKER -> config.mining.taskAndPowderTracker = !config.mining.taskAndPowderTracker;
@@ -601,7 +605,8 @@ public final class ConfigScreen extends Screen {
                         SAFARI_DASHBOARD, SAFARI_SHARD_STATS, SAFARI_CRITTERDEX,
                         FLOOR_QUEST_ASSISTANT, WUMPA_HUD -> ModConfig.HudType.HUNTING;
                 case PET_HUD -> ModConfig.HudType.PET;
-                case HUD_ANIMATIONS, HUNTING_ALERT_SOUND, MANUAL_RECONNECT, COLD_SAFETY, DOOMSPIRAL_READY, WARDEN_READY_ALERT,
+                case HUD_ANIMATIONS, HUNTING_ALERT_SOUND, MANUAL_RECONNECT, FISHING_BITE_ALERT,
+                        COLD_SAFETY, DOOMSPIRAL_READY, WARDEN_READY_ALERT,
                         FAIRY_SOUL_WAYPOINTS, SAFARI_CRITTER_HIGHLIGHT, BEEHEEMOTH_HELPER,
                         LASSO_REEL_SOUND, TREE_GIFT_ALERTS,
                         SPARKLING_ALERT, SNOOZLE_WALL_OVERLAY, SAFARI_BELT, DRAGON_HIGHLIGHT, CHAT_PEEK -> null;

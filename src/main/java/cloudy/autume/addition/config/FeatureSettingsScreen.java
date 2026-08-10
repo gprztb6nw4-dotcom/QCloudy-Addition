@@ -190,6 +190,10 @@ final class FeatureSettingsScreen extends Screen {
             rows.add(new Setting(Kind.SHARD_GUIDE_KEY, "config.setting.shard_guide_key"));
             return rows;
         }
+        if (feature == ConfigScreen.Feature.FISHING_BITE_ALERT) {
+            rows.add(new Setting(Kind.FISHING_BITE_VOLUME, "config.setting.fishing_bite_volume"));
+            return rows;
+        }
         if (feature.inventoryFeature()) {
             rows.add(new Setting(Kind.YIELD_FIRMAMENT, "config.setting.yield_firmament"));
             switch (feature) {
@@ -376,6 +380,8 @@ final class FeatureSettingsScreen extends Screen {
                     config.inventory.etherwarpCustomSound);
             case ETHERWARP_SOUND_VOLUME -> config.inventory.etherwarpSoundVolume = nextPercent(
                     config.inventory.etherwarpSoundVolume, 0, 100);
+            case FISHING_BITE_VOLUME -> config.fishing.biteAlertVolume = nextPercent(
+                    config.fishing.biteAlertVolume, 0, 100);
             case DRAGON_COLOR -> openColor(config.combat.enderDragonHighlightColor,
                     color -> config.combat.enderDragonHighlightColor = color);
             case CHAT_PEEK_KEY -> listeningChord = QCloudyAdditionClient.ChordAction.PEEK_CHAT;
@@ -479,6 +485,7 @@ final class FeatureSettingsScreen extends Screen {
         TIMESTAMP_FORMAT, CURSOR_TOLERANCE,
         INSTANT_SOUND_MODE, INSTANT_CUSTOM_SOUND, INSTANT_SOUND_VOLUME,
         ETHERWARP_SOUND_MODE, ETHERWARP_CUSTOM_SOUND, ETHERWARP_SOUND_VOLUME,
+        FISHING_BITE_VOLUME,
         CHAT_PEEK_KEY, CHAT_SCROLL_TARGET
     }
 
@@ -539,6 +546,7 @@ final class FeatureSettingsScreen extends Screen {
                 case ETHERWARP_CUSTOM_SOUND -> ModText.get("config.value.sound."
                         + config.inventory.etherwarpCustomSound.toLowerCase());
                 case ETHERWARP_SOUND_VOLUME -> config.inventory.etherwarpSoundVolume + "%";
+                case FISHING_BITE_VOLUME -> config.fishing.biteAlertVolume + "%";
                 case CHAT_SCROLL_TARGET -> ModText.get("config.value."
                         + config.chat.peekScrollTarget.toLowerCase());
                 case BACKGROUND_COLOR -> style.backgroundOpacity == 0
@@ -600,7 +608,7 @@ final class FeatureSettingsScreen extends Screen {
             if (huntingOption != null) return huntingOption.type == HuntingOption.Type.SLIDER;
             return switch (kind) {
                 case OPACITY, SCALE, CURSOR_TOLERANCE, INSTANT_SOUND_VOLUME,
-                        ETHERWARP_SOUND_VOLUME -> true;
+                        ETHERWARP_SOUND_VOLUME, FISHING_BITE_VOLUME -> true;
                 default -> false;
             };
         }
@@ -617,6 +625,7 @@ final class FeatureSettingsScreen extends Screen {
                 case CURSOR_TOLERANCE -> fraction(config.inventory.cursorToleranceMs, 50, 5000);
                 case INSTANT_SOUND_VOLUME -> fraction(config.inventory.instantTransmissionSoundVolume, 0, 100);
                 case ETHERWARP_SOUND_VOLUME -> fraction(config.inventory.etherwarpSoundVolume, 0, 100);
+                case FISHING_BITE_VOLUME -> fraction(config.fishing.biteAlertVolume, 0, 100);
                 default -> 0.0;
             };
         }
@@ -637,6 +646,7 @@ final class FeatureSettingsScreen extends Screen {
                         Math.round(ranged(clamped, 50, 5000) / 10.0f) * 10;
                 case INSTANT_SOUND_VOLUME -> config.inventory.instantTransmissionSoundVolume = ranged(clamped, 0, 100);
                 case ETHERWARP_SOUND_VOLUME -> config.inventory.etherwarpSoundVolume = ranged(clamped, 0, 100);
+                case FISHING_BITE_VOLUME -> config.fishing.biteAlertVolume = ranged(clamped, 0, 100);
                 default -> { }
             }
         }

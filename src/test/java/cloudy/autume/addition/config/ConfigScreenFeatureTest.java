@@ -82,6 +82,21 @@ final class ConfigScreenFeatureTest {
     }
 
     @Test
+    void fishingBiteSoundIsAnOptInGeneralFeatureWithItsOwnSettings() {
+        ModConfig config = new ModConfig();
+        ConfigScreen.Feature feature = ConfigScreen.Feature.FISHING_BITE_ALERT;
+
+        assertEquals(ConfigScreen.Category.GENERAL, feature.category);
+        assertEquals(ConfigScreen.FeatureGroup.FISHING, feature.group);
+        assertFalse(feature.enabled(config));
+        assertTrue(feature.hasSettings());
+        assertEquals(64, config.fishing.biteAlertVolume);
+
+        feature.toggle(config);
+        assertTrue(feature.enabled(config));
+    }
+
+    @Test
     void shardFusionIsAnEnabledInventoryFeatureInItsOwnGroup() {
         ModConfig config = new ModConfig();
         ConfigScreen.Feature feature = ConfigScreen.Feature.SHARD_FUSION_HELPER;

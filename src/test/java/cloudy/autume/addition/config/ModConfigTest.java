@@ -12,6 +12,7 @@ final class ModConfigTest {
         config.language = "invalid";
         config.maps = null;
         config.mining = null;
+        config.fishing = null;
         config.hunting = null;
         config.crimsonIsle = null;
         config.combat = null;
@@ -24,6 +25,7 @@ final class ModConfigTest {
         assertEquals("en_us", config.language);
         assertNotNull(config.maps);
         assertNotNull(config.mining);
+        assertNotNull(config.fishing);
         assertNotNull(config.hunting);
         assertNotNull(config.crimsonIsle);
         assertNotNull(config.combat);
@@ -43,7 +45,7 @@ final class ModConfigTest {
         assertEquals(1, config.hudStyle.pet.borderThickness);
         assertEquals(1.0f, config.hudStyle.pet.scale);
         assertEquals(1.75f, config.hudStyle.map.scale);
-        assertEquals(17, config.configVersion);
+        assertEquals(18, config.configVersion);
         assertEquals(true, config.manualReconnectButton);
         assertEquals(true, config.pets.showMaxProgress);
         assertEquals(true, config.pets.showOverflowLevel);
@@ -54,6 +56,8 @@ final class ModConfigTest {
         assertEquals(true, config.mining.showHotmSlot);
         assertEquals(true, config.inventory.yieldToFirmament);
         assertEquals(true, config.inventory.shardFusionHelper);
+        assertEquals(false, config.fishing.biteAlert);
+        assertEquals(64, config.fishing.biteAlertVolume);
         assertEquals(0x0F, config.keybinds.openShardFusionModifiers);
         assertEquals(true, config.chat.chatPeek);
         assertEquals("CHAT", config.chat.peekScrollTarget);
@@ -102,9 +106,11 @@ final class ModConfigTest {
 
         config.hunting.snoozleWallOverlayColor = 0xFF123456;
         config.hunting.beeheemothSoundVolume = 900;
+        config.fishing.biteAlertVolume = -50;
         config.normalize();
         assertEquals(0x123456, config.hunting.snoozleWallOverlayColor);
         assertEquals(100, config.hunting.beeheemothSoundVolume);
+        assertEquals(0, config.fishing.biteAlertVolume);
 
         config.hunting.coldFirstThreshold = 100;
         config.hunting.coldSecondThreshold = -10;
@@ -122,11 +128,13 @@ final class ModConfigTest {
 
         migrated.normalize();
 
-        assertEquals(17, migrated.configVersion);
+        assertEquals(18, migrated.configVersion);
         assertEquals("VANILLA", migrated.inventory.instantTransmissionSoundMode);
         assertEquals("VANILLA", migrated.inventory.etherwarpSoundMode);
         assertEquals(false, migrated.hunting.safariShards);
         assertEquals(true, migrated.inventory.shardFusionHelper);
+        assertEquals(false, migrated.fishing.biteAlert);
+        assertEquals(64, migrated.fishing.biteAlertVolume);
 
         migrated.inventory.instantTransmissionSoundMode = "invalid";
         migrated.inventory.instantTransmissionCustomSound = "invalid";

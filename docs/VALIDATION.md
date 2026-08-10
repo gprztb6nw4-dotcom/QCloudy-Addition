@@ -1,3 +1,37 @@
+# QCloudy_Addition Beta 2.6.8 Fishing Bite Sound validation
+
+Validation date: 2026-08-11
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Beta-2.6.8+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.8+26.1.2-sources.jar`
+
+## Result
+
+Beta 2.6.8 adds an opt-in Fishing Bite Sound under General > Fishing. It watches only the local player's own loaded Fishing Hook for Hypixel's exact nearby visible `!!!` ArmorStand and plays the bundled Ciallo OGG at most once per hook. The feature defaults off and has an independent continuous 0–100% volume slider at the project-wide 64% default.
+
+## Automated, resource, and artifact checks
+
+- Java 25 `clean test build prepareRelease` completed successfully. Fresh XML reports 24 suites and 127 tests, with 0 failures, 0 errors, and 0 skips; class files use major version 69.
+- Focused tests verify once-per-hook playback gating, re-arming after the hook is gone or its entity ID changes, the `sounds.json` registration, and the bundled resource's OggS signature.
+- English and Simplified Chinese resources each contain 378 keys with identical key sets and valid JSON.
+- Expanded Fabric metadata declares `Beta-2.6.8+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+.
+- The binary JAR contains `assets/qcloudy_addition/sounds.json`, `assets/qcloudy_addition/sounds/fishing/ciallo.ogg`, and both fishing detector/session classes. The packaged audio is Ogg Vorbis stereo at 44.1 kHz and is loaded from QCA's own client resource pack; no separate pack or runtime download is required.
+- Both binary and Sources JARs pass JDK 25 `jar --validate` and `unzip -t`; their `release` copies are byte-identical to `build/libs`.
+- Static data-flow review confirms the detector scans only the four-block neighborhood of `Player.fishing`, plays a local sound, and contains no cast, reel, click, movement, command, chat, packet, HTTP, or texture/audio download path.
+
+## Validation boundary
+
+This audit verifies compilation, automated behavior, resource presence and format, bilingual configuration, archive integrity, metadata, filenames, checksums, and build/release identity. It does not claim an authenticated Hypixel timing/audio regression. Before wider publication, the owner should test one real bite at the intended GUI/audio settings and confirm redistribution rights for the supplied `Ciallo.mp3` recording.
+
+## SHA-256
+
+- Binary JAR: `e8806bfd92c6b4629e968dc636d3fc5e4af546d3b6361cb3a1237be83fdeb4e7`
+- Sources JAR: `aa9491473810f148f7cb15522e2119317416b922ec59477213bdfd8f634abb01`
+
+---
+
 # QCloudy_Addition Beta 2.6.7 Dwarven map validation
 
 Validation date: 2026-08-10

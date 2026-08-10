@@ -2,6 +2,20 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.8] - 2026-08-11
+
+Beta client-audio update for Minecraft 26.1.2.
+
+### Added
+
+- Added an opt-in Fishing Bite Sound under General > Fishing. It detects the exact visible `!!!` ArmorStand next to the local player's own Fishing Hook and plays the bundled Ciallo cue once per cast.
+- Added a continuous 0–100% per-feature volume slider, defaulting to 64%.
+
+### Safety
+
+- The feature defaults off, scans only a four-block box around the local player's already-loaded hook, and never reels, clicks, moves, sends a packet, chat message, or command.
+- The supplied MP3 is converted to a bundled OGG resource. Playback is fully local and requires no separate resource pack or runtime network request.
+
 ## [2.6.7] - 2026-08-10
 
 Beta map update for Minecraft 26.1.2.

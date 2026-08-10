@@ -25,6 +25,7 @@
   "config.category.hunting": "HUNTING",
   "config.group.hud": "HUD",
   "config.group.connection": "Connection",
+  "config.group.fishing": "Fishing",
   "config.group.maps": "Maps",
   "config.group.waypoints": "Waypoints",
   "config.group.mining_objectives": "Mining Objectives",
@@ -61,6 +62,9 @@
   "config.teleport_sounds": "AOTE/AOTV Sound Settings",
   "config.manual_reconnect": "Manual Reconnect Button",
   "config.desc.manual_reconnect": "Adds a Reconnect button to connection-failed and disconnected screens. It never retries automatically.",
+  "config.fishing.bite_alert": "Fishing Bite Sound",
+  "config.desc.fishing.bite_alert": "Plays the bundled Ciallo sound once when your own fishing hook shows !!!. Disabled by default.",
+  "config.setting.fishing_bite_volume": "Fishing bite volume",
   "disconnect.reconnect": "Reconnect",
   "config.desc.dwarven_map": "Simple one-layer region map with a live player arrow.",
   "config.desc.glacite_map": "Readable low, middle, and high tunnel layers.",
@@ -371,5 +375,6 @@
   "shard.info.fusion_only": "Fusion-only: this Shard has no documented natural acquisition method.",
   "shard.info.fusion_available": "%s verified ordered Fusion recipes are available; open Recipes (R) to view them.",
   "shard.history.back": "‹",
-  "shard.history.forward": "›"
+  "shard.history.forward": "›",
+  "subtitles.qcloudy_addition.fishing_bite": "Fishing bite alert"
 }

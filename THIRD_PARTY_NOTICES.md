@@ -12,6 +12,10 @@ QCloudy_Addition's Java implementation and visual design are original. The follo
 | NotEnoughUpdates item repository | local 2026-08-04 snapshot | MIT, Copyright (c) 2020 Moulberry | Pet identifiers, rarity XP offsets, special level-200 pet metadata, and fallback skin texture references |
 | Mod Menu API | 18.0.0 | MIT | Optional compile-only configuration entrypoint; Mod Menu is not bundled |
 
+## User-supplied fishing audio
+
+`assets/qcloudy_addition/sounds/fishing/ciallo.ogg` is a transcoded copy of `Ciallo.mp3`, supplied by the project owner specifically for the Fishing Bite Sound feature. QCA bundles it inside its client resource pack and never downloads it at runtime. The project publisher is responsible for confirming redistribution rights before making a public release that contains this audio.
+
 ## Hypixel SkyBlock pet resources
 
 Compact offline metadata for 88 base-pet profiles, 352 applied-pet-skin profiles, 5,422 pet-owned current/animated texture mappings, and 87 pet accessories is generated from the local NotEnoughUpdates item-repository snapshot. QCA constructs a normal Minecraft player head from the verified profile at runtime. It does not ship or select pre-rendered pet PNG fallbacks, does not add synthetic SkyBlock `petInfo`, and does not reuse an unrelated nearby item stack. These resources are used only to interpret and present client-received pet data. No Wiki, item-repository, Hypixel API, or texture request occurs while the mod is running.
