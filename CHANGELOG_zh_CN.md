@@ -1,5 +1,27 @@
 # 更新日志
 
+## [2.6.11] - 2026-08-11
+
+适用于 Minecraft 26.1.2 的 Beta Shard 路线规划更新。
+
+### 新增
+
+- 完整保留原有的离线 320-Shard Fusion Guide，并新增独立的游戏内 **Shard Planner**：可输入目标与数量，生成完整多步 Fusion Tree，查看直接配方候选，并可切换 Materials Only 只汇总材料。
+- 新增根据可编辑“每小时获取数量”计算的**最快路线**，以及根据可选客户端 Bazaar 缓存计算的**最便宜路线**。Normal 模式可以比较狩猎和购买时间；Ironman 模式永远不使用 Bazaar。
+- 新增只读 Hunting Box 仓库。只有玩家亲自打开客户端已经收到的 `/hb` Hunting Box 页面时，QCA 才记录 Shard ID 与 `Owned: N Shards`，按 Profile 保存在本地，并用保存数量抵扣规划材料。
+- Planner 独立提供输入/输出直接配方筛选、完整 Shard 效果/家族/Skill/获取方式与自定义速率、可拖动 Fusion Lines、仓库查看和本地设置页面。
+- Kraken 规划加入 Kuudra Tier、通关时间、coins/hour 机会成本、Hunter Fortune、Crocodile 等级和单次 Fusion 操作时间参数。
+
+### 兼容性
+
+- Bazaar 价格属于可选、无硬依赖兼容。安装兼容 Skyblocker 时，QCA 可通过其公开 `ItemUtils.getItemPrice` API 读取 Skyblocker 已经缓存的价格。
+- SkyHanni 与 Firmament 当前没有稳定的跨模组 Bazaar 价格公开 API，因此不会被当成价格提供者。如果没有兼容提供者，基于价格的“最便宜”规划会明确显示不可用；离线 Guide、Ironman/速率路线、仓库、配方、详情和 Fusion Lines 仍可使用。
+
+### 安全边界与保存
+
+- Planner 的速率、图节点位置、模式、目标、数量与 Kuudra 参数保存在 QCA 本地配置；仓库使用单独的按 Profile 本地 JSON。
+- QCA 不发起价格 HTTP/Wiki 请求，不自动输入 `/hb`，不点击容器、不执行 Fusion、不选择产物，也不发送数据包、聊天、移动或自动操作。它只读取打包数据、其他客户端模组已缓存的可选数据，以及玩家实际打开过的菜单。
+
 ## [2.6.10] - 2026-08-11
 
 适用于 Minecraft 26.1.2 的 Beta Tree Gift 归属与生物提示修复。

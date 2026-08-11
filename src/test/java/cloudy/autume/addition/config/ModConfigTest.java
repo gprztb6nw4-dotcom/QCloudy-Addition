@@ -45,7 +45,7 @@ final class ModConfigTest {
         assertEquals(1, config.hudStyle.pet.borderThickness);
         assertEquals(1.0f, config.hudStyle.pet.scale);
         assertEquals(1.75f, config.hudStyle.map.scale);
-        assertEquals(18, config.configVersion);
+        assertEquals(19, config.configVersion);
         assertEquals(true, config.manualReconnectButton);
         assertEquals(true, config.pets.showMaxProgress);
         assertEquals(true, config.pets.showOverflowLevel);
@@ -56,6 +56,15 @@ final class ModConfigTest {
         assertEquals(true, config.mining.showHotmSlot);
         assertEquals(true, config.inventory.yieldToFirmament);
         assertEquals(true, config.inventory.shardFusionHelper);
+        assertEquals("IRONMAN", config.inventory.shardPlannerMode);
+        assertEquals("FASTEST", config.inventory.shardPlannerObjective);
+        assertEquals("L4", config.inventory.shardPlannerTarget);
+        assertEquals(1, config.inventory.shardPlannerQuantity);
+        assertEquals(true, config.inventory.shardPlannerUseWarehouse);
+        assertEquals(true, config.inventory.shardPlannerInstantBuy);
+        assertEquals("NONE", config.inventory.shardPlannerKuudraTier);
+        assertNotNull(config.inventory.shardPlannerRates);
+        assertNotNull(config.inventory.shardFusionLinePositions);
         assertEquals(false, config.fishing.biteAlert);
         assertEquals(64, config.fishing.biteAlertVolume);
         assertEquals(0x0F, config.keybinds.openShardFusionModifiers);
@@ -128,7 +137,7 @@ final class ModConfigTest {
 
         migrated.normalize();
 
-        assertEquals(18, migrated.configVersion);
+        assertEquals(19, migrated.configVersion);
         assertEquals("VANILLA", migrated.inventory.instantTransmissionSoundMode);
         assertEquals("VANILLA", migrated.inventory.etherwarpSoundMode);
         assertEquals(false, migrated.hunting.safariShards);

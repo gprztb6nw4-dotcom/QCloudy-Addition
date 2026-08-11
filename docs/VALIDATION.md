@@ -1,3 +1,39 @@
+# QCloudy_Addition Beta 2.6.11 Shard planner validation
+
+Validation date: 2026-08-11
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Beta-2.6.11+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.11+26.1.2-sources.jar`
+
+## Result
+
+Beta 2.6.11 preserves the original 320-Shard recipe guide and adds a fully local multi-step planner. It provides fastest and cheapest route modes, Fusion Trees, Materials Only totals, alternative direct recipes, per-Shard acquisition-rate editing, a draggable Fusion Lines view, Kraken/Kuudra inputs, and a profile-scoped Shard warehouse assembled only from Hunting Box pages the player actually opens.
+
+Normal-mode Bazaar calculations are optional. This build contains no Bazaar HTTP client and currently reads prices only through Skyblocker's public `ItemUtils.getItemPrice` API when a compatible Skyblocker version is already loaded. SkyHanni and Firmament are not dependencies and are not accessed through private fields; if no compatible public provider is present, price-based routes are visibly unavailable while Ironman and rate-based planning remain functional.
+
+## Automated, data, and artifact checks
+
+- Java 25 `clean test build prepareRelease` completed successfully. Fresh XML reports 27 suites and 146 tests, with 0 failures, 0 errors, and 0 skips.
+- The packaged catalog contains 320 unique Shard IDs and 320 unique Bazaar IDs. Its 320 acquisition-rate entries match the catalog ID set exactly; all values are finite and non-negative.
+- The binary contains 320 per-ID item models and 320 Shard texture resources. No stale suffixed duplicate resource survives the clean build.
+- English and Simplified Chinese resources each contain 449 keys with identical key sets and valid JSON.
+- Expanded Fabric metadata declares `Beta-2.6.11+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+; class files use major version 69.
+- Both binary and Sources JARs pass JDK 25 `jar --validate` and `unzip -t`; their `release` copies are byte-identical to `build/libs`.
+- Static data-flow review confirms that the planner performs no HTTP request, automatic `/hb`, inventory click, Fusion, chat send, command, movement, packet, or hidden-server-data request. The warehouse parser accepts only exact visible `Owned: N Shard(s)` lore inside a screen titled `Hunting Box`.
+
+## Validation boundary
+
+This audit verifies compilation, planner calculations covered by tests, catalog/rate/resource completeness, language parity, client-only data flow, archive integrity, metadata, filenames, checksums, and build/release identity. It does not claim an authenticated Hypixel Hunting Box regression, visual approval at every GUI scale, compatibility with every future Skyblocker price API, or a full installed-modpack performance run. Before wider publication, open every `/hb` page on a real profile, compare several recorded counts, compare representative multi-step routes with the live Fusion preview, and test Normal mode once with and once without a compatible Skyblocker build.
+
+## SHA-256
+
+- Binary JAR: `12044c22054f9af08038e6569d95e043e013fc47f39621ec4b98b4a531f3a0a2`
+- Sources JAR: `21b33ca81ae0d3359591a07c5c82b5805736c1ad2bd5d1e56cb2259aaca32fb2`
+
+---
+
 # QCloudy_Addition Beta 2.6.10 Tree Gift creature-alert validation
 
 Validation date: 2026-08-11

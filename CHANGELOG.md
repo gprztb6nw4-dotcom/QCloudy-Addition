@@ -2,6 +2,28 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.11] - 2026-08-11
+
+Beta Shard planning update for Minecraft 26.1.2.
+
+### Added
+
+- Preserved the existing offline 320-Shard Fusion Guide and added a separate in-game **Shard Planner** with target quantity, a complete multi-step Fusion tree, alternative direct recipes, and a Materials Only summary.
+- Added **Fastest** routing from editable Shards-per-hour rates and **Cheapest** routing from an optional client-side Bazaar price cache. Normal mode can compare hunting time with buying time; Ironman mode never uses Bazaar prices.
+- Added a read-only Hunting Box warehouse. QCA records Shard IDs and `Owned: N Shards` only while the player physically has a received `/hb` Hunting Box page open, stores each profile locally, and offsets planner material requirements with the saved quantities.
+- Added separate Planner pages for direct input/output recipe filtering, full Shard effects/family/Skill/acquisition details and custom rates, draggable Fusion Lines, warehouse inspection, and local settings.
+- Added Kraken planning controls for Kuudra tier, completion time, coins/hour opportunity cost, Hunter Fortune, Crocodile level, and per-Fusion handling time.
+
+### Compatibility
+
+- Bazaar pricing is optional and dependency-free. QCA can read Skyblocker's already-cached prices through its public `ItemUtils.getItemPrice` API when a compatible Skyblocker version is installed.
+- SkyHanni and Firmament are not treated as price providers because they currently expose no stable public cross-mod Bazaar-price API. If no compatible provider is present, price-based Cheapest planning is shown as unavailable; the offline guide, Ironman routes, rate-based routes, warehouse, recipes, details, and Fusion Lines continue to work.
+
+### Safety and persistence
+
+- The planner, rates, graph positions, mode, target, quantities, and Kuudra parameters are stored in QCA's local config; the warehouse uses a separate per-profile local JSON file.
+- QCA performs no price HTTP request, Wiki request, `/hb` command, container click, Fusion, output selection, packet send, chat send, movement, or automation. It consumes only bundled data, optional data already cached by another client mod, and menus the player has actually opened.
+
 ## [2.6.10] - 2026-08-11
 
 Beta Tree Gift ownership and creature-alert fix for Minecraft 26.1.2.

@@ -69,10 +69,8 @@ final class ShardItemResolver {
         if (stack == null || stack.isEmpty()) return;
         ShardFusionCatalog.Shard shard = catalog.byItemId(SkyBlockItemData.itemId(stack)).orElse(null);
         if (shard == null) {
-            String name = stack.getHoverName().getString().trim();
-            if (name.toLowerCase(Locale.ROOT).endsWith(" shard")) {
-                shard = catalog.byName(name).orElse(null);
-            }
+            String name = canonicalName(stack.getHoverName().getString());
+            if (!name.isBlank()) shard = catalog.byName(name).orElse(null);
         }
         if (shard == null) return;
         ItemStack icon = stack.copy();
@@ -85,5 +83,13 @@ final class ShardItemResolver {
         OBSERVED.clear();
         BUNDLED.clear();
         LAST_REFRESH.set(0L);
+    }
+
+    static String canonicalName(String value) {
+        String name = value == null ? "" : value.trim();
+        if (name.toLowerCase(Locale.ROOT).endsWith(" shard")) {
+            return name.substring(0, name.length() - " shard".length()).trim();
+        }
+        return "";
     }
 }

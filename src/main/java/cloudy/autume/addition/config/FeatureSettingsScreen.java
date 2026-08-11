@@ -2,6 +2,7 @@ package cloudy.autume.addition.config;
 
 import cloudy.autume.addition.QCloudyAdditionClient;
 import cloudy.autume.addition.i18n.ModText;
+import cloudy.autume.addition.inventory.ShardPlanningScreen;
 import cloudy.autume.addition.input.HotkeyInputs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -186,6 +187,7 @@ final class FeatureSettingsScreen extends Screen {
             return rows;
         }
         if (feature == ConfigScreen.Feature.SHARD_FUSION_HELPER) {
+            rows.add(new Setting(Kind.OPEN_SHARD_PLANNER, "config.setting.open_shard_planner"));
             rows.add(new Setting(Kind.OPEN_SHARD_GUIDE, "config.setting.open_shard_guide"));
             rows.add(new Setting(Kind.SHARD_GUIDE_KEY, "config.setting.shard_guide_key"));
             return rows;
@@ -359,6 +361,8 @@ final class FeatureSettingsScreen extends Screen {
         ModConfig.PanelStyle style = panelStyle();
         switch (setting.kind) {
             case OPEN_SHARD_GUIDE -> QCloudyAdditionClient.openShardFusionGuide(minecraft, this, "");
+            case OPEN_SHARD_PLANNER -> minecraft.setScreen(new ShardPlanningScreen(this,
+                    ConfigManager.get().inventory.shardPlannerTarget));
             case SHARD_GUIDE_KEY -> listeningChord = QCloudyAdditionClient.ChordAction.OPEN_SHARD_FUSION;
             case YIELD_FIRMAMENT -> config.inventory.yieldToFirmament = !config.inventory.yieldToFirmament;
             case OPEN_CONFIG_KEY -> listeningChord = QCloudyAdditionClient.ChordAction.OPEN_CONFIG;
@@ -480,7 +484,7 @@ final class FeatureSettingsScreen extends Screen {
         DRAGON_COLOR, OPACITY, BACKGROUND_COLOR, BORDER, BORDER_SIZE, BORDER_COLOR,
         TITLE_COLOR, BOLD, SHADOW, SCALE, PET_ICON, PET_LEVEL_XP, PET_MAX_XP, PET_OVERFLOW_LEVEL,
         PET_SKIN_NAME, PET_ACCESSORY, COMMISSION_PROGRESS, HOTM_SLOT, EDIT_LAYOUT,
-        OPEN_SHARD_GUIDE, SHARD_GUIDE_KEY,
+        OPEN_SHARD_GUIDE, OPEN_SHARD_PLANNER, SHARD_GUIDE_KEY,
         YIELD_FIRMAMENT, OPEN_CONFIG_KEY, SHOW_CREATION, SHOW_COUNTDOWNS,
         TIMESTAMP_FORMAT, CURSOR_TOLERANCE,
         INSTANT_SOUND_MODE, INSTANT_CUSTOM_SOUND, INSTANT_SOUND_VOLUME,
@@ -525,7 +529,8 @@ final class FeatureSettingsScreen extends Screen {
             }
             ModConfig.PanelStyle style = panelStyle();
             return switch (kind) {
-                case OPEN_SHARD_GUIDE -> ModText.get(available() ? "config.open" : "config.disabled");
+                case OPEN_SHARD_GUIDE, OPEN_SHARD_PLANNER ->
+                        ModText.get(available() ? "config.open" : "config.disabled");
                 case YIELD_FIRMAMENT -> onOff(config.inventory.yieldToFirmament);
                 case SHARD_GUIDE_KEY, OPEN_CONFIG_KEY, CHAT_PEEK_KEY -> {
                     QCloudyAdditionClient.ChordAction action = chordAction();
@@ -572,7 +577,8 @@ final class FeatureSettingsScreen extends Screen {
         }
 
         boolean available() {
-            return kind != Kind.OPEN_SHARD_GUIDE || shardGuideEntryEnabled(ConfigManager.get());
+            return (kind != Kind.OPEN_SHARD_GUIDE && kind != Kind.OPEN_SHARD_PLANNER)
+                    || shardGuideEntryEnabled(ConfigManager.get());
         }
 
         boolean color() {

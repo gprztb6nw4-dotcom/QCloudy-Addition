@@ -7,7 +7,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [GitHub 2.6.7 Beta 发布说明](docs/GITHUB_RELEASE_2.6.7_zh_CN.md)
+- [当前 Beta 2.6.11 更新日志](CHANGELOG_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
@@ -68,6 +68,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 ### 物品与菜单
 
 - **Attribute Shard Fusion Guide**：受 JEI 信息结构启发、完全离线的 320 种当前 Bazaar Shard 浏览器。可按原始英文名称、Shard ID、属性/效果、品质、分类、家族、Skill、生物类型或获取文字搜索。**详细信息**显示 Wiki 已记录的完整效果和所有自然/Fusion 获取方式；**合成来源**显示能产出目标 Shard 的全部有序输入组合，其中也包括 Queen Bee 这类同时拥有自然来源的 Shard；**可合成内容**显示所选 Shard 能继续合成什么。配方卡保留输入顺序，显示数量、可选输出、普通/特殊产量和 Pure Reptile。Epic 使用 Minecraft 深紫色（`§5`），品质、属性、分类、生物类型与获取方式使用对应游戏语义颜色；鼠标悬停于可点击 Shard 文字时，文字会变深并添加下划线。目录与专属图标在发布前离线生成并随模组打包；客户端已经收到的原生 `ItemStack` 仍优先用于材质包显示。本地 `/qshard [英文查询]` 只打开本地界面，不发送聊天或服务器命令。QCA 运行时不访问 Wiki/API/图标服务，也不会自动执行 Fusion。
+- **Shard Planner**：完整保留原 Guide，新增目标数量、完整多步 Fusion Tree、候选路线、Materials Only 汇总、输入/输出独立筛选、可编辑每小时获取速度、Shard 详情、可拖动 Fusion Lines，以及本地保存的 Hunting Box 仓库。Ironman 只使用狩猎速率；Normal 的“最快”可以比较狩猎与购买时间，“最便宜”必须存在兼容的可选 Skyblocker 客户端价格缓存。QCA 自己绝不下载 Bazaar 价格；SkyHanni/Firmament 当前没有稳定公开的跨模组价格 API，因此不会作为价格提供者。没有价格提供者时，价格路线会明确不可用，其余全部离线/速率功能仍正常工作。
 
 ### 聊天
 
@@ -112,7 +113,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-GitHub 2.6.7 Beta 发布说明：[docs/GITHUB_RELEASE_2.6.7_zh_CN.md](docs/GITHUB_RELEASE_2.6.7_zh_CN.md)
+当前 Beta 2.6.11 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

@@ -2,11 +2,11 @@
 
 **适用于 Minecraft 26.1.2 Fabric 的纯客户端 Hypixel SkyBlock 辅助模组。**
 
-QCloudy_Addition 将地图、任务追踪、砍树与狩猎辅助、宠物信息、离线 Attribute Shard Fusion 查询及可深度自定义的 HUD 整合进一套清晰的中英双语界面。
+QCloudy_Addition 将地图、任务追踪、砍树与狩猎辅助、宠物信息、完整离线 Attribute Shard Fusion Guide/Planner 及可深度自定义的 HUD 整合进一套清晰的中英双语界面。
 
 界面默认英文，可在设置中切换简体中文。Hypixel 返回的地点、物品、任务、宠物、皮肤、配件、Shard 和玩家重命名 HOTM 配置始终保留原名，避免翻译改变游戏数据的实际含义。
 
-> **当前通道：Beta 2.6.7。** Beta 表示该构建已经通过自动测试和归档验证，但仍需要更广泛的实服、材质包、GUI Scale、操作系统和模组组合测试。
+> **当前通道：Beta 2.6.11。** Beta 表示该构建已经通过自动测试和归档验证，但仍需要更广泛的实服、材质包、GUI Scale、操作系统和模组组合测试。
 
 ## 核心功能
 
@@ -22,6 +22,8 @@ QCloudy_Addition 将地图、任务追踪、砍树与狩猎辅助、宠物信息
 - 可按英文 Shard 名称、ID、效果、品质、分类、家族、Skill、生物类型或获取来源搜索。
 - 独立的**详细信息**、**合成来源**和**可合成内容**页面，显示有序输入、数量、可选产物、Special Fusion 产量、Chameleon 规则和 Pure Reptile 信息。
 - 内置 Shard 对应图标、已记录自然/Fusion 获取方式、游戏语义颜色和完整反向配方；Queen Bee 等自然与 Fusion 双来源 Shard 会同时显示两类来源。
+- 独立的 **Shard Planner**：目标数量、有限深度多步 Fusion Tree、其他候选路线、Materials Only 总数、输入/输出直接配方筛选、可编辑 Shards/hour、可拖动 Fusion Lines 和按 Profile 保存的本地 Hunting Box 仓库。
+- Ironman 永不使用 Bazaar；Normal 最快路线可比较狩猎与购买耗时，Normal 最便宜路线使用可选兼容 Skyblocker 缓存。QCA 不下载价格、没有硬依赖；缺少稳定提供者时只关闭价格路线，全部离线与速率功能仍能使用。
 - 当前 **Pet HUD** 支持已验证宠物/皮肤头颅、品质色名称、经验、满级进度、受支持的溢出等级、皮肤名和宠物用品图标/名称。
 - 物品创建时间戳、光标位置记忆和 AOTE/AOTV 传送音效自定义。
 
@@ -84,7 +86,7 @@ HUD 编辑器只显示当前已经加载且确实存在内容的面板。拖动�
 
 - Mod Menu **18.0.0**
 
-将可运行文件 `QCloudy_Addition-Beta-2.6.7+26.1.2.jar` 放入实例的 `mods` 文件夹。不要把 `-sources.jar` 当作可运行模组安装。
+将可运行文件 `QCloudy_Addition-Beta-2.6.11+26.1.2.jar` 放入实例的 `mods` 文件夹。不要把 `-sources.jar` 当作可运行模组安装。
 
 默认按 `O`、通过 Mod Menu，或输入 `/aca`、`/qca`、`/ca`、`/qc` 打开设置。这些设置别名和 `/qshard` 都是本地客户端命令，不会发送给 Hypixel。
 
@@ -101,7 +103,7 @@ QCA 唯一实现的服务器命令载荷为：
 
 ## 兼容性与免责声明
 
-QCloudy_Addition 可以独立运行，不要求安装 Firmament、SkyHanni、Skyblocker、BabyzombieAddons、JEI 或 Mod Menu。安装 Firmament 后，可通过可选让出设置避免部分重复物品工具同时运行。
+QCloudy_Addition 可以独立运行，不要求安装 Firmament、SkyHanni、Skyblocker、BabyzombieAddons、JEI 或 Mod Menu。兼容 Skyblocker 只作为 Bazaar 价格路线的可选来源；没有它时价格模式不可用，但模组本身不会出错。SkyHanni/Firmament 当前没有稳定公开跨模组价格 API，因此不作为价格提供者。安装 Firmament 后，可通过可选让出设置避免部分重复物品工具同时运行。
 
 所有 Minecraft 模组均由玩家自行承担使用风险。被动 HUD、轮廓、路径光柱、覆盖和预测并不等于获得 Hypixel 官方认可。请阅读 Hypixel 当前规则，并关闭任何你不愿承担风险的功能。
 

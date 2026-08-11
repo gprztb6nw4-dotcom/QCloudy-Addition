@@ -177,6 +177,13 @@ final class ShardFusionCatalogTest {
     }
 
     @Test
+    void normalizesOnlyCanonicalShardNamesForObservedOverrides() {
+        assertEquals("Chameleon", ShardItemResolver.canonicalName(" Chameleon Shard "));
+        assertEquals("", ShardItemResolver.canonicalName("Chameleon"));
+        assertEquals("", ShardItemResolver.canonicalName(null));
+    }
+
+    @Test
     void firstInputControlsHowManyOfBothInputsAreConsumed() {
         var chameleon = catalog.byName("Chameleon").orElseThrow();
         var grove = catalog.byName("Grove").orElseThrow();

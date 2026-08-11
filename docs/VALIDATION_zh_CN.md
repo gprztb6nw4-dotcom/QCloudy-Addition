@@ -1,3 +1,39 @@
+# QCloudy_Addition Beta 2.6.11 Shard 规划器验证
+
+验证日期：2026-08-11
+
+验证产物：
+
+- `release/QCloudy_Addition-Beta-2.6.11+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.11+26.1.2-sources.jar`
+
+## 结论
+
+Beta 2.6.11 保留原有 320 种 Shard 的配方指南，并加入完全本地运行的多步规划器：最快/最便宜路线、Fusion Tree、Materials Only 材料总计、其他候选配方、每种 Shard 的每小时获取速度编辑、可拖动 Fusion Lines、Kraken/Kuudra 参数，以及只根据玩家实际打开的 Hunting Box 页面建立的 Profile 独立 Shard 仓库。
+
+普通模式的 Bazaar 计算是可选功能。本版本没有 Bazaar HTTP 客户端；只有已经安装兼容 Skyblocker 时，才会通过其公开的 `ItemUtils.getItemPrice` 接口读取该模组已缓存的价格。SkyHanni 与 Firmament 均不是依赖，也不会通过私有字段读取；没有兼容的公开价格提供方时，基于价格的路线会明确不可用，Ironman 与获取速度路线仍然可以正常使用。
+
+## 自动测试、数据与产物检查
+
+- Java 25 `clean test build prepareRelease` 成功；新生成 XML 共 27 个测试套件、146 项测试，0 失败、0 错误、0 跳过。
+- 最终目录包含 320 个唯一 Shard ID 与 320 个唯一 Bazaar ID；320 项获取速度与目录 ID 集合完全一致，所有数值均为有限且非负。
+- 二进制包含 320 个按 ID 区分的 item model 与 320 个 Shard 纹理资源；清理构建后没有带编号后缀的陈旧重复资源。
+- 英文与简体中文资源各有 449 个键，键集合完全一致且 JSON 有效。
+- 展开的 Fabric 元数据为 `Beta-2.6.11+26.1.2`、纯客户端，声明 Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+ 与 Java 25+；class major version 为 69。
+- 二进制与 Sources JAR 均通过 JDK 25 `jar --validate` 和 `unzip -t`；`release` 副本与 `build/libs` 逐字节一致。
+- 静态数据流检查确认规划器没有 HTTP 请求、自动 `/hb`、背包点击、Fusion、聊天发送、命令、移动、数据包或隐藏服务器数据请求。仓库解析器只在标题精确为 `Hunting Box` 的界面内接受可见 lore 中精确的 `Owned: N Shard(s)` 格式。
+
+## 验证边界
+
+本次审核验证编译、测试覆盖的规划计算、目录/速度/资源完整性、双语一致性、纯客户端数据流、归档完整性、元数据、文件名、校验和及 build/release 一致性；不等同于已登录 Hypixel 完成真实 Hunting Box 回归，也不代表所有 GUI Scale 都完成视觉验收、未来所有 Skyblocker 价格 API 都必然兼容，或已经完成整个模组包的性能回归。扩大公开发布前，应在真实 Profile 中打开每一个 `/hb` 页面并核对几项仓库数量、将数个多步路线与实际 Fusion 预览交叉核对，并分别在安装和未安装兼容 Skyblocker 时测试普通模式。
+
+## SHA-256
+
+- 二进制 JAR：`12044c22054f9af08038e6569d95e043e013fc47f39621ec4b98b4a531f3a0a2`
+- Sources JAR：`21b33ca81ae0d3359591a07c5c82b5805736c1ad2bd5d1e56cb2259aaca32fb2`
+
+---
+
 # QCloudy_Addition Beta 2.6.10 Tree Gift 生物提示验证
 
 验证日期：2026-08-11

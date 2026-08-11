@@ -30,6 +30,7 @@
 | 聊天偷窥 | 玩家真实按住按键及客户端已收到的聊天历史 | 临时改变本地聊天渲染与滚轮目标 | 无 |
 | AOTE/AOTV 声音自定义 | 手持物品 ID 与客户端收到的附近声音事件 | 保留原声，或按设置的音量/音调替换为本地原版声音 | 无 |
 | Attribute Shard Fusion Guide | 随模组打包的离线 320-Shard 效果/获取/Fusion JSON 与 320 张本地图标、已经在本地菜单/物品栏收到的可选原生 ItemStack、玩家真实搜索/点击/按键 | 本地详细信息/合成来源/可合成内容界面、Shard 专属离线图标、语义文字颜色与遵循材质包的已观察覆盖 | 无；`/qshard` 是纯客户端界面命令 |
+| Shard Planner | 打包配方/速率、本地 Planner 设置、兼容 Skyblocker 已缓存的可选价格、玩家亲自打开 Hunting Box 页面中可见的 Shard 数量/lore | 本地路线 Tree、候选、材料汇总、直接配方筛选、详情、Fusion Lines 与按 Profile 仓库 | 无；不发送 `/hb`、不请求价格、不点击、不 Fusion |
 | 配置 | 可改绑本地按键、本地 `/aca`/`/qca`/`/ca`/`/qc` 与鼠标输入 | JSON 配置文件 | 无 |
 | 手动重连 | 上一次正常 `ConnectScreen` 目标与玩家在断线页的明确点击 | 打开新的原版连接界面 | 仅点击后向已记录目标发起一次正常服务器连接 |
 | Torrhus 快捷命令 | 玩家主动输入本地 `/th` | 无 | 发送精确内容 `warp torrhus` |
@@ -51,7 +52,9 @@ QCA 不包含 Hypixel Mod API、Hypixel 公共 API、WebSocket、HTTP 客户端�
 
 钓鱼上钩提示音优先使用直接归属于本地玩家的已加载鱼钩。为了兼容 owner 关联可能缺失的 Hypixel 岩浆鱼钩，它只在玩家真实使用钓竿后开启有限 40 tick 窗口，排除抛竿前已经存在的全部鱼钩及明确属于其他玩家的鱼钩，然后才接受一根新加载、归属本地或 owner 为空的鱼钩。此后只扫描该选中鱼钩周围四格并精确匹配收到的 `!!!` ArmorStand，每根鱼钩最多播放一次内置本地提示音。回调会原样放行真实使用动作，不会抛竿、收杆、点击、移动玩家，也不发送命令或数据包；空闲时不会运行较大范围扫描。
 
-Shard Fusion Guide 是只读本地资料。320 项目录、规范化 Wiki 效果/获取摘要、合成规则、320 张 Shard 专属 PNG、物品模型与映射都在发布前生成并打包进 JAR；生成器使用 [Attributes 表格](https://hypixelskyblock.minecraft.wiki/w/Attributes)、[Attribute Fusion 规则](https://hypixelskyblock.minecraft.wiki/w/Attribute_Fusion)、[官方 Bazaar 产品列表](https://api.hypixel.net/v2/skyblock/bazaar) 与已审核 MIT 许可 SkyShards 图标集。运行中的 QCA 没有访问这些来源或图标服务的代码路径。搜索、切换焦点、打开详细信息/合成来源/可合成内容、使用历史、解析内置图标或渲染已经收到的原生 ItemStack，都不会点击容器、执行 Fusion、选择输出、向服务器发送 `/qshard` 或改变服务器状态。已经收到的原生玩家头继续走 Minecraft 正常渲染管线；QCA 不会额外发起纹理请求。该功能只提供信息，不自动决定或执行合成与游戏操作。
+Shard Fusion Guide 与 Planner 都是只读本地资料。320 项目录、规范化 Wiki 效果/获取摘要、合成规则、速率基线、320 张 Shard 专属 PNG、物品模型与映射都在发布前生成并打包进 JAR；生成器使用 [Attributes 表格](https://hypixelskyblock.minecraft.wiki/w/Attributes)、[Attribute Fusion 规则](https://hypixelskyblock.minecraft.wiki/w/Attribute_Fusion)、[官方 Bazaar 产品列表](https://api.hypixel.net/v2/skyblock/bazaar) 与已审核 MIT 许可 SkyShards 数据。运行中的 QCA 没有访问这些来源或图标服务的代码路径。搜索、规划、切换焦点、打开详细信息/合成来源/可合成内容、使用历史、解析内置图标、渲染已经收到的原生 ItemStack 或拖动 Fusion Lines 节点，都不会点击容器、执行 Fusion、选择输出、向服务器发送 `/qshard` 或改变服务器状态。已经收到的原生玩家头继续走 Minecraft 正常渲染管线；QCA 不会额外发起纹理请求。
+
+QCA 永远不会下载 Bazaar 价格。安装兼容 Skyblocker 时，可选桥接只调用其公开 `ItemUtils.getItemPrice(String, boolean)`，读取 Skyblocker 客户端已经缓存的值；反射桥接没有硬依赖，并在不兼容时关闭。QCA 不会抓取 SkyHanni/Firmament 的私有字段；没有稳定公开价格提供者时，所有价格路线都会明确不可用。仓库同样只在玩家亲自打开后读取精确可见 `Hunting Box` 菜单与 `Owned: N Shards` lore，不发送 `/hb`、不请求另一页、不点击槽位、不读取隐藏背包、不自动执行路线。Planner 始终只提供信息。
 
 Hunting HUD 与追踪器没有任何对外发送路径：不会发送命令/聊天、请求区块、修改计分板 Objective、选取目标、投掷工具/Capsule、移动玩家或交互 Floor Drop、篝火、Critter、墙体、Fairy Soul。进度记忆只是本地 JSON，以本地账号 UUID 和收到的 Profile 标签为键，只保存客户端曾经收到的 Chapter/资源/Safari Milestone/Benefactor 值，并在观察值改变时更新。Chapter 会分别限制 Tab、计分板、已打开菜单及短时收到的聊天块，不扫描任意缓存文字；Benefactor 同样只读取有限的 Tab/计分板/聊天/菜单文字，其到期时间只是对收到时长进行本地计算，不会引发服务器动作。Tree Critter 计时只读取已经加载的实体显示名称，不检测点击、不消耗 Pot，也不合成本地倒数。Beeheemoth 使用指定参考模组相同的 scale-9 已加载 Bee 特征；固定光柱只由本地距离、已收到捕捉确认或实体消失移除，并且只在本地缩放空间相关的 Bee 系声音。Lasso 提示只读取已收到的拴绳关系与附近精确显示文字，然后播放本地声音。Wumpa 组队前置集合由本人锚定捕捉确认和客户端收到的队友 Loot Share 捕捉文字更新；单独的本人 Critterdex 仍排除 Loot Share。生成消息与 8/8 完成共用每轮一个提醒标记，路线只跟踪已加载 Ravager 身体和本地碰撞。Snoozle 覆盖每秒只检查附近已加载方块，拒绝过大或单一材质组件，只渲染本地暴露表面。Warden 就绪只读取有限场地内客户端可见的实体年龄/姿态和本地连接延迟，不修改实体，也不会发出捕捉动作。Tree Gift 使用只发给本地玩家的精确汇总/hover作为归属证明，在收到的 Component/区块内缓冲精确行，并且只在该证明成立后保留 5 秒结束边框后生物窗口；被取消显示的消息仍属于客户端已经收到的数据，附近玩家单独公共行依旧无效。Fairy Soul 光柱只会在收到成功/已经找到确认并通过有限的最近坐标匹配后隐藏。篝火搜索只检查原版已经加载区块中的 Block Entity。Miria 结果只在 QCA 综合 HUD 中显示，侧栏注入与竞赛倒计时重复显示均已删除；`/th` 与 `/helia` 是上方单独记录、必须由玩家输入的快捷命令。
 

@@ -224,8 +224,11 @@ public final class ShardFusionScreen extends Screen {
         int closeY = Math.min(windowY + 7, windowY + windowHeight - closeSize);
         boolean showHistory = windowWidth >= 190 && windowHeight >= 25;
         int historyX = closeX - 45;
+        boolean showPlanner = windowWidth >= 330 && windowHeight >= 25;
+        int plannerWidth = Math.min(94, Math.max(58, windowWidth / 6));
+        int plannerX = historyX - plannerWidth - 7;
         int titleX = windowX + Math.min(12, Math.max(0, windowWidth - 1));
-        int titleMaximum = Math.max(1, (showHistory ? historyX : closeX) - titleX - 5);
+        int titleMaximum = Math.max(1, (showPlanner ? plannerX : showHistory ? historyX : closeX) - titleX - 5);
         int titleY = Math.max(windowY, Math.min(windowY + 11,
                 windowY + Math.max(0, windowHeight - font.lineHeight)));
         drawFitted(graphics, title, titleX, titleY, titleMaximum, AcaUiTheme.TEXT);
@@ -235,6 +238,10 @@ public final class ShardFusionScreen extends Screen {
             drawSmallButton(graphics, ModText.get("shard.history.forward"), historyX + 21, closeY,
                     18, 18, mouseX, mouseY, historyIndex >= 0 && historyIndex + 1 < history.size(),
                     Action.HISTORY_FORWARD, null, HitRegion.WINDOW);
+        }
+        if (showPlanner) {
+            drawSmallButton(graphics, ModText.get("shard.planner.open"), plannerX, closeY,
+                    plannerWidth, 18, mouseX, mouseY, true, Action.PLANNER, null, HitRegion.WINDOW);
         }
         boolean hovered = isHovered(mouseX, mouseY, closeX, closeY, closeSize, closeSize, HitRegion.WINDOW);
         graphics.fill(closeX, closeY, closeX + closeSize, closeY + closeSize,
@@ -966,6 +973,8 @@ public final class ShardFusionScreen extends Screen {
             case BACK_TO_LIST -> pairPreview = null;
             case SHOW_LIST -> singleColumnListVisible = true;
             case SHOW_DETAIL -> singleColumnListVisible = false;
+            case PLANNER -> minecraft.setScreen(new ShardPlanningScreen(this,
+                    selected == null ? "" : selected.id()));
             case SELECT_SHARD -> {
                 return false;
             }
@@ -1156,7 +1165,8 @@ public final class ShardFusionScreen extends Screen {
         SWAP,
         BACK_TO_LIST,
         SHOW_LIST,
-        SHOW_DETAIL
+        SHOW_DETAIL,
+        PLANNER
     }
 
     private enum HitRegion {

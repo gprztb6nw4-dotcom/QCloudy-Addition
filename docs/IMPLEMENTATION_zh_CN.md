@@ -1,6 +1,6 @@
 # QCloudy_Addition 功能实现与数据流细致说明
 
-本文对应 `Beta-2.6.10+26.1.2`，逐项说明每个公开功能的用途、读取的客户端信息、实现方式、应呈现的效果、默认状态，以及是否会产生对外操作。
+本文对应 `Beta-2.6.11+26.1.2`，逐项说明每个公开功能的用途、读取的客户端信息、实现方式、应呈现的效果、默认状态，以及是否会产生对外操作。
 
 ## 1. 总体架构
 
@@ -330,9 +330,19 @@ Tab / 计分板 / 聊天 / 已打开菜单 / 标题 / 已加载实体 / 本地�
 - **界面：**`ShardFusionScreen` 提供详细信息/合成来源/可合成内容标签、搜索结果、前进/后退历史、分页、物品图标、输入数量、候选输出、产量及明确顺序提示。详情显示完整效果与获取行，单独标注 Fusion-only，并在存在配方时显示已验证 Fusion 配方数量。Epic 使用 Minecraft `§5`；其他品质/属性/分类/生物类型/获取文字使用已审核语义颜色。鼠标悬停可点击 Shard 文字时只让可见文字变深并添加下划线。点击搜索框外、按 `Esc` 或 `Tab` 释放文字焦点，点击搜索框重新获得焦点。输入组合与候选输出按实际内容宽度紧凑居中，点击区域由相同可见边界生成。文字换行或缩放，不使用省略号。
 - **入口/默认/对外：**功能默认开启。二级设置只包含“打开指南”和默认未绑定的键盘/鼠标组合键。本地 `/qshard [英文查询]` 打开同一界面并预填搜索。它不会发送服务器命令、聊天、数据包、菜单输入，也不会请求 Wiki、Bazaar 或任何网络资源。
 
+### 12.5 Shard Planner、价格桥接与 Hunting Box 仓库
+
+- **用途：**在保留原 Guide 作为精确直接配方参考的前提下，为目标 Shard/数量生成有深度限制、能阻止循环的多步路线。
+- **路线引擎：**`ShardFusionPlanner` 对目录全部 Shard 与有序产物配方进行有限深度动态松弛。路线可以终止于直接狩猎速率、可选 Bazaar 购买、已观察仓库数量，或继续 Fusion。选中路线会展开为不可变 Tree，并提供候选方案、Fusion 次数、预计成本/时间及狩猎/购买/仓库材料表。展开过程有循环、深度、算术和节点数保护。Materials Only 只改变显示，不改变计算。
+- **速率与 Kraken：**`shard_rates.json` 是从已审核 SkyShards 速率数据转换的版本化离线基线，并被强制要求与 320 个目录 ID 一一对应；玩家保存的本地单 Shard 速率优先覆盖。Hunter Fortune 只缩放正狩猎速率。Kraken 可用 Kuudra Tier、通关秒数、coins/hour 机会成本、钥匙成本、对应 Tier 倍率及 25 秒停顿推导速率。本地 Crocodile 等级控制 2–20% Pure Reptile 期望倍率，但整数材料仍按保守需求显示。
+- **价格：**`ShardPriceService` 不含 HTTP 客户端。运行时先检查 Skyblocker 是否加载，再反射解析其公开静态 `de.hysky.skyblocker.utils.ItemUtils.getItemPrice(String, boolean)`。QCA 只复制 Skyblocker 现有客户端缓存返回值，形成不可变本地快照；方法缺失、链接失败、条目缺失或畸形值都会安全变为不可用。没有 Skyblocker 编译/运行硬依赖。SkyHanni 与 Firmament 当前没有稳定公开跨模组 Bazaar API，因此 QCA 不读取其私有字段；没有兼容提供者时 Cheapest 禁用，非价格功能保持独立。
+- **仓库：**`ShardWarehouseManager` 每秒最多检查一次当前显示、客户端已经收到的容器。标题必须精确为 `Hunting Box` 或 `(当前页/总页数) Hunting Box`；每个 Shard 必须能解析到目录 ID/名称与精确 `Owned: N Shards` lore。只更新当前可见页面；零个识别条目的过渡帧会被忽略。页面按当前本地 Profile 与 Shard ID 合并，并通过临时文件替换保存到 `config/qcloudy_addition_shard_warehouse.json`。QCA 不发送 `/hb`、不请求另一页、不点击槽位、不读取隐藏背包。
+- **界面与保存：**`ShardPlanningScreen` 提供 Plan、Recipes、Shards、Fusion Lines、Warehouse 与 Settings。直接配方可分别输入输入/输出筛选；Fusion 图节点位置可本地拖动；模式、目标、数量、自定义速率、图节点、价格侧选择、Kuudra 参数与 Materials Only 通过 QCA 配置持久化。Planner 只能显示资料，无法执行任何路线步骤。
+
 ## 13. 本地保存内容
 
-- `config/qcloudy_addition.json`：语言、功能开关、HUD外观/位置/缩放、宠物确认信息、Hunting资源/Chapter/Benefactor/Safari Belt状态和已确认Fairy Soul。旧 `autumecloudyaddition.json` 只用于迁移。
+- `config/qcloudy_addition.json`：语言、功能开关、HUD外观/位置/缩放、宠物确认信息、Hunting资源/Chapter/Benefactor/Safari Belt状态、已确认Fairy Soul，以及 Shard Planner 设置/速率/图节点。旧 `autumecloudyaddition.json` 只用于迁移。
+- `config/qcloudy_addition_shard_warehouse.json`：玩家实际打开的 Hunting Box 页面中观察到的按本地 Profile Shard 数量与最后观察时间；不包含隐藏背包或服务器拉取数据。
 - 配置先写临时文件，再尽可能原子替换。
 
 QCA不会在磁盘保存密码、Token、Hypixel API Key、聊天历史、远程账号数据或重连地址。

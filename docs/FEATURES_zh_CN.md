@@ -139,6 +139,20 @@ Tree Gift 不再错误限制于 Torrhus，同时监听正常显示的游戏聊�
 
 Epic 名称使用 Minecraft 深紫色 `§5`，不再使用亮紫/粉色 `§d`；品质、属性、分类、生物类型、Skill 和获取方式均使用对应 SkyBlock/Minecraft 语义颜色。可点击 Shard 文字只有在鼠标悬停于可见文字时才会变深并添加下划线。点击搜索框外、按 `Esc` 或按 `Tab` 会释放搜索焦点；直接点击搜索框即可再次输入。配方输入和候选输出按内容宽度紧凑居中，点击范围与可见图标/文字边界一致，不再使用相隔很远的卡片左右半区。本地 `/qshard [英文查询]`、功能设置中的“打开指南”以及默认未绑定的组合键都只打开本地界面，不发送聊天、服务器命令、数据包、菜单点击或 API 请求。
 
+### 7.2 Shard Planner 与本地仓库
+
+**目的：**把 Guide 的直接配方转化为可执行的多步准备方案，同时保证每一个游戏操作仍由玩家自己决定和完成。
+
+**路线规划：**输入目标 Shard 与数量，再选择 Ironman/Normal 和最快/最便宜。Planner 在有限深度内计算有序直接配方，阻止循环路线；点击 Tree 节点可以查看其他候选配方。结果同时提供完整 Fusion Tree，以及最终需要狩猎、购买、或由现有仓库抵扣的基础材料总数。**Materials Only** 会隐藏 Tree，只显示这些汇总。Tree 只提供信息，不点击 Fusion House、不选择产物、不移动物品。
+
+**成本模型：**最快路线使用打包的基础“每小时 Shard 数量”或玩家为单个 Shard 保存的本地覆盖值，并考虑 Hunter Fortune、本地操作时间与 Pure Reptile 期望。Kraken 可改用 Kuudra Tier、预计通关时间、coins/hour、钥匙机会成本和停顿时间。Normal 最快路线可比较狩猎耗时与价格/coins-hour 换算耗时；Normal 最便宜直接使用价格；Ironman 永远不使用 Bazaar。即使 Pure Reptile 会改善期望成本，材料页面仍显示保守的整数需求。
+
+**可选价格：**QCA 没有 Bazaar 下载器，也不要求安装任何价格模组。若存在兼容 Skyblocker，QCA 只反射调用其公开 `ItemUtils.getItemPrice(String, boolean)`，复制该模组已经缓存的结果，因此没有编译或运行硬依赖。SkyHanni 与 Firmament 当前没有稳定公开的跨模组价格 API，QCA 不会读取其私有字段。没有兼容提供者时，“最便宜”会明确不可用；全部离线、Ironman、速率、配方、详情、线路与仓库功能仍可使用。
+
+**仓库：**只有玩家亲自打开客户端已经收到、标题为 `(页数/总页数) Hunting Box` 或 `Hunting Box` 的菜单时，QCA 才读取可见 Shard 的物品 ID 与精确 `Owned: N Shards` lore，并按当前本地 Profile 保存该页面。它不会发送 `/hb`、翻页、点击槽位或推断未打开页面；菜单切换时的空帧也不会清除已有快照。Planner 可用保存数量抵扣当前路线；Warehouse 页面显示上次观察时间，并提供纯本地清除按钮。
+
+**其他页面：**Recipes 可分别输入输入/输出条件，筛选直接有序配方。Shards 显示效果、家族、Skill、生物类型、全部打包获取方式、基础速率和玩家可编辑速率。Fusion Lines 绘制所选 Shard 附近的 ID/Special/Chameleon 关系，节点可点击、可拖动，位置保存到本地。目标、数量、模式、目标函数、Materials Only、自定义速率、图节点位置、仓库使用、价格侧选择及 Kuudra 参数均持久化保存。
+
 ## 8. 聊天
 
 ### 8.1 聊天偷窥

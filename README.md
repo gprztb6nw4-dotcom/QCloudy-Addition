@@ -7,7 +7,7 @@ QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [GitHub Beta 2.6.7 release notes](docs/GITHUB_RELEASE_2.6.7.md)
+- [Current Beta 2.6.11 changelog](CHANGELOG.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -68,6 +68,7 @@ Foraging, Hunting, and Safari are mutually exclusive settings categories: every 
 ### Items & Menus
 
 - **Attribute Shard Fusion Guide** — a JEI-inspired, completely offline browser for all 320 current Bazaar-listed Attribute Shards. Search by original English name, Shard ID, attribute/effect, rarity, category, family, skill, mob type, or acquisition text. **Details** shows the Wiki-listed effect and all documented natural/Fusion acquisition methods; **Recipes** shows every ordered input pair that can produce the selected Shard, including Queen Bee and other Shards that also have natural sources; **Uses** shows what the selected Shard can make. Recipe cards preserve input order and show quantities, selectable outputs, normal/special yield, and Pure Reptile. Epic uses Minecraft dark purple (`§5`), while rarity, stats, categories, mob types, and acquisition methods retain semantic game colours. Clickable Shard text darkens and underlines on hover. The catalog and Shard-specific icons are generated offline from reviewed sources and committed into the mod; a matching native `ItemStack` already received by the client still takes priority for resource-pack presentation. Local `/qshard [English query]` opens the screen without sending chat or a server command. QCA makes no runtime Wiki, API, or icon request and never performs a Fusion.
+- **Shard Planner** — keeps the original Guide intact and adds target quantity, complete multi-step Fusion trees, alternative routes, Materials Only summaries, separate input/output recipe filtering, editable Shards-per-hour rates, per-Shard details, a draggable Fusion Lines view, and a locally saved Hunting Box warehouse. Ironman uses hunting rates only. Normal Fastest can compare hunting time and buying time, while Cheapest requires an optional compatible Skyblocker client-price cache; QCA itself never downloads Bazaar prices. SkyHanni/Firmament are not used as price providers because they currently expose no stable public cross-mod price API. Without a provider, price-based routes are explicitly unavailable and every offline/rate-based feature remains usable.
 
 ### Chat
 
@@ -114,7 +115,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-GitHub Beta 2.6.7 release notes: [docs/GITHUB_RELEASE_2.6.7.md](docs/GITHUB_RELEASE_2.6.7.md)
+Current Beta 2.6.11 changes: [CHANGELOG.md](CHANGELOG.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 

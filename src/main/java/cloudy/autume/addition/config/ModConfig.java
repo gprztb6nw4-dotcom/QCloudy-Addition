@@ -133,6 +133,11 @@ public final class ModConfig {
             fishing.biteAlertVolume = 64;
             configVersion = 18;
         }
+        if (configVersion < 19) {
+            // The Shard Guide gains a fully local route planner, optional
+            // client-mod Bazaar bridge, Hunting Box snapshots and graph layout.
+            configVersion = 19;
+        }
         hudStyle.map.normalize();
         hudStyle.mining.normalize();
         hudStyle.hunting.normalize();
@@ -519,6 +524,21 @@ public final class ModConfig {
     public static final class Inventory {
         public boolean yieldToFirmament = true;
         public boolean shardFusionHelper = true;
+        public String shardPlannerMode = "IRONMAN";
+        public String shardPlannerObjective = "FASTEST";
+        public String shardPlannerTarget = "L4";
+        public int shardPlannerQuantity = 1;
+        public boolean shardPlannerMaterialsOnly;
+        public boolean shardPlannerUseWarehouse = true;
+        public boolean shardPlannerInstantBuy = true;
+        public int shardPlannerHunterFortune;
+        public int shardPlannerCrocodileLevel;
+        public double shardPlannerCoinsPerHour;
+        public int shardPlannerCraftSeconds = 1;
+        public String shardPlannerKuudraTier = "NONE";
+        public int shardPlannerKuudraSeconds = 60;
+        public Map<String, Double> shardPlannerRates = new LinkedHashMap<>();
+        public Map<String, String> shardFusionLinePositions = new LinkedHashMap<>();
 
         public boolean itemTimestamps = true;
         public boolean showCreationTimestamp = true;
@@ -537,6 +557,49 @@ public final class ModConfig {
         public int etherwarpSoundVolume = 64;
 
         private void normalize() {
+            if (!"IRONMAN".equals(shardPlannerMode) && !"NORMAL".equals(shardPlannerMode)) {
+                shardPlannerMode = "IRONMAN";
+            }
+            if (!"FASTEST".equals(shardPlannerObjective) && !"CHEAPEST".equals(shardPlannerObjective)) {
+                shardPlannerObjective = "FASTEST";
+            }
+            if ("IRONMAN".equals(shardPlannerMode)) shardPlannerObjective = "FASTEST";
+            if (shardPlannerTarget == null) shardPlannerTarget = "L4";
+            shardPlannerTarget = shardPlannerTarget.trim().toUpperCase(Locale.ROOT);
+            if (!shardPlannerTarget.matches("[CUREL]\\d+")) shardPlannerTarget = "L4";
+            shardPlannerQuantity = Math.clamp(shardPlannerQuantity, 1, 1_000_000);
+            shardPlannerHunterFortune = Math.clamp(shardPlannerHunterFortune, 0, 10_000);
+            shardPlannerCrocodileLevel = Math.clamp(shardPlannerCrocodileLevel, 0, 10);
+            if (!Double.isFinite(shardPlannerCoinsPerHour) || shardPlannerCoinsPerHour < 0.0) {
+                shardPlannerCoinsPerHour = 0.0;
+            }
+            shardPlannerCraftSeconds = Math.clamp(shardPlannerCraftSeconds, 0, 600);
+            if (shardPlannerKuudraTier == null || !Set.of("NONE", "T1", "T2", "T3", "T4", "T5")
+                    .contains(shardPlannerKuudraTier)) shardPlannerKuudraTier = "NONE";
+            shardPlannerKuudraSeconds = Math.clamp(shardPlannerKuudraSeconds, 10, 1800);
+            Map<String, Double> repairedRates = new LinkedHashMap<>();
+            if (shardPlannerRates != null) {
+                for (var entry : shardPlannerRates.entrySet()) {
+                    if (entry.getKey() == null || entry.getValue() == null || repairedRates.size() >= 320) continue;
+                    String id = entry.getKey().trim().toUpperCase(Locale.ROOT);
+                    double rate = entry.getValue();
+                    if (id.matches("[CUREL]\\d+") && Double.isFinite(rate) && rate >= 0.0) {
+                        repairedRates.put(id, rate);
+                    }
+                }
+            }
+            shardPlannerRates = repairedRates;
+            Map<String, String> repairedPositions = new LinkedHashMap<>();
+            if (shardFusionLinePositions != null) {
+                for (var entry : shardFusionLinePositions.entrySet()) {
+                    if (entry.getKey() == null || entry.getValue() == null || repairedPositions.size() >= 320) continue;
+                    String id = entry.getKey().trim().toUpperCase(Locale.ROOT);
+                    if (id.matches("[CUREL]\\d+") && entry.getValue().matches("-?\\d+,-?\\d+")) {
+                        repairedPositions.put(id, entry.getValue());
+                    }
+                }
+            }
+            shardFusionLinePositions = repairedPositions;
             cursorToleranceMs = Math.clamp(cursorToleranceMs, 50, 5000);
             instantTransmissionSoundVolume = Math.clamp(instantTransmissionSoundVolume, 0, 100);
             etherwarpSoundVolume = Math.clamp(etherwarpSoundVolume, 0, 100);

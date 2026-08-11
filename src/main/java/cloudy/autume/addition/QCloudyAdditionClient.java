@@ -8,6 +8,7 @@ import cloudy.autume.addition.i18n.ModText;
 import cloudy.autume.addition.input.HotkeyInputs;
 import cloudy.autume.addition.inventory.ItemTimestampTooltip;
 import cloudy.autume.addition.inventory.ShardFusionScreen;
+import cloudy.autume.addition.inventory.ShardWarehouseManager;
 import cloudy.autume.addition.hunting.HuntingTracker;
 import cloudy.autume.addition.hunting.HuntingWorldRenderer;
 import cloudy.autume.addition.inventory.SafariBeltTooltip;
@@ -58,6 +59,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ConfigManager.load();
+        ShardWarehouseManager.load();
         ItemTimestampTooltip.register();
         SafariBeltTooltip.register();
         HuntingWorldRenderer.register();
@@ -77,6 +79,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
                 HuntingTracker.updateReceivedText(TabListTracker.lines(), LocationTracker.scoreboardLines());
                 HotmSlotTracker.update(client);
                 PetSkinTracker.update(client);
+                ShardWarehouseManager.update(client);
             }
             HuntingTracker.tick(client);
             FishingBiteAlert.tick(client);

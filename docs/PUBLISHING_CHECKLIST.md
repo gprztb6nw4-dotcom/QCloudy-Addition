@@ -6,7 +6,7 @@
 |---|---|
 | Name | QCloudy_Addition |
 | Suggested slug | `qcloudy-addition` |
-| Version | `Beta-2.6.7+26.1.2` |
+| Version | `Beta-2.6.11+26.1.2` |
 | Release channel | Beta; the project owner explicitly approved this promotion on 2026-08-10 |
 | Environment | Client only |
 | Loader | Fabric |
@@ -29,8 +29,8 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 
 - Use `docs/MODRINTH_DESCRIPTION.md` as the English project description.
 - Keep English as the primary description; place `docs/MODRINTH_DESCRIPTION_zh_CN.md` in a linked Chinese page or below the English copy if desired.
-- Upload only `release/QCloudy_Addition-Beta-2.6.7+26.1.2.jar` as the playable file.
-- Use `docs/MODRINTH_RELEASE_2.6.7.md` as the version changelog; the Chinese companion is `docs/MODRINTH_RELEASE_2.6.7_zh_CN.md`.
+- Upload only `release/QCloudy_Addition-Beta-2.6.11+26.1.2.jar` as the playable file.
+- Use the `2.6.11` section of `CHANGELOG.md` as the version changelog; the Chinese companion is the matching section of `CHANGELOG_zh_CN.md`.
 - Mark Fabric API as required and Mod Menu as optional.
 - Mark client environment as required and server environment as unsupported.
 - Do not mark Firmament, SkyHanni, Skyblocker, or BabyzombieAddons as required.
@@ -47,11 +47,11 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 - Do not commit `run/`, `run-standalone/`, `.gradle/`, `.gradle-user-home/`, local configs, logs, crash ZIPs, or the supplied reference JARs.
 - Confirm `.gitignore` covers local build/runtime files before the first commit.
 
-## GitHub Beta 2.6.7
+## GitHub Beta 2.6.11
 
-- Title: `QCloudy_Addition Beta 2.6.7 for Minecraft 26.1.2`
-- Tag: `v2.6.7-beta+26.1.2`
-- Use `docs/GITHUB_RELEASE_2.6.7.md` as the release body; the Chinese companion is `docs/GITHUB_RELEASE_2.6.7_zh_CN.md`.
+- Title: `QCloudy_Addition Beta 2.6.11 for Minecraft 26.1.2`
+- Tag: `v2.6.11-beta+26.1.2`
+- Use the `2.6.11` sections of `CHANGELOG.md` and `CHANGELOG_zh_CN.md` as the release body source.
 - Attach the binary JAR and optionally the Sources JAR.
 - Verify uploaded hashes against `docs/VALIDATION.md` after downloading the release once.
 - Mark it as **Pre-release** on GitHub because this is a Beta, not a stable Release.

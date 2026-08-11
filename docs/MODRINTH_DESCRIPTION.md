@@ -2,11 +2,11 @@
 
 **A client-only Hypixel SkyBlock utility mod for Fabric on Minecraft 26.1.2.**
 
-QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, pet information, an offline Attribute Shard Fusion browser, and deeply configurable HUDs into one clean bilingual interface.
+QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, pet information, a complete offline Attribute Shard Fusion guide/planner, and deeply configurable HUDs into one clean bilingual interface.
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Beta 2.6.7.** Beta means the build has passed automated and archive validation, but still needs broader real-server, resource-pack, GUI-scale, operating-system, and modpack testing.
+> **Current channel: Beta 2.6.11.** Beta means the build has passed automated and archive validation, but still needs broader real-server, resource-pack, GUI-scale, operating-system, and modpack testing.
 
 ## Main features
 
@@ -22,6 +22,8 @@ The interface is English by default and can be switched to Simplified Chinese. N
 - Search by English Shard name, ID, effect, rarity, category, family, skill, mob type, or acquisition source.
 - Separate **Details**, **Recipes**, and **Uses** views with ordered inputs, quantities, selectable outputs, Special Fusion yields, Chameleon behavior, and Pure Reptile information.
 - Shard-specific bundled icons, documented natural/Fusion acquisition methods, semantic game colors, and complete reverse recipes—including Shards such as Queen Bee that have both natural and Fusion sources.
+- A separate **Shard Planner** with target quantities, bounded multi-step Fusion trees, other candidate routes, Materials Only totals, direct input/output recipe filters, editable Shards/hour rates, draggable Fusion Lines, and a local per-profile Hunting Box warehouse.
+- Ironman planning never uses Bazaar. Normal Fastest can compare hunting and buying time; Normal Cheapest uses an optional compatible Skyblocker price cache. QCA never downloads prices and has no hard dependency. If no stable provider exists, price routes are clearly unavailable while all offline and rate-based features remain usable.
 - An equipped **Pet HUD** with verified pet/skin heads, rarity-colored names, XP, progress to maximum level, supported overflow levels, skin names, and pet-item icons/names.
 - Item creation timestamps, cursor-position memory, and configurable AOTE/AOTV teleport sounds.
 
@@ -84,7 +86,7 @@ Optional:
 
 - Mod Menu **18.0.0**
 
-Put the playable `QCloudy_Addition-Beta-2.6.7+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
+Put the playable `QCloudy_Addition-Beta-2.6.11+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
 
 Press `O`, open QCA through Mod Menu, or enter `/aca`, `/qca`, `/ca`, or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 
@@ -101,7 +103,7 @@ Both are sent only after the player explicitly enters the corresponding local sh
 
 ## Compatibility and disclaimer
 
-QCloudy_Addition is standalone. Firmament, SkyHanni, Skyblocker, BabyzombieAddons, JEI, and Mod Menu are not required. When Firmament is installed, an optional handoff prevents selected duplicate inventory tools from running twice.
+QCloudy_Addition is standalone. Firmament, SkyHanni, Skyblocker, BabyzombieAddons, JEI, and Mod Menu are not required. A compatible Skyblocker is optional only for Bazaar-price routes; without it the planner's price mode is unavailable, not broken. SkyHanni and Firmament are not currently price providers because they expose no stable public cross-mod price API. When Firmament is installed, an optional handoff prevents selected duplicate inventory tools from running twice.
 
 All Minecraft modifications are used at the player's own risk. Passive HUDs, outlines, waypoint beams, overlays, and predictions are not the same as official Hypixel approval. Review Hypixel's current modification rules and disable any feature you are not comfortable using.
 

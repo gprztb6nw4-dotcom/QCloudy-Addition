@@ -141,6 +141,20 @@ All 320 catalog IDs have their corresponding bundled Shard icon generated offlin
 
 Epic names use Minecraft's dark-purple `§5` instead of light-purple `§d`. Rarity, stat, category, mob-type, skill, and acquisition lines use the corresponding SkyBlock/Minecraft semantic colours. Clickable Shard text darkens and underlines only while its visible text is hovered. The search field releases focus when the player clicks outside it, presses `Esc`, or presses `Tab`, and it accepts input again after a direct click. Recipe inputs and candidate outputs are compact content-width groups centered inside the card; their click regions match the visible icon/text bounds rather than distant card halves. The local `/qshard [English query]` command and the feature's **Open Guide** setting open this screen only. The optional key chord is unbound by default. None of these entry points sends chat, a server command, a packet, a menu click, or an API request.
 
+### 7.2 Shard Planner and local warehouse
+
+**Purpose:** turn the Guide's direct recipes into an actionable, multi-step preparation plan while keeping every decision and action under player control.
+
+**Planner:** enter a target Shard and quantity, then choose Ironman/Normal and Fastest/Cheapest. The planner evaluates ordered direct recipes to a bounded depth, prevents cyclic routes, exposes other candidate recipes for the selected tree node, and produces both a complete tree and hunt/buy/already-owned base-material totals. **Materials Only** hides the tree and shows only those totals. The tree is informational: it never clicks the Fusion House, chooses an output, or moves an item.
+
+**Cost models:** Fastest uses the bundled baseline Shards-per-hour table or the player's local per-Shard override. Hunter Fortune, local handling time, and Pure Reptile expectation are considered. Kraken can instead use Kuudra tier, estimated clear time, coins/hour, key opportunity cost, and downtime. Normal Fastest may compare hunting time against price/coins-hour time; Normal Cheapest uses prices directly. Ironman never uses Bazaar. Guaranteed integer material requirements remain visible even where Pure Reptile can improve the expected route cost.
+
+**Optional prices:** QCA has no Bazaar downloader and no required price mod. If a compatible Skyblocker is present, QCA reflectively calls only its public `ItemUtils.getItemPrice(String, boolean)` method and copies the already-cached result. This creates no compile/runtime dependency. SkyHanni and Firmament currently do not provide a stable public cross-mod price API, so QCA deliberately does not read their private fields. With no compatible price provider, the UI marks Cheapest as unavailable and all offline, Ironman, rate, recipe, detail, line, and warehouse functions remain available.
+
+**Warehouse:** when—and only when—the player physically opens a received menu titled `(page/total) Hunting Box` or `Hunting Box`, QCA reads visible Shard item IDs and exact `Owned: N Shards` lore, then saves that observed page for the current local profile. It never sends `/hb`, changes page, clicks a slot, or infers an unseen page. A transition/empty frame cannot erase a prior snapshot. The planner can subtract saved quantities from the chosen route; the warehouse screen shows when that profile was last observed and allows a local clear.
+
+**Other pages:** Recipes accepts independent input and output filters for direct ordered relationships. Shards shows effect, family, Skill, mob type, every bundled acquisition entry, the baseline rate, and a local editable rate. Fusion Lines draws the selected Shard's nearby ID/Special/Chameleon relationships; nodes can be selected and physically dragged, and positions persist in local config. Planner target, quantity, mode, objective, Materials Only, custom rates, graph positions, warehouse use, price-side preference, and Kuudra parameters all persist locally.
+
 ## 8. Chat
 
 ### 8.1 Chat Peek
