@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.6.9+26.1.2`.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.6.10+26.1.2`.
 
 ## 1. Runtime architecture
 
@@ -162,7 +162,7 @@ On by default. One physical click starts one ordinary server connection. No save
 
 - **Purpose:** alert only for configured rare rewards that belong to the local player's Tree Gift.
 - **Inputs:** raw received game-chat `Component`, including `SHOW_TEXT`, plus messages canceled from display by a compatible chat compactor.
-- **Implementation:** `TreeGiftAlertSession` opens only on the 64-character Gift border and expires after 15 seconds. The personal `+N rewards gained! (hover)` summary can reveal its own attached loot. Separate bonus percentage and `A <loot> fell from the Tree!` rows require the same block to contain the Gift header, local `You helped cut...` contribution, and personal reward summary. Early rows are buffered, each loot is deduplicated per block, and public/incomplete/lasso text is inert.
+- **Implementation:** `TreeGiftAlertSession` accepts normal or multi-line received components and expires an open block after 15 seconds. The player-only `+N rewards gained!` summary is the ownership proof and can reveal its attached `SHOW_TEXT` loot. Exact bonus/creature rows are buffered until that proof arrives, independent of line order. A proven gift retains a five-second post-border window only for the exact `-A wild <creature> appeared!` sentence; a public creature line without the personal summary is inert. Each loot remains deduplicated per gift.
 - **Expected effect:** `RARE TREE GIFT` center title, loot subtitle, and independent sound for an enabled loot.
 - **Default/outbound:** feature, all ten configured rare loots, and sound on; volume64%; no chat or command.
 

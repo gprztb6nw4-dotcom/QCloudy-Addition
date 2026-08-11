@@ -1,3 +1,35 @@
+# QCloudy_Addition Beta 2.6.10 Tree Gift creature-alert validation
+
+Validation date: 2026-08-11
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Beta-2.6.10+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.10+26.1.2-sources.jar`
+
+## Result
+
+Beta 2.6.10 fixes Tree Gift creature lines that were correctly recognized but discarded by the old ownership gate. The player-only `+N rewards gained!` summary now proves ownership without requiring one legacy contribution sentence. Exact creature rows are supported before or after that summary, in a single multi-line component, and for five seconds after a proven block's closing border. A nearby player's public creature line remains inert without the local player's summary.
+
+## Automated and artifact checks
+
+- Java 25 `clean test build prepareRelease` completed successfully. Fresh XML reports 25 suites and 137 tests, with 0 failures, 0 errors, and 0 skips.
+- Eight focused session tests cover the normal personal block, nearby public rejection, buffered rewards, post-border creature delivery, post-border expiry, missing legacy contribution text, a complete multi-line block, and a compacted borderless multi-line value.
+- Expanded Fabric metadata declares `Beta-2.6.10+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+.
+- Both binary and Sources JARs pass JDK 25 `jar --validate` and `unzip -t`; their `release` copies are byte-identical to `build/libs`.
+- Static data-flow review confirms the changed session only consumes received chat components and hover text, deduplicates each loot within the bounded session, and contains no packet, chat send, command, click, movement, HTTP, or server-query path.
+
+## Validation boundary
+
+This audit verifies compilation, state-machine behavior, false-positive rejection in the covered message orders, metadata, archive integrity, filenames, checksums, and build/release identity. It does not claim an authenticated Hypixel Tree Gift regression. The remaining acceptance check is to earn a real Tree Gift creature and confirm one center-screen alert and one configured local sound, then stand beside another player's Tree Gift and confirm their public creature line stays silent.
+
+## SHA-256
+
+- Binary JAR: `25382321625a5be940e97ab0e42cd36d6a41ed6366f69f354170f979bb67ad99`
+- Sources JAR: `3d6b8c8cf171e21e75be01e79965cd1124117ea0b90d73253d2693e12bc4a2cd`
+
+---
+
 # QCloudy_Addition Beta 2.6.9 lava-fishing sound validation
 
 Validation date: 2026-08-11

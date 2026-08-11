@@ -1,3 +1,35 @@
+# QCloudy_Addition Beta 2.6.10 Tree Gift 生物提示验证
+
+验证日期：2026-08-11
+
+验证产物：
+
+- `release/QCloudy_Addition-Beta-2.6.10+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.10+26.1.2-sources.jar`
+
+## 结论
+
+Beta 2.6.10 修复 Tree Gift 生物行已经被正确识别、却被旧归属门槛丢弃的问题。现在只发给玩家本人的 `+N rewards gained!` 汇总即可证明归属，不再强制依赖某一种旧贡献句。精确生物行可以出现在汇总之前、之后、单个多行 Component 中，以及已经证明为本人礼物的结束边框后 5 秒内；附近玩家只有公共生物行、没有本地玩家本人汇总时仍然无效。
+
+## 自动测试与产物检查
+
+- Java 25 `clean test build prepareRelease` 成功；新生成 XML 共 25 个测试套件、137 项测试，0 失败、0 错误、0 跳过。
+- 8 项聚焦会话测试覆盖普通本人区块、附近公共消息拒绝、奖励缓冲、结束边框后生物行、窗口超时、缺少旧贡献句、完整多行区块，以及聊天压缩后的无边框多行值。
+- 展开的 Fabric 元数据为 `Beta-2.6.10+26.1.2`、纯客户端，声明 Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+ 与 Java 25+。
+- 二进制和 Sources JAR 均通过 JDK 25 `jar --validate` 与 `unzip -t`；`release` 副本与 `build/libs` 逐字节一致。
+- 静态数据流检查确认修改后的会话只读取已收到的聊天 Component 与 hover 文字，在有限会话内对每种奖励去重，不包含数据包、聊天发送、命令、点击、移动、HTTP 或服务器查询路径。
+
+## 验证边界
+
+本次审核验证编译、状态机行为、已覆盖消息顺序下的误报拒绝、元数据、归档完整性、文件名、校验和及 build/release 一致性，但不等同于已经登录 Hypixel 完成真实 Tree Gift 回归。剩余验收是本人获得一个真实 Tree Gift 生物，确认屏幕中央与本地音效各提示一次；随后站在其他玩家 Tree Gift 附近，确认对方公共生物行保持静默。
+
+## SHA-256
+
+- 二进制 JAR：`25382321625a5be940e97ab0e42cd36d6a41ed6366f69f354170f979bb67ad99`
+- Sources JAR：`3d6b8c8cf171e21e75be01e79965cd1124117ea0b90d73253d2693e12bc4a2cd`
+
+---
+
 # QCloudy_Addition Beta 2.6.9 岩浆钓鱼提示音验证
 
 验证日期：2026-08-11

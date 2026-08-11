@@ -2,6 +2,22 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.10] - 2026-08-11
+
+Beta Tree Gift ownership and creature-alert fix for Minecraft 26.1.2.
+
+### Fixed
+
+- Fixed configured Tree Gift creatures such as `-A wild Groundhog appeared!` being parsed but silently rejected by the ownership state machine.
+- Personal ownership now uses the player-only `+N rewards gained!` summary instead of also requiring one legacy `You helped cut...` sentence. Public creature lines from nearby players still cannot arm an alert by themselves.
+- Preserved proven ownership for five seconds after the closing Tree Gift border, covering Hypixel's post-block creature-spawn line without opening an unbounded public-chat window.
+- Added support for a complete Tree Gift arriving as one multi-line chat component, including compacted borderless components whose personal summary and creature line share that same received value.
+- Pending creature/reward rows now flush correctly regardless of whether the personal summary arrives before or after them; duplicate loot remains limited to one alert per gift session.
+
+### Safety
+
+- The fix only reads already-received chat text and `SHOW_TEXT` hover data. It sends no packet, chat message, command, click, movement, or server request.
+
 ## [2.6.9] - 2026-08-11
 
 Beta fishing compatibility fix for Minecraft 26.1.2.

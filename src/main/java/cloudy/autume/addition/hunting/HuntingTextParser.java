@@ -52,9 +52,6 @@ public final class HuntingTextParser {
     private static final Pattern PERSONAL_TREE_GIFT_REWARDS = Pattern.compile(
             "(?i)^\\+[0-9,]+ rewards gained!(?:\\s*\\(hover\\))?$");
     private static final Pattern TREE_GIFT_BORDER = Pattern.compile("^▬{64}$");
-    private static final Pattern TREE_GIFT_HEADER = Pattern.compile("(?i)^TREE GIFT$");
-    private static final Pattern TREE_GIFT_CONTRIBUTION = Pattern.compile(
-            "(?i)^You helped cut [0-9]+(?:\\.[0-9]+)?% of the .+ Tree\\.$");
     private static final Pattern TREE_GIFT_BONUS_HEADER = Pattern.compile("(?i)^BONUS GIFT$");
     private static final Pattern TREE_GIFT_BONUS_REWARD = Pattern.compile(
             "(?i)^(.+?)\\s*\\([0-9]+(?:\\.[0-9]+)?%\\)$");
@@ -476,6 +473,15 @@ public final class HuntingTextParser {
     /** Returns enabled rare rewards only from this player's own reward-summary component. */
     public static List<String> personalTreeGiftLoot(Component message, Map<String, Boolean> enabled) {
         if (message == null || !personalTreeGiftRewardSummary(message.getString())) return List.of();
+        return treeGiftHoverLoot(message, enabled);
+    }
+
+    /**
+     * Reads tracked loot from SHOW_TEXT after the caller has already proved
+     * that this component contains the player's personal reward summary.
+     */
+    static List<String> treeGiftHoverLoot(Component message, Map<String, Boolean> enabled) {
+        if (message == null || enabled == null) return List.of();
         LinkedHashSet<String> result = new LinkedHashSet<>();
         for (String hoverLine : treeGiftHoverLines(message)) {
             String loot = trackedTreeGiftLoot(hoverLine, enabled);
@@ -486,14 +492,6 @@ public final class HuntingTextParser {
 
     public static boolean treeGiftBorder(String raw) {
         return TREE_GIFT_BORDER.matcher(plain(raw)).matches();
-    }
-
-    public static boolean treeGiftHeader(String raw) {
-        return TREE_GIFT_HEADER.matcher(plain(raw)).matches();
-    }
-
-    public static boolean personalTreeGiftContribution(String raw) {
-        return TREE_GIFT_CONTRIBUTION.matcher(plain(raw)).matches();
     }
 
     public static boolean treeGiftBonusHeader(String raw) {
@@ -510,6 +508,12 @@ public final class HuntingTextParser {
         if (phantom.matches()) return trackedTreeGiftLoot(phantom.group(1), enabled);
         Matcher reward = TREE_GIFT_BONUS_REWARD.matcher(line);
         return reward.matches() ? trackedTreeGiftLoot(reward.group(1), enabled) : "";
+    }
+
+    /** Parses only the exact public creature-spawn sentence. */
+    static String treeGiftWildCreatureLoot(String raw, Map<String, Boolean> enabled) {
+        Matcher wild = TREE_GIFT_WILD_CREATURE.matcher(plain(raw));
+        return wild.matches() ? trackedTreeGiftLoot(wild.group(1), enabled) : "";
     }
 
     /** Returns only SHOW_TEXT data already attached to the received chat component. */

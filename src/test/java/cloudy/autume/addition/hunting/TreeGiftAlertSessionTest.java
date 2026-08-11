@@ -70,6 +70,76 @@ final class TreeGiftAlertSessionTest {
                 Component.literal("+0 rewards gained!"), enabled, 1_005L));
     }
 
+    @Test
+    void acceptsWildCreatureImmediatelyAfterAProvenGiftCloses() {
+        TreeGiftAlertSession session = new TreeGiftAlertSession();
+        Map<String, Boolean> enabled = enabledLoot();
+        session.accept(Component.literal(BORDER), enabled, 1_000L);
+        session.accept(Component.literal("TREE GIFT"), enabled, 1_001L);
+        session.accept(Component.literal("+0 rewards gained!"), enabled, 1_002L);
+        session.accept(Component.literal(BORDER), enabled, 1_003L);
+
+        assertEquals(List.of("Groundhog"), session.accept(
+                Component.literal("-A wild Groundhog appeared!"), enabled, 1_004L));
+        assertEquals(List.of(), session.accept(
+                Component.literal("-A wild Groundhog appeared!"), enabled, 1_005L));
+    }
+
+    @Test
+    void postGiftCreatureWindowExpiresAndNeverArmsForAPublicGift() {
+        TreeGiftAlertSession session = new TreeGiftAlertSession();
+        Map<String, Boolean> enabled = enabledLoot();
+        session.accept(Component.literal(BORDER), enabled, 1_000L);
+        session.accept(Component.literal("TREE GIFT"), enabled, 1_001L);
+        session.accept(Component.literal("+0 rewards gained!"), enabled, 1_002L);
+        session.accept(Component.literal(BORDER), enabled, 1_003L);
+        assertEquals(List.of(), session.accept(
+                Component.literal("-A wild Groundhog appeared!"), enabled, 6_004L));
+
+        session.accept(Component.literal(BORDER), enabled, 7_000L);
+        session.accept(Component.literal("TREE GIFT"), enabled, 7_001L);
+        session.accept(Component.literal(BORDER), enabled, 7_002L);
+        assertEquals(List.of(), session.accept(
+                Component.literal("-A wild Groundhog appeared!"), enabled, 7_003L));
+    }
+
+    @Test
+    void personalSummaryOwnsPendingCreatureWithoutLegacyContributionSentence() {
+        TreeGiftAlertSession session = new TreeGiftAlertSession();
+        Map<String, Boolean> enabled = enabledLoot();
+        session.accept(Component.literal(BORDER), enabled, 1_000L);
+        session.accept(Component.literal("TREE GIFT"), enabled, 1_001L);
+        session.accept(Component.literal("-A wild Groundhog appeared!"), enabled, 1_002L);
+
+        assertEquals(List.of("Groundhog"), session.accept(
+                Component.literal("+0 rewards gained!"), enabled, 1_003L));
+    }
+
+    @Test
+    void parsesACompleteMultilineGiftComponentInOneEvent() {
+        TreeGiftAlertSession session = new TreeGiftAlertSession();
+        Map<String, Boolean> enabled = enabledLoot();
+        Component block = Component.literal(String.join("\n",
+                BORDER,
+                "TREE GIFT",
+                "-A wild Groundhog appeared!",
+                "+0 rewards gained!",
+                BORDER));
+
+        assertEquals(List.of("Groundhog"), session.accept(block, enabled, 1_000L));
+    }
+
+    @Test
+    void personalSummaryOwnsAnEarlierCreatureInTheSameBorderlessComponent() {
+        TreeGiftAlertSession session = new TreeGiftAlertSession();
+        Map<String, Boolean> enabled = enabledLoot();
+        Component compacted = Component.literal(String.join("\n",
+                "-A wild Groundhog appeared!",
+                "+0 rewards gained!"));
+
+        assertEquals(List.of("Groundhog"), session.accept(compacted, enabled, 1_000L));
+    }
+
     private static Map<String, Boolean> enabledLoot() {
         Map<String, Boolean> result = new LinkedHashMap<>();
         result.put("Signal Enhancer", true);
