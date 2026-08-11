@@ -17,7 +17,7 @@ final class FishingHookResolverTest {
     @Test
     void directWaterHookAlwaysWins() {
         FishingHookResolver resolver = new FishingHookResolver(40);
-        resolver.onRodUse(Set.of(), false);
+        assertTrue(resolver.onRodUse(Set.of(), false));
 
         assertEquals(12, resolver.resolve(12, List.of(candidate(21, UNKNOWN, 1.0))));
     }
@@ -26,7 +26,7 @@ final class FishingHookResolverTest {
     void newOwnerlessLavaHookIsAssociatedAfterTheLocalCast() {
         FishingHookResolver resolver = new FishingHookResolver(40);
         assertFalse(resolver.needsCandidates());
-        resolver.onRodUse(Set.of(30, 31), false);
+        assertTrue(resolver.onRodUse(Set.of(30, 31), false));
         assertTrue(resolver.needsCandidates());
 
         int hook = resolver.resolve(NO_HOOK, List.of(
@@ -42,7 +42,7 @@ final class FishingHookResolverTest {
     @Test
     void locallyOwnedCandidateBeatsAnUnknownCandidate() {
         FishingHookResolver resolver = new FishingHookResolver(40);
-        resolver.onRodUse(Set.of(), false);
+        assertTrue(resolver.onRodUse(Set.of(), false));
 
         assertEquals(42, resolver.resolve(NO_HOOK, List.of(
                 candidate(41, UNKNOWN, 1.0),
@@ -52,10 +52,10 @@ final class FishingHookResolverTest {
     @Test
     void secondPhysicalUseReelsTheTrackedFallbackInsteadOfArmingAnotherCast() {
         FishingHookResolver resolver = new FishingHookResolver(40);
-        resolver.onRodUse(Set.of(), false);
+        assertTrue(resolver.onRodUse(Set.of(), false));
         assertEquals(51, resolver.resolve(NO_HOOK, List.of(candidate(51, UNKNOWN, 2.0))));
 
-        resolver.onRodUse(Set.of(51), false);
+        assertFalse(resolver.onRodUse(Set.of(51), false));
 
         assertFalse(resolver.needsCandidates());
         assertEquals(NO_HOOK, resolver.resolve(NO_HOOK, List.of(candidate(52, UNKNOWN, 1.0))));
@@ -64,12 +64,20 @@ final class FishingHookResolverTest {
     @Test
     void associationWindowExpiresWithoutClaimingOldOrOtherPlayerHooks() {
         FishingHookResolver resolver = new FishingHookResolver(2);
-        resolver.onRodUse(Set.of(61), false);
+        assertTrue(resolver.onRodUse(Set.of(61), false));
 
         assertEquals(NO_HOOK, resolver.resolve(NO_HOOK, List.of(
                 candidate(61, UNKNOWN, 1.0), candidate(62, OTHER_PLAYER, 1.0))));
         assertEquals(NO_HOOK, resolver.resolve(NO_HOOK, List.of()));
         assertEquals(NO_HOOK, resolver.resolve(NO_HOOK, List.of(candidate(63, UNKNOWN, 1.0))));
+    }
+
+    @Test
+    void directHookUseIsClassifiedAsReeling() {
+        FishingHookResolver resolver = new FishingHookResolver(40);
+
+        assertFalse(resolver.onRodUse(Set.of(71), true));
+        assertFalse(resolver.needsCandidates());
     }
 
     private static FishingHookResolver.Candidate candidate(

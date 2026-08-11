@@ -7,7 +7,7 @@ QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [Current Beta 2.6.11 changelog](CHANGELOG.md)
+- [Current Beta 2.6.12 changelog](CHANGELOG.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -55,7 +55,7 @@ The language option translates QCA interface labels only. Hypixel location names
 - **Sparkling, Floor Drop, and Quest Item assistants** — center alerts and read-only HUD state from received chat, visible names/entities, nearby already-loaded String blocks, and local inventory. Sparkling outline color is editable.
 - **Safari Belt details** — embeds all four locally observed Cavern/Forest/Haunted/Icy milestone levels and received attribute bonuses in the actual belt tooltip. Split title/lore menu layouts are supported; confirmed levels are saved per account/profile and only increase when a higher observed level is received.
 
-Foraging, Hunting, and Safari are mutually exclusive settings categories: every feature card has exactly one owner category. All related warnings use center titles. Every alert feature owns its own default-on 64% sound and continuous 0–100% volume slider; General also has a master mute. The combined HUD has its own persisted appearance, scale, and position in **Edit HUD**.
+Foraging and Hunting are separate top-level settings categories, while Safari is a collapsible subgroup owned only by Hunting; Fairy Soul waypoints live only under Maps. Every feature card has exactly one owner. All related warnings use center titles. Every alert feature owns its own default-on 64% sound and continuous 0–100% volume slider; General also has a master mute. The combined HUD has its own persisted appearance, scale, and position in **Edit HUD**.
 
 ### Combat
 
@@ -85,7 +85,7 @@ Foraging, Hunting, and Safari are mutually exclusive settings categories: every 
 - UI opening animations are enabled by default and can be disabled
 - Optional Mod Menu integration opens QCA's settings directly when Mod Menu is installed
 
-The configuration screen uses a compact BLC-inspired information hierarchy—not copied assets or layout code—with one **Features** tab, category navigation, and searchable feature cards. **General** is the first category and contains **UI animations**, the alert master mute, manual reconnect, and the Fishing group; HUD position editing remains available from the bottom-left **Edit HUD** button. Feature cards no longer repeat a top-right switch or bottom-right right-click hint, and secondary pages do not repeat the primary enable switch. There is deliberately no catch-all `ALL` category: every feature appears only under its own category.
+The configuration screen uses a compact BLC-inspired information hierarchy—not copied assets or layout code—with one **Features** tab, eight ordered categories, and searchable feature cards: **General, Maps, Items & Menus, Combat, Mining, Foraging, Fishing, and Hunting**. Fishing is a top-level category rather than a General subgroup. HUD position editing remains available from the bottom-left **Edit HUD** button. Feature cards no longer repeat a top-right switch or bottom-right right-click hint, and secondary pages do not repeat the primary enable switch. There is deliberately no catch-all `ALL` category: every feature appears only under its own category.
 
 Inventory and menu tools include the Attribute Shard Fusion Guide, item timestamps, cursor position memory, configurable AOTE/AOTV sounds, and Chat Peek. Every QCA hotkey is edited inline on its existing secondary-settings page instead of opening a separate capture screen. Keyboard keys, mouse buttons 1–5/side buttons, and Ctrl/Shift/Alt/Cmd-Super combinations are supported; while a row is listening, `Esc` clears it to unbound.
 
@@ -115,7 +115,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-Current Beta 2.6.11 changes: [CHANGELOG.md](CHANGELOG.md)
+Current Beta 2.6.12 changes: [CHANGELOG.md](CHANGELOG.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 

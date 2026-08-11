@@ -28,21 +28,21 @@
 
 **当前 HOTM 配置：**默认开启且可独立关闭。QCA 只读取 `Heart of the Mountain Slot` 菜单中的 `SELECTED` 标记，或 Loadouts 物品说明中客户端已收到的 `Current:` 行，缓存玩家可见的原始名称并显示为 `HOTM: <名称>`；不会为了获取它发送命令或点击菜单。
 
-## 2.2 钓鱼
+## 3. 钓鱼
 
-### 钓鱼上钩提示音
+### 3.1 钓鱼上钩提示音
 
 **目的：**在不自动执行钓鱼操作的前提下，把 Hypixel 短暂的收杆窗口变成清楚的声音提示。
 
-**功能：**开启后，QCA 优先使用直接归属于本地玩家、已经加载的 Fishing Hook。玩家真实使用钓竿后，还可以在有限的 40 tick 窗口内关联一根新加载但 owner 为空的鱼钩，使 Hypixel 岩浆钓鱼也能收到同样提示；抛竿前已存在的鱼钩和明确属于其他玩家的鱼钩都会被排除。选中鱼钩周围四格内，仅当存在“实体不可见、名称可见、收到的名称精确等于 `!!!`”的 ArmorStand 时，才播放一次提供的 Ciallo 提示音。持续存在的标记不会每 tick 重播；鱼钩消失后才为下一次抛竿重新待命。功能默认关闭，拥有独立的 0–100% 连续音量滑块，默认 64%。
+**功能：**开启后，QCA 优先使用直接归属于本地玩家、已经加载的 Fishing Hook。玩家真实使用钓竿后，还可以在有限的 40 tick 窗口内关联一根新加载但 owner 为空的鱼钩，使 Hypixel 岩浆钓鱼也能收到同样提示；抛竿前已存在的鱼钩和明确属于其他玩家的鱼钩都会被排除。选中鱼钩周围四格内，仅当存在“实体不可见、名称可见、收到的名称精确等于 `!!!`”的 ArmorStand 时，才播放一次提供的 Ciallo 提示音。持续存在的标记不会每 tick 重播，收杆也不会在 `!!!` 消失前重新打开播放门；只有确认的新抛竿或鱼钩消失才会为下一次提示重新待命。功能位于独立一级“钓鱼”分类，默认关闭，拥有独立的 0–100% 连续音量滑块，默认 64%。
 
 **安全边界：**检测器只读取已加载客户端实体，并观察玩家真实使用钓竿的动作，不取消也不替换该动作。较大范围的鱼钩查找仅在短关联窗口内或已关联回退鱼钩仍加载时运行；空闲状态不会每 tick 扫描鱼钩。它只播放模组资源包内的 OGG，不收杆、抛竿、点击、转向、移动、切换物品，也不发送数据包、聊天或命令。
 
-## 3. 砍树、狩猎与 Safari
+## 4. 砍树、狩猎与 Safari
 
-设置界面把三类功能设为互斥归属：**砍树**包含 Torrhus Chapter/资源、Tree Critter 计时、Miria Contest、Benefactor 与 Tree Gift；**狩猎**包含 Beeheemoth、Lasso REEL、Critter 行为辅助，以及唯一的跨岛 Fairy Soul 功能；**Safari**包含 Cold、Doomspiral、Critter 高亮、Dashboard、Critterdex、Sparkling、Floor Drop/Quest Item、Wumpa、Snoozle 墙体覆盖与 Safari Belt。每张功能卡只声明一次，不会出现在多个分类中。
+设置界面让每项功能只有一个归属：**砍树**包含 Torrhus Chapter/资源、Tree Critter 计时、Miria Contest、Benefactor 与 Tree Gift；**狩猎**包含 Beeheemoth、Lasso REEL、Critter 行为辅助，并提供唯一的可折叠 **Safari** 下级功能组，其中包含 Cold、Doomspiral、Critter 高亮、Dashboard、Critterdex、Sparkling、Floor Drop/Quest Item、Wumpa、Snoozle 墙体覆盖与 Safari Belt。跨岛 Fairy Soul 点位只存在于“地图”。每张功能卡只声明一次，不会出现在多个分类中。
 
-### 3.1 Helia Chapter 与 Torrhus 资源
+### 4.1 Helia Chapter 与 Torrhus 资源
 
 **目的：**把当前 Torrhus 目标和相关资源集中到同一个清晰面板。
 
@@ -54,32 +54,32 @@
 
 **Lasso REEL 提示音（默认开启、64%）：**沿用 SkyHanni 的关联方式，不扫描任意 `REEL` 文字。先要求一个已收到的 Leashable 实体确实拴在本地玩家身上，再只接受其预计名称牌位置两格内的精确 `REEL` ArmorStand。状态首次变为 REEL 时播放一次本地提示音；名称牌持续存在不会每 tick 重播，离开状态后才允许下一次正常提示。音量使用 0–100% 连续滑条，并继续受“通用”预警总静音控制。
 
-### 3.2 Miria Contest HUD
+### 4.2 Miria Contest HUD
 
 读取客户端收到的 `Miria's Contest` 计分板/Tab 区块，包括 `COMMON with 151` 与 `Uncommon requires +99` 这类实时档位行；只在综合 Hunting HUD 中显示下一档、准确差值和预计 Safari Ticket。右侧计分板注入已经删除；竞赛倒计时也不解析、不重复显示，因为计分板本身已经提供。
 
-### 3.3 Critter 行为辅助
+### 4.3 Critter 行为辅助
 
 只使用本地可见的自定义名称 Critter 与玩家自身移动。Blue Jay 与 Goldolot 在玩家手持已收到的 Lasso/Fishing Net 时显示 Wiki 记录的 8 秒/5 秒静止倒计时；Dustybit 与 Hideonsun 显示四次跳跃/三次弹射物回击提示，并在客户端名称或消息包含进度时显示准确数值。所有提示都在屏幕中央弹出；此功能有独立音效开关与音量设置，同时仍受“通用”总静音控制。收到精确的 `CAPTURE! You caught ...` 服务器确认后，只对这只已捕捉 Critter 的名称暂停三秒行为提示，避免已移除实体或替换名称牌 UUID 重复触发；不同种类仍可立即提示，三秒后仍真实存在的同种目标会正常恢复。每种 Critter 可单独关闭；不会自动瞄准、移动、用工具或捕捉。
 
-### 3.4 Benefactor 与稀有 Tree Gift
+### 4.4 Benefactor 与稀有 Tree Gift
 
 Benefactor HUD 合并玩家自己的有限 Tab/计分板、已经打开的 Forest/Desert Temple 菜单，以及准确收到的 `BENEFACTOR: You donated ... will receive ... +Nd!` 消息。状态、多日剩余时间、寺庙对应效果和捐赠信息按账号/Profile 保存；重复的绝对倒计时不会延长时间，同一寺庙的新捐赠按收到时长累加，切换寺庙会改用新寺庙时长，新捐赠也不会被短暂未刷新的旧菜单清除。四项默认开启；状态变化与最后 30 秒使用统一中央提示。
 
 Tree Gift 不再错误限制于 Torrhus，同时监听正常显示的游戏聊天，以及被兼容聊天压缩模组取消显示但客户端已经收到的原始游戏聊天。精确的本人 `+N rewards gained! (hover)` 仍只允许解析同一组件自带的 `SHOW_TEXT`。独立 `BONUS GIFT` 百分比行和精确 `A <名称> fell from the Tree!` 行，只有在 15 秒、64 字符边框限定的同一 Gift 区块同时出现 `TREE GIFT`、本人 `You helped cut ...` 贡献和本人奖励汇总后才有效；每个区块内去重。附近玩家的单独公开行、Lasso 捕捉文本或不完整区块都不会触发。Firefox、Groundhog、Drybark、Puck、Grizzly Bear、Signal Enhancer、Chameleon Shard、Hummingbird Shard、Dreadwing 和 Enchanted Book (Karma I) 默认全部开启且可分别关闭。
 
-### 3.5 Safari Run Dashboard 与 Critterdex
+### 4.5 Safari Run Dashboard 与 Critterdex
 
 进入 Critter Safari 后开始本地计时。综合 Hunting HUD 统计本轮 Shard 数量、本轮时间和 Ticket Tier，不再重复已有的 Safari Essence 显示；并按官方 37 种 Critter 显示 Cavern、Forest、Haunted、Icy 四区进度。当前 Biome 的已捕捉/缺失名称会完整换行显示，其余各行默认开启。Loot Share 会计入 Shard 统计，但不会错误地标记为玩家亲自捕捉。
 
-### 3.6 Sparkling、Floor Drop、Quest Item 与 Wumpa
+### 4.6 Sparkling、Floor Drop、Quest Item 与 Wumpa
 
 - **Sparkling Critter：**识别官方生成聊天和可见 `SPARKLING` 名称，显示中央标题、Biome、独立音效与可选原版轮廓；全部默认开启，轮廓使用完整 RGB 选择器。
 - **Floor Drop 与 Quest Item：**每秒在横向 10 格、纵向 3 格的有限范围内检查 Safari Floor Drop 使用的 String/tripwire 方块，首次出现时中央提示并显示最近距离；同时列出玩家本地背包实际持有的官方 Quest Item。不会请求区块或交互方块。
 - **Wumpa：**综合 HUD 会完整列出寒冷区八个非 Wumpa 前置 Critter：Billygoat、Mantis Shrimp、Nozzlenose、Polaris、Shuddersquid、Strongarm、Tepid、Troodon，并逐项显示绿色勾或红色叉及准确的 `n/8`。玩家本人的锚定捕捉确认与收到的 `LOOT SHARE ... catching a <Critter>` 队友确认都会更新本次组队遭遇的前置；Loot Share 仍不会污染单独的本人 Critterdex。Wumpa 一旦生成，八行清单会折叠为 `Wumpa：已生成` 与实时阶段。达到 8/8 时通过现有 Wumpa 专属 64% 音量通道只弹出一次中央提示；官方巨大脚步/awoken 消息共用同一轮去重状态。本地运动与路线改为跟踪 Wumpa 名称附近真正的 Ravager 身体，不再跟踪 Armor Stand 名称载体，并用短暂的移动/静止确认避免单 tick 抖动。实验性红线仍默认关闭，只投影当前水平移动到本地第一个碰撞点，不控制玩家或投掷 Critter Capsule。
 - **Snoozle 可撞墙覆盖（默认开启）：**每秒只扫描附近已经加载的方块，寻找同时包含 Wiki 明确记录的 `Cobbled Deepslate` 与 `Tuff` 的小型连通墙体，并只覆盖与空气相邻的表面；过大的自然地层和单一材质区域会被拒绝。默认绿色，二级设置使用统一 RGB/HSV 选择器。不会点击、修改或向服务器请求方块。
 
-### 3.7 Cold、Doomspiral、Fairy Soul 与 Critter 高亮
+### 4.7 Cold、Doomspiral、Fairy Soul 与 Critter 高亮
 
 - **寒冷值安全预警（默认开启）：**只解析客户端收到的 `Cold` 数值，默认高于 80 第一次预警、高于 90 第二次预警；两项都可用滑条调整且会保持第一档低于第二档。首次收到严格高于第一档的数值时，会立即遍历客户端已加载区块中少量 Block Entity，选择最近的普通/灵魂篝火显示红色信标；需要期间每 40 个客户端 tick 刷新一次最近结果，下一次收到的 Cold 一旦下降立即关闭。不会请求区块或移动玩家。
 - **Doomspiral 条件预警（默认开启）：**有限本地背包扫描发现至少 4 个 `Soothing Incense` 时中央提示一次；4 个是 Wiki 明确记录的召唤需求，数量降到 4 以下后才重置提示。
@@ -87,45 +87,45 @@ Tree Gift 不再错误限制于 Torrhus，同时监听正常显示的游戏聊�
 - **Fairy Soul 点位（默认关闭）：**在官方列出的 Torrhus Canyon 12 个与 Critter Safari 4 个坐标显示粉色信标，两组可分别关闭。客户端收到 `SOUL! You found a Fairy Soul!` 或“已经找到”服务器确认后，QCA 会把十格内最近的已列出魂标记为当前 profile 已收集、保存到本地并立即停止渲染该光柱；不会点击或查询 Fairy Soul。
 - **Safari Critter 高亮（默认开启）：**按对应 Shard 的官方品质标准颜色为本地可见的真实 Critter 实体添加原版轮廓；内置表覆盖全部 37 种。由于当前渲染版本无法稳定把 Armor Stand 支架身体与装备的捕捉模型分开，普通与 Sparkling 两条高亮路径都会明确排除 Armor Stand 捕捉道具。这一安全兜底会避免捕捉时出现细长支架轮廓；真实的非 Armor Stand Critter 仍使用品质色或单独设置的 Sparkling 颜色。不会修改实体数据。
 
-### 3.8 Safari Belt 物品提示
+### 4.8 Safari Belt 物品提示
 
 仅当物品 ID 精确为 `SAFARI_BELT` 时，嵌入本地观察到的四区 Safari Milestone 等级。共享解析器同时支持合并行和 `Cavern Milestone` 加 `Current Level: IV` 这类标题/lore 分行格式，忽略未解锁要求和捕捉进度分数，并对重复条目取最高确认值。等级按 Minecraft 账号/SkyBlock Profile 分开保存，只有从玩家已经打开的 Safari Milestones 菜单或收到的物品说明观察到更高等级时才更新。属性值只重复物品实际说明中的数值，避免在 Wiki 表格与物品显示可能不一致时猜测 Sweep 总值。Milestone 与属性区均默认开启且可分别关闭。
 
-### 3.9 中央预警样式
+### 4.9 中央预警样式
 
 全部 Hunting 预警/提示使用原版屏幕中央标题与副标题。Critter Behavior、Benefactor、Tree Gift、Sparkling、Floor Drop、Wumpa、Cold、Doomspiral 与 Warden 就绪分别拥有独立音效开关和 0–100% 音量滑条，全部默认开启并为 64%；“通用”分类只提供总静音。持续存在的实体、名称或 Tab 行会去重，不会每 tick 重复播放。
 
-### 3.10 手动重连
+### 4.10 手动重连
 
 “通用”分类中的默认开启功能会在 `DisconnectedScreen` 加入一个原版宽度的“重新连接”按钮。正常 `ConnectScreen` 尝试开始时，QCA 记录本次客户端运行中的地址、显示名称、服务器类型与资源包偏好，因此首次连接失败和后续断线都能保留目标。玩家点击后只创建一次新的原版 `ServerData` 并发起一次正常连接；没有倒计时、后台重试、循环、自动加入、聊天或命令。
 
-## 4. Crimson Isle
+## 5. Crimson Isle
 
-### 3.1 阵营任务追踪
+### 5.1 阵营任务追踪
 
 **目的：**无需一直按住 Tab，也能查看岛上的已接阵营任务。
 
 **功能：**仅当地点被识别为 Crimson Isle 或其明确子区域时，读取客户端已经收到的 `Faction Quests:` Widget。每条符合固定格式的行会完整保留服务器的 `✖`/`✔` 状态、任务原名和可选 `xN` 需求；未知行也按收到的原文显示，不推测隐藏进度、不翻译游戏名称。该功能可独立开关，并与不可能同时加载的挖矿任务 HUD 共用外观和位置。
 
-## 5. 战斗
+## 6. 战斗
 
-### 4.1 末影龙高亮
+### 6.1 末影龙高亮
 
 **目的：**在 The End 战斗中更清楚地追踪快速移动的大型末影龙。
 
 **功能：**仅当客户端解析到 The End 或 Dragon's Nest 时，在原版实体渲染状态末尾设置末影龙轮廓色；完整 RGB 颜色选择器和预设色位于该功能的二级设置页。不会修改实体数据、碰撞箱、移动、瞄准或战斗输入。
 
-## 6. 宠物
+## 7. 宠物
 
-### 5.1 当前宠物 HUD
+### 7.1 当前宠物 HUD
 
 **目的：**不打开 Pets 菜单即可看到当前宠物和服务器已经展示的升级进度。
 
 **功能：**严格匹配召唤、收回和 Autopet 提示，并每秒解析 `Pet:` Tab Widget。QCA 只用已验证 Profile 构造普通 player head，并刻意不写入合成 `petInfo`，防止外部物品模型判定替换 HUD 头像。Pets 菜单和附近已渲染宠物可以提供属于同一宠物的 Profile，但不会把整个 ItemStack 交给 HUD。模组内置 88 个基础 Profile、352 个皮肤 Profile、5,422 条仅限宠物的当前/动态纹理映射和 87 个配件定义；动态变体按最长真实皮肤家族前缀归属，仅 Baby Spinosaurus 就可识别 60 个当前/动画纹理。运行时不下载纹理，也不要求安装 Firmament。包括粗体在内的所有宠物文本都先完整测量，绝不使用省略号。“当前等级经验”和“到满级进度”默认开启；满级只隐藏后者，不影响配件行。通过 Pets 菜单、Tab 或已收到聊天确认的配件会按宠物持久保存到 QCA 本地配置，重登后继续可用。支持皮肤名称、Ancient Golden Dragon 装饰溢出等级；配件默认“图标＋名称”，也可只显示图标或名称。大数统一保留一位小数并使用 `k`、`m`、`b` 或 `t`。
 
-## 7. 物品与菜单
+## 8. 物品与菜单
 
-### 7.1 Attribute Shard Fusion Guide
+### 8.1 Attribute Shard Fusion Guide
 
 **目的：**直接回答“这个 Shard 用哪两个 Shard 合成”和“这个 Shard 能继续合成什么”，无需离开游戏，也无需猜测有顺序区别的配方。
 
@@ -139,7 +139,7 @@ Tree Gift 不再错误限制于 Torrhus，同时监听正常显示的游戏聊�
 
 Epic 名称使用 Minecraft 深紫色 `§5`，不再使用亮紫/粉色 `§d`；品质、属性、分类、生物类型、Skill 和获取方式均使用对应 SkyBlock/Minecraft 语义颜色。可点击 Shard 文字只有在鼠标悬停于可见文字时才会变深并添加下划线。点击搜索框外、按 `Esc` 或按 `Tab` 会释放搜索焦点；直接点击搜索框即可再次输入。配方输入和候选输出按内容宽度紧凑居中，点击范围与可见图标/文字边界一致，不再使用相隔很远的卡片左右半区。本地 `/qshard [英文查询]`、功能设置中的“打开指南”以及默认未绑定的组合键都只打开本地界面，不发送聊天、服务器命令、数据包、菜单点击或 API 请求。
 
-### 7.2 Shard Planner 与本地仓库
+### 8.2 Shard Planner 与本地仓库
 
 **目的：**把 Guide 的直接配方转化为可执行的多步准备方案，同时保证每一个游戏操作仍由玩家自己决定和完成。
 
@@ -153,13 +153,13 @@ Epic 名称使用 Minecraft 深紫色 `§5`，不再使用亮紫/粉色 `§d`；
 
 **其他页面：**Recipes 可分别输入输入/输出条件，筛选直接有序配方。Shards 显示效果、家族、Skill、生物类型、全部打包获取方式、基础速率和玩家可编辑速率。Fusion Lines 绘制所选 Shard 附近的 ID/Special/Chameleon 关系，节点可点击、可拖动，位置保存到本地。目标、数量、模式、目标函数、Materials Only、自定义速率、图节点位置、仓库使用、价格侧选择及 Kuudra 参数均持久化保存。
 
-## 8. 聊天
+## 9. 聊天
 
-### 8.1 聊天偷窥
+### 9.1 聊天偷窥
 
 **功能：**当玩家真实按住已设置的按键/组合键且没有打开界面时，QCA 让原版聊天使用前景状态和完整高度；松开立即恢复。按键默认未绑定。偷窥时滚轮默认翻聊天历史，玩家可改为保持原版快捷栏切换。该功能不会发送、复制、打开或修改任何聊天消息。
 
-## 9. 配置与 HUD 外观
+## 10. 配置与 HUD 外观
 
 按可改绑的 `O` 键，或输入 `/aca`、`/qca`、`/ca`、`/qc`，即可打开唯一的“功能”设置页。只有客户端命令名称未被占用时才注册相应别名；这些本地命令只打开界面，不向服务器发送任何聊天或命令内容。安装 Mod Menu 后也能打开同一个页面。“通用”是第一个分类，其中放界面动画、预警音效总开关和手动重连开关。左键切换功能，左侧蓝条表示开启，右键进入有实际选项的二级设置；卡片与二级菜单都不再重复功能开关。语言开关独立于 Minecraft 全局语言，只改变 QCA 自身文字。
 
@@ -171,7 +171,7 @@ Epic 名称使用 Minecraft 深紫色 `§5`，不再使用亮紫/粉色 `§d`；
 
 跨度大的数值统一使用拖动条：HUD 透明度与缩放、光标记忆时间，以及传送声音的音量和音调。拖动时连续更新，松开鼠标即保存。边框宽度、任务显示模式和声音预设等少量离散选项仍使用直接循环按钮。
 
-### 9.1 AOTE/AOTV 传送声音自定义
+### 10.1 AOTE/AOTV 传送声音自定义
 
 **目的：**允许玩家替换干扰较强的传送声音，但不强制静音传送工具。
 

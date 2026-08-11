@@ -30,21 +30,21 @@
 
 **Selected HOTM slot:** enabled by default and independently switchable. QCA reads `SELECTED` from the exact `Heart of the Mountain Slot` menu or `Current:` from the received loadout item lore, caches the original player-visible name, and displays `HOTM: <name>`. It does not issue a command or click a menu to obtain it.
 
-## 2.2 Fishing
+## 3. Fishing
 
-### Fishing Bite Sound
+### 3.1 Fishing Bite Sound
 
 **Purpose:** make Hypixel's short bite window audible without automating fishing.
 
-**What it does:** while enabled, QCA prefers the local player's directly owned, already-loaded Fishing Hook. After a physical local rod use, it can also associate a newly loaded ownerless hook during a bounded 40-tick window so Hypixel lava fishing receives the same cue. Hooks present before the cast and hooks owned by another player are rejected. An invisible, visible-named ArmorStand whose exact received name is `!!!` inside the selected hook's four-block box triggers the supplied Ciallo cue once for that cast. Persistent markers cannot replay the sound every tick; removing the hook arms the next cast. The feature defaults off and has its own continuous 0–100% volume slider at the project-wide 64% default.
+**What it does:** while enabled, QCA prefers the local player's directly owned, already-loaded Fishing Hook. After a physical local rod use, it can also associate a newly loaded ownerless hook during a bounded 40-tick window so Hypixel lava fishing receives the same cue. Hooks present before the cast and hooks owned by another player are rejected. An invisible, visible-named ArmorStand whose exact received name is `!!!` inside the selected hook's four-block box triggers the supplied Ciallo cue once for that cast. Persistent markers cannot replay the sound every tick, and using the rod to reel does not re-arm the cue while that marker is disappearing; only a confirmed new cast or removed hook arms the next cast. The feature defaults off, lives in the top-level Fishing category, and has its own continuous 0–100% volume slider at the project-wide 64% default.
 
 **Safety:** the detector reads loaded client entities and observes the player's physical rod use without cancelling or replacing it. The broader hook lookup runs only during the short association window or while that fallback hook remains loaded; idle gameplay does not scan for hooks every tick. It plays one bundled local OGG and does not reel, cast, click, rotate, move, select an item, send a packet, chat message, or command.
 
-## 3. Foraging, Hunting, and Safari
+## 4. Foraging, Hunting, and Safari
 
-The settings UI deliberately keeps these as three mutually exclusive categories. **Foraging** owns Torrhus Chapter/resources, Tree Critter Timer, Miria Contest, Benefactor, and Tree Gift. **Hunting** owns Beeheemoth, Lasso REEL, Critter Behavior, and the single cross-island Fairy Soul feature. **Safari** owns Cold, Doomspiral, Critter highlighting, Dashboard, Critterdex, Sparkling, Floor Drop/Quest Item, Wumpa, Snoozle wall overlay, and Safari Belt. A feature card is declared once and cannot appear in more than one category.
+The settings UI gives every feature one owner. **Foraging** owns Torrhus Chapter/resources, Tree Critter Timer, Miria Contest, Benefactor, and Tree Gift. **Hunting** owns Beeheemoth, Lasso REEL, Critter Behavior, plus one collapsible **Safari** subgroup containing Cold, Doomspiral, Critter highlighting, Dashboard, Critterdex, Sparkling, Floor Drop/Quest Item, Wumpa, Snoozle wall overlay, and Safari Belt. Cross-island Fairy Soul waypoints live only under Maps. No card appears in multiple categories.
 
-### 3.1 Helia Chapter and Torrhus resources
+### 4.1 Helia Chapter and Torrhus resources
 
 **Purpose:** keep the active Torrhus objective and the resources that affect it together in one readable panel.
 
@@ -56,32 +56,32 @@ The settings UI deliberately keeps these as three mutually exclusive categories.
 
 **Lasso REEL Sound (default on, 64%):** follows SkyHanni's relation instead of scanning arbitrary `REEL` text. QCA first requires a Leashable entity whose received leash holder is the local player, then accepts only an exact `REEL` ArmorStand within two blocks of the expected label position. One local pling plays on the transition into that state; a persistent label cannot replay it every tick, and leaving the state arms the next legitimate cue. Volume is a continuous 0–100% slider and the General alert master mute still applies.
 
-### 3.2 Miria Contest HUD
+### 4.2 Miria Contest HUD
 
 Reads the received `Miria's Contest` scoreboard/Tab block, including live tier lines such as `COMMON with 151` and `Uncommon requires +99`. QCA shows the next bracket, exact score remaining, and expected Safari Ticket only in the combined Hunting HUD. Sidebar injection has been removed, and the contest timer is deliberately not parsed or repeated because the received scoreboard already displays it.
 
-### 3.3 Critter Behavior Assistant
+### 4.3 Critter Behavior Assistant
 
 Uses only locally rendered, custom-named Critters and physical player movement. Blue Jay and Goldolot show the documented 8-second and 5-second stand-still countdowns when the player holds a received Lasso or Fishing Net. Dustybit and Hideonsun show the documented four-jump and three-projectile instructions, plus exact progress when the client receives it in a name or message. Every prompt is a center-screen title with optional sound. After the exact received `CAPTURE! You caught ...` confirmation, guidance for that captured Critter name is suppressed for three seconds so a removed entity or replacement nameplate UUID cannot replay the prompt; a different Critter type remains eligible immediately, and a real same-type target still present after the short window resumes normally. Each Critter can be disabled separately; no aim, movement, tool use, or capture input is generated.
 
-### 3.4 Benefactor and rare Tree Gift alerts
+### 4.4 Benefactor and rare Tree Gift alerts
 
 The Benefactor panel merges the player's bounded Tab/scoreboard block, an already-open Forest/Desert Temple menu, and the exact received `BENEFACTOR: You donated ... will receive ... +Nd!` message. It retains active/inactive state, multi-day remaining duration, temple-specific effect text, and donation text under the account/Profile key. Repeated absolute countdowns do not extend the timer, same-temple donation messages add their received duration, switching temples starts the new temple duration, and a fresh authoritative donation cannot be erased by a briefly stale open menu. Each row defaults on. State changes and the final 30-second warning use the shared center alert.
 
 Tree Gift parsing no longer assumes Torrhus and listens to both normally displayed game chat and raw client-received game chat canceled by a compatible compactor. The exact personal `+N rewards gained! (hover)` summary remains sufficient only for its own attached `SHOW_TEXT`. Separate `BONUS GIFT` percentage rows and exact `A <name> fell from the Tree!` rows become eligible only inside a 15-second, 64-block-border-delimited gift block that has also received `TREE GIFT`, the player's `You helped cut ...` contribution, and their personal reward summary. Alerts are deduplicated per block. A nearby player's public line alone, lasso capture text, or an incomplete block cannot arm an alert. It alerts for Firefox, Groundhog, Drybark, Puck, Grizzly Bear, Signal Enhancer, Chameleon Shard, Hummingbird Shard, Dreadwing, and Enchanted Book (Karma I). All ten default on and are individually switchable.
 
-### 3.5 Safari Run Dashboard and Critterdex
+### 4.5 Safari Run Dashboard and Critterdex
 
 Entering Critter Safari starts a local session timer. The combined Hunting HUD tracks received/captured Shard amounts, elapsed time, and Ticket Tier. It does not duplicate the existing Safari Essence display. It also shows Cavern, Forest, Haunted, and Icy session progress across the official 37-Critter list; complete captured and missing names are shown for the currently received biome and wrap without truncation. Each remaining row defaults on. Loot Share adds to the Shard total but does not falsely mark the Critter as personally captured.
 
-### 3.6 Sparkling, Floor Drop, Quest Item, and Wumpa assistants
+### 4.6 Sparkling, Floor Drop, Quest Item, and Wumpa assistants
 
 - **Sparkling Critter Alert:** recognizes the official spawn chat and visible `SPARKLING` custom name, then shows a center title, biome, its own configurable sound, and an optional vanilla outline. All options default on; the outline has a full RGB picker.
 - **Floor Drop & Quest Items:** once per second, checks a bounded 10-block horizontal/3-block vertical area for the String/tripwire state used by Safari Floor Drops, shows a one-time center warning, and reports the nearest distance. It also lists the official Safari Quest Items actually present in the local inventory. It never requests chunks or interacts with a block.
 - **Wumpa Encounter:** the combined HUD lists the eight non-Wumpa Icy Critters—Billygoat, Mantis Shrimp, Nozzlenose, Polaris, Shuddersquid, Strongarm, Tepid, and Troodon—with a green check or red cross and an exact `n/8` count. The player's anchored capture confirmation and the received `LOOT SHARE ... catching a <Critter>` teammate confirmation both update this party encounter checklist; Loot Share still does not mark the separate personal Critterdex. Once Wumpa has spawned, the eight-row list is replaced by `Wumpa: Spawned` and the live phase. Reaching 8/8 produces one center `WUMPA SPAWNED` alert through the existing Wumpa 64%-volume channel. The official massive-footsteps/awoken text shares the same per-run deduplication state, so it can update available/awoken phase without replaying the spawn alert. Movement and projection now follow the actual locally loaded Ravager body nearest the Wumpa label instead of the Armor Stand name carrier. Available/sleeping/awoken/chasing/stunned/caught/failed phases use short movement/stillness confirmation windows to avoid one-tick flicker. The experimental, default-off red line projects current horizontal movement up to the first local collision; it does not claim knowledge of a future server decision or steer the player.
 - **Snoozle Wall Overlay (default on):** once per second, scans only nearby already-loaded blocks for small connected wall components containing both Wiki-documented materials, `Cobbled Deepslate` and `Tuff`. Only faces exposed to air receive a translucent overlay; oversized natural formations and single-material patches are rejected. The default is green and the secondary settings page provides the standard RGB/HSV picker. No block is clicked, changed, or requested from the server.
 
-### 3.7 Cold, Doomspiral, Fairy Soul, and Critter highlights
+### 4.7 Cold, Doomspiral, Fairy Soul, and Critter highlights
 
 - **Cold Safety Alert (default on):** parses only a received `Cold` value. It warns once above 80 and again above 90 by default; both thresholds are sliders and must remain ordered. On the first value strictly above the first threshold, QCA immediately searches only Block Entities in already-loaded client chunks, selects the nearest normal or soul campfire, and submits a red beacon beam. While still needed it refreshes that nearest result every 40 client ticks; the beam closes as soon as the next received Cold value decreases. It never requests a chunk or moves the player.
 - **Doomspiral Ready (default on):** after the bounded local-inventory Quest Item scan finds at least 4 `Soothing Incense`, shows one center warning. Four is the Wiki-documented requirement; the warning resets if the count falls below four.
@@ -89,45 +89,45 @@ Entering Critter Safari starts a local session timer. The combined Hunting HUD t
 - **Fairy Soul Waypoints (default off):** submits pink beacon beams at the 12 official Torrhus Canyon and 4 official Critter Safari coordinates. Torrhus and Safari groups can be disabled independently. When the client receives either the successful `SOUL! You found a Fairy Soul!` response or the already-found response, QCA marks the nearest listed Soul within 10 blocks as collected for the current profile, saves it locally, and immediately stops rendering that beam. It never clicks or queries a Soul.
 - **Safari Critter Highlight (default on):** outlines a locally visible real Critter entity with the standard color of its official Shard rarity. The bundled table covers all 37 Safari Critters. Armor Stand backed capture props are deliberately excluded from both normal and Sparkling outline paths because their support body cannot be separated reliably from the equipped capture model in this renderer version. This safe fallback prevents the tall Armor Stand outline shown during capture; real non-Armor-Stand Critters retain their rarity or configured Sparkling color. No entity data is changed.
 
-### 3.8 Safari Belt tooltip
+### 4.8 Safari Belt tooltip
 
 When the item ID is exactly `SAFARI_BELT`, QCA embeds all four locally observed Safari Milestone levels. The shared parser understands combined rows and split title/lore layouts such as `Cavern Milestone` plus `Current Level: IV`, ignores locked requirements and capture-progress fractions, and max-merges repeated entries. Confirmed levels are persisted separately per Minecraft account/SkyBlock Profile and only change after a higher level is observed in an already-open Safari Milestones menu or received item lore. The tooltip repeats only attribute values actually present in the received item lore, avoiding a guessed Sweep total while the official table and displayed item could differ. Milestone and bonus sections default on and are independently switchable.
 
-### 3.9 Center warning style
+### 4.9 Center warning style
 
 All Hunting warning/prompt features use the vanilla center title/subtitle layer. Critter Behavior, Benefactor, Tree Gift, Sparkling, Floor Drop, Wumpa, Cold, Doomspiral, and Warden readiness each have their own default-on sound and continuous 0–100% volume slider, defaulting to 64%. General contains the master mute. Alert deduplication prevents a persistent entity, name tag, or Tab line from replaying every tick.
 
-## 3.10 Manual reconnect
+### 4.10 Manual reconnect
 
 The default-on General feature adds a vanilla-width `Reconnect` button to `DisconnectedScreen`. QCA records the address, display name, server type, and resource-pack preference at the start of the normal `ConnectScreen` attempt, so initial connection failure and later interruption both retain a target for the current client run. A click creates a fresh vanilla `ServerData` and starts one normal connection. There is no countdown, background retry, loop, auto-join, chat, or command.
 
-## 4. Crimson Isle
+## 5. Crimson Isle
 
-### 3.1 Faction task tracker
+### 5.1 Faction task tracker
 
 **Purpose:** keep accepted faction quests visible without holding Tab open.
 
 **What it does:** only while the parsed location is Crimson Isle or one of its documented sub-locations, QCA reads the received `Faction Quests:` widget. Each anchored line preserves its original `✖` or `✔` state, unmodified quest name, and optional `xN` requirement. Unknown lines remain visible as received; QCA does not infer hidden progress or translate game names. The feature is independently switchable and shares the mining task panel's appearance/position because the two island HUDs cannot load simultaneously.
 
-## 5. Combat
+## 6. Combat
 
-### 4.1 Ender Dragon Highlight
+### 6.1 Ender Dragon Highlight
 
 **Purpose:** make large, fast Ender Dragons easier to track visually during End fights.
 
 **What it does:** at the end of vanilla entity render-state extraction, sets the Ender Dragon outline color only when the locally parsed SkyBlock location is The End or Dragon's Nest. The complete RGB picker and presets are available in this feature's secondary settings. No entity metadata, hitbox, movement, targeting, or combat input is changed.
 
-## 6. Pets
+## 7. Pets
 
-### 5.1 Equipped Pet HUD
+### 7.1 Equipped Pet HUD
 
 **Purpose:** show the equipped pet and its server-presented progress without opening the Pets menu.
 
 **What it does:** reacts immediately to anchored summon/despawn/Autopet messages and parses the received `Pet:` Tab widget once per second. QCA constructs a plain player head from a verified profile and deliberately omits synthetic `petInfo`, preventing external item-model predicates from replacing the HUD icon. The active Pets menu and nearby rendered pet may provide a matching Profile, but their entire ItemStack is never reused. Bundled offline metadata contains 88 base profiles, 352 skin profiles, 5,422 pet-only current/animated texture mappings, and 87 accessory definitions. Dynamic variants are assigned by the longest exact skin-family prefix; Baby Spinosaurus alone has 60 recognized current/animation textures. No runtime texture download or Firmament installation is required. All pet text is fully measured, including bold style, and is never shortened with an ellipsis. The current-level and progress-to-max lines default on; the latter hides at max level without affecting the held-item row. A held item confirmed through the Pets menu, Tab, or received chat is retained per pet in QCA's local config and remains available after reconnecting. Skin name and Ancient Golden Dragon overflow level are supported. Pet items are shown as icon + name by default, with icon-only and name-only modes. Large values use one decimal with `k`, `m`, `b`, or `t`.
 
-## 7. Items and menus
+## 8. Items and menus
 
-### 7.1 Attribute Shard Fusion Guide
+### 8.1 Attribute Shard Fusion Guide
 
 **Purpose:** answer both “what makes this Shard?” and “what can I make with this Shard?” without leaving Minecraft or guessing an order-sensitive recipe.
 
@@ -141,7 +141,7 @@ All 320 catalog IDs have their corresponding bundled Shard icon generated offlin
 
 Epic names use Minecraft's dark-purple `§5` instead of light-purple `§d`. Rarity, stat, category, mob-type, skill, and acquisition lines use the corresponding SkyBlock/Minecraft semantic colours. Clickable Shard text darkens and underlines only while its visible text is hovered. The search field releases focus when the player clicks outside it, presses `Esc`, or presses `Tab`, and it accepts input again after a direct click. Recipe inputs and candidate outputs are compact content-width groups centered inside the card; their click regions match the visible icon/text bounds rather than distant card halves. The local `/qshard [English query]` command and the feature's **Open Guide** setting open this screen only. The optional key chord is unbound by default. None of these entry points sends chat, a server command, a packet, a menu click, or an API request.
 
-### 7.2 Shard Planner and local warehouse
+### 8.2 Shard Planner and local warehouse
 
 **Purpose:** turn the Guide's direct recipes into an actionable, multi-step preparation plan while keeping every decision and action under player control.
 
@@ -155,13 +155,13 @@ Epic names use Minecraft's dark-purple `§5` instead of light-purple `§d`. Rari
 
 **Other pages:** Recipes accepts independent input and output filters for direct ordered relationships. Shards shows effect, family, Skill, mob type, every bundled acquisition entry, the baseline rate, and a local editable rate. Fusion Lines draws the selected Shard's nearby ID/Special/Chameleon relationships; nodes can be selected and physically dragged, and positions persist in local config. Planner target, quantity, mode, objective, Materials Only, custom rates, graph positions, warehouse use, price-side preference, and Kuudra parameters all persist locally.
 
-## 8. Chat
+## 9. Chat
 
-### 8.1 Chat Peek
+### 9.1 Chat Peek
 
 **What it does:** while the configured key/chord is physically held and no screen is open, QCA asks the vanilla chat renderer to use its foreground/focused height. Releasing the key restores normal chat immediately. The key defaults to unbound. While peeking, the wheel target defaults to chat history; the player may switch it to the normal hotbar. No message is sent, copied, opened, or modified.
 
-## 9. Configuration and HUD styling
+## 10. Configuration and HUD styling
 
 Press the rebindable `O` key or run `/aca`, `/qca`, `/ca`, or `/qc` to open the single **Features** configuration tab. Each alias is added only if its client-command name is unoccupied. These local commands open a screen and send no chat or command content to the server. Mod Menu can open the same screen when installed. **General** is the first category and contains UI animations plus the alert master mute. Left-click toggles a card, its left blue strip indicates the enabled state, and right-click opens meaningful secondary settings. Cards and secondary pages do not repeat an enable switch. The language switch controls QCA UI text independently of the Minecraft client language.
 
@@ -173,7 +173,7 @@ The permanently available local `/th` and `/helia` commands have no settings. Ex
 
 Broad numeric ranges use draggable sliders: HUD opacity and scale, cursor-memory duration, Fishing Bite volume, and teleport-sound volume. Values update continuously while dragging and persist on mouse release. Small discrete sets such as border width, progress-display modes, and sound presets remain direct cycle controls.
 
-### 9.1 AOTE/AOTV sound customization
+### 10.1 AOTE/AOTV sound customization
 
 **Purpose:** let players change intrusive teleport sounds without forcing the tools to be silent.
 

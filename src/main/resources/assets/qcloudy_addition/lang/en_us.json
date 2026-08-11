@@ -22,6 +22,7 @@
   "config.category.combat": "COMBAT",
   "config.category.mining": "MINING",
   "config.category.foraging": "FORAGING",
+  "config.category.fishing": "FISHING",
   "config.category.hunting": "HUNTING",
   "config.group.hud": "HUD",
   "config.group.connection": "Connection",

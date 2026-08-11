@@ -18,15 +18,16 @@ final class FishingHookResolver {
         this.associationTicks = associationTicks;
     }
 
-    void onRodUse(Set<Integer> visibleHookIds, boolean directHookPresent) {
+    boolean onRodUse(Set<Integer> visibleHookIds, boolean directHookPresent) {
         if (directHookPresent || visibleHookIds.contains(fallbackHookId)) {
             reset();
-            return;
+            return false;
         }
         hooksBeforeCast.clear();
         hooksBeforeCast.addAll(visibleHookIds);
         fallbackHookId = NO_HOOK;
         remainingAssociationTicks = associationTicks;
+        return true;
     }
 
     int resolve(int directHookId, List<Candidate> candidates) {

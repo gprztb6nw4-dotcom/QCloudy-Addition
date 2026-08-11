@@ -166,15 +166,18 @@ public final class ConfigScreen extends Screen {
         int x = windowX + 8;
         int y = windowY + 43;
         int width = sidebarWidth - 16;
+        int categorySlotHeight = sidebarCategorySlotHeight(windowHeight);
+        int categoryButtonHeight = Math.min(22, categorySlotHeight - 2);
         for (Category value : Category.values()) {
             boolean selected = category == value;
-            boolean hovered = AcaUiTheme.contains(mouseX, mouseY, x, y, width, 22);
-            if (selected) graphics.fill(x, y, x + 3, y + 22, AcaUiTheme.ACCENT);
-            graphics.fill(x + 3, y, x + width, y + 22,
+            boolean hovered = AcaUiTheme.contains(mouseX, mouseY, x, y, width, categoryButtonHeight);
+            if (selected) graphics.fill(x, y, x + 3, y + categoryButtonHeight, AcaUiTheme.ACCENT);
+            graphics.fill(x + 3, y, x + width, y + categoryButtonHeight,
                     selected ? 0xFF303A3F : hovered ? 0xFF2B3337 : AcaUiTheme.SIDEBAR);
-            graphics.text(font, ModText.get(value.key), x + 10, y + 7,
+            int textY = y + Math.max(2, (categoryButtonHeight - font.lineHeight) / 2);
+            graphics.text(font, ModText.get(value.key), x + 10, textY,
                     selected ? AcaUiTheme.TEXT : AcaUiTheme.TEXT_MUTED, false);
-            y += 24;
+            y += categorySlotHeight;
         }
 
         int editY = windowY + windowHeight - 52;
@@ -337,13 +340,15 @@ public final class ConfigScreen extends Screen {
         int sidebarX = windowX + 8;
         int sidebarY = windowY + 43;
         int sideWidth = sidebarWidth - 16;
+        int categorySlotHeight = sidebarCategorySlotHeight(windowHeight);
+        int categoryButtonHeight = Math.min(22, categorySlotHeight - 2);
         for (Category value : Category.values()) {
-            if (AcaUiTheme.contains(mouseX, mouseY, sidebarX, sidebarY, sideWidth, 22)) {
+            if (AcaUiTheme.contains(mouseX, mouseY, sidebarX, sidebarY, sideWidth, categoryButtonHeight)) {
                 category = value;
                 scroll = 0;
                 return true;
             }
-            sidebarY += 24;
+            sidebarY += categorySlotHeight;
         }
         int editY = windowY + windowHeight - 52;
         if (AcaUiTheme.contains(mouseX, mouseY, sidebarX, editY, sideWidth, 20)) {
@@ -394,6 +399,11 @@ public final class ConfigScreen extends Screen {
         return false;
     }
 
+    static int sidebarCategorySlotHeight(int windowHeight) {
+        int availableHeight = windowHeight - 43 - 52 - 4;
+        return Math.clamp(availableHeight / Category.values().length, 14, 24);
+    }
+
     private void drawFittedText(GuiGraphicsExtractor graphics, Component value, int x, int y,
                                 int maximumWidth, int color) {
         int measured = font.width(value);
@@ -418,6 +428,7 @@ public final class ConfigScreen extends Screen {
         COMBAT("config.category.combat"),
         MINING("config.category.mining"),
         FORAGING("config.category.foraging"),
+        FISHING("config.category.fishing"),
         HUNTING("config.category.hunting");
 
         private final String key;
@@ -430,7 +441,7 @@ public final class ConfigScreen extends Screen {
     enum FeatureGroup {
         HUD(Category.GENERAL, "config.group.hud"),
         CONNECTION(Category.GENERAL, "config.group.connection"),
-        FISHING(Category.GENERAL, "config.group.fishing"),
+        FISHING(Category.FISHING, "config.group.fishing"),
         MAPS(Category.MAPS, "config.group.maps"),
         WAYPOINTS(Category.MAPS, "config.group.waypoints"),
         MINING_OBJECTIVES(Category.MINING, "config.group.mining_objectives"),

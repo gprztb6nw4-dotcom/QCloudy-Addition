@@ -21,4 +21,16 @@ final class FishingBiteSessionTest {
         assertTrue(session.shouldPlay(42, true));
         assertFalse(session.shouldPlay(42, true));
     }
+
+    @Test
+    void reelUseDoesNotRearmWhileTheBiteMarkerIsStillVisible() {
+        FishingBiteSession session = new FishingBiteSession();
+
+        assertTrue(session.shouldPlay(51, true));
+        session.onRodUse(false);
+        assertFalse(session.shouldPlay(51, true));
+
+        session.onRodUse(true);
+        assertTrue(session.shouldPlay(52, true));
+    }
 }

@@ -73,8 +73,8 @@ public final class FishingBiteAlert {
         Set<Integer> visibleHookIds = loadedHooks(client).stream()
                 .map(FishingHook::getId)
                 .collect(Collectors.toSet());
-        HOOK_RESOLVER.onRodUse(visibleHookIds, client.player.fishing != null);
-        SESSION.reset();
+        boolean startsNewCast = HOOK_RESOLVER.onRodUse(visibleHookIds, client.player.fishing != null);
+        SESSION.onRodUse(startsNewCast);
     }
 
     private static List<FishingHook> loadedHooks(Minecraft client) {

@@ -1,3 +1,38 @@
+# QCloudy_Addition Beta 2.6.12 Fishing cue and settings validation
+
+Validation date: 2026-08-11
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Beta-2.6.12+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.6.12+26.1.2-sources.jar`
+
+## Result
+
+Beta 2.6.12 prevents the Ciallo bite cue from replaying during the player's reel action. The physical rod-use path now distinguishes a confirmed new cast from reeling an active directly owned or associated fallback hook; only the new-cast path re-arms `FishingBiteSession`. The exact nearby `!!!` requirement and once-per-hook gate remain unchanged. Fishing is now an independent top-level settings category between Foraging and Hunting, and the eight-category sidebar adapts its row spacing on short layouts.
+
+## Automated and artifact checks
+
+- Java 25 `clean test build prepareRelease` completed successfully. Fresh XML reports 27 suites and 149 tests, with 0 failures, 0 errors, and 0 skips.
+- Focused state tests confirm that an already-played hook remains blocked after a reel use, a confirmed new cast re-arms playback, a directly owned active hook is classified as reeling, and an active ownerless fallback hook is not mistaken for another cast.
+- Settings tests confirm the exact eight-category order and verify that the compressed minimum-height sidebar keeps every category above the footer controls.
+- English and Simplified Chinese resources each contain 450 keys with identical key sets and valid JSON.
+- Expanded Fabric metadata declares `Beta-2.6.12+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+; class files use major version 69.
+- The binary still contains exactly 320 Shard textures, 320 Shard model definitions, and 320 Shard item definitions.
+- Both binary and Sources JARs pass JDK 25 `jar --validate` and `unzip -t`; their `release` copies are byte-identical to `build/libs`.
+- Static review confirms that the changed callback still returns the original use unchanged and contains no automatic cast/reel, input cancellation, click, movement, chat send, command, HTTP, or additional packet path.
+
+## Validation boundary
+
+This audit verifies compilation, the covered cast-versus-reel state transitions, settings ownership/order, short-layout geometry, language parity, client-only metadata, archive integrity, filenames, checksums, and build/release identity. It does not claim an authenticated Hypixel timing regression. Before wider publication, test one real water bite and one real lava bite: each should play once at `!!!`, remain silent on reeling, and re-arm on the next cast.
+
+## SHA-256
+
+- Binary JAR: `843787db14501266f0be693be62be6b894998a6b1b2ea6edb3f9daca78fef06b`
+- Sources JAR: `8e73bcfb22040584738328df309c63c7fb127061411c236fc119ddbeb442e2d4`
+
+---
+
 # QCloudy_Addition Beta 2.6.11 Shard planner validation
 
 Validation date: 2026-08-11

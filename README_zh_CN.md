@@ -7,7 +7,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [当前 Beta 2.6.11 更新日志](CHANGELOG_zh_CN.md)
+- [当前 Beta 2.6.12 更新日志](CHANGELOG_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
@@ -55,7 +55,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 - **Sparkling、Floor Drop 与 Quest Item**：只依据收到的聊天、可见名称/实体、已加载的附近 String 方块和本地背包显示中央预警与 HUD；Sparkling 轮廓颜色可自定义。
 - **Safari Belt 详情**：把本地观察到的 Cavern/Forest/Haunted/Icy 四项 Milestone 等级与物品实际说明中的属性增益嵌入 Safari Belt 提示；支持标题和 lore 分行的菜单格式，按账号/Profile 保存，只在收到更高的确认等级时更新。
 
-“砍树”“狩猎”“Safari”是互斥设置分类，每张功能卡只有唯一归属，不会跨分类重复。相关预警都使用屏幕中央标题；每种预警分别拥有默认开启、64% 音量的独立音效与 0–100% 滑条，“通用”另有总静音。综合 HUD 拥有独立保存的外观、缩放与位置。
+“砍树”和“狩猎”是独立一级设置分类，Safari 只作为“狩猎”内的可折叠下级功能组；Fairy Soul 点位只放在“地图”中。每张功能卡只有唯一归属，不会跨分类重复。相关预警都使用屏幕中央标题；每种预警分别拥有默认开启、64% 音量的独立音效与 0–100% 滑条，“通用”另有总静音。综合 HUD 拥有独立保存的外观、缩放与位置。
 
 ### 战斗
 
@@ -85,7 +85,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 - 界面打开动画默认开启，也可关闭
 - 安装 Mod Menu 后，可从 Mod Menu 直接进入 QCA 设置
 
-设置页采用受 BLC 信息层级启发、但没有复制其素材或界面代码的紧凑结构：顶部只保留“功能”，左侧第一个分类为“通用”，其中放“界面动画”、预警音效总开关、手动重连和钓鱼折叠组；HUD 位置继续从左下角“编辑 HUD”进入。功能卡片不再重复绘制右上角开关和右下角右键提示，二级设置也不再重复一级功能开关。侧栏没有“全部”分类，每项功能只出现在自己的分类下。
+设置页采用受 BLC 信息层级启发、但没有复制其素材或界面代码的紧凑结构：顶部只保留“功能”，左侧依次为八个一级分类：**通用、地图、物品与菜单、战斗、挖矿、砍树、钓鱼、狩猎**。“钓鱼”不再放在“通用”的下级功能组中；HUD 位置继续从左下角“编辑 HUD”进入。功能卡片不再重复绘制右上角开关和右下角右键提示，二级设置也不再重复一级功能开关。侧栏没有“全部”分类，每项功能只出现在自己的分类下。
 
 物品与菜单工具包括 Attribute Shard Fusion Guide、物品时间戳、光标位置记忆、AOTE/AOTV 声音自定义和聊天偷窥。所有 QCA 热键都直接在原有二级设置行内进入等待输入，不再跳转到独立捕获菜单；支持键盘、鼠标 1–5/侧键以及 Ctrl、Shift、Alt、Cmd/Super 组合，等待输入时按 `Esc` 会像原版一样清空绑定。
 
@@ -113,7 +113,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-当前 Beta 2.6.11 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
+当前 Beta 2.6.12 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

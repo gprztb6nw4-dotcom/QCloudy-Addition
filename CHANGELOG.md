@@ -2,6 +2,24 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.12] - 2026-08-11
+
+Beta fishing cue and settings-navigation fix for Minecraft 26.1.2.
+
+### Fixed
+
+- Fixed the bundled Ciallo bite cue playing a second time when the player reeled in. Physical rod use is now classified as either a new cast or a reel action; only a confirmed new cast re-arms the once-per-hook sound gate.
+- Preserved the exact `!!!` bite-marker requirement, direct water-hook priority, bounded ownerless lava-hook association, per-hook deduplication, default-off state, and independent 64%-default volume setting.
+
+### Changed
+
+- Promoted Fishing from the General subgroup to its own top-level settings category, ordered between Foraging and Hunting.
+- Made the eight-category sidebar compress its row spacing on short GUI layouts so Fishing and the existing bottom controls do not overlap.
+
+### Safety
+
+- The change only classifies the player's physical rod-use callback and plays a local sound. It does not cast, reel, cancel input, click, move, send chat, send a command, or send an additional packet.
+
 ## [2.6.11] - 2026-08-11
 
 Beta Shard planning update for Minecraft 26.1.2.

@@ -15,6 +15,11 @@ final class FishingBiteSession {
         return true;
     }
 
+    /** Re-arms playback only for a confirmed new cast, never for the reel use. */
+    void onRodUse(boolean startsNewCast) {
+        if (startsNewCast) reset();
+    }
+
     void reset() {
         hookEntityId = Integer.MIN_VALUE;
         played = false;

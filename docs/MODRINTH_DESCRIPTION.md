@@ -6,7 +6,7 @@ QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, 
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Beta 2.6.11.** Beta means the build has passed automated and archive validation, but still needs broader real-server, resource-pack, GUI-scale, operating-system, and modpack testing.
+> **Current channel: Beta 2.6.12.** Beta means the build has passed automated and archive validation, but still needs broader real-server, resource-pack, GUI-scale, operating-system, and modpack testing.
 
 ## Main features
 
@@ -63,7 +63,7 @@ The Shard database and fallback icons are bundled with the mod. The guide perfor
 - A manual **Reconnect** button with no timer, retry loop, or automatic join.
 - **Chat Peek** with keyboard, mouse-button, and modifier combinations.
 - In-place hotkey editing, including mouse buttons and multi-key chords.
-- Searchable, collapsible feature groups with each feature appearing in exactly one category.
+- Eight ordered top-level categories—General, Maps, Items & Menus, Combat, Mining, Foraging, Fishing, and Hunting—with searchable collapsible groups and exactly one owner for every feature.
 
 ## HUD customization
 
@@ -86,7 +86,7 @@ Optional:
 
 - Mod Menu **18.0.0**
 
-Put the playable `QCloudy_Addition-Beta-2.6.11+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
+Put the playable `QCloudy_Addition-Beta-2.6.12+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
 
 Press `O`, open QCA through Mod Menu, or enter `/aca`, `/qca`, `/ca`, or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 

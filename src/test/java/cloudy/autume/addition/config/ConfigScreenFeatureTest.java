@@ -2,6 +2,7 @@ package cloudy.autume.addition.config;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -82,11 +83,11 @@ final class ConfigScreenFeatureTest {
     }
 
     @Test
-    void fishingBiteSoundIsAnOptInGeneralFeatureWithItsOwnSettings() {
+    void fishingBiteSoundIsAnOptInTopLevelFishingFeatureWithItsOwnSettings() {
         ModConfig config = new ModConfig();
         ConfigScreen.Feature feature = ConfigScreen.Feature.FISHING_BITE_ALERT;
 
-        assertEquals(ConfigScreen.Category.GENERAL, feature.category);
+        assertEquals(ConfigScreen.Category.FISHING, feature.category);
         assertEquals(ConfigScreen.FeatureGroup.FISHING, feature.group);
         assertFalse(feature.enabled(config));
         assertTrue(feature.hasSettings());
@@ -94,6 +95,23 @@ final class ConfigScreenFeatureTest {
 
         feature.toggle(config);
         assertTrue(feature.enabled(config));
+    }
+
+    @Test
+    void fishingIsOrderedBetweenForagingAndHuntingWithoutOverlappingTheFooter() {
+        assertArrayEquals(new ConfigScreen.Category[]{
+                        ConfigScreen.Category.GENERAL,
+                        ConfigScreen.Category.MAPS,
+                        ConfigScreen.Category.INVENTORY,
+                        ConfigScreen.Category.COMBAT,
+                        ConfigScreen.Category.MINING,
+                        ConfigScreen.Category.FORAGING,
+                        ConfigScreen.Category.FISHING,
+                        ConfigScreen.Category.HUNTING
+                },
+                ConfigScreen.Category.values());
+        int slotHeight = ConfigScreen.sidebarCategorySlotHeight(220);
+        assertTrue(43 + slotHeight * ConfigScreen.Category.values().length <= 220 - 52 - 4);
     }
 
     @Test
