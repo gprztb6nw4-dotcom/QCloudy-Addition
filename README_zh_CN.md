@@ -7,13 +7,23 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [当前 Beta 2.6.12 更新日志](CHANGELOG_zh_CN.md)
+- [当前 Alpha 2.6.13 更新日志](CHANGELOG_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
 默认语言为英文。按 `O`（可在“控制 → 按键绑定 → QCloudy_Addition”中改键）或输入 `/aca`、`/qca`、`/ca`、`/qc` 可打开客户端设置，并随时切换为简体中文。只有名称未被其他客户端命令占用时才会注册对应别名；这些命令只打开本地界面，不会发送给 Hypixel。
 
 语言选项只翻译 QCA 自己的界面标签。Hypixel 地点、任务、宠物、皮肤、配件、物品以及玩家重命名的 HOTM 配置均保留客户端收到的原始名称；例如 `Terminator` 不会被改写成中文名称。
+
+## 统一 SkyBlock 模组控制——Alpha
+
+QCA 现在可以作为统一的功能与 HUD 编辑入口，直接控制自己的功能，以及兼容版本的 **SkyHanni 7.41.0**、**Skyblocker 6.8.2**、**Firmament 44.3.0**、**BabyZombieAddons 3.4.1**。这些集成全部可选：QCA 仍能独立加载；提供方缺失或版本与已审查版本不符时会被隐藏。
+
+多个兼容模组存在完全相同的功能时，QCA 只显示一张统一卡片。右键卡片后，第一项用于选择提供方，下面直接显示所选模组中能够安全编辑的原生设置。开启卡片会启用所选实现，并只关闭其他模组中完全等价的实现；用途不同的价格、利润、Tooltip 或追踪功能不会被错误合并。所有数值都写入对应模组的实时配置，并通过该模组自己的保存路径落盘；QCA 不会在模组未加载时直接改写它的配置文件。
+
+原有 **编辑 HUD** 界面也会显示所选兼容提供方中已经启用的 HUD，并标注模组名称。拖动或缩放第三方 HUD 时只更新预览，松开鼠标才写回其原生位置/缩放。首个 Alpha 安全支持布尔、枚举、有边界数值、位置和缩放；自定义颜色对象、复合快捷键对象等提供方专属复杂编辑器暂时保留在对应模组自己的界面中。
+
+一级分类固定顺序为：**通用、地图、物品与菜单、战斗、地牢、Slayer、挖矿、种地、砍树、钓鱼、狩猎、Rift、活动**。Safari 是狩猎下级组，Garden 是种地下级组，Crimson Isle/Kuudra 是战斗下级组。每个功能只有一个归属，只出现一次。
 
 ## 功能分类
 
@@ -85,7 +95,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 - 界面打开动画默认开启，也可关闭
 - 安装 Mod Menu 后，可从 Mod Menu 直接进入 QCA 设置
 
-设置页采用受 BLC 信息层级启发、但没有复制其素材或界面代码的紧凑结构：顶部只保留“功能”，左侧依次为八个一级分类：**通用、地图、物品与菜单、战斗、挖矿、砍树、钓鱼、狩猎**。“钓鱼”不再放在“通用”的下级功能组中；HUD 位置继续从左下角“编辑 HUD”进入。功能卡片不再重复绘制右上角开关和右下角右键提示，二级设置也不再重复一级功能开关。侧栏没有“全部”分类，每项功能只出现在自己的分类下。
+设置页采用受 BLC 信息层级启发、但没有复制其素材或界面代码的紧凑结构：顶部只保留“功能”，左侧为上面列出的十三个一级分类，并使用默认收起的下级组与可搜索功能卡片。钓鱼、种地、地牢、Slayer、Rift 和活动都是独立一级分类；HUD 位置继续从左下角“编辑 HUD”进入。功能卡片不重复绘制右上角开关和右下角右键提示，二级设置也不重复一级功能开关。侧栏没有“全部”分类。
 
 物品与菜单工具包括 Attribute Shard Fusion Guide、物品时间戳、光标位置记忆、AOTE/AOTV 声音自定义和聊天偷窥。所有 QCA 热键都直接在原有二级设置行内进入等待输入，不再跳转到独立捕获菜单；支持键盘、鼠标 1–5/侧键以及 Ctrl、Shift、Alt、Cmd/Super 组合，等待输入时按 `Esc` 会像原版一样清空绑定。
 
@@ -113,7 +123,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-当前 Beta 2.6.12 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
+当前 Alpha 2.6.13 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

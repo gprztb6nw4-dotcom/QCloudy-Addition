@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -19,7 +20,8 @@ import java.util.function.IntConsumer;
 final class FeatureSettingsScreen extends Screen {
     private static final int ROW_HEIGHT = 27;
     private final Screen parent;
-    private final ConfigScreen.Feature feature;
+    private final ConfigScreen.@Nullable Feature feature;
+    private final UnifiedModIntegration.UnifiedFeature unifiedFeature;
     private final long openedAt = System.nanoTime();
     private final List<Hit> hits = new ArrayList<>();
     private int windowX;
@@ -35,9 +37,14 @@ final class FeatureSettingsScreen extends Screen {
     private QCloudyAdditionClient.ChordAction listeningChord;
 
     FeatureSettingsScreen(Screen parent, ConfigScreen.Feature feature) {
-        super(ModText.component(feature.titleKey));
+        this(parent, java.util.Objects.requireNonNull(UnifiedModIntegration.forQCloudy(feature)));
+    }
+
+    FeatureSettingsScreen(Screen parent, UnifiedModIntegration.UnifiedFeature unifiedFeature) {
+        super(Component.literal(unifiedFeature.title));
         this.parent = parent;
-        this.feature = feature;
+        this.feature = unifiedFeature.qcloudyFeature;
+        this.unifiedFeature = unifiedFeature;
     }
 
     @Override
@@ -48,7 +55,7 @@ final class FeatureSettingsScreen extends Screen {
         graphics.fill(windowX + 4, windowY + 5, windowX + windowWidth + 5, windowY + windowHeight + 6, 0x66000000);
         AcaUiTheme.surface(graphics, windowX, windowY, windowWidth, windowHeight, AcaUiTheme.WINDOW);
         graphics.fill(windowX + 1, windowY + 1, windowX + windowWidth - 1, windowY + 34, AcaUiTheme.HEADER);
-        graphics.text(font, Component.literal(ModText.get(feature.titleKey)).withStyle(ChatFormatting.BOLD),
+        graphics.text(font, Component.literal(unifiedFeature.title).withStyle(ChatFormatting.BOLD),
                 windowX + 42, windowY + 10, AcaUiTheme.TEXT, false);
         AcaUiTheme.button(graphics, font, "‹", windowX + 10, windowY + 8, 24, 18,
                 AcaUiTheme.contains(mouseX, mouseY, windowX + 10, windowY + 8, 24, 18), false);
@@ -170,6 +177,26 @@ final class FeatureSettingsScreen extends Screen {
 
     private List<Setting> settings() {
         List<Setting> rows = new ArrayList<>();
+        rows.add(new Setting(Kind.PROVIDER, "config.integration.provider"));
+        UnifiedModIntegration.Provider provider = unifiedFeature.selectedProvider();
+        if (provider != UnifiedModIntegration.Provider.QCLOUDY) {
+            UnifiedModIntegration.NativeFeature binding = unifiedFeature.binding(provider);
+            if (binding == null) {
+                rows.add(new Setting(Kind.EXTERNAL_STATUS, "config.integration.status"));
+                return rows;
+            }
+            for (UnifiedModIntegration.NativeSetting setting : binding.settings) {
+                if (setting.editable()) rows.add(new Setting(setting));
+            }
+            if (rows.size() == 1) {
+                rows.add(new Setting(Kind.EXTERNAL_STATUS, "config.integration.no_secondary_settings"));
+            }
+            return rows;
+        }
+        if (feature == null) {
+            rows.add(new Setting(Kind.EXTERNAL_STATUS, "config.integration.no_secondary_settings"));
+            return rows;
+        }
         if (feature.huntingFeature()) {
             for (HuntingOption option : HuntingOption.forFeature(feature)) rows.add(new Setting(option));
             if (feature.hudType() != null) {
@@ -349,6 +376,10 @@ final class FeatureSettingsScreen extends Screen {
 
     private void activate(Setting setting) {
         ModConfig config = ConfigManager.get();
+        if (setting.externalSetting != null) {
+            setting.externalSetting.toggleOrCycle();
+            return;
+        }
         if (setting.huntingOption != null) {
             HuntingOption option = setting.huntingOption;
             if (option.type == HuntingOption.Type.BOOLEAN) option.toggle(config.hunting);
@@ -360,6 +391,11 @@ final class FeatureSettingsScreen extends Screen {
         }
         ModConfig.PanelStyle style = panelStyle();
         switch (setting.kind) {
+            case PROVIDER -> {
+                unifiedFeature.cycleProvider();
+                scroll = 0;
+            }
+            case EXTERNAL_STATUS -> { }
             case OPEN_SHARD_GUIDE -> QCloudyAdditionClient.openShardFusionGuide(minecraft, this, "");
             case OPEN_SHARD_PLANNER -> minecraft.setScreen(new ShardPlanningScreen(this,
                     ConfigManager.get().inventory.shardPlannerTarget));
@@ -456,6 +492,7 @@ final class FeatureSettingsScreen extends Screen {
     }
 
     private ModConfig.PanelStyle panelStyle() {
+        if (feature == null) return ConfigManager.get().hudStyle.map;
         ModConfig.HudType type = feature.hudType();
         return type == null ? ConfigManager.get().hudStyle.map : ConfigManager.get().hudStyle.style(type);
     }
@@ -481,6 +518,7 @@ final class FeatureSettingsScreen extends Screen {
     }
 
     private enum Kind {
+        PROVIDER, EXTERNAL_STATUS,
         DRAGON_COLOR, OPACITY, BACKGROUND_COLOR, BORDER, BORDER_SIZE, BORDER_COLOR,
         TITLE_COLOR, BOLD, SHADOW, SCALE, PET_ICON, PET_LEVEL_XP, PET_MAX_XP, PET_OVERFLOW_LEVEL,
         PET_SKIN_NAME, PET_ACCESSORY, COMMISSION_PROGRESS, HOTM_SLOT, EDIT_LAYOUT,
@@ -501,25 +539,37 @@ final class FeatureSettingsScreen extends Screen {
         private final Kind kind;
         private final String labelKey;
         private final HuntingOption huntingOption;
+        private final UnifiedModIntegration.NativeSetting externalSetting;
 
         private Setting(Kind kind, String labelKey) {
             this.kind = kind;
             this.labelKey = labelKey;
             this.huntingOption = null;
+            this.externalSetting = null;
         }
 
         private Setting(HuntingOption huntingOption) {
             this.kind = null;
             this.labelKey = huntingOption.labelKey;
             this.huntingOption = huntingOption;
+            this.externalSetting = null;
+        }
+
+        private Setting(UnifiedModIntegration.NativeSetting externalSetting) {
+            this.kind = null;
+            this.labelKey = "";
+            this.huntingOption = null;
+            this.externalSetting = externalSetting;
         }
 
         String label() {
+            if (externalSetting != null) return externalSetting.label;
             return ModText.get(labelKey);
         }
 
         String value() {
             ModConfig config = ConfigManager.get();
+            if (externalSetting != null) return externalSetting.displayValue();
             if (huntingOption != null) {
                 return switch (huntingOption.type) {
                     case BOOLEAN -> onOff(huntingOption.booleanValue(config.hunting));
@@ -529,6 +579,8 @@ final class FeatureSettingsScreen extends Screen {
             }
             ModConfig.PanelStyle style = panelStyle();
             return switch (kind) {
+                case PROVIDER -> unifiedFeature.selectedProvider().displayName;
+                case EXTERNAL_STATUS -> ModText.get("config.integration.unavailable");
                 case OPEN_SHARD_GUIDE, OPEN_SHARD_PLANNER ->
                         ModText.get(available() ? "config.open" : "config.disabled");
                 case YIELD_FIRMAMENT -> onOff(config.inventory.yieldToFirmament);
@@ -577,17 +629,21 @@ final class FeatureSettingsScreen extends Screen {
         }
 
         boolean available() {
+            if (externalSetting != null) return externalSetting.editable() && externalSetting.value() != null;
+            if (kind == Kind.EXTERNAL_STATUS) return false;
             return (kind != Kind.OPEN_SHARD_GUIDE && kind != Kind.OPEN_SHARD_PLANNER)
                     || shardGuideEntryEnabled(ConfigManager.get());
         }
 
         boolean color() {
+            if (externalSetting != null) return false;
             if (huntingOption != null) return huntingOption.type == HuntingOption.Type.COLOR;
             return kind == Kind.DRAGON_COLOR || kind == Kind.BACKGROUND_COLOR
                     || kind == Kind.BORDER_COLOR || kind == Kind.TITLE_COLOR;
         }
 
         QCloudyAdditionClient.ChordAction chordAction() {
+            if (externalSetting != null) return null;
             if (huntingOption != null) return null;
             return switch (kind) {
                 case SHARD_GUIDE_KEY -> QCloudyAdditionClient.ChordAction.OPEN_SHARD_FUSION;
@@ -598,6 +654,7 @@ final class FeatureSettingsScreen extends Screen {
         }
 
         int colorValue() {
+            if (externalSetting != null) return 0xFFFFFF;
             ModConfig config = ConfigManager.get();
             if (huntingOption != null) return huntingOption.intValue(config.hunting) & 0xFFFFFF;
             ModConfig.PanelStyle style = panelStyle();
@@ -611,6 +668,11 @@ final class FeatureSettingsScreen extends Screen {
         }
 
         boolean slider() {
+            if (externalSetting != null) {
+                return (externalSetting.kind == UnifiedModIntegration.ValueKind.INTEGER
+                        || externalSetting.kind == UnifiedModIntegration.ValueKind.DECIMAL)
+                        && externalSetting.minimum != null && externalSetting.maximum != null;
+            }
             if (huntingOption != null) return huntingOption.type == HuntingOption.Type.SLIDER;
             return switch (kind) {
                 case OPACITY, SCALE, CURSOR_TOLERANCE, INSTANT_SOUND_VOLUME,
@@ -620,6 +682,7 @@ final class FeatureSettingsScreen extends Screen {
         }
 
         double sliderFraction() {
+            if (externalSetting != null) return externalSetting.sliderFraction();
             ModConfig config = ConfigManager.get();
             if (huntingOption != null) {
                 return fraction(huntingOption.intValue(config.hunting), huntingOption.minimum, huntingOption.maximum);
@@ -637,6 +700,10 @@ final class FeatureSettingsScreen extends Screen {
         }
 
         void setSliderFraction(double fraction) {
+            if (externalSetting != null) {
+                externalSetting.setSliderFraction(fraction);
+                return;
+            }
             ModConfig config = ConfigManager.get();
             if (huntingOption != null) {
                 huntingOption.setInt(config.hunting,

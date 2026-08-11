@@ -20,6 +20,7 @@ public final class ModConfig {
     public Pets pets = new Pets();
     public Chat chat = new Chat();
     public Inventory inventory = new Inventory();
+    public Integrations integrations = new Integrations();
     public Keybinds keybinds = new Keybinds();
     public HudStyle hudStyle = new HudStyle();
 
@@ -34,6 +35,7 @@ public final class ModConfig {
         if (pets == null) pets = new Pets();
         if (chat == null) chat = new Chat();
         if (inventory == null) inventory = new Inventory();
+        if (integrations == null) integrations = new Integrations();
         if (keybinds == null) keybinds = new Keybinds();
         if (hudStyle == null) hudStyle = new HudStyle();
         hudStyle.ensurePanels();
@@ -138,6 +140,11 @@ public final class ModConfig {
             // client-mod Bazaar bridge, Hunting Box snapshots and graph layout.
             configVersion = 19;
         }
+        if (configVersion < 20) {
+            // First alpha of the optional unified SkyBlock mod settings layer.
+            // Provider selections are local and do not make external mods required.
+            configVersion = 20;
+        }
         hudStyle.map.normalize();
         hudStyle.mining.normalize();
         hudStyle.hunting.normalize();
@@ -149,6 +156,7 @@ public final class ModConfig {
         pets.normalize();
         chat.normalize();
         inventory.normalize();
+        integrations.normalize();
         keybinds.normalize();
     }
 
@@ -621,6 +629,26 @@ public final class ModConfig {
         private static boolean validTeleportSound(String value) {
             return "CHORUS".equals(value) || "ENDERMAN".equals(value) || "AMETHYST".equals(value)
                     || "ORB".equals(value) || "PORTAL".equals(value) || "SHULKER".equals(value);
+        }
+    }
+
+    public static final class Integrations {
+        /** Logical feature id -> selected live configuration provider. */
+        public Map<String, String> selectedProviders = new LinkedHashMap<>();
+
+        private void normalize() {
+            Map<String, String> repaired = new LinkedHashMap<>();
+            if (selectedProviders != null) {
+                for (var entry : selectedProviders.entrySet()) {
+                    if (entry.getKey() == null || entry.getValue() == null || repaired.size() >= 2048) continue;
+                    String key = entry.getKey().trim().toLowerCase(Locale.ROOT)
+                            .replaceAll("[^a-z0-9_:.-]", "_");
+                    String provider = entry.getValue().trim().toUpperCase(Locale.ROOT);
+                    if (!key.isBlank() && Set.of("QCLOUDY", "SKYHANNI", "SKYBLOCKER", "FIRMAMENT",
+                            "BABYZOMBIE").contains(provider)) repaired.put(key, provider);
+                }
+            }
+            selectedProviders = repaired;
         }
     }
 

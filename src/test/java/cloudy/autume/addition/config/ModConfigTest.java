@@ -45,7 +45,7 @@ final class ModConfigTest {
         assertEquals(1, config.hudStyle.pet.borderThickness);
         assertEquals(1.0f, config.hudStyle.pet.scale);
         assertEquals(1.75f, config.hudStyle.map.scale);
-        assertEquals(19, config.configVersion);
+        assertEquals(20, config.configVersion);
         assertEquals(true, config.manualReconnectButton);
         assertEquals(true, config.pets.showMaxProgress);
         assertEquals(true, config.pets.showOverflowLevel);
@@ -137,7 +137,7 @@ final class ModConfigTest {
 
         migrated.normalize();
 
-        assertEquals(19, migrated.configVersion);
+        assertEquals(20, migrated.configVersion);
         assertEquals("VANILLA", migrated.inventory.instantTransmissionSoundMode);
         assertEquals("VANILLA", migrated.inventory.etherwarpSoundMode);
         assertEquals(false, migrated.hunting.safariShards);

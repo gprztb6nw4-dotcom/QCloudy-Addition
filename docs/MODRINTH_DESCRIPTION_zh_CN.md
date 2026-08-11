@@ -6,9 +6,18 @@ QCloudy_Addition 将地图、任务追踪、砍树与狩猎辅助、宠物信息
 
 界面默认英文，可在设置中切换简体中文。Hypixel 返回的地点、物品、任务、宠物、皮肤、配件、Shard 和玩家重命名 HOTM 配置始终保留原名，避免翻译改变游戏数据的实际含义。
 
-> **当前通道：Beta 2.6.12。** Beta 表示该构建已经通过自动测试和归档验证，但仍需要更广泛的实服、材质包、GUI Scale、操作系统和模组组合测试。
+> **当前通道：Alpha 2.6.13。** 这是统一设置的首次实现。源码与构建已经过自动验证，但直接设置写入和第三方 HUD 位置仍需在不同提供方配置与 GUI Scale 下进行广泛游戏内回归。
 
 ## 核心功能
+
+### 统一设置与 HUD 编辑——Alpha
+
+- 以功能为中心，统一管理 QCA 及兼容安装版本 SkyHanni 7.41.0、Skyblocker 6.8.2、Firmament 44.3.0、BabyZombieAddons 3.4.1。
+- 一级顺序固定为：通用、地图、物品与菜单、战斗、地牢、Slayer、挖矿、种地、砍树、钓鱼、狩猎、Rift、活动。
+- 一个完全相同的功能只显示一张卡。右键先选提供方，再直接编辑所选模组中安全的布尔、枚举、数值、位置与缩放设置。
+- 开启共享卡片时，只启用所选实现，并关闭其他兼容提供方中完全等价的实现。
+- 编辑 HUD 会显示所选且已启用的第三方 HUD，松开鼠标时写回其原生位置/缩放。
+- 集成可选、锁定审查版本并在不兼容时关闭；QCA 可独立运行。
 
 ### 地图
 
@@ -86,7 +95,7 @@ HUD 编辑器只显示当前已经加载且确实存在内容的面板。拖动�
 
 - Mod Menu **18.0.0**
 
-将可运行文件 `QCloudy_Addition-Beta-2.6.12+26.1.2.jar` 放入实例的 `mods` 文件夹。不要把 `-sources.jar` 当作可运行模组安装。
+将可运行文件 `QCloudy_Addition-Alpha-2.6.13+26.1.2.jar` 放入实例的 `mods` 文件夹。不要把 `-sources.jar` 当作可运行模组安装。
 
 默认按 `O`、通过 Mod Menu，或输入 `/aca`、`/qca`、`/ca`、`/qc` 打开设置。这些设置别名和 `/qshard` 都是本地客户端命令，不会发送给 Hypixel。
 
@@ -103,7 +112,7 @@ QCA 唯一实现的服务器命令载荷为：
 
 ## 兼容性与免责声明
 
-QCloudy_Addition 可以独立运行，不要求安装 Firmament、SkyHanni、Skyblocker、BabyzombieAddons、JEI 或 Mod Menu。兼容 Skyblocker 只作为 Bazaar 价格路线的可选来源；没有它时价格模式不可用，但模组本身不会出错。SkyHanni/Firmament 当前没有稳定公开跨模组价格 API，因此不作为价格提供者。安装 Firmament 后，可通过可选让出设置避免部分重复物品工具同时运行。
+QCloudy_Addition 可以独立运行，不要求安装 Firmament、SkyHanni、Skyblocker、BabyZombieAddons、JEI 或 Mod Menu。统一编辑器只支持上面列出的精确审查版本，未知版本会安全关闭；首个 Alpha 中的复杂原生颜色/快捷键编辑对象仍需在提供方自己的界面中调整。兼容 Skyblocker 只作为 Bazaar 价格路线的可选来源；没有它时价格模式不可用，但模组本身不会出错。SkyHanni/Firmament 没有稳定公开的跨模组价格 API，因此不作为价格提供者。
 
 所有 Minecraft 模组均由玩家自行承担使用风险。被动 HUD、轮廓、路径光柱、覆盖和预测并不等于获得 Hypixel 官方认可。请阅读 Hypixel 当前规则，并关闭任何你不愿承担风险的功能。
 

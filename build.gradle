@@ -7,6 +7,7 @@ version = "${project.release_channel}-${project.mod_version}+${project.minecraft
 group = project.maven_group
 
 def expandedVersion = version.toString()
+def metadataVersion = "${project.mod_version}-${project.release_channel.toString().toLowerCase()}+${project.minecraft_version}"
 def licenseArchiveName = "LICENSE_${project.archives_base_name}"
 
 base {
@@ -40,13 +41,13 @@ test {
 }
 
 processResources {
-    inputs.property 'version', expandedVersion
+    inputs.property 'version', metadataVersion
     // Legacy pre-rendered pet PNGs caused stale/wrong fallbacks. Pet HUD icons
     // now render only verified player-head profiles, so do not ship them.
     exclude 'assets/qcloudy_addition/textures/gui/pets/**'
     exclude 'assets/qcloudy_addition/textures/gui/pet_skins/**'
     filesMatching('fabric.mod.json') {
-        expand version: expandedVersion
+        expand version: metadataVersion
     }
 }
 
@@ -69,11 +70,11 @@ jar {
 }
 
 tasks.named('sourcesJar') {
-    inputs.property 'version', expandedVersion
+    inputs.property 'version', metadataVersion
     exclude 'assets/qcloudy_addition/textures/gui/pets/**'
     exclude 'assets/qcloudy_addition/textures/gui/pet_skins/**'
     filesMatching('fabric.mod.json') {
-        expand version: expandedVersion
+        expand version: metadataVersion
     }
     from('LICENSE') {
         rename 'LICENSE', licenseArchiveName

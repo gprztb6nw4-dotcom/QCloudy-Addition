@@ -11,14 +11,26 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import org.joml.Matrix3x2fStack;
+import org.jspecify.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class HudLayoutScreen extends Screen {
     private static final int TOOLBAR_WIDTH = 390;
     private static final int TOOLBAR_HEIGHT = 30;
+    private static final int EXTERNAL_WIDTH = 150;
+    private static final int EXTERNAL_HEIGHT = 38;
     private final Screen parent;
+    private List<UnifiedModIntegration.ExternalHud> externalHuds = List.of();
+    private final Map<String, ExternalPreview> externalPreviews = new HashMap<>();
     private Panel selected;
     private Panel dragging;
     private Panel resizing;
+    private UnifiedModIntegration.ExternalHud selectedExternal;
+    private UnifiedModIntegration.ExternalHud draggingExternal;
+    private UnifiedModIntegration.ExternalHud resizingExternal;
     private ResizeEdge resizeEdge = ResizeEdge.NONE;
     private double dragOffsetX;
     private double dragOffsetY;
@@ -36,6 +48,17 @@ public final class HudLayoutScreen extends Screen {
     }
 
     @Override
+    protected void init() {
+        externalHuds = UnifiedModIntegration.externalHuds();
+        externalPreviews.clear();
+        for (UnifiedModIntegration.ExternalHud hud : externalHuds) {
+            externalPreviews.put(hud.id(), new ExternalPreview(
+                    resolveExternalX(hud.x(), externalScaledWidth(hud)),
+                    resolveExternalY(hud.y(), externalScaledHeight(hud)), hud.scale()));
+        }
+    }
+
+    @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         graphics.fill(0, 0, width, height, 0x6E05090B);
         drawGrid(graphics);
@@ -43,6 +66,7 @@ public final class HudLayoutScreen extends Screen {
         drawPreview(graphics, Panel.MINING, mouseX, mouseY);
         drawPreview(graphics, Panel.HUNTING, mouseX, mouseY);
         drawPreview(graphics, Panel.PET, mouseX, mouseY);
+        for (UnifiedModIntegration.ExternalHud hud : externalHuds) drawExternalPreview(graphics, hud, mouseX, mouseY);
         drawToolbar(graphics, mouseX, mouseY);
         drawStatus(graphics);
         super.extractRenderState(graphics, mouseX, mouseY, delta);
@@ -91,6 +115,11 @@ public final class HudLayoutScreen extends Screen {
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         if (click.button() == InputConstants.MOUSE_BUTTON_LEFT) {
             if (toolbarButtonClicked(click.x(), click.y())) return true;
+            UnifiedModIntegration.ExternalHud externalSettings = externalSettingsAt(click.x(), click.y());
+            if (externalSettings != null) {
+                minecraft.setScreen(new FeatureSettingsScreen(this, externalSettings.feature));
+                return true;
+            }
             Panel settingsPanel = settingsAt(click.x(), click.y());
             if (settingsPanel != null) {
                 if (settingsPanel == Panel.HUNTING) {
@@ -105,8 +134,26 @@ public final class HudLayoutScreen extends Screen {
                 }
                 return true;
             }
+            UnifiedModIntegration.ExternalHud external = externalAt(click.x(), click.y());
+            if (external != null) {
+                selected = null;
+                selectedExternal = external;
+                ExternalPreview preview = preview(external);
+                if (externalResizeAt(external, click.x(), click.y())) {
+                    resizingExternal = external;
+                    resizeStartX = click.x();
+                    resizeStartY = click.y();
+                    resizeStartScale = preview.scale;
+                } else {
+                    draggingExternal = external;
+                    dragOffsetX = click.x() - preview.x;
+                    dragOffsetY = click.y() - preview.y;
+                }
+                return true;
+            }
             Panel panel = panelAt(click.x(), click.y());
             selected = panel;
+            selectedExternal = null;
             if (panel != null) {
                 ResizeEdge edge = resizeAt(panel, click.x(), click.y());
                 if (edge != ResizeEdge.NONE) {
@@ -128,6 +175,13 @@ public final class HudLayoutScreen extends Screen {
             }
         }
         if (click.button() == InputConstants.MOUSE_BUTTON_RIGHT) {
+            UnifiedModIntegration.ExternalHud external = externalAt(click.x(), click.y());
+            if (external != null) {
+                selectedExternal = external;
+                selected = null;
+                minecraft.setScreen(new FeatureSettingsScreen(this, external.feature));
+                return true;
+            }
             Panel panel = panelAt(click.x(), click.y());
             if (panel != null) {
                 selected = panel;
@@ -159,6 +213,23 @@ public final class HudLayoutScreen extends Screen {
 
     @Override
     public boolean mouseDragged(MouseButtonEvent click, double offsetX, double offsetY) {
+        if (resizingExternal != null && click.button() == InputConstants.MOUSE_BUTTON_LEFT) {
+            ExternalPreview preview = preview(resizingExternal);
+            double delta = Math.max(click.x() - resizeStartX, click.y() - resizeStartY);
+            preview.scale = Math.round(Math.clamp(resizeStartScale + (float) delta / EXTERNAL_WIDTH,
+                    0.25f, 4.0f) * 100.0f) / 100.0f;
+            preview.x = Math.clamp(preview.x, 0, Math.max(0, width - externalScaledWidth(resizingExternal)));
+            preview.y = Math.clamp(preview.y, 0, Math.max(0, height - externalScaledHeight(resizingExternal)));
+            return true;
+        }
+        if (draggingExternal != null && click.button() == InputConstants.MOUSE_BUTTON_LEFT) {
+            ExternalPreview preview = preview(draggingExternal);
+            int panelWidth = externalScaledWidth(draggingExternal);
+            int panelHeight = externalScaledHeight(draggingExternal);
+            preview.x = snap((int) Math.clamp(click.x() - dragOffsetX, 0, Math.max(0, width - panelWidth)));
+            preview.y = snap((int) Math.clamp(click.y() - dragOffsetY, 0, Math.max(0, height - panelHeight)));
+            return true;
+        }
         if (resizing != null && click.button() == InputConstants.MOUSE_BUTTON_LEFT) {
             resizePanel(click.x(), click.y());
             return true;
@@ -176,6 +247,19 @@ public final class HudLayoutScreen extends Screen {
 
     @Override
     public boolean mouseReleased(MouseButtonEvent click) {
+        if (resizingExternal != null && click.button() == InputConstants.MOUSE_BUTTON_LEFT) {
+            ExternalPreview preview = preview(resizingExternal);
+            resizingExternal.setScale(preview.scale);
+            resizingExternal.setPosition(preview.x, preview.y);
+            resizingExternal = null;
+            return true;
+        }
+        if (draggingExternal != null && click.button() == InputConstants.MOUSE_BUTTON_LEFT) {
+            ExternalPreview preview = preview(draggingExternal);
+            draggingExternal.setPosition(preview.x, preview.y);
+            draggingExternal = null;
+            return true;
+        }
         if (resizing != null && click.button() == InputConstants.MOUSE_BUTTON_LEFT) {
             resizing = null;
             resizeEdge = ResizeEdge.NONE;
@@ -240,7 +324,96 @@ public final class HudLayoutScreen extends Screen {
     private int loadedCount() {
         int count = 0;
         for (Panel panel : Panel.values()) if (isLoaded(panel)) count++;
-        return count;
+        return count + externalHuds.size();
+    }
+
+    private void drawExternalPreview(GuiGraphicsExtractor graphics, UnifiedModIntegration.ExternalHud hud,
+                                     int mouseX, int mouseY) {
+        ExternalPreview preview = preview(hud);
+        int panelWidth = externalScaledWidth(hud);
+        int panelHeight = externalScaledHeight(hud);
+        boolean hovered = AcaUiTheme.contains(mouseX, mouseY, preview.x, preview.y, panelWidth, panelHeight);
+        boolean selected = hud == selectedExternal;
+        int outline = selected ? AcaUiTheme.ACCENT : hovered ? AcaUiTheme.ACCENT_DARK : AcaUiTheme.BORDER;
+        graphics.fill(preview.x + 3, preview.y + 3, preview.x + panelWidth + 3,
+                preview.y + panelHeight + 3, 0x55000000);
+        graphics.fill(preview.x, preview.y, preview.x + panelWidth, preview.y + panelHeight, AcaUiTheme.CARD);
+        graphics.outline(preview.x, preview.y, panelWidth, panelHeight, outline);
+        if (selected) graphics.outline(preview.x - 1, preview.y - 1, panelWidth + 2, panelHeight + 2, 0xAA28BCEB);
+        String label = hud.label();
+        float textScale = Math.min(1.0f, Math.max(0.45f,
+                (panelWidth - 16.0f) / Math.max(1, font.width(label))));
+        graphics.pose().pushMatrix();
+        graphics.pose().translate(preview.x + 8, preview.y + 9);
+        graphics.pose().scale(textScale, textScale);
+        graphics.text(font, label, 0, 0, AcaUiTheme.TEXT, false);
+        graphics.pose().popMatrix();
+        graphics.text(font, ModText.get("config.integration.live_hud"), preview.x + 8,
+                preview.y + panelHeight - 13, AcaUiTheme.TEXT_DIM, false);
+
+        int gearX = preview.x + panelWidth - 17;
+        int gearY = preview.y + panelHeight - 17;
+        graphics.fill(gearX, gearY, gearX + 15, gearY + 15,
+                AcaUiTheme.contains(mouseX, mouseY, gearX, gearY, 15, 15)
+                        ? AcaUiTheme.ACCENT_DARK : AcaUiTheme.HEADER);
+        graphics.outline(gearX, gearY, 15, 15, AcaUiTheme.BORDER);
+        graphics.centeredText(font, "⚙", gearX + 7, gearY + 3, AcaUiTheme.TEXT);
+        if (hud.scale != null && (selected || hovered)) {
+            graphics.fill(preview.x + panelWidth - 6, preview.y + panelHeight - 6,
+                    preview.x + panelWidth + 2, preview.y + panelHeight + 2, AcaUiTheme.ACCENT);
+        }
+    }
+
+    private UnifiedModIntegration.@Nullable ExternalHud externalAt(double x, double y) {
+        for (int index = externalHuds.size() - 1; index >= 0; index--) {
+            UnifiedModIntegration.ExternalHud hud = externalHuds.get(index);
+            ExternalPreview preview = preview(hud);
+            if (AcaUiTheme.contains(x, y, preview.x, preview.y,
+                    externalScaledWidth(hud), externalScaledHeight(hud))) return hud;
+        }
+        return null;
+    }
+
+    private UnifiedModIntegration.@Nullable ExternalHud externalSettingsAt(double x, double y) {
+        for (UnifiedModIntegration.ExternalHud hud : externalHuds) {
+            ExternalPreview preview = preview(hud);
+            int gearX = preview.x + externalScaledWidth(hud) - 17;
+            int gearY = preview.y + externalScaledHeight(hud) - 17;
+            if (AcaUiTheme.contains(x, y, gearX, gearY, 15, 15)) return hud;
+        }
+        return null;
+    }
+
+    private boolean externalResizeAt(UnifiedModIntegration.ExternalHud hud, double x, double y) {
+        if (hud.scale == null) return false;
+        ExternalPreview preview = preview(hud);
+        int right = preview.x + externalScaledWidth(hud);
+        int bottom = preview.y + externalScaledHeight(hud);
+        return Math.abs(x - right) <= 7 && Math.abs(y - bottom) <= 7;
+    }
+
+    private ExternalPreview preview(UnifiedModIntegration.ExternalHud hud) {
+        return externalPreviews.computeIfAbsent(hud.id(), ignored -> new ExternalPreview(
+                resolveExternalX(hud.x(), Math.max(1, Math.round(EXTERNAL_WIDTH * hud.scale()))),
+                resolveExternalY(hud.y(), Math.max(1, Math.round(EXTERNAL_HEIGHT * hud.scale()))), hud.scale()));
+    }
+
+    private int externalScaledWidth(UnifiedModIntegration.ExternalHud hud) {
+        return Math.max(1, Math.round(EXTERNAL_WIDTH * preview(hud).scale));
+    }
+
+    private int externalScaledHeight(UnifiedModIntegration.ExternalHud hud) {
+        return Math.max(1, Math.round(EXTERNAL_HEIGHT * preview(hud).scale));
+    }
+
+    private int resolveExternalX(int configured, int panelWidth) {
+        return Math.clamp(configured < 0 ? width + configured - panelWidth : configured,
+                0, Math.max(0, width - panelWidth));
+    }
+
+    private int resolveExternalY(int configured, int panelHeight) {
+        return Math.clamp(configured < 0 ? height + configured - panelHeight : configured,
+                0, Math.max(0, height - panelHeight));
     }
 
     private Panel panelAt(double x, double y) {
@@ -478,6 +651,18 @@ public final class HudLayoutScreen extends Screen {
             this.east = east;
             this.north = north;
             this.south = south;
+        }
+    }
+
+    private static final class ExternalPreview {
+        int x;
+        int y;
+        float scale;
+
+        ExternalPreview(int x, int y, float scale) {
+            this.x = x;
+            this.y = y;
+            this.scale = scale;
         }
     }
 }

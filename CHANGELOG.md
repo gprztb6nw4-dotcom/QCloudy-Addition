@@ -2,6 +2,24 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.13] - 2026-08-12
+
+First Alpha unified SkyBlock-mod controls for Minecraft 26.1.2.
+
+### Added
+
+- Added one function-first settings registry spanning QCloudy_Addition and the inspected SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1 builds. Integrations are optional; QCA still starts and works alone.
+- Added the ordered top-level categories General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, and Events. Safari is grouped under Hunting, Garden under Farming, and Crimson Isle/Kuudra under Combat. A feature is shown only once.
+- Added provider selection as the first row of each shared feature's secondary page. Selecting one provider and enabling the shared card enables that implementation and disables only exact equivalents from the other detected providers; related but different features remain independent.
+- Added live native Boolean, enum, bounded numeric, position, and scale controls for compatible provider versions. Values are read from and written to each provider's own runtime config and saved through its native save path; QCA does not edit another mod's JSON while it is unloaded.
+- Added external HUD panels to QCA's existing Edit HUD screen. Only enabled HUDs owned by the currently selected provider are shown; drag/resize previews remain local until mouse release, then update the provider's own position/scale.
+
+### Safety and compatibility
+
+- Integrations are reflection-based and version-locked to the exact reviewed builds. A missing, incompatible, or structurally changed provider is hidden instead of guessed or force-written.
+- Complex provider-specific editors whose safe value contract is not yet audited—such as custom color objects and compound keybind objects—remain in the provider's native screen for this first Alpha. The unified menu exposes only settings it can validate and persist safely.
+- No integration downloads data, sends a packet or command, clicks a menu, or creates a hard dependency on another SkyBlock mod.
+
 ## [2.6.12] - 2026-08-11
 
 Beta fishing cue and settings-navigation fix for Minecraft 26.1.2.

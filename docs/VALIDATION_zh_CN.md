@@ -1,3 +1,36 @@
+# QCloudy_Addition Alpha 2.6.13 统一控制验证
+
+日期：2026-08-12<br>
+Minecraft：26.1.2<br>
+Java：25
+
+已验证产物：
+
+- `release/QCloudy_Addition-Alpha-2.6.13+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.13+26.1.2-sources.jar`
+
+可运行 JAR SHA-256：`8ab6590b09bb33fced3611e83d539cae70e46b6fa29576778bb8b98b1b52d2bb`<br>
+源码 JAR SHA-256：`a25049b36dbd539fec958d4e4f147f051bdf793a84fba6949e290921e2bf1f49`
+
+Alpha 2.6.13 首次加入以功能为中心的统一设置与 HUD 集成，精确支持已审查的 SkyHanni 7.41.0、Skyblocker 6.8.2、Firmament 44.3.0、BabyZombieAddons 3.4.1。QCA 仍可独立运行；缺失或版本不符的提供方会被隐藏。共享卡片可选择一个提供方，只切换完全等价实现，读写安全原生值、调用原生保存，并在“编辑 HUD”中显示所选且已启用的第三方 HUD 位置/缩放。
+
+本工作区已验证：
+
+- Java 25 `clean test build prepareRelease` 成功：149 项测试，0 failure、0 error、0 skip。
+- 主代码与测试从干净输出目录重新编译；`clean` 已清除此前发现的旧重复 `.class`。
+- 展开后的 `fabric.mod.json` 声明符合 Fabric 版本比较规则的语义版本 `2.6.13-alpha+26.1.2`、纯客户端、Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+、Java 25+；发布文件名仍遵循指定的 `QCloudy_Addition-Alpha-2.6.13+26.1.2.jar` 规则。
+- `build/libs/` 的可运行与源码产物分别和 `release/` 中对应文件逐字节一致。
+- 可运行 JAR 通过 `unzip -t`；中英文语言文件键集合完全一致；`git diff --check` 通过。
+- 可选集成不产生提供方编译依赖，也未新增 HTTP、数据包、聊天命令、菜单点击、玩法输入或服务器数据请求。
+- 开发客户端同时加载 QCA 与四个精确审查版本，已通过模组初始化和资源重载阶段，没有发生 QCA 初始化崩溃；期间出现的离线账号 401 与 BabyZombieAddons/Firmament 警告来自开发账号或对应提供方版本。
+
+尚未覆盖的 Alpha 实服边界：
+
+- 共同启动检查没有在已登录 Hypixel 的设置界面中逐项操作。自动检查不能证明每个反射原生选项、等价别名、提供方保存路径和 HUD 坐标规则都正确。晋级 Beta 前，应在四个精确版本分别安装及同时安装时测试重启持久化、负数/右侧锚定坐标、GUI Scale、提供方切换和未知版本安全关闭。
+- 首个 Alpha 刻意不显示不透明的复杂颜色/快捷键编辑对象；它们继续在提供方原生界面中编辑，后续需要专用适配器才能在 QCA 中准确表示。
+
+---
+
 # QCloudy_Addition Beta 2.6.12 钓鱼提示音与设置分类验证
 
 验证日期：2026-08-11

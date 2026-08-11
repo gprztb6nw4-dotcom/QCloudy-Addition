@@ -6,8 +6,8 @@
 |---|---|
 | Name | QCloudy_Addition |
 | Suggested slug | `qcloudy-addition` |
-| Version | `Beta-2.6.12+26.1.2` |
-| Release channel | Beta; the project owner explicitly approved this promotion on 2026-08-10 |
+| Version | `Alpha-2.6.13+26.1.2` |
+| Release channel | Alpha; first unified-settings/HUD-provider implementation |
 | Environment | Client only |
 | Loader | Fabric |
 | Minecraft | 26.1.2 |
@@ -15,7 +15,7 @@
 | License | LGPL-3.0-or-later |
 | Required dependency | Fabric API 0.155.2+26.1.2 or newer |
 | Optional dependency | Mod Menu 18.0.0 |
-| Standalone from | Firmament, SkyHanni, Skyblocker, BabyzombieAddons |
+| Standalone from | Firmament, SkyHanni, Skyblocker, BabyZombieAddons; optional exact-version integrations only |
 
 Suggested Modrinth summary:
 
@@ -29,8 +29,8 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 
 - Use `docs/MODRINTH_DESCRIPTION.md` as the English project description.
 - Keep English as the primary description; place `docs/MODRINTH_DESCRIPTION_zh_CN.md` in a linked Chinese page or below the English copy if desired.
-- Upload only `release/QCloudy_Addition-Beta-2.6.12+26.1.2.jar` as the playable file.
-- Use the `2.6.12` section of `CHANGELOG.md` as the version changelog; the Chinese companion is the matching section of `CHANGELOG_zh_CN.md`.
+- Upload only `release/QCloudy_Addition-Alpha-2.6.13+26.1.2.jar` as the playable file.
+- Use the `2.6.13` section of `CHANGELOG.md` as the version changelog; the Chinese companion is the matching section of `CHANGELOG_zh_CN.md`.
 - Mark Fabric API as required and Mod Menu as optional.
 - Mark client environment as required and server environment as unsupported.
 - Do not mark Firmament, SkyHanni, Skyblocker, or BabyzombieAddons as required.
@@ -47,15 +47,15 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 - Do not commit `run/`, `run-standalone/`, `.gradle/`, `.gradle-user-home/`, local configs, logs, crash ZIPs, or the supplied reference JARs.
 - Confirm `.gitignore` covers local build/runtime files before the first commit.
 
-## GitHub Beta 2.6.12
+## GitHub Alpha 2.6.13
 
-- Title: `QCloudy_Addition Beta 2.6.12 for Minecraft 26.1.2`
-- Tag: `v2.6.12-beta+26.1.2`
-- Use the `2.6.12` sections of `CHANGELOG.md` and `CHANGELOG_zh_CN.md` as the release body source.
+- Title: `QCloudy_Addition Alpha 2.6.13 for Minecraft 26.1.2`
+- Tag: `v2.6.13-alpha+26.1.2`
+- Use the `2.6.13` sections of `CHANGELOG.md` and `CHANGELOG_zh_CN.md` as the release body source.
 - Attach the binary JAR and optionally the Sources JAR.
 - Verify uploaded hashes against `docs/VALIDATION.md` after downloading the release once.
-- Mark it as **Pre-release** on GitHub because this is a Beta, not a stable Release.
-- On Modrinth, choose **Beta** as the version type.
+- Mark it as **Pre-release** on GitHub because this is an Alpha, not a stable Release.
+- On Modrinth, choose **Alpha** as the version type.
 
 ## Final safety and quality gate
 
@@ -67,6 +67,7 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 - Confirm compact input/output bounds and their click targets remain aligned at the supported GUI scales.
 - Confirm Epic uses `§5`, Details wraps every effect/acquisition line, hover styling applies only to visible clickable text, and natural-plus-Fusion Shards expose both source types.
 - Test at least one standalone launch and one launch with the four reference mods.
+- In the four-mod launch, verify provider selection, exact-equivalent exclusivity, native persistence, unknown-version fail-closed behavior, and every external HUD position/scale at multiple GUI scales.
 - Recheck every command/chat payload in `docs/COMPLIANCE.md`.
 - Confirm the uploaded icon has transparent corners and remains recognizable at 32×32.
 - Confirm the README never claims official Hypixel approval, guaranteed safety, or complete authenticated-server validation.

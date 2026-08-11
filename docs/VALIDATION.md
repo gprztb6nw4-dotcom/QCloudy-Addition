@@ -1,3 +1,36 @@
+# QCloudy_Addition Alpha 2.6.13 unified-controls validation
+
+Date: 2026-08-12<br>
+Minecraft: 26.1.2<br>
+Java: 25
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Alpha-2.6.13+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.13+26.1.2-sources.jar`
+
+Playable SHA-256: `8ab6590b09bb33fced3611e83d539cae70e46b6fa29576778bb8b98b1b52d2bb`<br>
+Sources SHA-256: `a25049b36dbd539fec958d4e4f147f051bdf793a84fba6949e290921e2bf1f49`
+
+Alpha 2.6.13 adds the first function-first settings and HUD integration for exact reviewed builds of SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1. QCA remains standalone. Missing or mismatched providers are hidden; a shared card selects one provider, toggles only exact equivalents, reads/writes safe native values, calls native persistence, and surfaces selected enabled external HUD positions/scales in Edit HUD.
+
+Verified in this workspace:
+
+- Java 25 `clean test build prepareRelease` completed successfully: 149 tests, 0 failures, 0 errors, 0 skips.
+- Main and test compilation completed from a clean output directory, eliminating the stale duplicate-class files found before `clean`.
+- Expanded `fabric.mod.json` declares the Fabric-compatible semantic version `2.6.13-alpha+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+. The distributable filename retains the required `QCloudy_Addition-Alpha-2.6.13+26.1.2.jar` scheme.
+- Binary and Sources artifacts in `build/libs/` are byte-identical to the corresponding `release/` artifacts.
+- The playable JAR passes `unzip -t`; English and Chinese language files have identical key sets; `git diff --check` passes.
+- The optional integration has no compile-time dependency on any provider and does not add an HTTP client, packet, chat command, container click, gameplay input, or server-data request.
+- A development client loaded QCA and the four exact reviewed provider builds together through mod initialization and resource reload without a QCA initialization crash. The observed offline-authentication 401 and BabyZombieAddons/Firmament warnings belonged to the development account or those provider builds.
+
+Outstanding Alpha regression boundary:
+
+- The combined startup check did not exercise the settings screen inside an authenticated Hypixel session. Automated checks cannot prove every reflected native option, exact-equivalent alias, provider save path, or HUD coordinate convention. Before promotion to Beta, manually test all four exact provider versions together and separately, including restart persistence, negative/right-anchored coordinates, GUI Scale changes, provider switching, and unknown-version fail-closed behavior.
+- This first Alpha intentionally does not expose opaque compound provider color/keybind editor objects. Those remain editable in each provider's native screen and require dedicated adapters before they can be represented honestly in QCA.
+
+---
+
 # QCloudy_Addition Beta 2.6.12 Fishing cue and settings validation
 
 Validation date: 2026-08-11

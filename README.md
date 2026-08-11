@@ -7,13 +7,23 @@ QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [Current Beta 2.6.12 changelog](CHANGELOG.md)
+- [Current Alpha 2.6.13 changelog](CHANGELOG.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
 Default language: English. Press `O` (rebindable under Controls → Key Binds → QCloudy_Addition) or use `/aca`, `/qca`, `/ca`, or `/qc` to open the client-side settings, then switch to Simplified Chinese at any time. Command aliases are registered only when their client-command names are free. They open a local screen and are never sent to Hypixel.
 
 The language option translates QCA interface labels only. Hypixel location names, task names, pets, skins, accessories, items, and player-renamed HOTM slots remain in their original client-received form.
+
+## Unified SkyBlock mod controls — Alpha
+
+QCA can now act as one function-first settings and HUD editor for its own features and compatible installed builds of **SkyHanni 7.41.0**, **Skyblocker 6.8.2**, **Firmament 44.3.0**, and **BabyZombieAddons 3.4.1**. These integrations are optional: QCA remains independently loadable and hides a provider when it is absent or does not match the reviewed version.
+
+When several supported mods implement the same exact function, QCA shows one card. Right-clicking that card puts the provider selector first and then shows the safely editable native settings of the selected provider. Enabling the card enables the selected implementation and disables only its exact equivalents; nearby price, profit, tooltip, or tracker features with different purposes are not merged. Values are written to the provider's live configuration and saved through that mod's own save path. QCA never edits an unloaded mod's configuration file.
+
+The existing **Edit HUD** screen also includes enabled HUDs owned by the selected compatible provider. External panels are labelled with the provider name; dragging or resizing writes the native position/scale only when the mouse is released. This first Alpha exposes validated Boolean, enum, bounded numeric, position, and scale values. Provider-specific compound color/keybind objects remain in their native editors until a safe adapter is implemented.
+
+The exact top-level order is **General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events**. Safari is a Hunting subgroup, Garden is a Farming subgroup, and Crimson Isle/Kuudra are Combat subgroups. Every feature has one owner and appears once.
 
 ## Feature categories
 
@@ -85,7 +95,7 @@ Foraging and Hunting are separate top-level settings categories, while Safari is
 - UI opening animations are enabled by default and can be disabled
 - Optional Mod Menu integration opens QCA's settings directly when Mod Menu is installed
 
-The configuration screen uses a compact BLC-inspired information hierarchy—not copied assets or layout code—with one **Features** tab, eight ordered categories, and searchable feature cards: **General, Maps, Items & Menus, Combat, Mining, Foraging, Fishing, and Hunting**. Fishing is a top-level category rather than a General subgroup. HUD position editing remains available from the bottom-left **Edit HUD** button. Feature cards no longer repeat a top-right switch or bottom-right right-click hint, and secondary pages do not repeat the primary enable switch. There is deliberately no catch-all `ALL` category: every feature appears only under its own category.
+The configuration screen uses a compact BLC-inspired information hierarchy—not copied assets or layout code—with one **Features** tab, the thirteen ordered categories listed above, collapsible subgroups, and searchable function cards. Fishing, Farming, Dungeons, Slayer, Rift, and Events are independent top-level categories. HUD position editing remains available from the bottom-left **Edit HUD** button. Feature cards do not repeat a top-right switch or bottom-right right-click hint, and secondary pages do not repeat the primary enable switch. There is deliberately no catch-all `ALL` category.
 
 Inventory and menu tools include the Attribute Shard Fusion Guide, item timestamps, cursor position memory, configurable AOTE/AOTV sounds, and Chat Peek. Every QCA hotkey is edited inline on its existing secondary-settings page instead of opening a separate capture screen. Keyboard keys, mouse buttons 1–5/side buttons, and Ctrl/Shift/Alt/Cmd-Super combinations are supported; while a row is listening, `Esc` clears it to unbound.
 
@@ -115,7 +125,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-Current Beta 2.6.12 changes: [CHANGELOG.md](CHANGELOG.md)
+Current Alpha 2.6.13 changes: [CHANGELOG.md](CHANGELOG.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 

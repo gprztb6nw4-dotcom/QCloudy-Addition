@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.6.12+26.1.2`.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.6.13+26.1.2`.
 
 ## 1. Runtime architecture
 
@@ -24,6 +24,14 @@ received Tab / scoreboard / chat / menu / title / entity / inventory / loaded bl
         HUD, tooltip, outline, beacon, overlay, line, or sound
 ```
 
+### 1.1 Optional unified-provider adapters
+
+`UnifiedModIntegration` discovers only the reviewed provider IDs and exact versions: SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1. It has no compile-time dependency on them. Reflection is used only after the Fabric loader confirms the mod and reviewed version, and failures are caught per provider so an absent or changed provider cannot prevent QCA from loading.
+
+The registry walks the live provider configuration and exposes only validated primitive Boolean/enum values, annotated or otherwise bounded numeric values, and audited HUD x/y/scale values. Writes call the provider's own update/save/dirty mechanism. It never edits an unloaded provider's JSON file. Exact cross-mod aliases merge one logical feature; enabling a selected provider first disables only bindings attached to that same alias. The provider choice is persisted in QCA config, while every provider's own values remain stored by that provider.
+
+`HudLayoutScreen` combines QCA's currently loaded panels with enabled HUDs belonging to the selected external provider. Drag/resize uses a transient preview and writes native coordinates/scale only on mouse release. The first Alpha intentionally excludes opaque compound color/keybind/config-editor objects whose setter and validation contract has not been audited.
+
 Location detection first confirms a Hypixel host and a received SkyBlock scoreboard. It then classifies the current island from the location-marked scoreboard line and a bounded list of known original location names. Island-specific parsers and renders do not run globally.
 
 ## 2. Settings, localization, and HUD framework
@@ -42,9 +50,9 @@ Give every feature a clear single category and let players customize visual outp
 
 ### Implementation
 
-- `ConfigScreen` owns one searchable Features page and eleven mutually exclusive categories.
+- `ConfigScreen` owns one searchable Features page and thirteen mutually exclusive categories in the required order: General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, and Events.
 - Left-click changes a feature's primary state; right-click opens only settings specific to that feature.
-- `HudLayoutScreen` lists only HUD types currently loaded by location/state. Dragging changes position; dragging a border/corner changes only that HUD's 50–200% scale.
+- `HudLayoutScreen` lists only QCA HUDs currently loaded by location/state plus enabled HUDs from the selected compatible provider. Dragging changes position; dragging a border/corner changes that HUD's native scale when available.
 - `PanelStyle` separately stores background color/alpha, border width/color, title color, bold state, shadow state, and scale for Map, Mining, Hunting, and Pet panels.
 - `ColorPickerScreen` supplies RGB/HSV controls, brightness, presets, and transparent backgrounds.
 - Key chords store a keyboard key or mouse button plus Ctrl/Shift/Alt/Super modifiers. `Esc` while listening clears the binding.

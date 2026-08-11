@@ -1,5 +1,11 @@
 # QCloudy_Addition feature specification
 
+## Unified settings and HUD control — Alpha 2.6.13
+
+QCA presents one function-first catalog across its own features and compatible installed builds of SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1. The top-level order is **General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events**. Safari belongs to Hunting, Garden to Farming, and Crimson Isle/Kuudra to Combat. Collapsible subgroups are closed by default, and one exact function has one card.
+
+For a shared function, right-click opens a secondary page whose first control selects the provider. Enabling the card then enables that provider and disables only exact equivalents in the other compatible providers. All selected-provider Boolean, enum, bounded numeric, position, and scale controls that pass the adapter's safety checks are edited in place and saved through the provider's native save path. QCA's Edit HUD screen also shows enabled, selected-provider HUDs and commits native position/scale changes on mouse release. Missing or unreviewed provider versions are hidden; QCA remains standalone.
+
 ## 1. Maps
 
 ### 1.1 Dwarven Mines Map

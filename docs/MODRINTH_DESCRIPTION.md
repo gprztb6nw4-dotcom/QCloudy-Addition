@@ -6,9 +6,18 @@ QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, 
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Beta 2.6.12.** Beta means the build has passed automated and archive validation, but still needs broader real-server, resource-pack, GUI-scale, operating-system, and modpack testing.
+> **Current channel: Alpha 2.6.13.** This is the first unified-settings implementation. It has automated source/build validation, but direct setting writes and HUD positions still require broad in-game regression across provider configurations and GUI scales.
 
 ## Main features
+
+### Unified settings and HUD editor — Alpha
+
+- One function-first catalog for QCA and compatible installed builds of SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1.
+- Exact top-level order: General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events.
+- One shared card for one exact function. Right-click selects the provider first, then edits that provider's safe native Boolean, enum, numeric, position, and scale settings.
+- Enabling a shared card enables the selected implementation and disables only exact equivalents in the other compatible providers.
+- Edit HUD includes selected, enabled third-party HUDs and writes native position/scale on mouse release.
+- Optional, version-locked, fail-closed integrations: QCA remains standalone and hides missing/incompatible providers.
 
 ### Maps
 
@@ -86,7 +95,7 @@ Optional:
 
 - Mod Menu **18.0.0**
 
-Put the playable `QCloudy_Addition-Beta-2.6.12+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
+Put the playable `QCloudy_Addition-Alpha-2.6.13+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
 
 Press `O`, open QCA through Mod Menu, or enter `/aca`, `/qca`, `/ca`, or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 
@@ -103,7 +112,7 @@ Both are sent only after the player explicitly enters the corresponding local sh
 
 ## Compatibility and disclaimer
 
-QCloudy_Addition is standalone. Firmament, SkyHanni, Skyblocker, BabyzombieAddons, JEI, and Mod Menu are not required. A compatible Skyblocker is optional only for Bazaar-price routes; without it the planner's price mode is unavailable, not broken. SkyHanni and Firmament are not currently price providers because they expose no stable public cross-mod price API. When Firmament is installed, an optional handoff prevents selected duplicate inventory tools from running twice.
+QCloudy_Addition is standalone. Firmament, SkyHanni, Skyblocker, BabyZombieAddons, JEI, and Mod Menu are not required. The unified editor supports only the exact reviewed versions listed above and fails closed on unknown versions. Complex native color/keybind editor objects remain in their provider's own screen during this first Alpha. A compatible Skyblocker is optional only for Bazaar-price routes; without it the planner's price mode is unavailable, not broken. SkyHanni and Firmament are not price providers because they expose no stable public cross-mod price API.
 
 All Minecraft modifications are used at the player's own risk. Passive HUDs, outlines, waypoint beams, overlays, and predictions are not the same as official Hypixel approval. Review Hypixel's current modification rules and disable any feature you are not comfortable using.
 

@@ -6,8 +6,8 @@
 |---|---|
 | 名称 | QCloudy_Addition |
 | 建议slug | `qcloudy-addition` |
-| 版本 | `Beta-2.6.12+26.1.2` |
-| 发布通道 | Beta；项目所有者已于 2026-08-10 明确批准本次晋级 |
+| 版本 | `Alpha-2.6.13+26.1.2` |
+| 发布通道 | Alpha；首次统一设置/HUD 提供方实现 |
 | 环境 | 纯客户端 |
 | Loader | Fabric |
 | Minecraft | 26.1.2 |
@@ -15,7 +15,7 @@
 | 许可证 | LGPL-3.0-or-later |
 | 必需依赖 | Fabric API 0.155.2+26.1.2或更高 |
 | 可选依赖 | Mod Menu 18.0.0 |
-| 不依赖 | Firmament、SkyHanni、Skyblocker、BabyzombieAddons |
+| 不依赖 | Firmament、SkyHanni、Skyblocker、BabyZombieAddons；只提供可选精确版本集成 |
 
 建议Modrinth简短描述：
 
@@ -29,8 +29,8 @@
 
 - 英文主描述使用 `docs/MODRINTH_DESCRIPTION.md`。
 - 中文页面或英文描述下方使用 `docs/MODRINTH_DESCRIPTION_zh_CN.md`。
-- 只把 `release/QCloudy_Addition-Beta-2.6.12+26.1.2.jar` 标为可运行主文件。
-- 版本更新日志使用 `CHANGELOG.md` 的 `2.6.12` 段落，中文配套内容使用 `CHANGELOG_zh_CN.md` 对应段落。
+- 只把 `release/QCloudy_Addition-Alpha-2.6.13+26.1.2.jar` 标为可运行主文件。
+- 版本更新日志使用 `CHANGELOG.md` 的 `2.6.13` 段落，中文配套内容使用 `CHANGELOG_zh_CN.md` 对应段落。
 - Fabric API标为必需，Mod Menu标为可选。
 - Client环境标为必需，Server标为不支持。
 - 不要把Firmament、SkyHanni、Skyblocker或BabyzombieAddons标为依赖。
@@ -47,15 +47,15 @@
 - 不提交 `run/`、`run-standalone/`、`.gradle/`、`.gradle-user-home/`、本地配置、日志、崩溃ZIP或四个参考JAR。
 - 首次commit前确认 `.gitignore` 覆盖本地构建/运行文件。
 
-## GitHub Beta 2.6.12
+## GitHub Alpha 2.6.13
 
-- 标题：`QCloudy_Addition Beta 2.6.12 for Minecraft 26.1.2`
-- Tag：`v2.6.12-beta+26.1.2`
-- 正文以 `CHANGELOG.md` 和 `CHANGELOG_zh_CN.md` 的 `2.6.12` 段落为准。
+- 标题：`QCloudy_Addition Alpha 2.6.13 for Minecraft 26.1.2`
+- Tag：`v2.6.13-alpha+26.1.2`
+- 正文以 `CHANGELOG.md` 和 `CHANGELOG_zh_CN.md` 的 `2.6.13` 段落为准。
 - 上传二进制JAR，可选附加Sources JAR。
 - 上传后重新下载一次，并与 `docs/VALIDATION.md` 中哈希比较。
-- GitHub 勾选 **Pre-release**，因为这是 Beta 而不是稳定 Release。
-- Modrinth 的 Version type 选择 **Beta**。
+- GitHub 勾选 **Pre-release**，因为这是 Alpha 而不是稳定 Release。
+- Modrinth 的 Version type 选择 **Alpha**。
 
 ## 最终安全与质量门槛
 
@@ -67,6 +67,7 @@
 - 在支持的 GUI Scale 下确认紧凑输入/输出边界与点击范围保持对齐。
 - 确认 Epic 使用 `§5`、详情页完整换行显示效果/获取方式、悬停样式只作用于可见可点击文字，并且自然＋Fusion 双来源 Shard 同时显示两类来源。
 - 至少启动一次独立实例和一次四参考模组实例。
+- 四模组实例中逐项确认提供方切换、完全等价功能互斥、原生持久化、未知版本安全关闭，以及不同 GUI Scale 下每个第三方 HUD 的位置/缩放。
 - 重新核对 `docs/COMPLIANCE_zh_CN.md` 中每个命令/聊天载荷。
 - 确认上传图标四角透明，32×32下仍可识别。
 - README不得声称获得Hypixel官方批准、绝对安全或完成全部登录实服验证。

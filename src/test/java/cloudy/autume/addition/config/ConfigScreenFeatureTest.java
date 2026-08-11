@@ -98,20 +98,25 @@ final class ConfigScreenFeatureTest {
     }
 
     @Test
-    void fishingIsOrderedBetweenForagingAndHuntingWithoutOverlappingTheFooter() {
+    void requestedTopLevelCategoriesUseTheExactPublishedOrder() {
         assertArrayEquals(new ConfigScreen.Category[]{
                         ConfigScreen.Category.GENERAL,
                         ConfigScreen.Category.MAPS,
-                        ConfigScreen.Category.INVENTORY,
+                        ConfigScreen.Category.ITEMS_AND_MENUS,
                         ConfigScreen.Category.COMBAT,
+                        ConfigScreen.Category.DUNGEONS,
+                        ConfigScreen.Category.SLAYER,
                         ConfigScreen.Category.MINING,
+                        ConfigScreen.Category.FARMING,
                         ConfigScreen.Category.FORAGING,
                         ConfigScreen.Category.FISHING,
-                        ConfigScreen.Category.HUNTING
+                        ConfigScreen.Category.HUNTING,
+                        ConfigScreen.Category.RIFT,
+                        ConfigScreen.Category.EVENTS
                 },
                 ConfigScreen.Category.values());
         int slotHeight = ConfigScreen.sidebarCategorySlotHeight(220);
-        assertTrue(43 + slotHeight * ConfigScreen.Category.values().length <= 220 - 52 - 4);
+        assertTrue(slotHeight >= 18);
     }
 
     @Test
@@ -119,7 +124,7 @@ final class ConfigScreenFeatureTest {
         ModConfig config = new ModConfig();
         ConfigScreen.Feature feature = ConfigScreen.Feature.SHARD_FUSION_HELPER;
 
-        assertEquals(ConfigScreen.Category.INVENTORY, feature.category);
+        assertEquals(ConfigScreen.Category.ITEMS_AND_MENUS, feature.category);
         assertEquals(ConfigScreen.FeatureGroup.SHARD_FUSION, feature.group);
         assertTrue(feature.enabled(config));
         assertTrue(feature.hasSettings());

@@ -13,9 +13,10 @@ import net.minecraft.util.FormattedCharSequence;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public final class ConfigScreen extends Screen {
     private static final Identifier ICON = Identifier.fromNamespaceAndPath(
@@ -30,14 +31,16 @@ public final class ConfigScreen extends Screen {
 
     private final @Nullable Screen parent;
     private final long openedAt = System.nanoTime();
-    private final List<Hit<Feature>> featureHits = new ArrayList<>();
-    private final List<Hit<FeatureGroup>> groupHits = new ArrayList<>();
-    private final EnumSet<FeatureGroup> expandedGroups = EnumSet.noneOf(FeatureGroup.class);
+    private final List<Hit<UnifiedModIntegration.UnifiedFeature>> featureHits = new ArrayList<>();
+    private final List<Hit<String>> groupHits = new ArrayList<>();
+    private final Set<String> expandedGroups = new HashSet<>();
     private Category category = Category.GENERAL;
     private EditBox searchBox;
     private String query = "";
     private int scroll;
     private int maximumScroll;
+    private int sidebarScroll;
+    private int sidebarMaximumScroll;
     private int windowX;
     private int windowY;
     private int windowWidth;
@@ -67,7 +70,7 @@ public final class ConfigScreen extends Screen {
                 case MINING -> Category.MINING;
                 case FORAGING -> Category.FORAGING;
                 case HUNTING, SAFARI -> Category.HUNTING;
-                case PET -> Category.INVENTORY;
+                case PET -> Category.ITEMS_AND_MENUS;
             };
         }
     }
@@ -164,10 +167,16 @@ public final class ConfigScreen extends Screen {
 
     private void drawSidebar(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         int x = windowX + 8;
-        int y = windowY + 43;
+        int top = windowY + 43;
+        int editY = windowY + windowHeight - 52;
+        int viewportHeight = Math.max(20, editY - top - 5);
         int width = sidebarWidth - 16;
         int categorySlotHeight = sidebarCategorySlotHeight(windowHeight);
         int categoryButtonHeight = Math.min(22, categorySlotHeight - 2);
+        sidebarMaximumScroll = Math.max(0, Category.values().length * categorySlotHeight - viewportHeight);
+        sidebarScroll = Math.clamp(sidebarScroll, 0, sidebarMaximumScroll);
+        int y = top - sidebarScroll;
+        graphics.enableScissor(windowX + 1, top, windowX + sidebarWidth, top + viewportHeight);
         for (Category value : Category.values()) {
             boolean selected = category == value;
             boolean hovered = AcaUiTheme.contains(mouseX, mouseY, x, y, width, categoryButtonHeight);
@@ -179,8 +188,8 @@ public final class ConfigScreen extends Screen {
                     selected ? AcaUiTheme.TEXT : AcaUiTheme.TEXT_MUTED, false);
             y += categorySlotHeight;
         }
+        graphics.disableScissor();
 
-        int editY = windowY + windowHeight - 52;
         AcaUiTheme.button(graphics, font, ModText.get("config.layout"), x, editY, width, 20,
                 AcaUiTheme.contains(mouseX, mouseY, x, editY, width, 20), false);
         int languageY = windowY + windowHeight - 27;
@@ -224,7 +233,7 @@ public final class ConfigScreen extends Screen {
             y += GROUP_HEADER_HEIGHT + 5;
             if (block.expanded()) {
                 for (int index = 0; index < block.features().size(); index++) {
-                    Feature feature = block.features().get(index);
+                    UnifiedModIntegration.UnifiedFeature feature = block.features().get(index);
                     int column = index % columns;
                     int row = index / columns;
                     int x = contentX + column * (cardWidth + CARD_GAP);
@@ -242,16 +251,13 @@ public final class ConfigScreen extends Screen {
     private List<GroupBlock> groupBlocks() {
         List<GroupBlock> blocks = new ArrayList<>();
         boolean searching = !query.trim().isEmpty();
-        for (FeatureGroup group : FeatureGroup.values()) {
-            if (group.category != category) continue;
-            List<Feature> features = new ArrayList<>();
-            for (Feature feature : Feature.values()) {
-                if (feature.group == group && matches(feature.titleKey, feature.descriptionKey)) {
-                    features.add(feature);
-                }
-            }
-            if (!features.isEmpty()) blocks.add(new GroupBlock(group, features,
-                    searching || expandedGroups.contains(group)));
+        java.util.Map<String, List<UnifiedModIntegration.UnifiedFeature>> byGroup = new java.util.LinkedHashMap<>();
+        for (UnifiedModIntegration.UnifiedFeature feature : UnifiedModIntegration.features()) {
+            if (feature.category != category || !matches(feature.title, feature.description)) continue;
+            byGroup.computeIfAbsent(feature.group, ignored -> new ArrayList<>()).add(feature);
+        }
+        for (var entry : byGroup.entrySet()) {
+            blocks.add(new GroupBlock(entry.getKey(), entry.getValue(), searching || expandedGroups.contains(entry.getKey())));
         }
         return blocks;
     }
@@ -264,27 +270,31 @@ public final class ConfigScreen extends Screen {
         graphics.outline(x, y, width, GROUP_HEADER_HEIGHT,
                 hovered ? AcaUiTheme.ACCENT_DARK : AcaUiTheme.BORDER_SOFT);
         graphics.text(font, block.expanded() ? "▾" : "▸", x + 8, y + 7, AcaUiTheme.ACCENT, false);
-        graphics.text(font, Component.literal(ModText.get(block.group().key)).withStyle(ChatFormatting.BOLD),
+        graphics.text(font, Component.literal(block.group()).withStyle(ChatFormatting.BOLD),
                 x + 22, y + 7, AcaUiTheme.TEXT, false);
         String count = Integer.toString(block.features().size());
         graphics.text(font, count, x + width - font.width(count) - 10, y + 7, AcaUiTheme.TEXT_DIM, false);
     }
 
-    private void drawFeatureCard(GuiGraphicsExtractor graphics, Feature feature, int x, int y, int cardWidth,
+    private void drawFeatureCard(GuiGraphicsExtractor graphics, UnifiedModIntegration.UnifiedFeature feature,
+                                 int x, int y, int cardWidth,
                                  int mouseX, int mouseY) {
         boolean hovered = AcaUiTheme.contains(mouseX, mouseY, x, y, cardWidth, CARD_HEIGHT);
-        boolean enabled = feature.enabled(ConfigManager.get());
+        boolean enabled = feature.enabled();
         graphics.fill(x, y, x + cardWidth, y + CARD_HEIGHT, hovered ? AcaUiTheme.CARD_HOVER : AcaUiTheme.CARD);
         graphics.outline(x, y, cardWidth, CARD_HEIGHT, hovered ? AcaUiTheme.ACCENT_DARK : AcaUiTheme.BORDER_SOFT);
         graphics.fill(x, y, x + 3, y + CARD_HEIGHT, enabled ? AcaUiTheme.ACCENT : AcaUiTheme.BORDER);
-        Component title = Component.literal(ModText.get(feature.titleKey)).withStyle(ChatFormatting.BOLD);
+        Component title = Component.literal(feature.title).withStyle(ChatFormatting.BOLD);
         drawFittedText(graphics, title, x + 10, y + 8, Math.max(30, cardWidth - 20), AcaUiTheme.TEXT);
-        List<FormattedCharSequence> lines = font.split(Component.literal(ModText.get(feature.descriptionKey)),
+        List<FormattedCharSequence> lines = font.split(Component.literal(feature.description),
                 Math.max(40, cardWidth - 20));
         for (int i = 0; i < Math.min(2, lines.size()); i++) {
             graphics.text(font, lines.get(i), x + 10, y + 24 + i * 10, AcaUiTheme.TEXT_MUTED, false);
         }
-        graphics.text(font, ModText.get(feature.group.key), x + 10, y + 57, AcaUiTheme.TEXT_DIM, false);
+        String provider = feature.selectedProvider().displayName;
+        String footer = feature.group + " · " + provider;
+        drawFittedText(graphics, Component.literal(footer), x + 10, y + 57,
+                Math.max(30, cardWidth - 20), AcaUiTheme.TEXT_DIM);
     }
 
     private void drawEmpty(GuiGraphicsExtractor graphics) {
@@ -301,19 +311,19 @@ public final class ConfigScreen extends Screen {
         graphics.fill(barX, thumbY, barX + 2, thumbY + thumbHeight, AcaUiTheme.ACCENT);
     }
 
-    private boolean matches(String titleKey, String descriptionKey) {
+    private boolean matches(String title, String description) {
         String normalized = query.trim().toLowerCase(Locale.ROOT);
         if (normalized.isEmpty()) return true;
-        return ModText.get(titleKey).toLowerCase(Locale.ROOT).contains(normalized)
-                || ModText.get(descriptionKey).toLowerCase(Locale.ROOT).contains(normalized);
+        return title.toLowerCase(Locale.ROOT).contains(normalized)
+                || description.toLowerCase(Locale.ROOT).contains(normalized);
     }
 
     @Override
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         if (click.button() == 1
                 && AcaUiTheme.contains(click.x(), click.y(), contentX, contentY, contentWidth, contentHeight)) {
-            for (Hit<Feature> hit : featureHits) {
-                if (hit.contains(click.x(), click.y()) && hit.value.hasSettings()) {
+            for (Hit<UnifiedModIntegration.UnifiedFeature> hit : featureHits) {
+                if (hit.contains(click.x(), click.y())) {
                     minecraft.setScreen(new FeatureSettingsScreen(this, hit.value));
                     return true;
                 }
@@ -338,12 +348,15 @@ public final class ConfigScreen extends Screen {
             return true;
         }
         int sidebarX = windowX + 8;
-        int sidebarY = windowY + 43;
+        int sidebarY = windowY + 43 - sidebarScroll;
         int sideWidth = sidebarWidth - 16;
         int categorySlotHeight = sidebarCategorySlotHeight(windowHeight);
         int categoryButtonHeight = Math.min(22, categorySlotHeight - 2);
+        int categoryViewportTop = windowY + 43;
+        int categoryViewportBottom = windowY + windowHeight - 57;
         for (Category value : Category.values()) {
-            if (AcaUiTheme.contains(mouseX, mouseY, sidebarX, sidebarY, sideWidth, categoryButtonHeight)) {
+            if (mouseY >= categoryViewportTop && mouseY < categoryViewportBottom
+                    && AcaUiTheme.contains(mouseX, mouseY, sidebarX, sidebarY, sideWidth, categoryButtonHeight)) {
                 category = value;
                 scroll = 0;
                 return true;
@@ -360,20 +373,20 @@ public final class ConfigScreen extends Screen {
             ModConfig config = ConfigManager.get();
             config.language = "zh_cn".equals(config.language) ? "en_us" : "zh_cn";
             ConfigManager.save();
+            UnifiedModIntegration.invalidate();
             rebuildWidgets();
             return true;
         }
         if (!AcaUiTheme.contains(mouseX, mouseY, contentX, contentY, contentWidth, contentHeight)) return false;
-        for (Hit<FeatureGroup> hit : groupHits) {
+        for (Hit<String> hit : groupHits) {
             if (!hit.contains(mouseX, mouseY)) continue;
             if (!expandedGroups.remove(hit.value)) expandedGroups.add(hit.value);
             scroll = Math.clamp(scroll, 0, maximumScroll);
             return true;
         }
-        for (Hit<Feature> hit : featureHits) {
+        for (Hit<UnifiedModIntegration.UnifiedFeature> hit : featureHits) {
             if (!hit.contains(mouseX, mouseY)) continue;
-            hit.value.toggle(ConfigManager.get());
-            ConfigManager.save();
+            hit.value.toggle();
             return true;
         }
         return false;
@@ -381,6 +394,14 @@ public final class ConfigScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontal, double vertical) {
+        int sidebarTop = windowY + 43;
+        int sidebarBottom = windowY + windowHeight - 57;
+        if (AcaUiTheme.contains(mouseX, mouseY, windowX + 1, sidebarTop,
+                sidebarWidth - 1, Math.max(1, sidebarBottom - sidebarTop))) {
+            sidebarScroll = Math.clamp(sidebarScroll - (int) Math.round(vertical * 20),
+                    0, sidebarMaximumScroll);
+            return true;
+        }
         if (AcaUiTheme.contains(mouseX, mouseY, contentX, contentY, contentWidth, contentHeight)) {
             scroll = Math.clamp(scroll - (int) Math.round(vertical * 24), 0, maximumScroll);
             return true;
@@ -400,8 +421,8 @@ public final class ConfigScreen extends Screen {
     }
 
     static int sidebarCategorySlotHeight(int windowHeight) {
-        int availableHeight = windowHeight - 43 - 52 - 4;
-        return Math.clamp(availableHeight / Category.values().length, 14, 24);
+        int availableHeight = windowHeight - 43 - 52 - 9;
+        return Math.clamp(availableHeight / Category.values().length, 18, 24);
     }
 
     private void drawFittedText(GuiGraphicsExtractor graphics, Component value, int x, int y,
@@ -424,14 +445,19 @@ public final class ConfigScreen extends Screen {
     enum Category {
         GENERAL("config.category.general"),
         MAPS("config.category.maps"),
-        INVENTORY("config.category.inventory"),
+        ITEMS_AND_MENUS("config.category.items_and_menus"),
         COMBAT("config.category.combat"),
+        DUNGEONS("config.category.dungeons"),
+        SLAYER("config.category.slayer"),
         MINING("config.category.mining"),
+        FARMING("config.category.farming"),
         FORAGING("config.category.foraging"),
         FISHING("config.category.fishing"),
-        HUNTING("config.category.hunting");
+        HUNTING("config.category.hunting"),
+        RIFT("config.category.rift"),
+        EVENTS("config.category.events");
 
-        private final String key;
+        final String key;
 
         Category(String key) {
             this.key = key;
@@ -451,13 +477,18 @@ public final class ConfigScreen extends Screen {
         HUNTING_SAFARI(Category.HUNTING, "config.group.safari"),
         CRIMSON_OBJECTIVES(Category.COMBAT, "config.group.crimson_objectives"),
         COMBAT_VISIBILITY(Category.COMBAT, "config.group.combat_visibility"),
-        PET_DISPLAY(Category.INVENTORY, "config.group.pet_display"),
-        SHARD_FUSION(Category.INVENTORY, "config.group.shard_fusion"),
+        PET_DISPLAY(Category.ITEMS_AND_MENUS, "config.group.pet_display"),
+        SHARD_FUSION(Category.ITEMS_AND_MENUS, "config.group.shard_fusion"),
         CHAT_UI(Category.GENERAL, "config.group.chat_ui"),
-        INVENTORY_TOOLS(Category.INVENTORY, "config.group.inventory_tools");
+        INVENTORY_TOOLS(Category.ITEMS_AND_MENUS, "config.group.inventory_tools"),
+        DUNGEON_TOOLS(Category.DUNGEONS, "config.group.dungeons"),
+        SLAYER_TOOLS(Category.SLAYER, "config.group.slayer"),
+        FARMING_TOOLS(Category.FARMING, "config.group.farming"),
+        RIFT_TOOLS(Category.RIFT, "config.group.rift"),
+        EVENT_TOOLS(Category.EVENTS, "config.group.events");
 
-        private final Category category;
-        private final String key;
+        final Category category;
+        final String key;
 
         FeatureGroup(Category category, String key) {
             this.category = category;
@@ -626,7 +657,7 @@ public final class ConfigScreen extends Screen {
         }
 
         boolean inventoryFeature() {
-            return group.category == Category.INVENTORY;
+            return group.category == Category.ITEMS_AND_MENUS;
         }
 
         boolean huntingFeature() {
@@ -643,7 +674,8 @@ public final class ConfigScreen extends Screen {
         }
     }
 
-    private record GroupBlock(FeatureGroup group, List<Feature> features, boolean expanded) { }
+    private record GroupBlock(String group, List<UnifiedModIntegration.UnifiedFeature> features,
+                              boolean expanded) { }
 
     private record Hit<T>(T value, int x, int y, int width, int height) {
         boolean contains(double mouseX, double mouseY) {
