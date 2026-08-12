@@ -6,7 +6,7 @@ QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, 
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Alpha 2.6.14.** This is the first unified-settings implementation, with a pet-level display correction for unmaxed Ancient Golden Dragons. It has automated source/build validation, but direct setting writes and HUD positions still require broad in-game regression across provider configurations and GUI scales.
+> **Current channel: Alpha 2.6.15.** This build corrects responsive layout and clipping across the Shard Planner, settings, RGB picker, and HUD editor while preserving the unified-settings implementation and pet-level fix. It has automated source/build validation, but direct setting writes and HUD positions still require broad in-game regression across provider configurations and GUI scales.
 
 ## Main features
 
@@ -95,7 +95,7 @@ Optional:
 
 - Mod Menu **18.0.0**
 
-Put the playable `QCloudy_Addition-Alpha-2.6.14+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
+Put the playable `QCloudy_Addition-Alpha-2.6.15+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
 
 Press `O`, open QCA through Mod Menu, or enter `/aca`, `/qca`, `/ca`, or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 

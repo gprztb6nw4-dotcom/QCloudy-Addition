@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.6.14+26.1.2`.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.6.15+26.1.2`.
 
 ## 1. Runtime architecture
 
@@ -47,6 +47,8 @@ Give every feature a clear single category and let players customize visual outp
 - `GuiGraphicsExtractor` for Minecraft 26.1.2 text, item, panel, and texture rendering.
 - Local `qcloudy_addition.json` for settings and HUD layout.
 - Bundled `en_us.json` and `zh_cn.json` for QCA-owned labels.
+
+The screen layer derives inputs, buttons, lists, detail viewports, and click targets from shared layout records. Shard results and metadata have separate scroll state, rate controls are bottom-docked, narrow Planner/Settings layouts reflow before collision, and Fusion Lines use a canvas taller than the viewport when needed. Setting rows add hit targets only while intersecting the visible scissor rectangle.
 
 ### Implementation
 

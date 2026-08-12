@@ -165,4 +165,16 @@ final class ConfigScreenFeatureTest {
         assertEquals(ConfigScreen.Category.HUNTING, ConfigScreen.Feature.SNOOZLE_WALL_OVERLAY.category);
         assertEquals(ConfigScreen.Category.HUNTING, ConfigScreen.Feature.SAFARI_BELT.category);
     }
+
+    @Test
+    void secondarySettingSlidersShrinkInsteadOfEscapingNarrowRows() {
+        var narrow = FeatureSettingsScreen.sliderLayout(20, 96);
+        var wide = FeatureSettingsScreen.sliderLayout(20, 480);
+
+        assertTrue(narrow.trackX() >= 20);
+        assertTrue(narrow.trackX() + narrow.trackWidth() <= 20 + 96);
+        assertTrue(wide.trackX() >= 20);
+        assertTrue(wide.trackX() + wide.trackWidth() <= 20 + 480);
+        assertTrue(wide.trackWidth() > narrow.trackWidth());
+    }
 }

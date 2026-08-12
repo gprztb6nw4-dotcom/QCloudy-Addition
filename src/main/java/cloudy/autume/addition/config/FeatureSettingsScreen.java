@@ -55,24 +55,27 @@ final class FeatureSettingsScreen extends Screen {
         graphics.fill(windowX + 4, windowY + 5, windowX + windowWidth + 5, windowY + windowHeight + 6, 0x66000000);
         AcaUiTheme.surface(graphics, windowX, windowY, windowWidth, windowHeight, AcaUiTheme.WINDOW);
         graphics.fill(windowX + 1, windowY + 1, windowX + windowWidth - 1, windowY + 34, AcaUiTheme.HEADER);
-        graphics.text(font, Component.literal(unifiedFeature.title).withStyle(ChatFormatting.BOLD),
-                windowX + 42, windowY + 10, AcaUiTheme.TEXT, false);
+        drawFittedText(graphics, Component.literal(unifiedFeature.title).withStyle(ChatFormatting.BOLD),
+                windowX + 42, windowY + 10, Math.max(1, windowWidth - 54), AcaUiTheme.TEXT);
         AcaUiTheme.button(graphics, font, "‹", windowX + 10, windowY + 8, 24, 18,
                 AcaUiTheme.contains(mouseX, mouseY, windowX + 10, windowY + 8, 24, 18), false);
         String hint = ModText.get("config.feature_settings_hint");
-        graphics.text(font, hint, windowX + 12, windowY + 43, AcaUiTheme.TEXT_DIM, false);
+        drawFittedText(graphics, hint, windowX + 12, windowY + 43,
+                Math.max(1, windowWidth - 24));
 
         hits.clear();
         List<Setting> settings = settings();
         int viewportY = contentY;
-        int viewportHeight = windowHeight - (contentY - windowY) - 12;
+        int viewportHeight = viewportHeight();
         maxScroll = Math.max(0, settings.size() * (ROW_HEIGHT + 4) - 4 - viewportHeight);
         scroll = Math.clamp(scroll, 0, maxScroll);
         graphics.enableScissor(contentX, viewportY, contentX + contentWidth, viewportY + viewportHeight);
         int y = contentY - scroll;
         for (Setting setting : settings) {
             drawRow(graphics, setting, contentX, y, contentWidth, mouseX, mouseY);
-            hits.add(new Hit(setting, contentX, y, contentWidth, ROW_HEIGHT));
+            if (y + ROW_HEIGHT > viewportY && y < viewportY + viewportHeight) {
+                hits.add(new Hit(setting, contentX, y, contentWidth, ROW_HEIGHT));
+            }
             y += ROW_HEIGHT + 4;
         }
         graphics.disableScissor();
@@ -89,13 +92,13 @@ final class FeatureSettingsScreen extends Screen {
     }
 
     private void layout() {
-        windowWidth = Math.min(520, Math.max(310, width - 24));
-        windowHeight = Math.min(390, Math.max(230, height - 24));
+        windowWidth = Math.max(1, Math.min(520, width - Math.min(24, Math.max(0, width - 1))));
+        windowHeight = Math.max(1, Math.min(390, height - Math.min(24, Math.max(0, height - 1))));
         windowX = (width - windowWidth) / 2;
         windowY = (height - windowHeight) / 2;
         contentX = windowX + 12;
         contentY = windowY + 60;
-        contentWidth = windowWidth - 29;
+        contentWidth = Math.max(1, windowWidth - 29);
     }
 
     private void drawRow(GuiGraphicsExtractor graphics, Setting setting, int x, int y, int rowWidth,
@@ -108,35 +111,37 @@ final class FeatureSettingsScreen extends Screen {
         graphics.outline(x, y, rowWidth, ROW_HEIGHT,
                 listening ? AcaUiTheme.ACCENT : hovered ? AcaUiTheme.ACCENT_DARK : AcaUiTheme.BORDER_SOFT);
         String value = setting.value();
-        int valueX = x + rowWidth - font.width(value) - 12;
         if (setting.chordAction() != null) {
-            int maximumValueWidth = Math.max(72, rowWidth / 2 - 14);
-            int labelWidth = Math.max(42, rowWidth - maximumValueWidth - 30);
+            int maximumValueWidth = Math.max(1, Math.min(rowWidth / 2, rowWidth - 21));
+            int labelWidth = Math.max(1, rowWidth - maximumValueWidth - 30);
             drawFittedText(graphics, setting.label(), x + 10, y + 9, labelWidth);
             drawFittedTextRight(graphics, value, x + rowWidth - 10, y + 9, maximumValueWidth,
                     listening ? AcaUiTheme.ACCENT : AcaUiTheme.TEXT_MUTED);
             return;
         }
         if (setting.slider()) {
-            int trackEnd = x + rowWidth - 58;
-            int trackWidth = Math.min(150, Math.max(72, rowWidth / 3));
-            int trackX = trackEnd - trackWidth;
-            int labelWidth = Math.max(36, trackX - x - 18);
+            SliderLayout slider = sliderLayout(x, rowWidth);
+            int trackEnd = slider.trackX() + slider.trackWidth();
+            int labelWidth = Math.max(1, slider.trackX() - x - 18);
             drawFittedText(graphics, setting.label(), x + 10, y + 9, labelWidth);
             int trackY = y + 12;
-            int knobX = trackX + (int) Math.round(setting.sliderFraction() * trackWidth);
-            graphics.fill(trackX, trackY, trackEnd, trackY + 3, 0xFF69747A);
-            graphics.fill(trackX, trackY, knobX, trackY + 3, AcaUiTheme.ACCENT);
+            int knobX = slider.trackX() + (int) Math.round(setting.sliderFraction() * slider.trackWidth());
+            graphics.fill(slider.trackX(), trackY, trackEnd, trackY + 3, 0xFF69747A);
+            graphics.fill(slider.trackX(), trackY, knobX, trackY + 3, AcaUiTheme.ACCENT);
             graphics.fill(knobX - 4, y + 7, knobX + 5, y + 21, 0xFFBCEEFF);
             graphics.outline(knobX - 4, y + 7, 9, 14, AcaUiTheme.ACCENT_DARK);
-            graphics.text(font, value, x + rowWidth - font.width(value) - 10, y + 9,
-                    AcaUiTheme.TEXT_MUTED, false);
+            drawFittedTextRight(graphics, value, x + rowWidth - 10, y + 9,
+                    Math.max(1, rowWidth - trackEnd + x - 10), AcaUiTheme.TEXT_MUTED);
             return;
         }
-        graphics.text(font, setting.label(), x + 10, y + 9,
-                available ? AcaUiTheme.TEXT : AcaUiTheme.TEXT_DIM, false);
+        int valueWidth = Math.max(1, Math.min(rowWidth / 2,
+                rowWidth - (setting.color() ? 40 : 20)));
+        int swatchX = setting.color()
+                ? Math.max(x + 2, x + rowWidth - 10 - valueWidth - 18)
+                : x + rowWidth;
+        drawFittedText(graphics, setting.label(), x + 10, y + 9,
+                Math.max(1, (setting.color() ? swatchX : x + rowWidth - valueWidth - 10) - x - 14));
         if (setting.color()) {
-            int swatchX = valueX - 18;
             if (setting.kind == Kind.BACKGROUND_COLOR && panelStyle().backgroundOpacity == 0) {
                 graphics.fill(swatchX, y + 7, swatchX + 13, y + 20, 0xFFE6E6E6);
                 graphics.fill(swatchX, y + 7, swatchX + 6, y + 13, 0xFF999999);
@@ -146,21 +151,27 @@ final class FeatureSettingsScreen extends Screen {
             }
             graphics.outline(swatchX, y + 7, 13, 13, AcaUiTheme.BORDER);
         }
-        graphics.text(font, value, valueX, y + 9,
-                available ? AcaUiTheme.TEXT_MUTED : AcaUiTheme.TEXT_DIM, false);
+        drawFittedTextRight(graphics, value, x + rowWidth - 10, y + 9,
+                valueWidth, available ? AcaUiTheme.TEXT_MUTED : AcaUiTheme.TEXT_DIM);
     }
 
     private void drawFittedText(GuiGraphicsExtractor graphics, String text, int x, int y, int availableWidth) {
+        drawFittedText(graphics, Component.literal(text), x, y, availableWidth, AcaUiTheme.TEXT);
+    }
+
+    private void drawFittedText(GuiGraphicsExtractor graphics, Component text, int x, int y,
+                                int availableWidth, int color) {
+        if (availableWidth <= 0) return;
         int textWidth = font.width(text);
         if (textWidth <= availableWidth) {
-            graphics.text(font, text, x, y, AcaUiTheme.TEXT, false);
+            graphics.text(font, text, x, y, color, false);
             return;
         }
-        float scale = Math.min(1.0f, availableWidth / (float) textWidth);
+        float scale = Math.min(1.0f, availableWidth / (float) Math.max(1, textWidth));
         graphics.pose().pushMatrix();
         graphics.pose().translate(x, y + Math.round((1.0f - scale) * 4.0f));
         graphics.pose().scale(scale, scale);
-        graphics.text(font, text, 0, 0, AcaUiTheme.TEXT, false);
+        graphics.text(font, text, 0, 0, color, false);
         graphics.pose().popMatrix();
     }
 
@@ -298,7 +309,7 @@ final class FeatureSettingsScreen extends Screen {
             onClose();
             return true;
         }
-        int viewportHeight = windowHeight - (contentY - windowY) - 12;
+        int viewportHeight = viewportHeight();
         if (!AcaUiTheme.contains(click.x(), click.y(), contentX, contentY, contentWidth, viewportHeight)) {
             return super.mouseClicked(click, doubled);
         }
@@ -368,10 +379,18 @@ final class FeatureSettingsScreen extends Screen {
     }
 
     private void updateSlider(Hit hit, double mouseX) {
-        int trackEnd = hit.x + hit.width - 58;
-        int trackWidth = Math.min(150, Math.max(72, hit.width / 3));
-        int trackX = trackEnd - trackWidth;
-        hit.setting.setSliderFraction(Math.clamp((mouseX - trackX) / trackWidth, 0.0, 1.0));
+        SliderLayout slider = sliderLayout(hit.x, hit.width);
+        hit.setting.setSliderFraction(Math.clamp(
+                (mouseX - slider.trackX()) / Math.max(1, slider.trackWidth()), 0.0, 1.0));
+    }
+
+    static SliderLayout sliderLayout(int x, int rowWidth) {
+        int safeWidth = Math.max(1, rowWidth);
+        int valueWidth = Math.min(48, Math.max(1, safeWidth / 5));
+        int trackEnd = x + safeWidth - valueWidth - 10;
+        int maximumTrack = Math.max(1, trackEnd - (x + 20));
+        int trackWidth = Math.min(150, Math.max(1, Math.min(safeWidth / 3, maximumTrack)));
+        return new SliderLayout(trackEnd - trackWidth, trackWidth);
     }
 
     private void activate(Setting setting) {
@@ -499,7 +518,7 @@ final class FeatureSettingsScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontal, double vertical) {
-        if (AcaUiTheme.contains(mouseX, mouseY, contentX, contentY, contentWidth, windowHeight - 72)) {
+        if (AcaUiTheme.contains(mouseX, mouseY, contentX, contentY, contentWidth, viewportHeight())) {
             scroll = Math.clamp(scroll - (int) Math.round(vertical * 22), 0, maxScroll);
             return true;
         }
@@ -515,6 +534,10 @@ final class FeatureSettingsScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+    private int viewportHeight() {
+        return Math.max(1, windowHeight - (contentY - windowY) - 12);
     }
 
     private enum Kind {
@@ -743,10 +766,12 @@ final class FeatureSettingsScreen extends Screen {
         }
 
         boolean sliderContains(double mouseX, double mouseY) {
-            int trackEnd = x + width - 58;
-            int trackWidth = Math.min(150, Math.max(72, width / 3));
-            return AcaUiTheme.contains(mouseX, mouseY, trackEnd - trackWidth - 5, y + 4,
-                    trackWidth + 10, height - 8);
+            SliderLayout slider = sliderLayout(x, width);
+            return AcaUiTheme.contains(mouseX, mouseY, slider.trackX() - 5, y + 4,
+                    slider.trackWidth() + 10, height - 8);
         }
+    }
+
+    record SliderLayout(int trackX, int trackWidth) {
     }
 }

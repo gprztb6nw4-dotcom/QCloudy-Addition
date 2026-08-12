@@ -6,8 +6,8 @@
 |---|---|
 | 名称 | QCloudy_Addition |
 | 建议slug | `qcloudy-addition` |
-| 版本 | `Alpha-2.6.14+26.1.2` |
-| 发布通道 | Alpha；首次统一设置/HUD 提供方实现 |
+| 版本 | `Alpha-2.6.15+26.1.2` |
+| 发布通道 | Alpha；首次统一设置/HUD 提供方实现上的响应式 UI 修复 |
 | 环境 | 纯客户端 |
 | Loader | Fabric |
 | Minecraft | 26.1.2 |
@@ -29,8 +29,8 @@
 
 - 英文主描述使用 `docs/MODRINTH_DESCRIPTION.md`。
 - 中文页面或英文描述下方使用 `docs/MODRINTH_DESCRIPTION_zh_CN.md`。
-- 只把 `release/QCloudy_Addition-Alpha-2.6.14+26.1.2.jar` 标为可运行主文件。
-- 版本更新日志使用 `CHANGELOG.md` 的 `2.6.14` 段落，中文配套内容使用 `CHANGELOG_zh_CN.md` 对应段落。
+- 只把 `release/QCloudy_Addition-Alpha-2.6.15+26.1.2.jar` 标为可运行主文件。
+- 版本更新日志使用 `CHANGELOG.md` 的 `2.6.15` 段落，中文配套内容使用 `CHANGELOG_zh_CN.md` 对应段落。
 - Fabric API标为必需，Mod Menu标为可选。
 - Client环境标为必需，Server标为不支持。
 - 不要把Firmament、SkyHanni、Skyblocker或BabyzombieAddons标为依赖。
@@ -47,11 +47,11 @@
 - 不提交 `run/`、`run-standalone/`、`.gradle/`、`.gradle-user-home/`、本地配置、日志、崩溃ZIP或四个参考JAR。
 - 首次commit前确认 `.gitignore` 覆盖本地构建/运行文件。
 
-## GitHub Alpha 2.6.14
+## GitHub Alpha 2.6.15
 
-- 标题：`QCloudy_Addition Alpha 2.6.14 for Minecraft 26.1.2`
-- Tag：`v2.6.14-alpha+26.1.2`
-- 正文以 `CHANGELOG.md` 和 `CHANGELOG_zh_CN.md` 的 `2.6.14` 段落为准。
+- 标题：`QCloudy_Addition Alpha 2.6.15 for Minecraft 26.1.2`
+- Tag：`v2.6.15-alpha+26.1.2`
+- 正文以 `CHANGELOG.md` 和 `CHANGELOG_zh_CN.md` 的 `2.6.15` 段落为准。
 - 上传二进制JAR，可选附加Sources JAR。
 - 上传后重新下载一次，并与 `docs/VALIDATION.md` 中哈希比较。
 - GitHub 勾选 **Pre-release**，因为这是 Alpha 而不是稳定 Release。

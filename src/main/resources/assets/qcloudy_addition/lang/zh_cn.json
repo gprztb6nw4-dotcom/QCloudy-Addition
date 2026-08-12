@@ -370,7 +370,7 @@
   "shard.no_recipes": "没有已验证的合成能够产出这个 Shard。",
   "shard.no_uses": "没有已验证的合成会消耗这个 Shard。",
   "shard.no_output": "交换顺序后没有可选择的产物。",
-  "shard.insufficient_space": "增大界面高度以查看配方。",
+  "shard.insufficient_space": "增大界面高度以查看此内容。",
   "shard.input_count": "每种输入需要 %s 个 · 数量由左侧输入决定",
   "shard.order_note": "ID Fusion 的左右输入顺序可能影响结果。",
   "shard.pure_reptile": "Pure Reptile：有 2%–20% 概率使所选产物翻倍",

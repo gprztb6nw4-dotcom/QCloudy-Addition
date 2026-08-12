@@ -64,6 +64,8 @@ public final class ShardPlanningScreen extends Screen {
     private boolean priceLoaded;
     private int scroll;
     private int maximumScroll;
+    private int detailScroll;
+    private int detailMaximumScroll;
     private int windowX;
     private int windowY;
     private int windowWidth;
@@ -117,13 +119,13 @@ public final class ShardPlanningScreen extends Screen {
 
     private void initPlanFields() {
         var config = ConfigManager.get().inventory;
-        int y = bodyY + 8;
-        primaryBox = addField(bodyX + 8, y + 11, Math.min(190, bodyWidth / 3),
+        PlanControlsLayout controls = planControlsLayout(bodyX, bodyY, bodyWidth);
+        primaryBox = addField(controls.targetX(), controls.fieldY(), controls.targetWidth(),
                 config.shardPlannerTarget, value -> {
                     ShardFusionCatalog.Shard shard = resolve(value);
                     if (shard != null) config.shardPlannerTarget = shard.id();
                 });
-        secondaryBox = addField(bodyX + 206, y + 11, 68,
+        secondaryBox = addField(controls.quantityX(), controls.fieldY(), controls.quantityWidth(),
                 Integer.toString(config.shardPlannerQuantity), value -> {
                     config.shardPlannerQuantity = parseInt(value, config.shardPlannerQuantity, 1, 1_000_000);
                 });
@@ -131,29 +133,32 @@ public final class ShardPlanningScreen extends Screen {
 
     private void initRecipeFields() {
         int y = bodyY + 19;
-        int fieldWidth = Math.max(70, Math.min(220, (bodyWidth - 40) / 2));
+        int fieldWidth = recipeFieldWidth(bodyWidth);
         primaryBox = addField(bodyX + 8, y, fieldWidth, recipeInput, value -> recipeInput = value);
         secondaryBox = addField(bodyX + 20 + fieldWidth, y, fieldWidth,
                 recipeOutput, value -> recipeOutput = value);
     }
 
     private void initShardFields() {
-        primaryBox = addField(bodyX + 8, bodyY + 19, Math.min(250, Math.max(70, bodyWidth / 3)),
+        ShardPageLayout shardLayout = shardPageLayout(bodyX, bodyY, bodyWidth, bodyHeight);
+        primaryBox = addField(bodyX + 8, bodyY + 19, Math.max(1, shardLayout.listWidth() - 14),
                 shardQuery, value -> {
                     shardQuery = value;
                     ShardFusionCatalog.Shard shard = resolve(value);
                     if (shard != null) selectedShardId = shard.id();
                     scroll = 0;
+                    detailScroll = 0;
                 });
         ShardFusionCatalog.Shard shard = selectedShard();
         String rate = shard == null ? "0" : displayDecimal(rate(shard));
-        tertiaryBox = addField(bodyX + Math.min(270, bodyWidth / 2), bodyY + 19, 90,
+        tertiaryBox = addField(shardLayout.rateInputX(), shardLayout.rateControlY(),
+                shardLayout.rateInputWidth(),
                 rate, ignored -> {
                 });
     }
 
     private void initLineFields() {
-        primaryBox = addField(bodyX + 8, bodyY + 19, Math.min(250, Math.max(70, bodyWidth / 3)),
+        primaryBox = addField(bodyX + 8, bodyY + 19, Math.min(250, Math.max(1, bodyWidth / 3)),
                 lineQuery, value -> {
                     lineQuery = value;
                     ShardFusionCatalog.Shard shard = resolve(value);
@@ -162,19 +167,23 @@ public final class ShardPlanningScreen extends Screen {
     }
 
     private void initSettingFields() {
+        if (!settingsContentFits(bodyHeight)) return;
         var config = ConfigManager.get().inventory;
-        int left = bodyX + 154;
-        int right = bodyX + Math.max(330, bodyWidth / 2 + 90);
-        int y = bodyY + 29;
-        primaryBox = addField(left, y, 92, Integer.toString(config.shardPlannerHunterFortune), value ->
+        SettingsLayout settings = settingsLayout(bodyX, bodyY, bodyWidth);
+        primaryBox = addField(settings.leftFieldX(), settings.leftFieldY(), settings.fieldWidth(),
+                Integer.toString(config.shardPlannerHunterFortune), value ->
                 config.shardPlannerHunterFortune = parseInt(value, config.shardPlannerHunterFortune, 0, 10_000));
-        secondaryBox = addField(left, y + 28, 92, Integer.toString(config.shardPlannerCrocodileLevel), value ->
+        secondaryBox = addField(settings.leftFieldX(), settings.leftFieldY() + 28, settings.fieldWidth(),
+                Integer.toString(config.shardPlannerCrocodileLevel), value ->
                 config.shardPlannerCrocodileLevel = parseInt(value, config.shardPlannerCrocodileLevel, 0, 10));
-        tertiaryBox = addField(left, y + 56, 92, displayDecimal(config.shardPlannerCoinsPerHour), value ->
+        tertiaryBox = addField(settings.leftFieldX(), settings.leftFieldY() + 56, settings.fieldWidth(),
+                displayDecimal(config.shardPlannerCoinsPerHour), value ->
                 config.shardPlannerCoinsPerHour = parseDouble(value, config.shardPlannerCoinsPerHour, 0, 1.0E15));
-        addField(right, y, 92, Integer.toString(config.shardPlannerCraftSeconds), value ->
+        addField(settings.rightFieldX(), settings.rightFieldY(), settings.fieldWidth(),
+                Integer.toString(config.shardPlannerCraftSeconds), value ->
                 config.shardPlannerCraftSeconds = parseInt(value, config.shardPlannerCraftSeconds, 0, 600));
-        addField(right, y + 28, 92, Integer.toString(config.shardPlannerKuudraSeconds), value ->
+        addField(settings.rightFieldX(), settings.rightFieldY() + 28, settings.fieldWidth(),
+                Integer.toString(config.shardPlannerKuudraSeconds), value ->
                 config.shardPlannerKuudraSeconds = parseInt(value, config.shardPlannerKuudraSeconds, 10, 1800));
     }
 
@@ -247,12 +256,12 @@ public final class ShardPlanningScreen extends Screen {
     }
 
     private void drawHeader(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        graphics.text(font, ModText.get("shard.planner.title"), windowX + 11, windowY + 11,
-                AcaUiTheme.TEXT, false);
         int closeX = windowX + windowWidth - 23;
         drawButton(graphics, "×", closeX, windowY + 7, 15, 15, mouseX, mouseY,
                 false, true, Action.CLOSE, null);
         int guideWidth = Math.min(112, Math.max(50, windowWidth / 6));
+        drawFitted(graphics, ModText.get("shard.planner.title"), windowX + 11, windowY + 11,
+                Math.max(1, closeX - guideWidth - 25 - windowX), AcaUiTheme.TEXT);
         drawButton(graphics, ModText.get("shard.planner.guide"), closeX - guideWidth - 7,
                 windowY + 7, guideWidth, 15, mouseX, mouseY, false, true, Action.GUIDE, null);
     }
@@ -261,7 +270,7 @@ public final class ShardPlanningScreen extends Screen {
         int x = windowX + 8;
         int y = windowY + HEADER + 3;
         int gap = 3;
-        int tabWidth = Math.max(24, (windowWidth - 16 - gap * (Page.values().length - 1)) / Page.values().length);
+        int tabWidth = Math.max(1, (windowWidth - 16 - gap * (Page.values().length - 1)) / Page.values().length);
         for (Page value : Page.values()) {
             drawButton(graphics, ModText.get(value.key), x, y, tabWidth, TAB_HEIGHT,
                     mouseX, mouseY, value == page, true, Action.TAB, value);
@@ -271,26 +280,26 @@ public final class ShardPlanningScreen extends Screen {
 
     private void drawPlan(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         var config = ConfigManager.get().inventory;
-        int top = bodyY + 5;
-        drawLabel(graphics, ModText.get("shard.planner.target"), bodyX + 8, top);
-        drawLabel(graphics, ModText.get("shard.planner.quantity"), bodyX + 206, top);
-        int controlsX = bodyX + Math.min(284, Math.max(8, bodyWidth / 3));
-        int available = bodyX + bodyWidth - 8 - controlsX;
-        int buttonWidth = Math.max(36, Math.min(86, (available - 12) / 4));
+        PlanControlsLayout controls = planControlsLayout(bodyX, bodyY, bodyWidth);
+        drawLabel(graphics, ModText.get("shard.planner.target"), controls.targetX(), controls.labelY());
+        drawLabel(graphics, ModText.get("shard.planner.quantity"), controls.quantityX(), controls.labelY());
         drawButton(graphics, ModText.get("shard.planner.mode." + config.shardPlannerMode.toLowerCase(Locale.ROOT)),
-                controlsX, top + 11, buttonWidth, 18, mouseX, mouseY, false, true, Action.MODE, null);
+                controls.controlsX(), controls.controlsY(), controls.buttonWidth(), 18,
+                mouseX, mouseY, false, true, Action.MODE, null);
         drawButton(graphics, ModText.get("shard.planner.objective."
                         + config.shardPlannerObjective.toLowerCase(Locale.ROOT)),
-                controlsX + buttonWidth + 4, top + 11, buttonWidth, 18,
+                controls.controlsX() + controls.buttonWidth() + 4, controls.controlsY(), controls.buttonWidth(), 18,
                 mouseX, mouseY, false, true, Action.OBJECTIVE, null);
         drawButton(graphics, ModText.get("shard.planner.materials"),
-                controlsX + (buttonWidth + 4) * 2, top + 11, buttonWidth, 18,
+                controls.controlsX() + (controls.buttonWidth() + 4) * 2, controls.controlsY(),
+                controls.buttonWidth(), 18,
                 mouseX, mouseY, config.shardPlannerMaterialsOnly, true, Action.MATERIALS_ONLY, null);
         drawButton(graphics, ModText.get("shard.planner.calculate"),
-                controlsX + (buttonWidth + 4) * 3, top + 11, buttonWidth, 18,
+                controls.controlsX() + (controls.buttonWidth() + 4) * 3, controls.controlsY(),
+                controls.buttonWidth(), 18,
                 mouseX, mouseY, true, true, Action.CALCULATE, null);
 
-        int contentTop = bodyY + 41;
+        int contentTop = controls.contentTop();
         if (currentPlan == null) return;
         if (!currentPlan.possible()) {
             drawWrapped(graphics, ModText.get("shard.planner.problem", currentPlan.problem()),
@@ -415,11 +424,12 @@ public final class ShardPlanningScreen extends Screen {
 
     private void drawRecipes(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         drawLabel(graphics, ModText.get("shard.planner.recipe.input"), bodyX + 8, bodyY + 7);
-        int fieldWidth = Math.max(70, Math.min(220, (bodyWidth - 40) / 2));
+        int fieldWidth = recipeFieldWidth(bodyWidth);
         drawLabel(graphics, ModText.get("shard.planner.recipe.output"), bodyX + 20 + fieldWidth, bodyY + 7);
         List<ShardFusionCatalog.Recipe> recipes = filteredRecipes();
+        int matchWidth = Math.min(170, Math.max(1, bodyWidth / 3));
         drawFitted(graphics, ModText.get("shard.planner.recipe.matches", recipes.size()),
-                bodyX + bodyWidth - 180, bodyY + 22, 170, AcaUiTheme.TEXT_DIM);
+                bodyX + bodyWidth - matchWidth - 8, bodyY + 22, matchWidth, AcaUiTheme.TEXT_DIM);
         int startY = bodyY + 45;
         int rowHeight = 37;
         int visible = Math.max(1, (bodyY + bodyHeight - startY - 4) / rowHeight);
@@ -445,14 +455,17 @@ public final class ShardPlanningScreen extends Screen {
     }
 
     private void drawShards(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        ShardPageLayout shardLayout = shardPageLayout(bodyX, bodyY, bodyWidth, bodyHeight);
         drawLabel(graphics, ModText.get("shard.planner.shard.search"), bodyX + 8, bodyY + 7);
-        int listWidth = Math.min(250, Math.max(110, bodyWidth / 3));
+        int listWidth = shardLayout.listWidth();
         List<ShardFusionCatalog.Shard> results = catalog.search(shardQuery);
         int y = bodyY + 43;
         int visible = Math.max(1, (bodyHeight - 48) / 22);
-        for (int index = 0; index < Math.min(visible, results.size()); index++) {
+        maximumScroll = Math.max(0, results.size() - visible);
+        scroll = Math.clamp(scroll, 0, maximumScroll);
+        for (int index = scroll; index < Math.min(scroll + visible, results.size()); index++) {
             ShardFusionCatalog.Shard shard = results.get(index);
-            int rowY = y + index * 22;
+            int rowY = y + (index - scroll) * 22;
             boolean active = shard.id().equals(selectedShardId);
             graphics.fill(bodyX + 6, rowY, bodyX + listWidth, rowY + 20,
                     active ? 0xFF303A3F : AcaUiTheme.CARD);
@@ -463,13 +476,18 @@ public final class ShardPlanningScreen extends Screen {
         }
         ShardFusionCatalog.Shard shard = selectedShard();
         if (shard == null) return;
-        int x = bodyX + listWidth + 10;
-        int width = bodyX + bodyWidth - x - 8;
+        int x = shardLayout.detailX();
+        int width = shardLayout.detailWidth();
         graphics.item(itemResolver.item(shard), x, bodyY + 7);
         drawFitted(graphics, shard.displayName(), x + 21, bodyY + 7, width - 21, shard.rarity().color());
         drawFitted(graphics, shard.id() + " · " + shard.attributeName(), x + 21, bodyY + 19,
                 width - 21, shard.category().color());
-        int cursor = bodyY + 47;
+
+        int viewportTop = shardLayout.detailViewportY();
+        int viewportBottom = viewportTop + shardLayout.detailViewportHeight();
+        detailScroll = Math.clamp(detailScroll, 0, detailMaximumScroll);
+        graphics.enableScissor(x, viewportTop, x + width, viewportBottom);
+        int cursor = viewportTop - detailScroll;
         cursor = drawMetadata(graphics, ModText.get("shard.info.effect"), effectText(shard),
                 x, cursor, width, effectColor(shard));
         cursor = drawMetadata(graphics, ModText.get("shard.info.family"),
@@ -484,16 +502,35 @@ public final class ShardPlanningScreen extends Screen {
             cursor += drawWrapped(graphics, "• " + acquisition.text(), x, cursor, width,
                     acquisition.kind().color(), 5);
         }
-        int rateY = Math.min(bodyY + bodyHeight - 44, Math.max(cursor + 7, bodyY + 120));
-        drawLabel(graphics, ModText.get("shard.planner.rate"), x, rateY);
-        int saveX = bodyX + Math.min(270, bodyWidth / 2) + 96;
-        drawButton(graphics, ModText.get("shard.planner.save"), saveX, bodyY + 19,
-                54, 18, mouseX, mouseY, false, true, Action.SAVE_RATE, shard);
-        drawButton(graphics, ModText.get("shard.planner.reset"), saveX + 58, bodyY + 19,
-                54, 18, mouseX, mouseY, false, true, Action.RESET_RATE, shard);
+        int contentHeight = cursor + detailScroll - viewportTop;
+        detailMaximumScroll = Math.max(0, contentHeight - shardLayout.detailViewportHeight());
+        detailScroll = Math.clamp(detailScroll, 0, detailMaximumScroll);
+        graphics.disableScissor();
+
+        graphics.fill(x, shardLayout.rateY() - 4, x + width,
+                shardLayout.rateY() - 3, AcaUiTheme.BORDER_SOFT);
+        if (detailMaximumScroll > 0) {
+            int trackX = x + width - 2;
+            int thumbHeight = Math.max(12, shardLayout.detailViewportHeight()
+                    * shardLayout.detailViewportHeight()
+                    / (shardLayout.detailViewportHeight() + detailMaximumScroll));
+            int travel = Math.max(0, shardLayout.detailViewportHeight() - thumbHeight);
+            int thumbY = shardLayout.detailViewportY()
+                    + (detailMaximumScroll == 0 ? 0 : travel * detailScroll / detailMaximumScroll);
+            graphics.fill(trackX, shardLayout.detailViewportY(), trackX + 2,
+                    shardLayout.detailViewportY() + shardLayout.detailViewportHeight(), AcaUiTheme.CONTROL);
+            graphics.fill(trackX, thumbY, trackX + 2, thumbY + thumbHeight, AcaUiTheme.ACCENT);
+        }
+        drawLabel(graphics, ModText.get("shard.planner.rate"), x, shardLayout.rateY());
+        drawButton(graphics, ModText.get("shard.planner.save"), shardLayout.saveX(),
+                shardLayout.rateControlY(), shardLayout.buttonWidth(), 18,
+                mouseX, mouseY, false, true, Action.SAVE_RATE, shard);
+        drawButton(graphics, ModText.get("shard.planner.reset"), shardLayout.resetX(),
+                shardLayout.rateControlY(), shardLayout.buttonWidth(), 18,
+                mouseX, mouseY, false, true, Action.RESET_RATE, shard);
         drawFitted(graphics, ModText.get("shard.planner.rate.baseline",
                         displayDecimal(ShardAcquisitionRates.instance().rate(shard.id()))),
-                x, rateY + 15, width, AcaUiTheme.TEXT_DIM);
+                x, shardLayout.rateBaselineY(), width, AcaUiTheme.TEXT_DIM);
     }
 
     private void drawLines(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
@@ -506,13 +543,17 @@ public final class ShardPlanningScreen extends Screen {
         Graph graph = graph(focus);
         int graphTop = bodyY + 46;
         int graphHeight = bodyY + bodyHeight - graphTop - 5;
+        int graphCanvasHeight = graphCanvasHeight(graph.nodes().size(), bodyWidth, graphHeight);
+        maximumScroll = Math.max(0, graphCanvasHeight - graphHeight);
+        scroll = Math.clamp(scroll, 0, maximumScroll);
+        graphics.enableScissor(bodyX + 1, graphTop, bodyX + bodyWidth - 1, graphTop + graphHeight);
         for (GraphEdge edge : graph.edges()) {
-            GraphPosition from = position(edge.from(), graph.nodes(), graphTop, graphHeight);
-            GraphPosition to = position(edge.to(), graph.nodes(), graphTop, graphHeight);
+            GraphPosition from = position(edge.from(), graph.nodes(), graphCanvasHeight);
+            GraphPosition to = position(edge.to(), graph.nodes(), graphCanvasHeight);
             int x1 = bodyX + 8 + from.x() + NODE_WIDTH / 2;
-            int y1 = graphTop + from.y() + NODE_HEIGHT / 2;
+            int y1 = graphTop + from.y() - scroll + NODE_HEIGHT / 2;
             int x2 = bodyX + 8 + to.x() + NODE_WIDTH / 2;
-            int y2 = graphTop + to.y() + NODE_HEIGHT / 2;
+            int y2 = graphTop + to.y() - scroll + NODE_HEIGHT / 2;
             int color = edge.kind() == ShardFusionCatalog.FusionKind.SPECIAL
                     ? ShardFusionCatalog.TextTone.DARK_PURPLE.color()
                     : edge.kind() == ShardFusionCatalog.FusionKind.CHAMELEON
@@ -523,9 +564,10 @@ public final class ShardPlanningScreen extends Screen {
             graphics.fill(Math.min(mid, x2), y2, Math.max(mid, x2) + 1, y2 + 1, color);
         }
         for (ShardFusionCatalog.Shard shard : graph.nodes()) {
-            GraphPosition position = position(shard.id(), graph.nodes(), graphTop, graphHeight);
+            GraphPosition position = position(shard.id(), graph.nodes(), graphCanvasHeight);
             int x = bodyX + 8 + position.x();
-            int y = graphTop + position.y();
+            int y = graphTop + position.y() - scroll;
+            if (y + NODE_HEIGHT < graphTop || y > graphTop + graphHeight) continue;
             boolean active = shard.id().equals(selectedLineId);
             graphics.fill(x, y, x + NODE_WIDTH, y + NODE_HEIGHT,
                     active ? 0xFF303A3F : AcaUiTheme.CARD);
@@ -536,6 +578,7 @@ public final class ShardPlanningScreen extends Screen {
             drawFitted(graphics, shard.id(), x + 24, y + 16, NODE_WIDTH - 28, AcaUiTheme.TEXT_DIM);
             hits.add(new Hit(Action.DRAG_NODE, shard, x, y, NODE_WIDTH, NODE_HEIGHT));
         }
+        graphics.disableScissor();
     }
 
     private void drawWarehouse(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
@@ -578,11 +621,18 @@ public final class ShardPlanningScreen extends Screen {
     }
 
     private void drawSettings(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        if (!settingsContentFits(bodyHeight)) {
+            drawCenteredFitted(graphics, ModText.get("shard.insufficient_space"),
+                    bodyX + 8, bodyY + 8, Math.max(1, bodyWidth - 16), Math.max(1, bodyHeight - 16),
+                    AcaUiTheme.TEXT_DIM);
+            return;
+        }
         var config = ConfigManager.get().inventory;
+        SettingsLayout settings = settingsLayout(bodyX, bodyY, bodyWidth);
         int y = bodyY + 8;
         drawLabel(graphics, ModText.get("shard.planner.settings.title"), bodyX + 9, y);
-        int left = bodyX + 9;
-        int right = bodyX + Math.max(260, bodyWidth / 2);
+        int left = settings.leftLabelX();
+        int right = settings.rightLabelX();
         String[] leftLabels = {
                 ModText.get("shard.planner.hunter_fortune"),
                 ModText.get("shard.planner.crocodile"),
@@ -593,36 +643,45 @@ public final class ShardPlanningScreen extends Screen {
                 ModText.get("shard.planner.kuudra_seconds")
         };
         for (int index = 0; index < leftLabels.length; index++) {
-            drawFitted(graphics, leftLabels[index], left, bodyY + 34 + index * 28,
-                    140, AcaUiTheme.TEXT_MUTED);
+            drawFitted(graphics, leftLabels[index], left, settings.leftFieldY() + 4 + index * 28,
+                    settings.labelWidth(), AcaUiTheme.TEXT_MUTED);
         }
         for (int index = 0; index < rightLabels.length; index++) {
-            drawFitted(graphics, rightLabels[index], right, bodyY + 34 + index * 28,
-                    150, AcaUiTheme.TEXT_MUTED);
+            drawFitted(graphics, rightLabels[index], right, settings.rightFieldY() + 4 + index * 28,
+                    settings.labelWidth(), AcaUiTheme.TEXT_MUTED);
         }
-        int toggleY = bodyY + 132;
+        int toggleY = settings.toggleY();
         drawToggleRow(graphics, ModText.get("shard.planner.use_warehouse"),
-                config.shardPlannerUseWarehouse, left, toggleY, mouseX, mouseY,
+                config.shardPlannerUseWarehouse, left, toggleY,
+                Math.max(1, bodyX + bodyWidth - left - 8), mouseX, mouseY,
                 Action.USE_WAREHOUSE);
         drawToggleRow(graphics, ModText.get("shard.planner.instant_buy"),
-                config.shardPlannerInstantBuy, left, toggleY + 27, mouseX, mouseY,
+                config.shardPlannerInstantBuy, left, toggleY + 27,
+                Math.max(1, bodyX + bodyWidth - left - 8), mouseX, mouseY,
                 Action.INSTANT_BUY);
+        int tierWidth = Math.max(1, bodyX + bodyWidth - right - 8);
+        int tierButtonWidth = Math.min(64, Math.max(1, tierWidth / 3));
         drawFitted(graphics, ModText.get("shard.planner.kuudra_tier"), right,
-                toggleY, 145, AcaUiTheme.TEXT_MUTED);
-        drawButton(graphics, config.shardPlannerKuudraTier, right + 154, toggleY - 3,
-                64, 18, mouseX, mouseY, false, true, Action.KUUDRA_TIER, null);
-        drawPriceStatus(graphics, left, toggleY + 64, bodyWidth - 24);
+                settings.tierY(), Math.max(1, tierWidth - tierButtonWidth - 8), AcaUiTheme.TEXT_MUTED);
+        drawButton(graphics, config.shardPlannerKuudraTier,
+                right + tierWidth - tierButtonWidth, settings.tierY() - 3,
+                tierButtonWidth, 18, mouseX, mouseY, false, true, Action.KUUDRA_TIER, null);
+        drawPriceStatus(graphics, left, settings.priceY(), bodyWidth - 24);
         drawWrapped(graphics, ModText.get("shard.planner.settings.persistence"), left,
-                toggleY + 96, bodyWidth - 24, AcaUiTheme.TEXT_DIM, 4);
+                settings.persistenceY(), bodyWidth - 24, AcaUiTheme.TEXT_DIM, 4);
         drawWrapped(graphics, ModText.get("shard.planner.settings.client_only"), left,
-                toggleY + 139, bodyWidth - 24, AcaUiTheme.SUCCESS, 4);
+                settings.clientOnlyY(), bodyWidth - 24, AcaUiTheme.SUCCESS, 4);
     }
 
     private void drawToggleRow(GuiGraphicsExtractor graphics, String label, boolean enabled,
-                               int x, int y, int mouseX, int mouseY, Action action) {
-        drawFitted(graphics, label, x, y, 180, AcaUiTheme.TEXT_MUTED);
-        AcaUiTheme.toggle(graphics, x + 188, y - 3, enabled);
-        hits.add(new Hit(action, null, x, y - 4, 222, 20));
+                               int x, int y, int availableWidth,
+                               int mouseX, int mouseY, Action action) {
+        int rowWidth = Math.max(1, availableWidth);
+        int toggleWidth = Math.min(34, rowWidth);
+        int toggleX = x + rowWidth - toggleWidth;
+        drawFitted(graphics, label, x, y, Math.max(1, toggleX - x - 8), AcaUiTheme.TEXT_MUTED);
+        AcaUiTheme.toggle(graphics, toggleX, y - 3, enabled);
+        hits.add(new Hit(action, null, x, y - 4, rowWidth, 20));
     }
 
     private void drawPriceStatus(GuiGraphicsExtractor graphics, int x, int y, int width) {
@@ -647,7 +706,7 @@ public final class ShardPlanningScreen extends Screen {
                              int x, int y, int width, int color) {
         if (value == null || value.isBlank()) return y;
         drawFitted(graphics, label + ":", x, y, width, AcaUiTheme.TEXT_DIM);
-        int lines = drawWrapped(graphics, value, x + 10, y + 13, width - 10, color, 5);
+        int lines = drawWrapped(graphics, value, x + 10, y + 13, width - 12, color, 64);
         return y + 13 + lines + 5;
     }
 
@@ -738,10 +797,10 @@ public final class ShardPlanningScreen extends Screen {
     }
 
     private GraphPosition position(String id, List<ShardFusionCatalog.Shard> nodes,
-                                   int graphTop, int graphHeight) {
+                                   int graphCanvasHeight) {
         String saved = ConfigManager.get().inventory.shardFusionLinePositions.get(id);
         int maxX = Math.max(0, bodyWidth - NODE_WIDTH - 16);
-        int maxY = Math.max(0, graphHeight - NODE_HEIGHT);
+        int maxY = Math.max(0, graphCanvasHeight - NODE_HEIGHT);
         if (saved != null) {
             String[] parts = saved.split(",", 2);
             try {
@@ -852,6 +911,7 @@ public final class ShardPlanningScreen extends Screen {
                 selectedShardId = shard.id();
                 shardQuery = shard.id();
                 scroll = 0;
+                detailScroll = 0;
                 rebuildWidgets();
             }
             case SAVE_RATE -> saveRate((ShardFusionCatalog.Shard) hit.value());
@@ -903,10 +963,12 @@ public final class ShardPlanningScreen extends Screen {
         if (draggingNode != null && page == Page.LINES) {
             int graphTop = bodyY + 46;
             int graphHeight = bodyY + bodyHeight - graphTop - 5;
+            int graphCanvasHeight = graphCanvasHeight(graph(selectedLineShard()).nodes().size(),
+                    bodyWidth, graphHeight);
             int maxX = Math.max(0, bodyWidth - NODE_WIDTH - 16);
-            int maxY = Math.max(0, graphHeight - NODE_HEIGHT);
+            int maxY = Math.max(0, graphCanvasHeight - NODE_HEIGHT);
             int x = Math.clamp((int) click.x() - (bodyX + 8) - dragOffsetX, 0, maxX);
-            int y = Math.clamp((int) click.y() - graphTop - dragOffsetY, 0, maxY);
+            int y = Math.clamp((int) click.y() - graphTop + scroll - dragOffsetY, 0, maxY);
             ConfigManager.get().inventory.shardFusionLinePositions.put(draggingNode, x + "," + y);
             return true;
         }
@@ -925,6 +987,19 @@ public final class ShardPlanningScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontal, double vertical) {
+        if (page == Page.SHARDS) {
+            ShardPageLayout shardLayout = shardPageLayout(bodyX, bodyY, bodyWidth, bodyHeight);
+            if (contains(mouseX, mouseY, shardLayout.detailX(), shardLayout.detailViewportY(),
+                    shardLayout.detailWidth(), shardLayout.detailViewportHeight())) {
+                detailScroll = Math.clamp(detailScroll - (int) Math.round(vertical * 18),
+                        0, detailMaximumScroll);
+                return true;
+            }
+            if (contains(mouseX, mouseY, bodyX, bodyY, shardLayout.listWidth(), bodyHeight)) {
+                scroll = Math.clamp(scroll - (int) Math.round(vertical * 3), 0, maximumScroll);
+                return true;
+            }
+        }
         if (contains(mouseX, mouseY, bodyX, bodyY, bodyWidth, bodyHeight)) {
             scroll = Math.clamp(scroll - (int) Math.signum(vertical), 0, maximumScroll);
             return true;
@@ -1079,6 +1154,87 @@ public final class ShardPlanningScreen extends Screen {
         return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
     }
 
+    static PlanControlsLayout planControlsLayout(int bodyX, int bodyY, int bodyWidth) {
+        int innerX = bodyX + 8;
+        int innerWidth = Math.max(1, bodyWidth - 16);
+        boolean compact = bodyWidth < 600;
+        if (!compact) {
+            int targetWidth = Math.min(190, Math.max(1, innerWidth / 3));
+            int quantityX = innerX + targetWidth + 8;
+            int quantityWidth = Math.min(68, Math.max(1, innerX + innerWidth - quantityX));
+            int controlsX = quantityX + quantityWidth + 10;
+            int buttonWidth = Math.min(86, Math.max(1, (innerX + innerWidth - controlsX - 12) / 4));
+            return new PlanControlsLayout(innerX, bodyY + 5, targetWidth, quantityX, quantityWidth,
+                    bodyY + 16, controlsX, bodyY + 16, buttonWidth, bodyY + 41);
+        }
+        int targetWidth = Math.max(1, (innerWidth - 8) * 2 / 3);
+        int quantityX = innerX + targetWidth + 8;
+        int quantityWidth = Math.max(1, innerX + innerWidth - quantityX);
+        int buttonWidth = Math.max(1, (innerWidth - 12) / 4);
+        return new PlanControlsLayout(innerX, bodyY + 5, targetWidth, quantityX, quantityWidth,
+                bodyY + 16, innerX, bodyY + 41, buttonWidth, bodyY + 66);
+    }
+
+    static int recipeFieldWidth(int bodyWidth) {
+        return Math.max(1, Math.min(220, (bodyWidth - 40) / 2));
+    }
+
+    static ShardPageLayout shardPageLayout(int bodyX, int bodyY, int bodyWidth, int bodyHeight) {
+        int listWidth = Math.min(250, Math.max(110, bodyWidth / 3));
+        listWidth = Math.min(listWidth, Math.max(1, bodyWidth - 74));
+        int detailX = bodyX + listWidth + 10;
+        int detailWidth = Math.max(1, bodyX + bodyWidth - detailX - 8);
+        int rateY = bodyY + Math.max(44, bodyHeight - 50);
+        int controlY = rateY + 13;
+        int buttonWidth = Math.min(54, Math.max(1, (detailWidth - 12) / 3));
+        int resetX = detailX + detailWidth - buttonWidth;
+        int saveX = resetX - buttonWidth - 4;
+        int inputWidth = Math.max(1, saveX - detailX - 4);
+        int viewportY = bodyY + 43;
+        int viewportHeight = Math.max(1, rateY - viewportY - 7);
+        return new ShardPageLayout(listWidth, detailX, detailWidth, viewportY, viewportHeight,
+                rateY, detailX, inputWidth, controlY, saveX, resetX, buttonWidth, controlY + 22);
+    }
+
+    static SettingsLayout settingsLayout(int bodyX, int bodyY, int bodyWidth) {
+        int innerX = bodyX + 9;
+        int innerWidth = Math.max(1, bodyWidth - 18);
+        boolean stacked = bodyWidth < 560;
+        int fieldWidth = Math.min(92, Math.max(1, innerWidth / (stacked ? 2 : 5)));
+        int labelWidth = Math.min(150,
+                Math.max(1, (stacked ? innerWidth : innerWidth / 2) - fieldWidth - 8));
+        int leftFieldX = innerX + labelWidth;
+        int leftFieldY = bodyY + 29;
+        int rightLabelX = stacked ? innerX : bodyX + bodyWidth / 2;
+        int rightFieldX = rightLabelX + labelWidth;
+        int rightFieldY = stacked ? leftFieldY + 91 : leftFieldY;
+        int toggleY = stacked ? rightFieldY + 72 : bodyY + 132;
+        int tierY = stacked ? toggleY + 54 : toggleY;
+        int priceY = stacked ? tierY + 28 : toggleY + 64;
+        int persistenceY = priceY + 32;
+        int clientOnlyY = persistenceY + 43;
+        return new SettingsLayout(innerX, rightLabelX, labelWidth, fieldWidth,
+                leftFieldX, leftFieldY, rightFieldX, rightFieldY, toggleY,
+                tierY, priceY, persistenceY, clientOnlyY);
+    }
+
+    static boolean settingsContentFits(int bodyHeight) {
+        return bodyHeight >= 250;
+    }
+
+    static int graphCanvasHeight(int nodeCount, int bodyWidth, int graphHeight) {
+        int columns = Math.max(1, Math.max(1, bodyWidth - 16) / (NODE_WIDTH + 18));
+        int rows = Math.max(1, (Math.max(0, nodeCount) + columns - 1) / columns);
+        return Math.max(graphHeight, rows * (NODE_HEIGHT + 16) - 16);
+    }
+
+    private ShardFusionCatalog.Shard selectedLineShard() {
+        ShardFusionCatalog.Shard selected = catalog.byId(selectedLineId).orElse(null);
+        if (selected != null) return selected;
+        return catalog.search(lineQuery).stream().findFirst()
+                .orElseGet(() -> catalog.shards().getFirst());
+    }
+
     private enum Page {
         PLAN("shard.planner.tab.plan"),
         RECIPES("shard.planner.tab.recipes"),
@@ -1119,6 +1275,22 @@ public final class ShardPlanningScreen extends Screen {
     }
 
     private record GraphPosition(int x, int y) {
+    }
+
+    record PlanControlsLayout(int targetX, int labelY, int targetWidth,
+                              int quantityX, int quantityWidth, int fieldY,
+                              int controlsX, int controlsY, int buttonWidth, int contentTop) {
+    }
+
+    record ShardPageLayout(int listWidth, int detailX, int detailWidth,
+                           int detailViewportY, int detailViewportHeight, int rateY,
+                           int rateInputX, int rateInputWidth, int rateControlY,
+                           int saveX, int resetX, int buttonWidth, int rateBaselineY) {
+    }
+
+    record SettingsLayout(int leftLabelX, int rightLabelX, int labelWidth, int fieldWidth,
+                          int leftFieldX, int leftFieldY, int rightFieldX, int rightFieldY,
+                          int toggleY, int tierY, int priceY, int persistenceY, int clientOnlyY) {
     }
 
 }

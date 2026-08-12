@@ -1,4 +1,4 @@
-# QCloudy_Addition Alpha 2.6.14 pet-level and unified-controls validation
+# QCloudy_Addition Alpha 2.6.15 responsive-UI validation
 
 Date: 2026-08-12<br>
 Minecraft: 26.1.2<br>
@@ -6,29 +6,29 @@ Java: 25
 
 Validated artifacts:
 
-- `release/QCloudy_Addition-Alpha-2.6.14+26.1.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.14+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.15+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.15+26.1.2-sources.jar`
 
-Playable SHA-256: `637d4426dccb0e8732e0c59dd119d5039d72938f72942a766859d9996fd20273`<br>
-Sources SHA-256: `df5b06c8f171d71f9ddc45cadf294f494b6b344f530e3059d2d524e20a64fdf4`
+Playable SHA-256: `5f66cc0f698307fadee91652352ce012190af9ab030143a3309c9f2b349b8d28`<br>
+Sources SHA-256: `17d15e04bee3787b125c10032c6f81553ca32800a804ba94381957cb31a88613`
 
-Alpha 2.6.14 fixes the Ancient Golden Dragon overflow-level fallback while preserving the first function-first settings and HUD integration from 2.6.13. An unmaxed Golden Dragon now keeps the level received from Hypixel; cosmetic level 200+ is only calculated after exact total experience reaches the real maximum. The optional integrations remain version-locked to SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1, and QCA remains standalone.
+Alpha 2.6.15 corrects the Shard Planner screenshot regression and audits the surrounding configuration UI. Shard details now keep the title, metadata, wrapped acquisition text, rate input, and actions in separate regions; result and detail scrolling are independent. Planner controls reflow before collision, Fusion Lines use a scrollable canvas, and the main settings screen, secondary settings, RGB picker, and HUD editor constrain text, controls, clipping, and hitboxes to their visible bounds.
 
 Verified in this workspace:
 
-- Java 25 `clean test build prepareRelease` completed successfully: 151 tests, 0 failures, 0 errors, 0 skips.
-- Regression tests verify that an unmaxed Ancient Golden Dragon keeps its received level with both exact and unavailable total XP, while a truly maxed Ancient Golden Dragon retains supported cosmetic overflow levels.
-- Main and test compilation completed from a clean output directory, eliminating the stale duplicate-class files found before `clean`.
-- Expanded `fabric.mod.json` declares the Fabric-compatible semantic version `2.6.14-alpha+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+. The distributable filename retains the required `QCloudy_Addition-Alpha-2.6.14+26.1.2.jar` scheme.
+- Java 25 `clean test build prepareRelease` completed successfully: 160 tests, 0 failures, 0 errors, 0 skips.
+- Deterministic geometry tests cover wide and narrow Shard detail columns, separated rate controls, compact Plan controls, narrow Settings stacking and safe short-screen fallback, Recipe field widths, Fusion Lines canvas growth, secondary-setting sliders, RGB bars, and preset swatches.
+- Main and test compilation completed from a clean output directory.
+- Expanded `fabric.mod.json` declares `2.6.15-alpha+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+. The distributable filename is `QCloudy_Addition-Alpha-2.6.15+26.1.2.jar`.
 - Binary and Sources artifacts in `build/libs/` are byte-identical to the corresponding `release/` artifacts.
-- The playable JAR passes `unzip -t`; English and Chinese language files have identical key sets; `git diff --check` passes.
+- Both JARs pass JDK 25 `jar --validate` and `unzip -t`; English and Chinese language files each contain 467 keys with identical key sets; `git diff --check` passes.
 - The optional integration has no compile-time dependency on any provider and does not add an HTTP client, packet, chat command, container click, gameplay input, or server-data request.
-- A development client loaded QCA and the four exact reviewed provider builds together through mod initialization and resource reload without a QCA initialization crash. The observed offline-authentication 401 and BabyZombieAddons/Firmament warnings belonged to the development account or those provider builds.
+- Static matrix/scissor review confirms balanced push/pop and enable/disable pairs in the edited configuration and inventory screens.
 
 Outstanding Alpha regression boundary:
 
-- The combined startup check did not exercise the settings screen inside an authenticated Hypixel session. Automated checks cannot prove every reflected native option, exact-equivalent alias, provider save path, or HUD coordinate convention. Before promotion to Beta, manually test all four exact provider versions together and separately, including restart persistence, negative/right-anchored coordinates, GUI Scale changes, provider switching, and unknown-version fail-closed behavior.
-- This first Alpha intentionally does not expose opaque compound provider color/keybind editor objects. Those remain editable in each provider's native screen and require dedicated adapters before they can be represented honestly in QCA.
+- Geometry tests and archive checks do not replace visual testing in a live Minecraft renderer. Before wider publication, open all six Shard Planner tabs, the main and secondary settings pages, the RGB picker, and the HUD editor at every GUI Scale used by the target modpack; verify both languages, resize/re-init, long provider names, mouse hitboxes, and scrolling.
+- The combined settings/provider integration still requires authenticated in-game regression for all four exact provider builds, including restart persistence, negative/right-anchored HUD coordinates, provider switching, and unknown-version fail-closed behavior.
 
 ---
 

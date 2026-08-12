@@ -80,7 +80,7 @@ public final class ConfigScreen extends Screen {
         layoutWindow();
         int textY = searchFrameY + Math.max(0, (TOP_CONTROL_HEIGHT - font.lineHeight) / 2);
         searchBox = new EditBox(font, searchFrameX + SEARCH_HORIZONTAL_PADDING, textY,
-                searchFrameWidth - SEARCH_HORIZONTAL_PADDING * 2, font.lineHeight,
+                Math.max(1, searchFrameWidth - SEARCH_HORIZONTAL_PADDING * 2), font.lineHeight,
                 ModText.component("config.search"));
         searchBox.setBordered(false);
         searchBox.setTextShadow(false);
@@ -96,23 +96,28 @@ public final class ConfigScreen extends Screen {
     }
 
     private void layoutWindow() {
-        windowWidth = Math.min(640, Math.max(320, width - 20));
-        windowHeight = Math.min(380, Math.max(220, height - 20));
+        windowWidth = Math.max(1, Math.min(640, width - Math.min(20, Math.max(0, width - 1))));
+        windowHeight = Math.max(1, Math.min(380, height - Math.min(20, Math.max(0, height - 1))));
         windowX = (width - windowWidth) / 2;
         windowY = (height - windowHeight) / 2;
-        sidebarWidth = windowWidth >= 460 ? 112 : 88;
-        contentX = windowX + sidebarWidth + 10;
-        contentY = windowY + 68;
-        contentWidth = windowWidth - sidebarWidth - 20;
-        contentHeight = windowHeight - 80;
+        int contentGap = Math.min(10, Math.max(1, windowWidth / 20));
+        int requestedSidebar = windowWidth >= 460 ? 112 : Math.max(54, windowWidth / 4);
+        sidebarWidth = Math.max(1, Math.min(Math.max(1, windowWidth - contentGap - 1), requestedSidebar));
+        contentX = windowX + sidebarWidth + contentGap;
+        int availableContentWidth = Math.max(1, windowWidth - sidebarWidth - contentGap);
+        int rightInset = Math.min(10, Math.max(0, availableContentWidth - 1));
+        contentY = windowY + Math.min(68, Math.max(0, windowHeight - 1));
+        contentWidth = Math.max(1, availableContentWidth - rightInset);
+        contentHeight = Math.max(1, windowY + windowHeight - contentY
+                - Math.min(12, Math.max(0, windowHeight - (contentY - windowY) - 1)));
 
-        searchFrameWidth = Math.clamp(contentWidth / 3, 86, 150);
+        searchFrameWidth = Math.min(150, Math.max(1, contentWidth / 3));
         searchFrameX = contentX + contentWidth - searchFrameWidth;
         searchFrameY = windowY + TOP_CONTROL_Y_OFFSET;
         navigationX = contentX;
         navigationY = searchFrameY;
-        int navigationWidth = Math.max(96, searchFrameX - SEARCH_NAVIGATION_GAP - navigationX);
-        navigationTabWidth = Math.clamp(navigationWidth, 72, 92);
+        int navigationWidth = Math.max(1, searchFrameX - SEARCH_NAVIGATION_GAP - navigationX);
+        navigationTabWidth = Math.min(92, navigationWidth);
     }
 
     @Override
@@ -170,7 +175,7 @@ public final class ConfigScreen extends Screen {
         int top = windowY + 43;
         int editY = windowY + windowHeight - 52;
         int viewportHeight = Math.max(20, editY - top - 5);
-        int width = sidebarWidth - 16;
+        int width = Math.max(1, sidebarWidth - 16);
         int categorySlotHeight = sidebarCategorySlotHeight(windowHeight);
         int categoryButtonHeight = Math.min(22, categorySlotHeight - 2);
         sidebarMaximumScroll = Math.max(0, Category.values().length * categorySlotHeight - viewportHeight);
@@ -184,8 +189,8 @@ public final class ConfigScreen extends Screen {
             graphics.fill(x + 3, y, x + width, y + categoryButtonHeight,
                     selected ? 0xFF303A3F : hovered ? 0xFF2B3337 : AcaUiTheme.SIDEBAR);
             int textY = y + Math.max(2, (categoryButtonHeight - font.lineHeight) / 2);
-            graphics.text(font, ModText.get(value.key), x + 10, textY,
-                    selected ? AcaUiTheme.TEXT : AcaUiTheme.TEXT_MUTED, false);
+            drawFittedText(graphics, Component.literal(ModText.get(value.key)), x + 10, textY,
+                    Math.max(1, width - 13), selected ? AcaUiTheme.TEXT : AcaUiTheme.TEXT_MUTED);
             y += categorySlotHeight;
         }
         graphics.disableScissor();
@@ -214,7 +219,7 @@ public final class ConfigScreen extends Screen {
             return;
         }
         int columns = contentWidth >= 360 ? 2 : 1;
-        int cardWidth = (contentWidth - 5 - CARD_GAP * (columns - 1)) / columns;
+        int cardWidth = Math.max(1, (contentWidth - 5 - CARD_GAP * (columns - 1)) / columns);
         int totalHeight = 0;
         for (GroupBlock block : blocks) {
             totalHeight += GROUP_HEADER_HEIGHT;
@@ -228,8 +233,11 @@ public final class ConfigScreen extends Screen {
         scroll = Math.clamp(scroll, 0, maximumScroll);
         int y = contentY - scroll;
         for (GroupBlock block : blocks) {
-            drawGroupHeader(graphics, block, contentX, y, contentWidth - 5, mouseX, mouseY);
-            groupHits.add(new Hit<>(block.group(), contentX, y, contentWidth - 5, GROUP_HEADER_HEIGHT));
+            drawGroupHeader(graphics, block, contentX, y, Math.max(1, contentWidth - 5), mouseX, mouseY);
+            if (intersectsContent(y, GROUP_HEADER_HEIGHT)) {
+                groupHits.add(new Hit<>(block.group(), contentX, y,
+                        Math.max(1, contentWidth - 5), GROUP_HEADER_HEIGHT));
+            }
             y += GROUP_HEADER_HEIGHT + 5;
             if (block.expanded()) {
                 for (int index = 0; index < block.features().size(); index++) {
@@ -239,13 +247,19 @@ public final class ConfigScreen extends Screen {
                     int x = contentX + column * (cardWidth + CARD_GAP);
                     int cardY = y + row * (CARD_HEIGHT + CARD_GAP);
                     drawFeatureCard(graphics, feature, x, cardY, cardWidth, mouseX, mouseY);
-                    featureHits.add(new Hit<>(feature, x, cardY, cardWidth, CARD_HEIGHT));
+                    if (intersectsContent(cardY, CARD_HEIGHT)) {
+                        featureHits.add(new Hit<>(feature, x, cardY, cardWidth, CARD_HEIGHT));
+                    }
                 }
                 int rows = (block.features().size() + columns - 1) / columns;
                 y += rows * (CARD_HEIGHT + CARD_GAP) - CARD_GAP;
             }
             y += CARD_GAP;
         }
+    }
+
+    private boolean intersectsContent(int y, int height) {
+        return y + height > contentY && y < contentY + contentHeight;
     }
 
     private List<GroupBlock> groupBlocks() {
@@ -270,9 +284,9 @@ public final class ConfigScreen extends Screen {
         graphics.outline(x, y, width, GROUP_HEADER_HEIGHT,
                 hovered ? AcaUiTheme.ACCENT_DARK : AcaUiTheme.BORDER_SOFT);
         graphics.text(font, block.expanded() ? "▾" : "▸", x + 8, y + 7, AcaUiTheme.ACCENT, false);
-        graphics.text(font, Component.literal(block.group()).withStyle(ChatFormatting.BOLD),
-                x + 22, y + 7, AcaUiTheme.TEXT, false);
         String count = Integer.toString(block.features().size());
+        drawFittedText(graphics, Component.literal(block.group()).withStyle(ChatFormatting.BOLD),
+                x + 22, y + 7, Math.max(1, width - font.width(count) - 46), AcaUiTheme.TEXT);
         graphics.text(font, count, x + width - font.width(count) - 10, y + 7, AcaUiTheme.TEXT_DIM, false);
     }
 
@@ -285,16 +299,16 @@ public final class ConfigScreen extends Screen {
         graphics.outline(x, y, cardWidth, CARD_HEIGHT, hovered ? AcaUiTheme.ACCENT_DARK : AcaUiTheme.BORDER_SOFT);
         graphics.fill(x, y, x + 3, y + CARD_HEIGHT, enabled ? AcaUiTheme.ACCENT : AcaUiTheme.BORDER);
         Component title = Component.literal(feature.title).withStyle(ChatFormatting.BOLD);
-        drawFittedText(graphics, title, x + 10, y + 8, Math.max(30, cardWidth - 20), AcaUiTheme.TEXT);
+        drawFittedText(graphics, title, x + 10, y + 8, Math.max(1, cardWidth - 20), AcaUiTheme.TEXT);
         List<FormattedCharSequence> lines = font.split(Component.literal(feature.description),
-                Math.max(40, cardWidth - 20));
+                Math.max(1, cardWidth - 20));
         for (int i = 0; i < Math.min(2, lines.size()); i++) {
             graphics.text(font, lines.get(i), x + 10, y + 24 + i * 10, AcaUiTheme.TEXT_MUTED, false);
         }
         String provider = feature.selectedProvider().displayName;
         String footer = feature.group + " · " + provider;
         drawFittedText(graphics, Component.literal(footer), x + 10, y + 57,
-                Math.max(30, cardWidth - 20), AcaUiTheme.TEXT_DIM);
+                Math.max(1, cardWidth - 20), AcaUiTheme.TEXT_DIM);
     }
 
     private void drawEmpty(GuiGraphicsExtractor graphics) {

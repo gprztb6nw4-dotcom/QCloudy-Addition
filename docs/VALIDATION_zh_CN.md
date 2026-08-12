@@ -1,4 +1,4 @@
-# QCloudy_Addition Alpha 2.6.14 宠物等级与统一控制验证
+# QCloudy_Addition Alpha 2.6.15 响应式 UI 验证
 
 日期：2026-08-12<br>
 Minecraft：26.1.2<br>
@@ -6,29 +6,29 @@ Java：25
 
 已验证产物：
 
-- `release/QCloudy_Addition-Alpha-2.6.14+26.1.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.14+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.15+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.15+26.1.2-sources.jar`
 
-可运行 JAR SHA-256：`637d4426dccb0e8732e0c59dd119d5039d72938f72942a766859d9996fd20273`<br>
-源码 JAR SHA-256：`df5b06c8f171d71f9ddc45cadf294f494b6b344f530e3059d2d524e20a64fdf4`
+可运行 JAR SHA-256：`5f66cc0f698307fadee91652352ce012190af9ab030143a3309c9f2b349b8d28`<br>
+源码 JAR SHA-256：`17d15e04bee3787b125c10032c6f81553ca32800a804ba94381957cb31a88613`
 
-Alpha 2.6.14 修复 Ancient Golden Dragon 的溢出等级回退，同时保留 2.6.13 首次加入的统一设置与 HUD 集成。未满级 Golden Dragon 现在保留 Hypixel 发来的等级；只有精确总经验真正达到满级门槛后才会计算 200 以上的皮肤溢出等级。可选集成仍锁定到 SkyHanni 7.41.0、Skyblocker 6.8.2、Firmament 44.3.0、BabyZombieAddons 3.4.1，QCA 仍可独立运行。
+Alpha 2.6.15 修复截图中的 Shard Planner 错位，并对相关配置 UI 做系统性检查。Shard 详情标题、属性、自动换行的获取说明、速度输入框和按钮现在使用互不重叠的区域；结果列表和详情独立滚动。Planner 控件会在碰撞前重排，Fusion Lines 使用可滚动画布；主设置、功能二级设置、RGB 选择器和 HUD 编辑器也会把文字、控件、裁剪和点击区限制在可见边界内。
 
 本工作区已验证：
 
-- Java 25 `clean test build prepareRelease` 成功：151 项测试，0 failure、0 error、0 skip。
-- 回归测试确认：未满级 Ancient Golden Dragon 在有精确总经验或无法取得精确经验时都会保留收到的真实等级；真正满级后仍支持正确的皮肤溢出等级。
-- 主代码与测试从干净输出目录重新编译；`clean` 已清除此前发现的旧重复 `.class`。
-- 展开后的 `fabric.mod.json` 声明符合 Fabric 版本比较规则的语义版本 `2.6.14-alpha+26.1.2`、纯客户端、Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+、Java 25+；发布文件名仍遵循指定的 `QCloudy_Addition-Alpha-2.6.14+26.1.2.jar` 规则。
+- Java 25 `clean test build prepareRelease` 成功：160 项测试，0 failure、0 error、0 skip。
+- 确定性几何测试覆盖宽/窄 Shard 详情栏、独立速度控件、紧凑 Plan 控件、窄屏 Settings 单列及矮屏安全提示、Recipe 输入框宽度、Fusion Lines 画布扩展、二级设置滑块、RGB 条和预设色块。
+- 主代码与测试已从干净输出目录重新编译。
+- 展开的 `fabric.mod.json` 为 `2.6.15-alpha+26.1.2`、纯客户端，声明 Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+ 与 Java 25+；发布文件名为 `QCloudy_Addition-Alpha-2.6.15+26.1.2.jar`。
 - `build/libs/` 的可运行与源码产物分别和 `release/` 中对应文件逐字节一致。
-- 可运行 JAR 通过 `unzip -t`；中英文语言文件键集合完全一致；`git diff --check` 通过。
+- 两个 JAR 均通过 JDK 25 `jar --validate` 与 `unzip -t`；中英文语言文件各 467 个键且键集合相同；`git diff --check` 通过。
 - 可选集成不产生提供方编译依赖，也未新增 HTTP、数据包、聊天命令、菜单点击、玩法输入或服务器数据请求。
-- 开发客户端同时加载 QCA 与四个精确审查版本，已通过模组初始化和资源重载阶段，没有发生 QCA 初始化崩溃；期间出现的离线账号 401 与 BabyZombieAddons/Firmament 警告来自开发账号或对应提供方版本。
+- 对编辑过的配置与物品界面进行静态矩阵/裁剪审查，push/pop 与 enable/disable 均成对。
 
 尚未覆盖的 Alpha 实服边界：
 
-- 共同启动检查没有在已登录 Hypixel 的设置界面中逐项操作。自动检查不能证明每个反射原生选项、等价别名、提供方保存路径和 HUD 坐标规则都正确。晋级 Beta 前，应在四个精确版本分别安装及同时安装时测试重启持久化、负数/右侧锚定坐标、GUI Scale、提供方切换和未知版本安全关闭。
-- 首个 Alpha 刻意不显示不透明的复杂颜色/快捷键编辑对象；它们继续在提供方原生界面中编辑，后续需要专用适配器才能在 QCA 中准确表示。
+- 几何测试和归档检查不能代替 Minecraft 实际渲染检查。扩大发布前，应在目标整合包使用的每个 GUI Scale 下打开 Shard Planner 六个页签、主设置、二级设置、RGB 选择器和 HUD 编辑器，检查中英文、resize/re-init、长提供方名称、点击区和滚动。
+- 四个精确提供方版本的统一设置集成仍需已登录实服回归，包括重启持久化、负数/右侧锚定 HUD 坐标、提供方切换和未知版本安全关闭。
 
 ---
 

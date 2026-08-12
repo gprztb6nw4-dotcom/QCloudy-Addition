@@ -64,9 +64,12 @@ final class ColorPickerScreen extends Screen {
         graphics.fill(windowX + 4, windowY + 5, windowX + windowWidth + 5, windowY + windowHeight + 6, 0x66000000);
         AcaUiTheme.surface(graphics, windowX, windowY, windowWidth, windowHeight, AcaUiTheme.WINDOW);
         graphics.fill(windowX + 1, windowY + 1, windowX + windowWidth - 1, windowY + 34, AcaUiTheme.HEADER);
-        graphics.text(font, ModText.get("config.color_picker"), windowX + 12, windowY + 12, AcaUiTheme.TEXT, false);
-        AcaUiTheme.button(graphics, font, ModText.get("config.done"), windowX + windowWidth - 70, windowY + 8,
-                58, 18, AcaUiTheme.contains(mouseX, mouseY, windowX + windowWidth - 70, windowY + 8, 58, 18), true);
+        int doneWidth = Math.min(58, Math.max(1, windowWidth / 4));
+        int doneX = windowX + windowWidth - doneWidth - 12;
+        drawFittedText(graphics, ModText.get("config.color_picker"), windowX + 12, windowY + 12,
+                Math.max(1, doneX - windowX - 18), AcaUiTheme.TEXT);
+        AcaUiTheme.button(graphics, font, ModText.get("config.done"), doneX, windowY + 8,
+                doneWidth, 18, AcaUiTheme.contains(mouseX, mouseY, doneX, windowY + 8, doneWidth, 18), true);
 
         // Destination size is independent from the 160x160 source region. The
         // shorter overload treats the destination size as the sampled region too,
@@ -105,15 +108,16 @@ final class ColorPickerScreen extends Screen {
     }
 
     private void layout() {
-        windowWidth = Math.min(470, Math.max(318, width - 20));
-        windowHeight = Math.min(310, Math.max(250, height - 20));
+        windowWidth = Math.max(1, Math.min(470, width - Math.min(20, Math.max(0, width - 1))));
+        windowHeight = Math.max(1, Math.min(310, height - Math.min(20, Math.max(0, height - 1))));
         windowX = (width - windowWidth) / 2;
         windowY = (height - windowHeight) / 2;
-        wheelSize = Math.clamp(windowHeight - 100, 130, 190);
+        int horizontalWheelSpace = Math.max(1, windowWidth - 150);
+        wheelSize = Math.max(1, Math.min(190, Math.min(windowHeight - 100, horizontalWheelSpace)));
         wheelX = windowX + 18;
         wheelY = windowY + 47;
         sliderX = wheelX + wheelSize + 24;
-        sliderWidth = Math.max(90, windowX + windowWidth - sliderX - 18);
+        sliderWidth = Math.max(1, windowX + windowWidth - sliderX - 18);
     }
 
     private void drawBrightness(GuiGraphicsExtractor graphics, int y) {
@@ -133,7 +137,7 @@ final class ColorPickerScreen extends Screen {
         int value = channel(rgb, channel);
         graphics.text(font, label, sliderX, y + 3, AcaUiTheme.TEXT, false);
         int barX = sliderX + 15;
-        int barWidth = Math.max(45, sliderWidth - 47);
+        int barWidth = rgbBarWidth(sliderWidth);
         for (int x = 0; x < barWidth; x++) {
             int component = Math.round(x / (float) Math.max(1, barWidth - 1) * 255.0f);
             graphics.fill(barX + x, y, barX + x + 1, y + 12,
@@ -148,25 +152,30 @@ final class ColorPickerScreen extends Screen {
 
     private void drawPresets(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         int y = windowY + windowHeight - 32;
-        graphics.text(font, ModText.get("config.presets"), windowX + 14, y + 6, AcaUiTheme.TEXT_MUTED, false);
-        int x = windowX + 70;
+        PresetLayout layout = presetLayout(windowX, windowWidth, allowTransparent);
+        drawFittedText(graphics, ModText.get("config.presets"), windowX + 14, y + 6,
+                Math.max(1, layout.startX() - windowX - 18), AcaUiTheme.TEXT_MUTED);
+        int x = layout.startX();
         for (int preset : PRESETS) {
-            boolean hovered = AcaUiTheme.contains(mouseX, mouseY, x, y, 20, 20);
-            graphics.fill(x, y, x + 20, y + 20, 0xFF000000 | preset);
-            graphics.outline(x, y, 20, 20, hovered ? AcaUiTheme.ACCENT : AcaUiTheme.BORDER);
-            x += 25;
+            boolean hovered = AcaUiTheme.contains(mouseX, mouseY, x, y, layout.swatchSize(), 20);
+            graphics.fill(x, y, x + layout.swatchSize(), y + 20, 0xFF000000 | preset);
+            graphics.outline(x, y, layout.swatchSize(), 20, hovered ? AcaUiTheme.ACCENT : AcaUiTheme.BORDER);
+            x += layout.swatchSize() + layout.gap();
         }
         if (allowTransparent) {
-            boolean hovered = AcaUiTheme.contains(mouseX, mouseY, x, y, 20, 20);
-            drawTransparency(graphics, x, y, 20, 20);
-            graphics.outline(x, y, 20, 20, hovered || transparent ? AcaUiTheme.ACCENT : AcaUiTheme.BORDER);
+            boolean hovered = AcaUiTheme.contains(mouseX, mouseY, x, y, layout.swatchSize(), 20);
+            drawTransparency(graphics, x, y, layout.swatchSize(), 20);
+            graphics.outline(x, y, layout.swatchSize(), 20,
+                    hovered || transparent ? AcaUiTheme.ACCENT : AcaUiTheme.BORDER);
         }
     }
 
     @Override
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         if (click.button() != 0) return super.mouseClicked(click, doubled);
-        if (AcaUiTheme.contains(click.x(), click.y(), windowX + windowWidth - 70, windowY + 8, 58, 18)) {
+        int doneWidth = Math.min(58, Math.max(1, windowWidth / 4));
+        int doneX = windowX + windowWidth - doneWidth - 12;
+        if (AcaUiTheme.contains(click.x(), click.y(), doneX, windowY + 8, doneWidth, 18)) {
             onClose();
             return true;
         }
@@ -177,17 +186,18 @@ final class ColorPickerScreen extends Screen {
             return true;
         }
         int y = windowY + windowHeight - 32;
-        int x = windowX + 70;
+        PresetLayout layout = presetLayout(windowX, windowWidth, allowTransparent);
+        int x = layout.startX();
         for (int preset : PRESETS) {
-            if (AcaUiTheme.contains(click.x(), click.y(), x, y, 20, 20)) {
+            if (AcaUiTheme.contains(click.x(), click.y(), x, y, layout.swatchSize(), 20)) {
                 makeOpaque();
                 setRgb(preset);
                 apply();
                 return true;
             }
-            x += 25;
+            x += layout.swatchSize() + layout.gap();
         }
-        if (allowTransparent && AcaUiTheme.contains(click.x(), click.y(), x, y, 20, 20)) {
+        if (allowTransparent && AcaUiTheme.contains(click.x(), click.y(), x, y, layout.swatchSize(), 20)) {
             transparent = true;
             transparentAction.run();
             return true;
@@ -221,7 +231,7 @@ final class ColorPickerScreen extends Screen {
         if (AcaUiTheme.contains(x, y, sliderX, windowY + 77, sliderWidth, 18)) return Drag.BRIGHTNESS;
         for (int channel = 0; channel < 3; channel++) {
             int rowY = windowY + 116 + channel * 29;
-            if (AcaUiTheme.contains(x, y, sliderX + 15, rowY - 3, Math.max(45, sliderWidth - 47), 18)) {
+            if (AcaUiTheme.contains(x, y, sliderX + 15, rowY - 3, rgbBarWidth(sliderWidth), 18)) {
                 return Drag.values()[Drag.RED.ordinal() + channel];
             }
         }
@@ -241,7 +251,7 @@ final class ColorPickerScreen extends Screen {
         } else if (drag == Drag.RED || drag == Drag.GREEN || drag == Drag.BLUE) {
             int channel = drag.ordinal() - Drag.RED.ordinal();
             int barX = sliderX + 15;
-            int barWidth = Math.max(45, sliderWidth - 47);
+            int barWidth = rgbBarWidth(sliderWidth);
             int value = Math.round(sliderValue(x, barX, barWidth) * 255.0f);
             setRgb(withChannel(currentRgb(), channel, value));
         }
@@ -250,6 +260,37 @@ final class ColorPickerScreen extends Screen {
 
     private static float sliderValue(double mouseX, int x, int width) {
         return Math.clamp((float) ((mouseX - x) / Math.max(1, width - 1)), 0.0f, 1.0f);
+    }
+
+    static int rgbBarWidth(int sliderWidth) {
+        return Math.max(1, sliderWidth - 47);
+    }
+
+    static PresetLayout presetLayout(int windowX, int windowWidth, boolean transparent) {
+        int count = PRESETS.length + (transparent ? 1 : 0);
+        int startX = windowX + Math.min(70, Math.max(14, windowWidth / 4));
+        int available = Math.max(1, windowX + windowWidth - 14 - startX);
+        int gap = count <= 1 ? 0 : Math.min(5, Math.max(0, available / Math.max(1, count * 5)));
+        int swatch = Math.max(1, Math.min(20,
+                (available - gap * Math.max(0, count - 1)) / Math.max(1, count)));
+        if (swatch * count + gap * Math.max(0, count - 1) > available) gap = 0;
+        return new PresetLayout(startX, swatch, gap);
+    }
+
+    private void drawFittedText(GuiGraphicsExtractor graphics, String text, int x, int y,
+                                int availableWidth, int color) {
+        if (availableWidth <= 0) return;
+        int measured = font.width(text);
+        if (measured <= availableWidth) {
+            graphics.text(font, text, x, y, color, false);
+            return;
+        }
+        float scale = availableWidth / (float) Math.max(1, measured);
+        graphics.pose().pushMatrix();
+        graphics.pose().translate(x, y + Math.round((1.0f - scale) * 4.0f));
+        graphics.pose().scale(scale, scale);
+        graphics.text(font, text, 0, 0, color, false);
+        graphics.pose().popMatrix();
     }
 
     private void apply() {
@@ -354,4 +395,7 @@ final class ColorPickerScreen extends Screen {
     }
 
     private enum Drag { NONE, WHEEL, BRIGHTNESS, RED, GREEN, BLUE }
+
+    record PresetLayout(int startX, int swatchSize, int gap) {
+    }
 }

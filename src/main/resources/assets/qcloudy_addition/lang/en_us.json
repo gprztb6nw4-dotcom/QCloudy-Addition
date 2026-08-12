@@ -370,7 +370,7 @@
   "shard.no_recipes": "No verified fusion produces this Shard.",
   "shard.no_uses": "No verified fusion uses this Shard.",
   "shard.no_output": "The swapped order has no selectable output.",
-  "shard.insufficient_space": "Increase GUI height to view recipes.",
+  "shard.insufficient_space": "Increase GUI height to view this content.",
   "shard.input_count": "%s of each input · count is set by the left input",
   "shard.order_note": "Left/right order matters for ID Fusion.",
   "shard.pure_reptile": "Pure Reptile: 2%–20% chance to double the chosen output",

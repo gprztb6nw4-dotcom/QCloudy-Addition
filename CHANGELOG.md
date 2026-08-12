@@ -2,6 +2,21 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.15] - 2026-08-12
+
+Alpha responsive-UI correction for Minecraft 26.1.2.
+
+### Fixed
+
+- Rebuilt the Shards detail layout so the title, metadata, acquisition text, rate input, Save button, and Reset button share one consistent detail column instead of overlapping.
+- Added independent scrolling for the Shard result list and detail text. Long effects and acquisition descriptions wrap inside a clipped viewport while rate controls remain anchored.
+- Made Planner controls reflow before collision, made narrow Settings fields stack into one column, and made Fusion Lines use a scrollable canvas instead of stacking overflowing nodes. If the Settings page is too short to contain its controls safely, it now asks for a taller GUI instead of drawing fields outside the panel.
+- Corrected responsive sizing and text fitting in the main settings screen, feature secondary pages, RGB picker, and HUD editor toolbar. Clipped setting rows no longer retain invisible hitboxes.
+
+### Validation
+
+- Added deterministic layout tests for wide and narrow Shards pages, Planner controls, Settings columns, and Fusion Lines canvas growth.
+
 ## [2.6.14] - 2026-08-12
 
 Alpha pet-level display correction for Minecraft 26.1.2.

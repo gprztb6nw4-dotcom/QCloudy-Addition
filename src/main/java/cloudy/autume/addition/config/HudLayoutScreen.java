@@ -80,20 +80,19 @@ public final class HudLayoutScreen extends Screen {
     }
 
     private void drawToolbar(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        int toolbarWidth = Math.min(TOOLBAR_WIDTH, width - 16);
+        int toolbarWidth = Math.max(1, Math.min(TOOLBAR_WIDTH, width - Math.min(16, Math.max(0, width - 1))));
         int x = (width - toolbarWidth) / 2;
         int y = 8;
         graphics.fill(x + 3, y + 3, x + toolbarWidth + 3, y + TOOLBAR_HEIGHT + 3, 0x66000000);
         AcaUiTheme.surface(graphics, x, y, toolbarWidth, TOOLBAR_HEIGHT, AcaUiTheme.HEADER);
-        graphics.text(font, Component.literal(ModText.get("config.layout")).withStyle(ChatFormatting.BOLD),
-                x + 10, y + 6, AcaUiTheme.TEXT, false);
-        graphics.text(font, ModText.get("config.layout.loaded", loadedCount()), x + 10, y + 17,
-                AcaUiTheme.TEXT_DIM, false);
-
-        int backWidth = 64;
-        int resetWidth = 82;
+        int backWidth = Math.min(64, Math.max(1, toolbarWidth / 5));
+        int resetWidth = Math.min(82, Math.max(1, toolbarWidth / 4));
         int backX = x + toolbarWidth - backWidth - 7;
         int resetX = backX - resetWidth - 5;
+        drawFitted(graphics, Component.literal(ModText.get("config.layout")).withStyle(ChatFormatting.BOLD),
+                x + 10, y + 6, Math.max(1, resetX - x - 16), AcaUiTheme.TEXT);
+        drawFitted(graphics, Component.literal(ModText.get("config.layout.loaded", loadedCount())),
+                x + 10, y + 17, Math.max(1, resetX - x - 16), AcaUiTheme.TEXT_DIM);
         AcaUiTheme.button(graphics, font, ModText.get("config.back"), backX, y + 6, backWidth, 18,
                 AcaUiTheme.contains(mouseX, mouseY, backX, y + 6, backWidth, 18), false);
         AcaUiTheme.button(graphics, font, ModText.get("config.reset_selected"), resetX, y + 6, resetWidth, 18,
@@ -103,12 +102,13 @@ public final class HudLayoutScreen extends Screen {
     private void drawStatus(GuiGraphicsExtractor graphics) {
         boolean anyLoaded = loadedCount() > 0;
         String message = anyLoaded ? ModText.get("config.layout_help") : ModText.get("config.layout_none");
-        int textWidth = font.width(message);
+        int textWidth = Math.min(font.width(message), Math.max(1, width - 34));
         int x = Math.max(8, (width - textWidth - 18) / 2);
         int y = height - 24;
         graphics.fill(x, y, x + textWidth + 18, y + 17, AcaUiTheme.HEADER);
         graphics.outline(x, y, textWidth + 18, 17, AcaUiTheme.BORDER);
-        graphics.text(font, message, x + 9, y + 4, anyLoaded ? AcaUiTheme.TEXT_MUTED : 0xFFFFC766, false);
+        drawFitted(graphics, Component.literal(message), x + 9, y + 4, textWidth,
+                anyLoaded ? AcaUiTheme.TEXT_MUTED : 0xFFFFC766);
     }
 
     @Override
@@ -193,11 +193,11 @@ public final class HudLayoutScreen extends Screen {
     }
 
     private boolean toolbarButtonClicked(double mouseX, double mouseY) {
-        int toolbarWidth = Math.min(TOOLBAR_WIDTH, width - 16);
+        int toolbarWidth = Math.max(1, Math.min(TOOLBAR_WIDTH, width - Math.min(16, Math.max(0, width - 1))));
         int x = (width - toolbarWidth) / 2;
         int y = 8;
-        int backWidth = 64;
-        int resetWidth = 82;
+        int backWidth = Math.min(64, Math.max(1, toolbarWidth / 5));
+        int resetWidth = Math.min(82, Math.max(1, toolbarWidth / 4));
         int backX = x + toolbarWidth - backWidth - 7;
         int resetX = backX - resetWidth - 5;
         if (AcaUiTheme.contains(mouseX, mouseY, backX, y + 6, backWidth, 18)) {
@@ -305,12 +305,13 @@ public final class HudLayoutScreen extends Screen {
         if (panel == selected || hovered) drawResizeHandles(graphics, x, y, panelWidth, panelHeight, mouseX, mouseY, panel);
 
         String label = panel.label();
-        int labelWidth = font.width(label) + 12;
+        int labelWidth = Math.min(panelWidth, font.width(label) + 12);
         int labelY = y >= 15 ? y - 15 : y;
         graphics.fill(x, labelY, x + labelWidth, labelY + 15,
                 panel == selected ? AcaUiTheme.ACCENT_DARK : AcaUiTheme.HEADER);
         graphics.outline(x, labelY, labelWidth, 15, outline);
-        graphics.text(font, label, x + 6, labelY + 3, AcaUiTheme.TEXT, false);
+        drawFitted(graphics, Component.literal(label), x + 6, labelY + 3,
+                Math.max(1, labelWidth - 12), AcaUiTheme.TEXT);
 
         int gearX = x + panelWidth - 18;
         int gearY = y + panelHeight - 18;
@@ -325,6 +326,18 @@ public final class HudLayoutScreen extends Screen {
         int count = 0;
         for (Panel panel : Panel.values()) if (isLoaded(panel)) count++;
         return count + externalHuds.size();
+    }
+
+    private void drawFitted(GuiGraphicsExtractor graphics, Component text, int x, int y,
+                            int availableWidth, int color) {
+        if (availableWidth <= 0) return;
+        int textWidth = Math.max(1, font.width(text));
+        float scale = Math.min(1.0f, availableWidth / (float) textWidth);
+        graphics.pose().pushMatrix();
+        graphics.pose().translate(x, y + Math.round((1.0f - scale) * 4.0f));
+        graphics.pose().scale(scale, scale);
+        graphics.text(font, text, 0, 0, color, false);
+        graphics.pose().popMatrix();
     }
 
     private void drawExternalPreview(GuiGraphicsExtractor graphics, UnifiedModIntegration.ExternalHud hud,
@@ -348,8 +361,8 @@ public final class HudLayoutScreen extends Screen {
         graphics.pose().scale(textScale, textScale);
         graphics.text(font, label, 0, 0, AcaUiTheme.TEXT, false);
         graphics.pose().popMatrix();
-        graphics.text(font, ModText.get("config.integration.live_hud"), preview.x + 8,
-                preview.y + panelHeight - 13, AcaUiTheme.TEXT_DIM, false);
+        drawFitted(graphics, Component.literal(ModText.get("config.integration.live_hud")), preview.x + 8,
+                preview.y + panelHeight - 13, Math.max(1, panelWidth - 16), AcaUiTheme.TEXT_DIM);
 
         int gearX = preview.x + panelWidth - 17;
         int gearY = preview.y + panelHeight - 17;
