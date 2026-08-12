@@ -2,6 +2,19 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.14] - 2026-08-12
+
+Alpha pet-level display correction for Minecraft 26.1.2.
+
+### Fixed
+
+- Fixed an unmaxed Golden Dragon using the Ancient Golden Dragon Skin being displayed as `[Lvl 200]`. Cosmetic overflow levels now activate only after the received exact total experience has reached the pet's real level-200 maximum.
+- When exact experience is unavailable, an ordinary non-max pet now keeps the level received from Hypixel instead of being promoted to its maximum level by the overflow fallback.
+
+### Preserved
+
+- Maxed Ancient Golden Dragons still display level 200, and verified experience beyond level 200 still displays the supported cosmetic overflow level when that option is enabled.
+
 ## [2.6.13] - 2026-08-12
 
 First Alpha unified SkyBlock-mod controls for Minecraft 26.1.2.

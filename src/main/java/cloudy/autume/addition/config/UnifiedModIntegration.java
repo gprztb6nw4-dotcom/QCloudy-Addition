@@ -40,7 +40,7 @@ final class UnifiedModIntegration {
     private UnifiedModIntegration() { }
 
     enum Provider {
-        QCLOUDY("qcloudy_addition", "QCloudy", "2.6.13"),
+        QCLOUDY("qcloudy_addition", "QCloudy", "2.6.14"),
         SKYHANNI("skyhanni", "SkyHanni", "7.41.0"),
         SKYBLOCKER("skyblocker", "SkyBlocker", "6.8.2+26.1.2"),
         FIRMAMENT("firmament", "Firmament", "44.3.0+mc26.1.2"),

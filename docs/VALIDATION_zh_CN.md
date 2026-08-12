@@ -1,4 +1,4 @@
-# QCloudy_Addition Alpha 2.6.13 统一控制验证
+# QCloudy_Addition Alpha 2.6.14 宠物等级与统一控制验证
 
 日期：2026-08-12<br>
 Minecraft：26.1.2<br>
@@ -6,19 +6,20 @@ Java：25
 
 已验证产物：
 
-- `release/QCloudy_Addition-Alpha-2.6.13+26.1.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.13+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.14+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.14+26.1.2-sources.jar`
 
-可运行 JAR SHA-256：`8ab6590b09bb33fced3611e83d539cae70e46b6fa29576778bb8b98b1b52d2bb`<br>
-源码 JAR SHA-256：`a25049b36dbd539fec958d4e4f147f051bdf793a84fba6949e290921e2bf1f49`
+可运行 JAR SHA-256：`637d4426dccb0e8732e0c59dd119d5039d72938f72942a766859d9996fd20273`<br>
+源码 JAR SHA-256：`df5b06c8f171d71f9ddc45cadf294f494b6b344f530e3059d2d524e20a64fdf4`
 
-Alpha 2.6.13 首次加入以功能为中心的统一设置与 HUD 集成，精确支持已审查的 SkyHanni 7.41.0、Skyblocker 6.8.2、Firmament 44.3.0、BabyZombieAddons 3.4.1。QCA 仍可独立运行；缺失或版本不符的提供方会被隐藏。共享卡片可选择一个提供方，只切换完全等价实现，读写安全原生值、调用原生保存，并在“编辑 HUD”中显示所选且已启用的第三方 HUD 位置/缩放。
+Alpha 2.6.14 修复 Ancient Golden Dragon 的溢出等级回退，同时保留 2.6.13 首次加入的统一设置与 HUD 集成。未满级 Golden Dragon 现在保留 Hypixel 发来的等级；只有精确总经验真正达到满级门槛后才会计算 200 以上的皮肤溢出等级。可选集成仍锁定到 SkyHanni 7.41.0、Skyblocker 6.8.2、Firmament 44.3.0、BabyZombieAddons 3.4.1，QCA 仍可独立运行。
 
 本工作区已验证：
 
-- Java 25 `clean test build prepareRelease` 成功：149 项测试，0 failure、0 error、0 skip。
+- Java 25 `clean test build prepareRelease` 成功：151 项测试，0 failure、0 error、0 skip。
+- 回归测试确认：未满级 Ancient Golden Dragon 在有精确总经验或无法取得精确经验时都会保留收到的真实等级；真正满级后仍支持正确的皮肤溢出等级。
 - 主代码与测试从干净输出目录重新编译；`clean` 已清除此前发现的旧重复 `.class`。
-- 展开后的 `fabric.mod.json` 声明符合 Fabric 版本比较规则的语义版本 `2.6.13-alpha+26.1.2`、纯客户端、Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+、Java 25+；发布文件名仍遵循指定的 `QCloudy_Addition-Alpha-2.6.13+26.1.2.jar` 规则。
+- 展开后的 `fabric.mod.json` 声明符合 Fabric 版本比较规则的语义版本 `2.6.14-alpha+26.1.2`、纯客户端、Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+、Java 25+；发布文件名仍遵循指定的 `QCloudy_Addition-Alpha-2.6.14+26.1.2.jar` 规则。
 - `build/libs/` 的可运行与源码产物分别和 `release/` 中对应文件逐字节一致。
 - 可运行 JAR 通过 `unzip -t`；中英文语言文件键集合完全一致；`git diff --check` 通过。
 - 可选集成不产生提供方编译依赖，也未新增 HTTP、数据包、聊天命令、菜单点击、玩法输入或服务器数据请求。

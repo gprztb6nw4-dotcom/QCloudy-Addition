@@ -1,4 +1,4 @@
-# QCloudy_Addition Alpha 2.6.13 unified-controls validation
+# QCloudy_Addition Alpha 2.6.14 pet-level and unified-controls validation
 
 Date: 2026-08-12<br>
 Minecraft: 26.1.2<br>
@@ -6,19 +6,20 @@ Java: 25
 
 Validated artifacts:
 
-- `release/QCloudy_Addition-Alpha-2.6.13+26.1.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.13+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.14+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.14+26.1.2-sources.jar`
 
-Playable SHA-256: `8ab6590b09bb33fced3611e83d539cae70e46b6fa29576778bb8b98b1b52d2bb`<br>
-Sources SHA-256: `a25049b36dbd539fec958d4e4f147f051bdf793a84fba6949e290921e2bf1f49`
+Playable SHA-256: `637d4426dccb0e8732e0c59dd119d5039d72938f72942a766859d9996fd20273`<br>
+Sources SHA-256: `df5b06c8f171d71f9ddc45cadf294f494b6b344f530e3059d2d524e20a64fdf4`
 
-Alpha 2.6.13 adds the first function-first settings and HUD integration for exact reviewed builds of SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1. QCA remains standalone. Missing or mismatched providers are hidden; a shared card selects one provider, toggles only exact equivalents, reads/writes safe native values, calls native persistence, and surfaces selected enabled external HUD positions/scales in Edit HUD.
+Alpha 2.6.14 fixes the Ancient Golden Dragon overflow-level fallback while preserving the first function-first settings and HUD integration from 2.6.13. An unmaxed Golden Dragon now keeps the level received from Hypixel; cosmetic level 200+ is only calculated after exact total experience reaches the real maximum. The optional integrations remain version-locked to SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1, and QCA remains standalone.
 
 Verified in this workspace:
 
-- Java 25 `clean test build prepareRelease` completed successfully: 149 tests, 0 failures, 0 errors, 0 skips.
+- Java 25 `clean test build prepareRelease` completed successfully: 151 tests, 0 failures, 0 errors, 0 skips.
+- Regression tests verify that an unmaxed Ancient Golden Dragon keeps its received level with both exact and unavailable total XP, while a truly maxed Ancient Golden Dragon retains supported cosmetic overflow levels.
 - Main and test compilation completed from a clean output directory, eliminating the stale duplicate-class files found before `clean`.
-- Expanded `fabric.mod.json` declares the Fabric-compatible semantic version `2.6.13-alpha+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+. The distributable filename retains the required `QCloudy_Addition-Alpha-2.6.13+26.1.2.jar` scheme.
+- Expanded `fabric.mod.json` declares the Fabric-compatible semantic version `2.6.14-alpha+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+. The distributable filename retains the required `QCloudy_Addition-Alpha-2.6.14+26.1.2.jar` scheme.
 - Binary and Sources artifacts in `build/libs/` are byte-identical to the corresponding `release/` artifacts.
 - The playable JAR passes `unzip -t`; English and Chinese language files have identical key sets; `git diff --check` passes.
 - The optional integration has no compile-time dependency on any provider and does not add an HTTP client, packet, chat command, container click, gameplay input, or server-data request.

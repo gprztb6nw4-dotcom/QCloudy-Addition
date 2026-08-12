@@ -14,6 +14,14 @@ final class PetLevelingTest {
     }
 
     @Test
+    void keepsReceivedGoldenDragonLevelBeforeMaximumExperience() {
+        var pet = new PetTracker.PetSnapshot("Golden Dragon", "141", "1.8m", "1.9m", "95.6",
+                false, 0xFFAA00);
+        assertEquals(141, PetLeveling.cosmeticLevel(pet, 130_700_000.0));
+        assertEquals(141, PetLeveling.cosmeticLevel(pet, 0.0));
+    }
+
+    @Test
     void standardPetUsesRarityAdjustedLevelCurve() {
         var pet = new PetTracker.PetSnapshot("Enderman", "50", "12,000", "13,300", "90.2",
                 false, 0xAA00AA);

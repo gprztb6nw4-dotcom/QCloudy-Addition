@@ -43,9 +43,18 @@ public final class PetLeveling {
 
     public static int cosmeticLevel(PetTracker.PetSnapshot pet, double exactTotalExperience) {
         Progress progress = progress(pet);
-        double overflow = exactTotalExperience > 0.0
-                ? exactTotalExperience - progress.maximum()
-                : CompactNumbers.parse(pet.overflowXp());
+        int receivedLevel = parseLevel(pet.level());
+        double overflow;
+        if (exactTotalExperience > 0.0) {
+            if (exactTotalExperience < progress.maximum()) return receivedLevel;
+            overflow = exactTotalExperience - progress.maximum();
+        } else {
+            // An overflow line is only meaningful after Hypixel has marked the
+            // pet as max level. Returning maxLevel for an ordinary leveling pet
+            // incorrectly turns Ancient Golden Dragons into Lvl 200.
+            if (!pet.maxLevel() && pet.overflowXp().isBlank()) return receivedLevel;
+            overflow = CompactNumbers.parse(pet.overflowXp());
+        }
         if (overflow < 1_886_700.0) return progress.maxLevel();
         return progress.maxLevel() + (int) Math.floor(overflow / 1_886_700.0);
     }

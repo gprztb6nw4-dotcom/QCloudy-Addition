@@ -81,4 +81,11 @@ final class HudRendererTest {
         assertEquals("200", HudRenderer.displayedLevel(false, pet, "golden_dragon_ancient", total));
         assertEquals("200", HudRenderer.displayedLevel(true, pet, "golden_dragon_anubis", total));
     }
+
+    @Test
+    void ancientSkinDoesNotForceAnUnmaxedGoldenDragonToLevelTwoHundred() {
+        var pet = new PetTracker.PetSnapshot("Golden Dragon", "141", "1.8m", "1.9m", "95.6",
+                false, 0xFFAA00);
+        assertEquals("141", HudRenderer.displayedLevel(true, pet, "golden_dragon_ancient", 130_700_000.0));
+    }
 }
