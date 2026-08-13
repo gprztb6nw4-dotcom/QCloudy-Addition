@@ -118,8 +118,7 @@ public final class HudRenderer {
             maxX = 210;
             minZ = -183;
             maxZ = 291;
-            dwarvenPoint = DwarvenMapProjection.project(client.player.getX(), client.player.getZ(),
-                    LocationTracker.visibleLocation());
+            dwarvenPoint = DwarvenMapProjection.project(client.player.getX(), client.player.getZ());
         } else {
             double y = client.player.getY();
             if (y <= 126) {
@@ -142,7 +141,9 @@ public final class HudRenderer {
         graphics.blit(RenderPipelines.GUI_TEXTURED, texture, 0, 0, 0, 0,
                 MAP_SIZE, MAP_SIZE, MAP_SIZE, MAP_SIZE);
         HudPanel.title(graphics, label, 5, MAP_SIZE + 3, style);
-        String coords = ModText.get("hud.coords", client.player.getX(), client.player.getY(), client.player.getZ());
+        String coords = area == IslandArea.DWARVEN_MINES
+                ? ModText.get("hud.coords_xz", client.player.getX(), client.player.getZ())
+                : ModText.get("hud.coords", client.player.getX(), client.player.getY(), client.player.getZ());
         HudPanel.text(graphics, coords, 5, MAP_SIZE + 15, 0xFFD8E4EB, style);
 
         float mapX = dwarvenPoint == null

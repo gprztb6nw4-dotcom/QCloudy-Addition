@@ -1,6 +1,6 @@
 # QCloudy_Addition feature specification
 
-## Unified settings and HUD control — Alpha 2.6.16
+## Unified settings and HUD control — Alpha 2.6.17
 
 QCA presents one function-first catalog across its own features and compatible installed builds of SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1. The top-level order is **General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events**. Safari belongs to Hunting, Garden to Farming, and Crimson Isle/Kuudra to Combat. Collapsible subgroups are closed by default, and one exact function has one card.
 
@@ -16,7 +16,7 @@ All first-party configuration screens use bounded responsive layouts. Shard deta
 
 **What it does:** shows the supplied single-layer image with 12 individually shaped blocks: Village, Upper Mines, Rampart Quarry, Forge, Lava Springs, Cliffside, Far Reserve, Goblin Burrows, Royal Mines, The Mist, Ice Wall, and Royal Palace. Point-of-interest labels remain English regardless of QCA interface language.
 
-**Player marker:** every rendered frame, the currently visible scoreboard sub-location selects its recalibrated image region and local X/Z coordinates place the arrow within it. Y is deliberately ignored because this map is one layer. If only the generic Dwarven Mines label is visible, the nearest X/Z region center provides the fallback. Yaw rotates the arrow. The background is a bundled PNG and never changes from server data.
+**Player marker:** every rendered frame, one continuous approximate transform maps the local player's X/Z across the complete background and yaw rotates the arrow. Neither Y nor the scoreboard sub-location is accepted by the projection, so a bridge above The Mist shares the same overview point as the space below it instead of forcing a cross-region jump. The background is a bundled schematic PNG, not a precision survey map.
 
 ### 1.2 Glacite Tunnels Layer Map
 

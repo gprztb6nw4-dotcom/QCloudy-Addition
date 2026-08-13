@@ -32,6 +32,8 @@ final class TrackerParsingTest {
     @Test
     void classifiesOfficialMiningAndEndSubLocations() {
         assertEquals(IslandArea.DWARVEN_MINES, LocationTracker.classifyEvidence("⏣ The Lift"));
+        assertEquals(IslandArea.DWARVEN_MINES, LocationTracker.classifyEvidence("⏣ Palace Bridge"));
+        assertEquals(IslandArea.DWARVEN_MINES, LocationTracker.classifyEvidence("⏣ C&C Minecarts Co."));
         assertEquals(IslandArea.GLACITE_TUNNELS, LocationTracker.classifyEvidence("⏣ Dwarven Base Camp"));
         assertEquals(IslandArea.GLACITE_TUNNELS, LocationTracker.classifyEvidence("⏣ Fossil Research Center"));
         assertEquals(IslandArea.GLACITE_TUNNELS, LocationTracker.classifyEvidence("⏣ Great Glacite Lake"));

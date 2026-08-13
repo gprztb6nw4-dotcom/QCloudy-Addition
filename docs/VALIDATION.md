@@ -1,4 +1,4 @@
-# QCloudy_Addition Alpha 2.6.16 dual-version validation
+# QCloudy_Addition Alpha 2.6.17 dual-version validation
 
 Date: 2026-08-13<br>
 Minecraft: 26.1.2 and 26.2<br>
@@ -6,21 +6,22 @@ Java: 25
 
 Validated artifacts:
 
-- `release/QCloudy_Addition-Alpha-2.6.16+26.1.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.16+26.1.2-sources.jar`
-- `release/QCloudy_Addition-Alpha-2.6.16+26.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.16+26.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.17+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.17+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.17+26.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.17+26.2-sources.jar`
 
-26.1.2 playable SHA-256: `bfac0c6d6c4e4d443f3aaab2796164b1e84a01599a4babe7d63198f0a650af5a`<br>
-26.1.2 Sources SHA-256: `372313f5a69a4e2cf722745eeda00d9d134c289cf77d9c96d594e6afe2a72415`<br>
-26.2 playable SHA-256: `8d7af716176b9148de3671469e9ba7d3ea9c3a7a95981fcdd532cf072bb812f6`<br>
-26.2 Sources SHA-256: `2bce5eb517227e71725805946b8aa1c1d707b447199c3743c3ca94fac96b53be`
+26.1.2 playable SHA-256: `ca630aaac534f9c03670093289b427bdf0eb378d179d73d981948d8564890037`<br>
+26.1.2 Sources SHA-256: `4afee3bab99b63b5f35b61b68efd6a5037b43f0b5c312db3a083f0805a72bffe`<br>
+26.2 playable SHA-256: `84a20822e23948608a8a99c46a1dba749c2007f07a4c41a9c5a6616a4964f862`<br>
+26.2 Sources SHA-256: `89dcf94158beda358916594e0f2cb0c7d6c06e794cbbfabb72c4c80012df9985`
 
-Alpha 2.6.16 adds a maintained Minecraft 26.2 target while continuing to emit the 26.1.2 build. Target-specific client GUI access is isolated behind two small compatibility sources; shared features, data, tests, resources, and client-only behavior remain common.
+Alpha 2.6.17 keeps the maintained 26.1.2/26.2 build matrix and replaces the Dwarven marker's named-region selection with one continuous approximate X/Z transform. Y and the scoreboard sub-location are absent from the projection API, so vertically overlapping routes such as Palace Bridge above the Royal Mines/The Mist cannot make the arrow jump between regions.
 
 Verified in this workspace:
 
-- Java 25 `clean test build prepareRelease` completed successfully for both targets: 160 tests per target, 0 failures, 0 errors, 0 skips.
+- Java 25 `clean test build prepareRelease` completed successfully for both targets: 159 tests per target, 0 failures, 0 errors, 0 skips.
+- Dwarven projection tests cover continuous one-axis movement, identical X/Z on The Mist and an overhead bridge, representative overview areas, and safe edge clamping. The official `C&C Minecarts Co.` sub-location is also classified as Dwarven Mines.
 - Deterministic geometry tests cover wide and narrow Shard detail columns, separated rate controls, compact Plan controls, narrow Settings stacking and safe short-screen fallback, Recipe field widths, Fusion Lines canvas growth, secondary-setting sliders, RGB bars, and preset swatches.
 - Main and test compilation completed from a clean output directory.
 - Expanded metadata declares the exact target in each artifact: 26.1.2 uses Fabric API 0.155.2+26.1.2; 26.2 uses Fabric API 0.154.2+26.2. Both remain client-only and require Fabric Loader 0.19.3+ and Java 25+.

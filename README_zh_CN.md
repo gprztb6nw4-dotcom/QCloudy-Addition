@@ -7,7 +7,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 与 26.2 的纯客户端 Fabric �
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [当前 Alpha 2.6.16 更新日志](CHANGELOG_zh_CN.md)
+- [当前 Alpha 2.6.17 更新日志](CHANGELOG_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
@@ -34,7 +34,7 @@ QCA 现在可以作为统一的功能与 HUD 编辑入口，直接控制自己�
 
 ### 地图
 
-- **矮人矿洞地图**：使用本次提供的单层 12 区域总览图和实时红色玩家箭头。每个地点均按替换图的实际位置重新校准。箭头只使用本地玩家 X/Z、朝向和计分板已显示的子地点；Dwarven 投影完全不使用 Y。地图点位保持英文。
+- **矮人矿洞地图**：使用本次提供的单层 12 区域总览图和实时红色玩家箭头。整张背景采用同一套连续的大致 X/Z 映射；Y 和计分板子地点名称都被排除，因此位于 The Mist 上方的桥梁不会再让箭头跨区域跳动。地图点位保持英文。
 - **冰川隧道分层地图**：低层、中层和高层图片使用完全相同的坐标边界；在 Y=126 与 Y=143 切层，切换后玩家箭头位置保持一致。地图点位固定使用英文原名，并在生成阶段自动检测、避让相邻标签，防止文字重叠。
 
 ### 挖矿
@@ -123,7 +123,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-当前 Alpha 2.6.16 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
+当前 Alpha 2.6.17 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

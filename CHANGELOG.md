@@ -2,6 +2,17 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.17] - 2026-08-13
+
+Alpha Dwarven Mines overview synchronization correction for Minecraft 26.1.2 and 26.2.
+
+### Fixed
+
+- Removed scoreboard sub-location selection and per-region clamping from the Dwarven Mines marker. The arrow now uses one continuous approximate X/Z transform across the complete single-layer background, so bridges above The Mist and other vertically overlapping paths no longer jump into another named area.
+- Added the official `C&C Minecarts Co.` Dwarven sub-location to island recognition so entering that area cannot unload the map.
+- Dwarven map coordinates now display X/Z only. Y is absent from the projection API and cannot influence the marker directly or indirectly.
+- Kept the live marker safely inside the background at out-of-range coordinates and added regression coverage for continuous one-axis movement, The Mist bridge overlap, representative regions, and clamping.
+
 ## [2.6.16] - 2026-08-13
 
 Alpha dual-version platform update for Minecraft 26.1.2 and 26.2.

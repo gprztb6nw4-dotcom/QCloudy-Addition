@@ -96,7 +96,7 @@ public final class LocationTracker {
                 "hanging court", "divan's gateway", "far reserve", "goblin burrows", "miner's guild",
                 "great ice wall", "the mist", "abandoned quarry", "grand library", "barracks of heroes",
                 "the lift", "royal quarters", "lava springs", "cliffside veins", "rampart's quarry",
-                "upper mines", "royal mines", "dwarven tavern",
+                "upper mines", "royal mines", "dwarven tavern", "c&c minecarts co.",
                 "gates to the mines", "ironman's guild")) {
             return IslandArea.DWARVEN_MINES;
         } else if (containsAny(evidence, "crimson isle", "stronghold", "crimson fields", "blazing volcano",

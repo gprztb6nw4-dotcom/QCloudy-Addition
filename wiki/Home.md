@@ -4,7 +4,7 @@
 
 QCloudy_Addition is an English-first, bilingual, client-only Fabric mod for Hypixel SkyBlock. It provides readable maps, task and resource HUDs, hunting and fishing cues, pet information, an offline Attribute Shard guide and planner, configurable visual helpers, and a function-first settings and HUD editor.
 
-> **Current build:** Alpha 2.6.16 for Minecraft 26.1.2 and 26.2
+> **Current build:** Alpha 2.6.17 for Minecraft 26.1.2 and 26.2
 > **Required:** Java 25 and Fabric Loader 0.19.3 or newer; Fabric API 0.155.2+26.1.2 for Minecraft 26.1.2, or Fabric API 0.154.2+26.2 for Minecraft 26.2
 > **Optional:** Mod Menu and reviewed builds of supported SkyBlock mods  
 > **Important:** Every Minecraft modification is used at the player's own risk. QCloudy_Addition is not affiliated with Hypixel or Mojang.
@@ -103,7 +103,7 @@ Select **Edit HUD** at the bottom-left of the settings screen.
 
 ### Maps
 
-- **Dwarven Mines Map** uses the supplied single-layer 12-region map with a live red player arrow. Projection uses the local player's X/Z position and yaw; Y is deliberately ignored.
+- **Dwarven Mines Map** uses the supplied single-layer 12-region schematic with a live red player arrow. One continuous approximate transform uses only the local player's real-time X/Z and yaw; Y and scoreboard sub-location names cannot move the marker between regions.
 - **Glacite Tunnels Map** selects low, middle, or high artwork from the local Y coordinate and keeps the live arrow aligned across layers.
 - **Fairy Soul Waypoints** can show the bundled Torrhus and Safari coordinates as optional pink beacon beams. This is one cross-island Maps feature rather than separate duplicate switches.
 
@@ -313,7 +313,7 @@ Only enabled, loaded HUDs with visible content are included in the editor. Open 
 
 ### Text or controls overlap at my GUI scale
 
-Alpha 2.6.16 preserves the responsive layouts, independent scrolling, clipping, and safe short-screen fallbacks while adding the 26.2 target. If a layout still overlaps, include the exact Minecraft window size, GUI Scale, QCA language, open page/tab, installed mods, and a full screenshot in the report.
+Alpha 2.6.17 preserves the responsive layouts, independent scrolling, clipping, and safe short-screen fallbacks while correcting Dwarven overview synchronization. If a layout still overlaps, include the exact Minecraft window size, GUI Scale, QCA language, open page/tab, installed mods, and a full screenshot in the report.
 
 ### Cheapest or Bazaar planning is unavailable
 
@@ -350,7 +350,7 @@ Do not publish access tokens, session data, private chat, or other personal info
 
 ## Project status and validation
 
-Alpha 2.6.16 has been built and archive-checked with Java 25 for both Minecraft 26.1.2 and 26.2. Each target reports 160 automated tests with no failures, errors, or skips; all four binary/source archives validate, and the 26.2 development client reaches resource and sound-engine initialization without a QCA or Mixin exception.
+Alpha 2.6.17 is built and archive-checked with Java 25 for both Minecraft 26.1.2 and 26.2. The Dwarven regression suite explicitly verifies continuous X/Z movement, The Mist bridge overlap, representative overview regions, and safe edge clamping.
 
 These checks do **not** replace authenticated in-game testing. Before treating an Alpha as stable, the project still needs live regression across the supported providers, different GUI scales/languages, resource packs, Hypixel wording changes, latency conditions, and a full target modpack.
 

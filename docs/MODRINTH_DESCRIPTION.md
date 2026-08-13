@@ -6,7 +6,7 @@ QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, 
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Alpha 2.6.16.** The same QCA-owned feature set is now built for Minecraft 26.1.2 and 26.2. Exact-version third-party settings/HUD adapters remain reviewed for 26.1.2 only and safely stay unavailable on 26.2 until matching provider builds are audited.
+> **Current channel: Alpha 2.6.17.** The same QCA-owned feature set is built for Minecraft 26.1.2 and 26.2. Exact-version third-party settings/HUD adapters remain reviewed for 26.1.2 only and safely stay unavailable on 26.2 until matching provider builds are audited.
 
 ## Main features
 
@@ -95,7 +95,7 @@ Optional:
 
 - Mod Menu **18.0.0** for MC 26.1.2, or **20.0.1** for MC 26.2
 
-Put either `QCloudy_Addition-Alpha-2.6.16+26.1.2.jar` or `QCloudy_Addition-Alpha-2.6.16+26.2.jar` in the instance's `mods` folder, matching the exact game version. Do not install the `-sources.jar` as the playable mod.
+Put either `QCloudy_Addition-Alpha-2.6.17+26.1.2.jar` or `QCloudy_Addition-Alpha-2.6.17+26.2.jar` in the instance's `mods` folder, matching the exact game version. Do not install the `-sources.jar` as the playable mod.
 
 Press `O`, open QCA through Mod Menu, or enter `/aca`, `/qca`, `/ca`, or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 

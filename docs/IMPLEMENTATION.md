@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.6.16` for Minecraft 26.1.2 and 26.2.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.6.17` for Minecraft 26.1.2 and 26.2.
 
 ## 1. Runtime architecture
 
@@ -106,7 +106,7 @@ On by default. One physical click starts one ordinary server connection. No save
 
 - **Purpose:** replace an unreadable route web with a compact regional overview.
 - **Inputs:** local player X/Z/yaw and received scoreboard sub-location. Y is not read for this map.
-- **Implementation:** `DwarvenMapProjection` maps X/Z and named regions into the supplied single-layer texture containing 12 shaped areas. Every region's image bounds were recalibrated to the replacement artwork; a generic location falls back to the nearest normalized X/Z region center.
+- **Implementation:** `DwarvenMapProjection` exposes only `project(x, z)` and applies one clamped continuous transform across the supplied single-layer texture. It has no Y or location-name parameter, so vertically overlapping bridges and caverns cannot select different image regions. The result is deliberately approximate and stable rather than a precision cave survey.
 - **Expected effect:** the supplied English-labelled regional map and a live red directional arrow that stays synchronized with its named region and local X/Z position.
 - **Default/outbound:** on; render only.
 

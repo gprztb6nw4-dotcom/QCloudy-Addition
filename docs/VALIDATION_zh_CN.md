@@ -1,4 +1,4 @@
-# QCloudy_Addition Alpha 2.6.16 双版本验证
+# QCloudy_Addition Alpha 2.6.17 双版本验证
 
 日期：2026-08-13<br>
 Minecraft：26.1.2 与 26.2<br>
@@ -6,21 +6,22 @@ Java：25
 
 已验证产物：
 
-- `release/QCloudy_Addition-Alpha-2.6.16+26.1.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.16+26.1.2-sources.jar`
-- `release/QCloudy_Addition-Alpha-2.6.16+26.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.16+26.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.17+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.17+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.17+26.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.17+26.2-sources.jar`
 
-26.1.2 可运行 SHA-256：`bfac0c6d6c4e4d443f3aaab2796164b1e84a01599a4babe7d63198f0a650af5a`<br>
-26.1.2 Sources SHA-256：`372313f5a69a4e2cf722745eeda00d9d134c289cf77d9c96d594e6afe2a72415`<br>
-26.2 可运行 SHA-256：`8d7af716176b9148de3671469e9ba7d3ea9c3a7a95981fcdd532cf072bb812f6`<br>
-26.2 Sources SHA-256：`2bce5eb517227e71725805946b8aa1c1d707b447199c3743c3ca94fac96b53be`
+26.1.2 可运行 SHA-256：`ca630aaac534f9c03670093289b427bdf0eb378d179d73d981948d8564890037`<br>
+26.1.2 Sources SHA-256：`4afee3bab99b63b5f35b61b68efd6a5037b43f0b5c312db3a083f0805a72bffe`<br>
+26.2 可运行 SHA-256：`84a20822e23948608a8a99c46a1dba749c2007f07a4c41a9c5a6616a4964f862`<br>
+26.2 Sources SHA-256：`89dcf94158beda358916594e0f2cb0c7d6c06e794cbbfabb72c4c80012df9985`
 
-Alpha 2.6.16 新增长期维护的 Minecraft 26.2 目标，并继续同时输出 26.1.2。不同版本的客户端 GUI 入口被隔离到两个很薄的兼容源文件；其余功能、数据、测试、资源和纯客户端行为全部共用。
+Alpha 2.6.17 保留 26.1.2/26.2 双版本矩阵，并把矮人矿洞箭头从“按地点名称选分区”改为整张背景共用的一套连续大致 X/Z 映射。投影 API 完全没有 Y 与计分板子地点参数，因此位于 Royal Mines/The Mist 上方的 Palace Bridge 等垂直重叠路径不会再导致箭头跨区域跳动。
 
 本工作区已验证：
 
-- Java 25 `clean test build prepareRelease` 在两个目标均成功：每个版本 160 项测试，0 failure、0 error、0 skip。
+- Java 25 `clean test build prepareRelease` 在两个目标均成功：每个版本 159 项测试，0 failure、0 error、0 skip。
+- 矮人矿洞投影测试覆盖连续单轴移动、The Mist 与其上方桥梁相同 X/Z 得到相同点、代表区域和安全边界裁剪；官方子地点 `C&C Minecarts Co.` 也已归类为矮人矿洞。
 - 确定性几何测试覆盖宽/窄 Shard 详情栏、独立速度控件、紧凑 Plan 控件、窄屏 Settings 单列及矮屏安全提示、Recipe 输入框宽度、Fusion Lines 画布扩展、二级设置滑块、RGB 条和预设色块。
 - 主代码与测试已从干净输出目录重新编译。
 - 每个产物的展开元数据均精确声明目标：26.1.2 使用 Fabric API 0.155.2+26.1.2；26.2 使用 Fabric API 0.154.2+26.2。两者都保持纯客户端并要求 Fabric Loader 0.19.3+ 与 Java 25+。

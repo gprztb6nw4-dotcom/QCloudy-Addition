@@ -4,7 +4,7 @@
 
 | Feature | Client input | Local output | Outgoing traffic |
 |---|---|---|---|
-| Dwarven map | Player X/Z/yaw, parsed visible sub-location; Y deliberately unused | Static PNG + arrow HUD | None |
+| Dwarven map | Player X/Z/yaw only; Y and sub-location text deliberately excluded from projection | Static schematic PNG + approximate live arrow HUD | None |
 | Glacite map | Player X/Y/Z/yaw, parsed location | Static layer PNG + arrow HUD | None |
 | Mining tasks/powders/HOTM slot | Received Tab display names and already-open menu item names/lore | Text/progress-bar HUD and cached selected slot name | None |
 | Fishing Bite Sound | Directly owned local Fishing Hook, or a newly loaded local/ownerless hook associated after physical rod use; exact nearby received `!!!` ArmorStand | One bundled local sound per hook | None |

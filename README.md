@@ -7,7 +7,7 @@ QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2 and 26.2. It f
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [Current Alpha 2.6.16 changelog](CHANGELOG.md)
+- [Current Alpha 2.6.17 changelog](CHANGELOG.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -34,7 +34,7 @@ The exact top-level order is **General, Maps, Items & Menus, Combat, Dungeons, S
 
 ### Maps
 
-- **Dwarven Mines Map** — the supplied single-layer overview with 12 individually shaped region blocks and a live red player arrow. Each named region has been recalibrated to the replacement image. The arrow uses only the local player's X/Z/yaw and the already-visible scoreboard sub-location; Dwarven projection never uses Y. Point-of-interest labels remain English.
+- **Dwarven Mines Map** — the supplied single-layer overview with 12 individually shaped region blocks and a live red player arrow. One continuous approximate transform maps the local player's real-time X/Z across the complete background; Y and scoreboard sub-location names are deliberately excluded, so bridges above The Mist cannot make the marker jump between regions. Point-of-interest labels remain English.
 - **Glacite Tunnels Layer Map** — low, middle, and high tunnel images share one coordinate system. The displayed layer changes at Y 126 and Y 143; the live arrow remains spatially consistent between layers. Generated English point-of-interest cards use collision avoidance so nearby locations never overlap.
 
 ### Mining
@@ -125,7 +125,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-Current Alpha 2.6.16 changes: [CHANGELOG.md](CHANGELOG.md)
+Current Alpha 2.6.17 changes: [CHANGELOG.md](CHANGELOG.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 
