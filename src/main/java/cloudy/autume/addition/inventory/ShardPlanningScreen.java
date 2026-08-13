@@ -1,5 +1,6 @@
 package cloudy.autume.addition.inventory;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.QCloudyAdditionClient;
 import cloudy.autume.addition.config.AcaUiTheme;
 import cloudy.autume.addition.config.ConfigManager;
@@ -217,7 +218,7 @@ public final class ShardPlanningScreen extends Screen {
                         }
                         priceLoading = false;
                         priceLoaded = true;
-                        if (minecraft.screen == this && page == Page.PLAN) calculatePlan();
+                        if (MinecraftClientCompat.screen(minecraft) == this && page == Page.PLAN) calculatePlan();
                     });
                 });
     }
@@ -873,7 +874,7 @@ public final class ShardPlanningScreen extends Screen {
     private boolean activate(Hit hit, MouseButtonEvent click) {
         switch (hit.action()) {
             case CLOSE -> onClose();
-            case GUIDE -> minecraft.setScreen(new ShardFusionScreen(this,
+            case GUIDE -> MinecraftClientCompat.setScreen(minecraft, new ShardFusionScreen(this,
                     ConfigManager.get().inventory.shardPlannerTarget));
             case TAB -> setPage((Page) hit.value());
             case CALCULATE -> calculatePlan();
@@ -904,7 +905,8 @@ public final class ShardPlanningScreen extends Screen {
             case SELECT_NODE -> selectedPlanNode = (ShardFusionPlanner.Node) hit.value();
             case OPEN_RECIPE -> {
                 ShardFusionCatalog.Recipe recipe = (ShardFusionCatalog.Recipe) hit.value();
-                minecraft.setScreen(new ShardFusionScreen(this, recipe.outputs().getFirst().shard().id()));
+                MinecraftClientCompat.setScreen(minecraft,
+                        new ShardFusionScreen(this, recipe.outputs().getFirst().shard().id()));
             }
             case SELECT_SHARD -> {
                 ShardFusionCatalog.Shard shard = (ShardFusionCatalog.Shard) hit.value();
@@ -1023,7 +1025,7 @@ public final class ShardPlanningScreen extends Screen {
     @Override
     public void onClose() {
         ConfigManager.save();
-        minecraft.setScreen(parent);
+        MinecraftClientCompat.setScreen(minecraft, parent);
     }
 
     @Override

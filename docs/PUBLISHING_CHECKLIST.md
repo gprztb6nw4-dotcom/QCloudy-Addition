@@ -6,20 +6,20 @@
 |---|---|
 | Name | QCloudy_Addition |
 | Suggested slug | `qcloudy-addition` |
-| Version | `Alpha-2.6.15+26.1.2` |
-| Release channel | Alpha; responsive-UI correction on the first unified-settings/HUD-provider implementation |
+| Version | `Alpha-2.6.16+26.1.2` and `Alpha-2.6.16+26.2` |
+| Release channel | Alpha; dual-version 26.1.2/26.2 platform update |
 | Environment | Client only |
 | Loader | Fabric |
-| Minecraft | 26.1.2 |
+| Minecraft | 26.1.2 and 26.2 (separate files) |
 | Java | 25 |
 | License | LGPL-3.0-or-later |
-| Required dependency | Fabric API 0.155.2+26.1.2 or newer |
-| Optional dependency | Mod Menu 18.0.0 |
+| Required dependency | Fabric API 0.155.2+26.1.2 for MC 26.1.2; 0.154.2+26.2 for MC 26.2 |
+| Optional dependency | Mod Menu 18.0.0 for MC 26.1.2; 20.0.1 for MC 26.2 |
 | Standalone from | Firmament, SkyHanni, Skyblocker, BabyZombieAddons; optional exact-version integrations only |
 
 Suggested Modrinth summary:
 
-> Client-only Hypixel SkyBlock maps, trackers, pet HUD, offline Shard Fusion recipes, and configurable visual alerts for Fabric 26.1.2.
+> Client-only Hypixel SkyBlock maps, trackers, pet HUD, offline Shard Fusion recipes, and configurable visual alerts for Fabric 26.1.2 and 26.2.
 
 Suggested Modrinth categories: Utility, Optimization, Game Mechanics.
 
@@ -29,8 +29,8 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 
 - Use `docs/MODRINTH_DESCRIPTION.md` as the English project description.
 - Keep English as the primary description; place `docs/MODRINTH_DESCRIPTION_zh_CN.md` in a linked Chinese page or below the English copy if desired.
-- Upload only `release/QCloudy_Addition-Alpha-2.6.15+26.1.2.jar` as the playable file.
-- Use the `2.6.15` section of `CHANGELOG.md` as the version changelog; the Chinese companion is the matching section of `CHANGELOG_zh_CN.md`.
+- Upload `release/QCloudy_Addition-Alpha-2.6.16+26.1.2.jar` for Minecraft 26.1.2 and `release/QCloudy_Addition-Alpha-2.6.16+26.2.jar` for Minecraft 26.2; never assign one file to both game versions.
+- Use the `2.6.16` section of `CHANGELOG.md` as the version changelog; the Chinese companion is the matching section of `CHANGELOG_zh_CN.md`.
 - Mark Fabric API as required and Mod Menu as optional.
 - Mark client environment as required and server environment as unsupported.
 - Do not mark Firmament, SkyHanni, Skyblocker, or BabyzombieAddons as required.
@@ -47,11 +47,10 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 - Do not commit `run/`, `run-standalone/`, `.gradle/`, `.gradle-user-home/`, local configs, logs, crash ZIPs, or the supplied reference JARs.
 - Confirm `.gitignore` covers local build/runtime files before the first commit.
 
-## GitHub Alpha 2.6.15
+## GitHub Alpha 2.6.16
 
-- Title: `QCloudy_Addition Alpha 2.6.15 for Minecraft 26.1.2`
-- Tag: `v2.6.15-alpha+26.1.2`
-- Use the `2.6.15` sections of `CHANGELOG.md` and `CHANGELOG_zh_CN.md` as the release body source.
+- Title: `QCloudy_Addition Alpha 2.6.16 for Minecraft 26.1.2 and 26.2`
+- Use the `2.6.16` sections of `CHANGELOG.md` and `CHANGELOG_zh_CN.md` as the release body source.
 - Attach the binary JAR and optionally the Sources JAR.
 - Verify uploaded hashes against `docs/VALIDATION.md` after downloading the release once.
 - Mark it as **Pre-release** on GitHub because this is an Alpha, not a stable Release.

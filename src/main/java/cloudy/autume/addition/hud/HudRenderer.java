@@ -1,5 +1,6 @@
 package cloudy.autume.addition.hud;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ModConfig;
 import cloudy.autume.addition.i18n.ModText;
@@ -39,7 +40,7 @@ public final class HudRenderer {
 
     public static void render(GuiGraphicsExtractor graphics) {
         Minecraft client = Minecraft.getInstance();
-        if (client.player == null || client.options.hideGui || !LocationTracker.isSkyBlock()) return;
+        if (client.player == null || MinecraftClientCompat.isHudHidden(client) || !LocationTracker.isSkyBlock()) return;
         var config = ConfigManager.get();
 
         if (isMapLoaded()) {

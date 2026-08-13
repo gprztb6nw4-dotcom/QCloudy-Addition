@@ -2,6 +2,21 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.6.16] - 2026-08-13
+
+Alpha dual-version platform update for Minecraft 26.1.2 and 26.2.
+
+### Added
+
+- Added a version matrix that builds the same QCA feature set for both Minecraft 26.1.2 and 26.2 with the correct Fabric API and optional Mod Menu version for each target.
+- Added `tools/build_all_versions.sh`, which tests and prepares both playable JARs and both Sources JARs in one run.
+
+### Compatibility
+
+- Ported screen access, screen switching, overlay checks, HUD visibility, title alerts, chat scrolling, player-list reading, and block-center distance checks to Minecraft 26.2 while preserving the 26.1.2 behavior through small target-specific adapters.
+- Kept the mod client-only; this port adds no packet, command, click, automation, HTTP, or server-data behavior.
+- Existing exact-version SkyHanni, Skyblocker, Firmament, and BabyZombieAddons adapters remain reviewed for 26.1.2 only and fail closed on 26.2 until matching provider builds are reviewed.
+
 ## [2.6.15] - 2026-08-12
 
 Alpha responsive-UI correction for Minecraft 26.1.2.

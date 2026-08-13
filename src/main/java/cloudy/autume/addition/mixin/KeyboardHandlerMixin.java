@@ -1,6 +1,7 @@
 package cloudy.autume.addition.mixin;
 
 import cloudy.autume.addition.QCloudyAdditionClient;
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ConfigScreen;
 import net.minecraft.client.KeyboardHandler;
@@ -19,10 +20,10 @@ public abstract class KeyboardHandlerMixin {
 
     @Inject(method = "keyPress", at = @At("HEAD"), cancellable = true)
     private void aca$openConfigChord(long window, int action, KeyEvent event, CallbackInfo ci) {
-        if (action != org.lwjgl.glfw.GLFW.GLFW_PRESS || minecraft.screen != null) return;
+        if (action != org.lwjgl.glfw.GLFW.GLFW_PRESS || MinecraftClientCompat.screen(minecraft) != null) return;
         if (QCloudyAdditionClient.matchesChord(
                 QCloudyAdditionClient.ChordAction.OPEN_CONFIG, event)) {
-            minecraft.setScreen(new ConfigScreen(null));
+            MinecraftClientCompat.setScreen(minecraft, new ConfigScreen(null));
             ci.cancel();
             return;
         }

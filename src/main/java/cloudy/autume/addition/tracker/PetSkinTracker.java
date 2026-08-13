@@ -1,5 +1,6 @@
 package cloudy.autume.addition.tracker;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ModConfig;
 import com.google.gson.JsonObject;
@@ -98,7 +99,7 @@ public final class PetSkinTracker {
     }
 
     private static void updateFromOpenMenu(Minecraft client) {
-        if (!(client.screen instanceof AbstractContainerScreen<?> screen)) return;
+        if (!(MinecraftClientCompat.screen(client) instanceof AbstractContainerScreen<?> screen)) return;
         if (!screen.getTitle().getString().matches("(?:\\(\\d+/\\d+\\) )?Pets(?:.*)?")) return;
         for (var slot : screen.getMenu().slots) {
             ItemStack stack = slot.getItem();

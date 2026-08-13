@@ -1,12 +1,12 @@
 # QCloudy_Addition
 
-**适用于 Minecraft 26.1.2 Fabric 的纯客户端 Hypixel SkyBlock 辅助模组。**
+**适用于 Minecraft 26.1.2 与 26.2 Fabric 的纯客户端 Hypixel SkyBlock 辅助模组。**
 
 QCloudy_Addition 将地图、任务追踪、砍树与狩猎辅助、宠物信息、完整离线 Attribute Shard Fusion Guide/Planner 及可深度自定义的 HUD 整合进一套清晰的中英双语界面。
 
 界面默认英文，可在设置中切换简体中文。Hypixel 返回的地点、物品、任务、宠物、皮肤、配件、Shard 和玩家重命名 HOTM 配置始终保留原名，避免翻译改变游戏数据的实际含义。
 
-> **当前通道：Alpha 2.6.15。** 本版本修复 Shard Planner、设置界面、RGB 颜色选择器与 HUD 编辑器的响应式错位和裁剪问题，同时保留统一设置实现与宠物等级修复。源码与构建已经过自动验证，但直接设置写入和第三方 HUD 位置仍需在不同提供方配置与 GUI Scale 下进行广泛游戏内回归。
+> **当前通道：Alpha 2.6.16。** 同一套 QCA 自身功能现在同时构建为 Minecraft 26.1.2 与 26.2 版本。第三方设置/HUD 精确版本适配目前只对 26.1.2 完成审核；26.2 中会安全保持不可用，直到对应提供方构建通过检查。
 
 ## 核心功能
 
@@ -86,16 +86,16 @@ HUD 编辑器只显示当前已经加载且确实存在内容的面板。拖动�
 
 必需：
 
-- Minecraft **26.1.2**
+- Minecraft **26.1.2** 或 **26.2**（使用对应文件）
 - Fabric Loader **0.19.3+**
-- Fabric API **0.155.2+26.1.2 或更新版本**
+- MC 26.1.2 使用 Fabric API **0.155.2+26.1.2**；MC 26.2 使用 **0.154.2+26.2**
 - Java **25**
 
 可选：
 
-- Mod Menu **18.0.0**
+- MC 26.1.2 使用 Mod Menu **18.0.0**；MC 26.2 使用 **20.0.1**
 
-将可运行文件 `QCloudy_Addition-Alpha-2.6.15+26.1.2.jar` 放入实例的 `mods` 文件夹。不要把 `-sources.jar` 当作可运行模组安装。
+根据游戏版本，将 `QCloudy_Addition-Alpha-2.6.16+26.1.2.jar` 或 `QCloudy_Addition-Alpha-2.6.16+26.2.jar` 放入实例 `mods` 文件夹。不要把 `-sources.jar` 当作可运行模组安装。
 
 默认按 `O`、通过 Mod Menu，或输入 `/aca`、`/qca`、`/ca`、`/qc` 打开设置。这些设置别名和 `/qshard` 都是本地客户端命令，不会发送给 Hypixel。
 

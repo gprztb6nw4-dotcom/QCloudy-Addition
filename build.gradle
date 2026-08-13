@@ -3,15 +3,37 @@ plugins {
     id 'maven-publish'
 }
 
-version = "${project.release_channel}-${project.mod_version}+${project.minecraft_version}"
+def supportedMinecraftVersions = [
+        '26.1.2': [fabricApi: '0.155.2+26.1.2', modMenu: '18.0.0', sourceSet: 'minecraft_26_1_2'],
+        '26.2'  : [fabricApi: '0.154.2+26.2', modMenu: '20.0.1', sourceSet: 'minecraft_26_2']
+]
+def targetMinecraftVersion = project.minecraft_version.toString()
+def targetPlatform = supportedMinecraftVersions[targetMinecraftVersion]
+if (targetPlatform == null) {
+    throw new GradleException("Unsupported Minecraft version '${targetMinecraftVersion}'. Supported: ${supportedMinecraftVersions.keySet().join(', ')}")
+}
+def targetFabricApiVersion = targetPlatform.fabricApi
+def targetModMenuVersion = targetPlatform.modMenu
+
+version = "${project.release_channel}-${project.mod_version}+${targetMinecraftVersion}"
 group = project.maven_group
 
 def expandedVersion = version.toString()
-def metadataVersion = "${project.mod_version}-${project.release_channel.toString().toLowerCase()}+${project.minecraft_version}"
+def metadataVersion = "${project.mod_version}-${project.release_channel.toString().toLowerCase()}+${targetMinecraftVersion}"
 def licenseArchiveName = "LICENSE_${project.archives_base_name}"
 
 base {
     archivesName = project.archives_base_name
+}
+
+sourceSets {
+    main {
+        java.srcDir("src/${targetPlatform.sourceSet}/java")
+    }
+}
+
+if (project.hasProperty('target_build_dir')) {
+    layout.buildDirectory = layout.projectDirectory.dir(project.property('target_build_dir').toString())
 }
 
 loom {
@@ -29,10 +51,10 @@ repositories {
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    minecraft "com.mojang:minecraft:${targetMinecraftVersion}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${targetFabricApiVersion}"
+    compileOnly "com.terraformersmc:modmenu:${targetModMenuVersion}"
     testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
 }
 
@@ -42,12 +64,18 @@ test {
 
 processResources {
     inputs.property 'version', metadataVersion
+    inputs.property 'minecraft_version', targetMinecraftVersion
+    inputs.property 'fabric_api_version', targetFabricApiVersion
+    inputs.property 'loader_version', project.loader_version
     // Legacy pre-rendered pet PNGs caused stale/wrong fallbacks. Pet HUD icons
     // now render only verified player-head profiles, so do not ship them.
     exclude 'assets/qcloudy_addition/textures/gui/pets/**'
     exclude 'assets/qcloudy_addition/textures/gui/pet_skins/**'
     filesMatching('fabric.mod.json') {
-        expand version: metadataVersion
+        expand version: metadataVersion,
+                minecraft_version: targetMinecraftVersion,
+                fabric_api_version: targetFabricApiVersion,
+                loader_version: project.loader_version
     }
 }
 
@@ -71,10 +99,16 @@ jar {
 
 tasks.named('sourcesJar') {
     inputs.property 'version', metadataVersion
+    inputs.property 'minecraft_version', targetMinecraftVersion
+    inputs.property 'fabric_api_version', targetFabricApiVersion
+    inputs.property 'loader_version', project.loader_version
     exclude 'assets/qcloudy_addition/textures/gui/pets/**'
     exclude 'assets/qcloudy_addition/textures/gui/pet_skins/**'
     filesMatching('fabric.mod.json') {
-        expand version: metadataVersion
+        expand version: metadataVersion,
+                minecraft_version: targetMinecraftVersion,
+                fabric_api_version: targetFabricApiVersion,
+                loader_version: project.loader_version
     }
     from('LICENSE') {
         rename 'LICENSE', licenseArchiveName

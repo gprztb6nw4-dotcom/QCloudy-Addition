@@ -1,5 +1,6 @@
 package cloudy.autume.addition.tracker;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.mixin.PlayerTabOverlayAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -44,7 +45,7 @@ public final class TabListTracker {
 
         List<String> current = new ArrayList<>();
         List<Component> currentComponents = new ArrayList<>();
-        var overlay = client.gui.getTabList();
+        var overlay = MinecraftClientCompat.tabList(client);
         List<PlayerInfo> playerInfos = ((PlayerTabOverlayAccessor) overlay).autumeCloudyAddition$getPlayerInfos();
         for (PlayerInfo playerInfo : playerInfos) {
             Component display = playerInfo.getTabListDisplayName();

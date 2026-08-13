@@ -1,13 +1,13 @@
 # QCloudy_Addition
 
-QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。它专注于更清晰的 SkyBlock 地图、简洁的目标 HUD、被动视觉辅助、宠物信息和背包质量优化。模组以英文为默认界面，并保留 Hypixel 发来的原始名称。
+QCloudy_Addition 是适用于 Minecraft 26.1.2 与 26.2 的纯客户端 Fabric 模组。它专注于更清晰的 SkyBlock 地图、简洁的目标 HUD、被动视觉辅助、宠物信息和背包质量优化。模组以英文为默认界面，并保留 Hypixel 发来的原始名称。
 
 ## 快速入口
 
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [当前 Alpha 2.6.15 更新日志](CHANGELOG_zh_CN.md)
+- [当前 Alpha 2.6.16 更新日志](CHANGELOG_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
@@ -17,7 +17,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 
 ## 统一 SkyBlock 模组控制——Alpha
 
-QCA 现在可以作为统一的功能与 HUD 编辑入口，直接控制自己的功能，以及兼容版本的 **SkyHanni 7.41.0**、**Skyblocker 6.8.2**、**Firmament 44.3.0**、**BabyZombieAddons 3.4.1**。这些集成全部可选：QCA 仍能独立加载；提供方缺失或版本与已审查版本不符时会被隐藏。
+QCA 现在可以作为统一的功能与 HUD 编辑入口，直接控制自己的功能，以及兼容版本的 **SkyHanni 7.41.0**、**Skyblocker 6.8.2**、**Firmament 44.3.0**、**BabyZombieAddons 3.4.1**。这些集成全部可选：QCA 仍能独立加载；提供方缺失或版本与已审查版本不符时会被隐藏。以上已审查提供方版本均面向 Minecraft 26.1.2；26.2 构建仍完整提供 QCA 自身功能，但在对应 26.2 提供方版本通过审核前会隐藏这些适配器。
 
 多个兼容模组存在完全相同的功能时，QCA 只显示一张统一卡片。右键卡片后，第一项用于选择提供方，下面直接显示所选模组中能够安全编辑的原生设置。开启卡片会启用所选实现，并只关闭其他模组中完全等价的实现；用途不同的价格、利润、Tooltip 或追踪功能不会被错误合并。所有数值都写入对应模组的实时配置，并通过该模组自己的保存路径落盘；QCA 不会在模组未加载时直接改写它的配置文件。
 
@@ -103,13 +103,13 @@ QCA 现在可以作为统一的功能与 HUD 编辑入口，直接控制自己�
 
 ## 安装
 
-1. 安装 Minecraft 26.1.2、Fabric Loader 0.19.3 或更新版本、Fabric API 0.155.2+26.1.2 或更新版本，以及 Java 25。
-2. 将 `QCloudy_Addition-*.jar` 发布文件放入实例的 `mods` 文件夹；Mod Menu 为可选依赖。
+1. 选择 Minecraft 26.1.2 + Fabric API 0.155.2+26.1.2，或 Minecraft 26.2 + Fabric API 0.154.2+26.2；两者都需要 Fabric Loader 0.19.3 或更新版本及 Java 25。
+2. 将文件名末尾与当前 Minecraft 版本完全一致的 `QCloudy_Addition-*.jar` 放入实例 `mods` 文件夹；Mod Menu 为可选依赖。
 3. 启动游戏后按 `O` 或输入任一本地设置命令进行配置。
 
 ## 从源码构建
 
-安装 JDK 25 后运行 `./gradlew clean build`。项目已包含独立且固定为 Gradle 9.6.1 的 Wrapper，并固定 Fabric Loom 1.17.17；参考模组不是构建或运行依赖。宠物 Profile 元数据由本地 NEU item-repo 快照离线生成并直接打包进 QCA；发布版运行时不会联网，也不需要 Firmament。
+安装 JDK 25 后运行 `./tools/build_all_versions.sh`。该命令会测试并在 `release/` 同时生成 Minecraft 26.1.2 与 26.2 的可运行 JAR 和 Sources JAR。单版本开发仍可使用 `./gradlew build`（默认 26.1.2）或 `./gradlew build -Pminecraft_version=26.2`。项目已包含固定为 Gradle 9.6.1 的 Wrapper 与 Fabric Loom 1.17.17；参考模组不是构建或运行依赖。宠物 Profile 元数据由本地 NEU item-repo 快照离线生成并直接打包进 QCA；发布版运行时不会联网，也不需要 Firmament。
 
 ## 安全边界
 
@@ -123,7 +123,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-当前 Alpha 2.6.15 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
+当前 Alpha 2.6.16 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

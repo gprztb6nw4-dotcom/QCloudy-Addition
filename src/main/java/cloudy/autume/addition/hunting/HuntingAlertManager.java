@@ -1,5 +1,6 @@
 package cloudy.autume.addition.hunting;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.config.ConfigManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -29,9 +30,9 @@ public final class HuntingAlertManager {
         if (previous != null && now - previous < cooldownMs) return;
         LAST_ALERTS.put(key, now);
 
-        client.gui.setTimes(6, 42, 10);
-        client.gui.setTitle(Component.literal(title).withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD));
-        client.gui.setSubtitle(Component.literal(subtitle).withStyle(ChatFormatting.YELLOW));
+        MinecraftClientCompat.showTitle(client,
+                Component.literal(title).withStyle(ChatFormatting.BOLD, ChatFormatting.GOLD),
+                Component.literal(subtitle).withStyle(ChatFormatting.YELLOW), 6, 42, 10);
         var config = ConfigManager.get().hunting;
         var audio = channel.audio(config);
         if (config.alertSound && audio.sound && audio.volume > 0) {

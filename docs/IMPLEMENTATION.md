@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.6.15+26.1.2`.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.6.16` for Minecraft 26.1.2 and 26.2.
 
 ## 1. Runtime architecture
 
@@ -28,6 +28,8 @@ received Tab / scoreboard / chat / menu / title / entity / inventory / loaded bl
 
 `UnifiedModIntegration` discovers only the reviewed provider IDs and exact versions: SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1. It has no compile-time dependency on them. Reflection is used only after the Fabric loader confirms the mod and reviewed version, and failures are caught per provider so an absent or changed provider cannot prevent QCA from loading.
 
+Those reviewed provider builds target Minecraft 26.1.2. QCA's 26.2 artifact keeps its standalone feature set but leaves these adapters unavailable until equivalent 26.2 provider builds and native config contracts have been reviewed.
+
 The registry walks the live provider configuration and exposes only validated primitive Boolean/enum values, annotated or otherwise bounded numeric values, and audited HUD x/y/scale values. Writes call the provider's own update/save/dirty mechanism. It never edits an unloaded provider's JSON file. Exact cross-mod aliases merge one logical feature; enabling a selected provider first disables only bindings attached to that same alias. The provider choice is persisted in QCA config, while every provider's own values remain stored by that provider.
 
 `HudLayoutScreen` combines QCA's currently loaded panels with enabled HUDs belonging to the selected external provider. Drag/resize uses a transient preview and writes native coordinates/scale only on mouse release. The first Alpha intentionally excludes opaque compound color/keybind/config-editor objects whose setter and validation contract has not been audited.
@@ -44,7 +46,7 @@ Give every feature a clear single category and let players customize visual outp
 
 - Local mouse/keyboard input through Minecraft input events and targeted input Mixins.
 - `HudElementRegistry` for screen HUD submission.
-- `GuiGraphicsExtractor` for Minecraft 26.1.2 text, item, panel, and texture rendering.
+- `GuiGraphicsExtractor` for Minecraft 26.1.2/26.2 text, item, panel, and texture rendering, with target-specific access isolated in `MinecraftClientCompat`.
 - Local `qcloudy_addition.json` for settings and HUD layout.
 - Bundled `en_us.json` and `zh_cn.json` for QCA-owned labels.
 

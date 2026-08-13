@@ -1,5 +1,6 @@
 package cloudy.autume.addition.config;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.QCloudyAdditionClient;
 import cloudy.autume.addition.i18n.ModText;
 import cloudy.autume.addition.inventory.ShardPlanningScreen;
@@ -416,7 +417,7 @@ final class FeatureSettingsScreen extends Screen {
             }
             case EXTERNAL_STATUS -> { }
             case OPEN_SHARD_GUIDE -> QCloudyAdditionClient.openShardFusionGuide(minecraft, this, "");
-            case OPEN_SHARD_PLANNER -> minecraft.setScreen(new ShardPlanningScreen(this,
+            case OPEN_SHARD_PLANNER -> MinecraftClientCompat.setScreen(minecraft, new ShardPlanningScreen(this,
                     ConfigManager.get().inventory.shardPlannerTarget));
             case SHARD_GUIDE_KEY -> listeningChord = QCloudyAdditionClient.ChordAction.OPEN_SHARD_FUSION;
             case YIELD_FIRMAMENT -> config.inventory.yieldToFirmament = !config.inventory.yieldToFirmament;
@@ -469,13 +470,13 @@ final class FeatureSettingsScreen extends Screen {
             case PET_SKIN_NAME -> config.pets.showSkinName = !config.pets.showSkinName;
             case PET_ACCESSORY -> config.pets.petAccessoryDisplay = next(config.pets.petAccessoryDisplay,
                     "ICON_AND_NAME", "ICON_ONLY", "NAME_ONLY");
-            case EDIT_LAYOUT -> minecraft.setScreen(new HudLayoutScreen(this));
+            case EDIT_LAYOUT -> MinecraftClientCompat.setScreen(minecraft, new HudLayoutScreen(this));
         }
         ConfigManager.save();
     }
 
     private void openColor(int initial, IntConsumer setter) {
-        minecraft.setScreen(new ColorPickerScreen(this, initial, value -> {
+        MinecraftClientCompat.setScreen(minecraft, new ColorPickerScreen(this, initial, value -> {
             setter.accept(value);
             ConfigManager.save();
         }));
@@ -483,7 +484,7 @@ final class FeatureSettingsScreen extends Screen {
 
     private void openBackgroundColor(ModConfig.PanelStyle style) {
         int restoredOpacity = style.backgroundOpacity > 0 ? style.backgroundOpacity : 120;
-        minecraft.setScreen(new ColorPickerScreen(this, style.backgroundColor, value -> {
+        MinecraftClientCompat.setScreen(minecraft, new ColorPickerScreen(this, style.backgroundColor, value -> {
             style.backgroundColor = value;
             ConfigManager.save();
         }, true, style.backgroundOpacity == 0, () -> {
@@ -528,7 +529,7 @@ final class FeatureSettingsScreen extends Screen {
     @Override
     public void onClose() {
         ConfigManager.save();
-        minecraft.setScreen(parent);
+        MinecraftClientCompat.setScreen(minecraft, parent);
     }
 
     @Override

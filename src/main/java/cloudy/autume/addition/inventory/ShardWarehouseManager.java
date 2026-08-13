@@ -1,5 +1,6 @@
 package cloudy.autume.addition.inventory;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
@@ -51,7 +52,8 @@ public final class ShardWarehouseManager {
     }
 
     public static void update(Minecraft client) {
-        if (client.player == null || !(client.screen instanceof AbstractContainerScreen<?> screen)) return;
+        if (client.player == null
+                || !(MinecraftClientCompat.screen(client) instanceof AbstractContainerScreen<?> screen)) return;
         Matcher title = TITLE.matcher(screen.getTitle().getString().trim());
         if (!title.matches()) return;
 

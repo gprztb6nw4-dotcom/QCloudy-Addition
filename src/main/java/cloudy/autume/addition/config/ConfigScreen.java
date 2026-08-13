@@ -1,5 +1,6 @@
 package cloudy.autume.addition.config;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.i18n.ModText;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -338,7 +339,7 @@ public final class ConfigScreen extends Screen {
                 && AcaUiTheme.contains(click.x(), click.y(), contentX, contentY, contentWidth, contentHeight)) {
             for (Hit<UnifiedModIntegration.UnifiedFeature> hit : featureHits) {
                 if (hit.contains(click.x(), click.y())) {
-                    minecraft.setScreen(new FeatureSettingsScreen(this, hit.value));
+                    MinecraftClientCompat.setScreen(minecraft, new FeatureSettingsScreen(this, hit.value));
                     return true;
                 }
             }
@@ -379,7 +380,7 @@ public final class ConfigScreen extends Screen {
         }
         int editY = windowY + windowHeight - 52;
         if (AcaUiTheme.contains(mouseX, mouseY, sidebarX, editY, sideWidth, 20)) {
-            minecraft.setScreen(new HudLayoutScreen(this));
+            MinecraftClientCompat.setScreen(minecraft, new HudLayoutScreen(this));
             return true;
         }
         int languageY = windowY + windowHeight - 27;
@@ -426,7 +427,7 @@ public final class ConfigScreen extends Screen {
     @Override
     public void onClose() {
         ConfigManager.save();
-        minecraft.setScreen(parent);
+        MinecraftClientCompat.setScreen(minecraft, parent);
     }
 
     @Override

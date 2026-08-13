@@ -1,6 +1,6 @@
 # QCloudy_Addition feature specification
 
-## Unified settings and HUD control — Alpha 2.6.15
+## Unified settings and HUD control — Alpha 2.6.16
 
 QCA presents one function-first catalog across its own features and compatible installed builds of SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1. The top-level order is **General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events**. Safari belongs to Hunting, Garden to Farming, and Crimson Isle/Kuudra to Combat. Collapsible subgroups are closed by default, and one exact function has one card.
 

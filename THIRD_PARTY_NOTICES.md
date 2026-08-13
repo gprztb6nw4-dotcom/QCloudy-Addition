@@ -1,6 +1,6 @@
 # Third-party notices and reference provenance
 
-QCloudy_Addition's Java implementation and visual design are original. The following open-source projects were inspected to understand Minecraft 26.1.2 APIs and resilient client-side patterns. They are not bundled as dependencies.
+QCloudy_Addition's Java implementation and visual design are original. The following open-source projects were inspected to understand Minecraft 26.1.2/26.2 APIs and resilient client-side patterns. They are not bundled as dependencies.
 
 | Project | Inspected version / commit | License | Use in QCA |
 |---|---|---|---|

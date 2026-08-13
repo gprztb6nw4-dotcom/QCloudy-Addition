@@ -1,34 +1,39 @@
-# QCloudy_Addition Alpha 2.6.15 responsive-UI validation
+# QCloudy_Addition Alpha 2.6.16 dual-version validation
 
-Date: 2026-08-12<br>
-Minecraft: 26.1.2<br>
+Date: 2026-08-13<br>
+Minecraft: 26.1.2 and 26.2<br>
 Java: 25
 
 Validated artifacts:
 
-- `release/QCloudy_Addition-Alpha-2.6.15+26.1.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.15+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.16+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.16+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.16+26.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.16+26.2-sources.jar`
 
-Playable SHA-256: `5f66cc0f698307fadee91652352ce012190af9ab030143a3309c9f2b349b8d28`<br>
-Sources SHA-256: `17d15e04bee3787b125c10032c6f81553ca32800a804ba94381957cb31a88613`
+26.1.2 playable SHA-256: `bfac0c6d6c4e4d443f3aaab2796164b1e84a01599a4babe7d63198f0a650af5a`<br>
+26.1.2 Sources SHA-256: `372313f5a69a4e2cf722745eeda00d9d134c289cf77d9c96d594e6afe2a72415`<br>
+26.2 playable SHA-256: `8d7af716176b9148de3671469e9ba7d3ea9c3a7a95981fcdd532cf072bb812f6`<br>
+26.2 Sources SHA-256: `2bce5eb517227e71725805946b8aa1c1d707b447199c3743c3ca94fac96b53be`
 
-Alpha 2.6.15 corrects the Shard Planner screenshot regression and audits the surrounding configuration UI. Shard details now keep the title, metadata, wrapped acquisition text, rate input, and actions in separate regions; result and detail scrolling are independent. Planner controls reflow before collision, Fusion Lines use a scrollable canvas, and the main settings screen, secondary settings, RGB picker, and HUD editor constrain text, controls, clipping, and hitboxes to their visible bounds.
+Alpha 2.6.16 adds a maintained Minecraft 26.2 target while continuing to emit the 26.1.2 build. Target-specific client GUI access is isolated behind two small compatibility sources; shared features, data, tests, resources, and client-only behavior remain common.
 
 Verified in this workspace:
 
-- Java 25 `clean test build prepareRelease` completed successfully: 160 tests, 0 failures, 0 errors, 0 skips.
+- Java 25 `clean test build prepareRelease` completed successfully for both targets: 160 tests per target, 0 failures, 0 errors, 0 skips.
 - Deterministic geometry tests cover wide and narrow Shard detail columns, separated rate controls, compact Plan controls, narrow Settings stacking and safe short-screen fallback, Recipe field widths, Fusion Lines canvas growth, secondary-setting sliders, RGB bars, and preset swatches.
 - Main and test compilation completed from a clean output directory.
-- Expanded `fabric.mod.json` declares `2.6.15-alpha+26.1.2`, client-only environment, Minecraft 26.1.2, Fabric Loader 0.19.3+, Fabric API 0.155.2+26.1.2+, and Java 25+. The distributable filename is `QCloudy_Addition-Alpha-2.6.15+26.1.2.jar`.
+- Expanded metadata declares the exact target in each artifact: 26.1.2 uses Fabric API 0.155.2+26.1.2; 26.2 uses Fabric API 0.154.2+26.2. Both remain client-only and require Fabric Loader 0.19.3+ and Java 25+.
 - Binary and Sources artifacts in `build/libs/` are byte-identical to the corresponding `release/` artifacts.
-- Both JARs pass JDK 25 `jar --validate` and `unzip -t`; English and Chinese language files each contain 467 keys with identical key sets; `git diff --check` passes.
+- All four JARs pass JDK 25 `jar --validate` and `unzip -t`; English and Chinese language files remain shared between targets.
+- A 26.2 standalone development launch initialized QCA on the Render thread, completed resource reload, created the item and GUI atlases, and started the sound engine without `InjectionError`, `InvalidMixin`, or QCA exception.
 - The optional integration has no compile-time dependency on any provider and does not add an HTTP client, packet, chat command, container click, gameplay input, or server-data request.
 - Static matrix/scissor review confirms balanced push/pop and enable/disable pairs in the edited configuration and inventory screens.
 
 Outstanding Alpha regression boundary:
 
 - Geometry tests and archive checks do not replace visual testing in a live Minecraft renderer. Before wider publication, open all six Shard Planner tabs, the main and secondary settings pages, the RGB picker, and the HUD editor at every GUI Scale used by the target modpack; verify both languages, resize/re-init, long provider names, mouse hitboxes, and scrolling.
-- The combined settings/provider integration still requires authenticated in-game regression for all four exact provider builds, including restart persistence, negative/right-anchored HUD coordinates, provider switching, and unknown-version fail-closed behavior.
+- The combined settings/provider integration still requires authenticated in-game regression for all four exact 26.1.2 provider builds. The 26.2 artifact deliberately hides these version-locked adapters until matching provider builds are reviewed.
 
 ---
 

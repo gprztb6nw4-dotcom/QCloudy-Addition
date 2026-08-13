@@ -1,5 +1,6 @@
 package cloudy.autume.addition.tracker;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.config.ConfigManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -19,7 +20,7 @@ public final class HotmSlotTracker {
 
     public static void update(Minecraft client) {
         if (!LocationTracker.isSkyBlock() || client.player == null
-                || !(client.screen instanceof AbstractContainerScreen<?> screen)) return;
+                || !(MinecraftClientCompat.screen(client) instanceof AbstractContainerScreen<?> screen)) return;
         String title = screen.getTitle().getString();
 
         Item.TooltipContext context = client.level == null

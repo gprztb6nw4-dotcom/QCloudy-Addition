@@ -1,6 +1,6 @@
 # QCloudy_Addition 功能说明
 
-## 统一设置与 HUD 控制——Alpha 2.6.15
+## 统一设置与 HUD 控制——Alpha 2.6.16
 
 QCA 以功能为中心，统一显示自身以及兼容安装版本 SkyHanni 7.41.0、Skyblocker 6.8.2、Firmament 44.3.0、BabyZombieAddons 3.4.1 的功能。一级顺序固定为：**通用、地图、物品与菜单、战斗、地牢、Slayer、挖矿、种地、砍树、钓鱼、狩猎、Rift、活动**。Safari 归入狩猎，Garden 归入种地，Crimson Isle/Kuudra 归入战斗。下级组默认收起，一个完全相同的功能只有一张卡片。
 

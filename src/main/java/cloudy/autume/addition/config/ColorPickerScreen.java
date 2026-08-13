@@ -1,5 +1,6 @@
 package cloudy.autume.addition.config;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.i18n.ModText;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -331,7 +332,7 @@ final class ColorPickerScreen extends Screen {
     @Override
     public void onClose() {
         apply();
-        minecraft.setScreen(parent);
+        MinecraftClientCompat.setScreen(minecraft, parent);
     }
 
     @Override

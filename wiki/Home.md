@@ -4,8 +4,8 @@
 
 QCloudy_Addition is an English-first, bilingual, client-only Fabric mod for Hypixel SkyBlock. It provides readable maps, task and resource HUDs, hunting and fishing cues, pet information, an offline Attribute Shard guide and planner, configurable visual helpers, and a function-first settings and HUD editor.
 
-> **Current build:** Alpha 2.6.15 for Minecraft 26.1.2  
-> **Required:** Java 25, Fabric Loader 0.19.3 or newer, and Fabric API 0.155.2+26.1.2 or newer  
+> **Current build:** Alpha 2.6.16 for Minecraft 26.1.2 and 26.2
+> **Required:** Java 25 and Fabric Loader 0.19.3 or newer; Fabric API 0.155.2+26.1.2 for Minecraft 26.1.2, or Fabric API 0.154.2+26.2 for Minecraft 26.2
 > **Optional:** Mod Menu and reviewed builds of supported SkyBlock mods  
 > **Important:** Every Minecraft modification is used at the player's own risk. QCloudy_Addition is not affiliated with Hypixel or Mojang.
 
@@ -28,11 +28,11 @@ QCloudy_Addition is an English-first, bilingual, client-only Fabric mod for Hypi
 
 ## Installation
 
-1. Install **Minecraft 26.1.2**.
+1. Install **Minecraft 26.1.2** or **Minecraft 26.2**.
 2. Install **Fabric Loader 0.19.3 or newer**.
-3. Install **Fabric API 0.155.2+26.1.2 or newer**.
+3. Install the matching Fabric API: **0.155.2+26.1.2** for Minecraft 26.1.2, or **0.154.2+26.2** for Minecraft 26.2.
 4. Run the instance with **Java 25**.
-5. Download the playable `QCloudy_Addition-*.jar`. Do not install the file ending in `-sources.jar` as the playable mod.
+5. Download the playable `QCloudy_Addition-*.jar` whose filename ends in your exact Minecraft version. Do not install the file ending in `-sources.jar` as the playable mod.
 6. Put the playable JAR in the instance's `mods` folder.
 7. Remove older QCloudy_Addition JARs from the same folder to avoid loading duplicate versions.
 8. Start Minecraft and open the settings with `O` or a local settings command.
@@ -313,7 +313,7 @@ Only enabled, loaded HUDs with visible content are included in the editor. Open 
 
 ### Text or controls overlap at my GUI scale
 
-Alpha 2.6.15 added responsive layouts, independent scrolling, clipping, and safe short-screen fallbacks. If a layout still overlaps, include the exact Minecraft window size, GUI Scale, QCA language, open page/tab, installed mods, and a full screenshot in the report.
+Alpha 2.6.16 preserves the responsive layouts, independent scrolling, clipping, and safe short-screen fallbacks while adding the 26.2 target. If a layout still overlaps, include the exact Minecraft window size, GUI Scale, QCA language, open page/tab, installed mods, and a full screenshot in the report.
 
 ### Cheapest or Bazaar planning is unavailable
 
@@ -350,7 +350,7 @@ Do not publish access tokens, session data, private chat, or other personal info
 
 ## Project status and validation
 
-Alpha 2.6.15 has been built and archive-checked with Java 25. The current validation run reports 160 automated tests with no failures, errors, or skips; binary/source archives validate, language key sets match, and the packaged metadata declares a client-only Minecraft 26.1.2 mod.
+Alpha 2.6.16 has been built and archive-checked with Java 25 for both Minecraft 26.1.2 and 26.2. Each target reports 160 automated tests with no failures, errors, or skips; all four binary/source archives validate, and the 26.2 development client reaches resource and sound-engine initialization without a QCA or Mixin exception.
 
 These checks do **not** replace authenticated in-game testing. Before treating an Alpha as stable, the project still needs live regression across the supported providers, different GUI scales/languages, resource packs, Hypixel wording changes, latency conditions, and a full target modpack.
 

@@ -1,34 +1,39 @@
-# QCloudy_Addition Alpha 2.6.15 响应式 UI 验证
+# QCloudy_Addition Alpha 2.6.16 双版本验证
 
-日期：2026-08-12<br>
-Minecraft：26.1.2<br>
+日期：2026-08-13<br>
+Minecraft：26.1.2 与 26.2<br>
 Java：25
 
 已验证产物：
 
-- `release/QCloudy_Addition-Alpha-2.6.15+26.1.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.15+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.16+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.16+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.6.16+26.2.jar`
+- `release/QCloudy_Addition-Alpha-2.6.16+26.2-sources.jar`
 
-可运行 JAR SHA-256：`5f66cc0f698307fadee91652352ce012190af9ab030143a3309c9f2b349b8d28`<br>
-源码 JAR SHA-256：`17d15e04bee3787b125c10032c6f81553ca32800a804ba94381957cb31a88613`
+26.1.2 可运行 SHA-256：`bfac0c6d6c4e4d443f3aaab2796164b1e84a01599a4babe7d63198f0a650af5a`<br>
+26.1.2 Sources SHA-256：`372313f5a69a4e2cf722745eeda00d9d134c289cf77d9c96d594e6afe2a72415`<br>
+26.2 可运行 SHA-256：`8d7af716176b9148de3671469e9ba7d3ea9c3a7a95981fcdd532cf072bb812f6`<br>
+26.2 Sources SHA-256：`2bce5eb517227e71725805946b8aa1c1d707b447199c3743c3ca94fac96b53be`
 
-Alpha 2.6.15 修复截图中的 Shard Planner 错位，并对相关配置 UI 做系统性检查。Shard 详情标题、属性、自动换行的获取说明、速度输入框和按钮现在使用互不重叠的区域；结果列表和详情独立滚动。Planner 控件会在碰撞前重排，Fusion Lines 使用可滚动画布；主设置、功能二级设置、RGB 选择器和 HUD 编辑器也会把文字、控件、裁剪和点击区限制在可见边界内。
+Alpha 2.6.16 新增长期维护的 Minecraft 26.2 目标，并继续同时输出 26.1.2。不同版本的客户端 GUI 入口被隔离到两个很薄的兼容源文件；其余功能、数据、测试、资源和纯客户端行为全部共用。
 
 本工作区已验证：
 
-- Java 25 `clean test build prepareRelease` 成功：160 项测试，0 failure、0 error、0 skip。
+- Java 25 `clean test build prepareRelease` 在两个目标均成功：每个版本 160 项测试，0 failure、0 error、0 skip。
 - 确定性几何测试覆盖宽/窄 Shard 详情栏、独立速度控件、紧凑 Plan 控件、窄屏 Settings 单列及矮屏安全提示、Recipe 输入框宽度、Fusion Lines 画布扩展、二级设置滑块、RGB 条和预设色块。
 - 主代码与测试已从干净输出目录重新编译。
-- 展开的 `fabric.mod.json` 为 `2.6.15-alpha+26.1.2`、纯客户端，声明 Minecraft 26.1.2、Fabric Loader 0.19.3+、Fabric API 0.155.2+26.1.2+ 与 Java 25+；发布文件名为 `QCloudy_Addition-Alpha-2.6.15+26.1.2.jar`。
+- 每个产物的展开元数据均精确声明目标：26.1.2 使用 Fabric API 0.155.2+26.1.2；26.2 使用 Fabric API 0.154.2+26.2。两者都保持纯客户端并要求 Fabric Loader 0.19.3+ 与 Java 25+。
 - `build/libs/` 的可运行与源码产物分别和 `release/` 中对应文件逐字节一致。
-- 两个 JAR 均通过 JDK 25 `jar --validate` 与 `unzip -t`；中英文语言文件各 467 个键且键集合相同；`git diff --check` 通过。
+- 四个 JAR 均通过 JDK 25 `jar --validate` 与 `unzip -t`；两个目标共用同一套中英文资源。
+- 26.2 独立开发客户端已在 Render thread 初始化 QCA，完成资源重载、创建物品/GUI 图集并启动声音引擎，没有 `InjectionError`、`InvalidMixin` 或 QCA 异常。
 - 可选集成不产生提供方编译依赖，也未新增 HTTP、数据包、聊天命令、菜单点击、玩法输入或服务器数据请求。
 - 对编辑过的配置与物品界面进行静态矩阵/裁剪审查，push/pop 与 enable/disable 均成对。
 
 尚未覆盖的 Alpha 实服边界：
 
 - 几何测试和归档检查不能代替 Minecraft 实际渲染检查。扩大发布前，应在目标整合包使用的每个 GUI Scale 下打开 Shard Planner 六个页签、主设置、二级设置、RGB 选择器和 HUD 编辑器，检查中英文、resize/re-init、长提供方名称、点击区和滚动。
-- 四个精确提供方版本的统一设置集成仍需已登录实服回归，包括重启持久化、负数/右侧锚定 HUD 坐标、提供方切换和未知版本安全关闭。
+- 四个精确 26.1.2 提供方版本的统一设置集成仍需已登录实服回归；26.2 产物会刻意隐藏这些锁定版本的适配器，直到对应提供方构建完成审核。
 
 ---
 

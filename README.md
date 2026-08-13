@@ -1,13 +1,13 @@
 # QCloudy_Addition
 
-QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on readable SkyBlock maps, compact objective HUDs, passive visual helpers, pet information, and inventory quality-of-life tools. The mod is bilingual, English-first, and keeps Hypixel-provided names in their original form.
+QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2 and 26.2. It focuses on readable SkyBlock maps, compact objective HUDs, passive visual helpers, pet information, and inventory quality-of-life tools. The mod is bilingual, English-first, and keeps Hypixel-provided names in their original form.
 
 ## Quick links
 
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [Current Alpha 2.6.15 changelog](CHANGELOG.md)
+- [Current Alpha 2.6.16 changelog](CHANGELOG.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -17,7 +17,7 @@ The language option translates QCA interface labels only. Hypixel location names
 
 ## Unified SkyBlock mod controls — Alpha
 
-QCA can now act as one function-first settings and HUD editor for its own features and compatible installed builds of **SkyHanni 7.41.0**, **Skyblocker 6.8.2**, **Firmament 44.3.0**, and **BabyZombieAddons 3.4.1**. These integrations are optional: QCA remains independently loadable and hides a provider when it is absent or does not match the reviewed version.
+QCA can now act as one function-first settings and HUD editor for its own features and compatible installed builds of **SkyHanni 7.41.0**, **Skyblocker 6.8.2**, **Firmament 44.3.0**, and **BabyZombieAddons 3.4.1**. These integrations are optional: QCA remains independently loadable and hides a provider when it is absent or does not match the reviewed version. Those exact reviewed provider builds target Minecraft 26.1.2; the 26.2 build keeps every QCA-owned feature available but hides provider adapters until a matching 26.2 provider build has been reviewed.
 
 When several supported mods implement the same exact function, QCA shows one card. Right-clicking that card puts the provider selector first and then shows the safely editable native settings of the selected provider. Enabling the card enables the selected implementation and disables only its exact equivalents; nearby price, profit, tooltip, or tracker features with different purposes are not merged. Values are written to the provider's live configuration and saved through that mod's own save path. QCA never edits an unloaded mod's configuration file.
 
@@ -103,13 +103,13 @@ Inventory and menu tools include the Attribute Shard Fusion Guide, item timestam
 
 ## Installation
 
-1. Install Minecraft 26.1.2, Fabric Loader 0.19.3 or newer, Fabric API 0.155.2+26.1.2 or newer, and Java 25.
-2. Put the `QCloudy_Addition-*.jar` release in the instance's `mods` folder. Mod Menu is optional.
+1. Install either Minecraft 26.1.2 with Fabric API 0.155.2+26.1.2, or Minecraft 26.2 with Fabric API 0.154.2+26.2. Both builds require Fabric Loader 0.19.3 or newer and Java 25.
+2. Put the `QCloudy_Addition-*.jar` whose filename ends in your exact Minecraft version in the instance's `mods` folder. Mod Menu is optional.
 3. Start the game and press `O` or type one of the local settings commands to configure the mod.
 
 ## Building from source
 
-Install JDK 25 and run `./gradlew clean build`. The repository includes its own pinned Gradle 9.6.1 Wrapper and Fabric Loom 1.17.17 configuration; the inspected reference mods are not build or runtime dependencies. Pet profile metadata is generated offline from a local NEU repository snapshot and committed into QCA resources. The shipped mod performs no runtime network request and runs without Firmament.
+Install JDK 25 and run `./tools/build_all_versions.sh`. One command tests and produces playable and Sources JARs for both Minecraft 26.1.2 and 26.2 in `release/`. A single-target development build remains available through `./gradlew build` (26.1.2 by default) or `./gradlew build -Pminecraft_version=26.2`. The repository includes its own pinned Gradle 9.6.1 Wrapper and Fabric Loom 1.17.17 configuration; the inspected reference mods are not build or runtime dependencies. Pet profile metadata is generated offline from a local NEU repository snapshot and committed into QCA resources. The shipped mod performs no runtime network request and runs without Firmament.
 
 ## Safety boundary
 
@@ -125,7 +125,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-Current Alpha 2.6.15 changes: [CHANGELOG.md](CHANGELOG.md)
+Current Alpha 2.6.16 changes: [CHANGELOG.md](CHANGELOG.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 

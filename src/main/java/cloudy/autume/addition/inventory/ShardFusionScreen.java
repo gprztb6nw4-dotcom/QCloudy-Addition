@@ -1,5 +1,6 @@
 package cloudy.autume.addition.inventory;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.QCloudyAdditionClient;
 import cloudy.autume.addition.config.AcaUiTheme;
 import cloudy.autume.addition.i18n.ModText;
@@ -973,7 +974,7 @@ public final class ShardFusionScreen extends Screen {
             case BACK_TO_LIST -> pairPreview = null;
             case SHOW_LIST -> singleColumnListVisible = true;
             case SHOW_DETAIL -> singleColumnListVisible = false;
-            case PLANNER -> minecraft.setScreen(new ShardPlanningScreen(this,
+            case PLANNER -> MinecraftClientCompat.setScreen(minecraft, new ShardPlanningScreen(this,
                     selected == null ? "" : selected.id()));
             case SELECT_SHARD -> {
                 return false;
@@ -1058,7 +1059,7 @@ public final class ShardFusionScreen extends Screen {
 
     @Override
     public void onClose() {
-        minecraft.setScreen(parent);
+        MinecraftClientCompat.setScreen(minecraft, parent);
     }
 
     @Override

@@ -2,6 +2,7 @@ package cloudy.autume.addition;
 
 import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ConfigScreen;
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.fishing.FishingBiteAlert;
 import cloudy.autume.addition.hud.HudRenderer;
 import cloudy.autume.addition.i18n.ModText;
@@ -108,7 +109,8 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
                 }
                 dispatcher.register(ClientCommands.literal(alias).executes(context -> {
                     var client = context.getSource().getClient();
-                    client.execute(() -> client.setScreen(new ConfigScreen(client.screen)));
+                    client.execute(() -> MinecraftClientCompat.setScreen(client,
+                            new ConfigScreen(MinecraftClientCompat.screen(client))));
                     return 1;
                 }));
             }
@@ -195,7 +197,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
 
     public static boolean openShardFusionGuide(Minecraft client, Screen parent, String initialQuery) {
         if (!ConfigManager.get().inventory.shardFusionHelper) return false;
-        client.setScreen(new ShardFusionScreen(parent, initialQuery));
+        MinecraftClientCompat.setScreen(client, new ShardFusionScreen(parent, initialQuery));
         return true;
     }
 
@@ -205,7 +207,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
             return 0;
         }
         Minecraft client = source.getClient();
-        client.execute(() -> openShardFusionGuide(client, client.screen, query));
+        client.execute(() -> openShardFusionGuide(client, MinecraftClientCompat.screen(client), query));
         return 1;
     }
 

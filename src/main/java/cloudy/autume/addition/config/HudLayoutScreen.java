@@ -1,5 +1,6 @@
 package cloudy.autume.addition.config;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.hud.HudRenderer;
 import cloudy.autume.addition.i18n.ModText;
 import cloudy.autume.addition.tracker.IslandArea;
@@ -117,7 +118,7 @@ public final class HudLayoutScreen extends Screen {
             if (toolbarButtonClicked(click.x(), click.y())) return true;
             UnifiedModIntegration.ExternalHud externalSettings = externalSettingsAt(click.x(), click.y());
             if (externalSettings != null) {
-                minecraft.setScreen(new FeatureSettingsScreen(this, externalSettings.feature));
+                MinecraftClientCompat.setScreen(minecraft, new FeatureSettingsScreen(this, externalSettings.feature));
                 return true;
             }
             Panel settingsPanel = settingsAt(click.x(), click.y());
@@ -128,9 +129,9 @@ public final class HudLayoutScreen extends Screen {
                         case CRITTER_SAFARI -> ConfigScreen.HudFocus.SAFARI;
                         default -> ConfigScreen.HudFocus.HUNTING;
                     };
-                    minecraft.setScreen(new ConfigScreen(this, focus));
+                    MinecraftClientCompat.setScreen(minecraft, new ConfigScreen(this, focus));
                 } else {
-                    minecraft.setScreen(new FeatureSettingsScreen(this, settingsPanel.feature()));
+                    MinecraftClientCompat.setScreen(minecraft, new FeatureSettingsScreen(this, settingsPanel.feature()));
                 }
                 return true;
             }
@@ -179,7 +180,7 @@ public final class HudLayoutScreen extends Screen {
             if (external != null) {
                 selectedExternal = external;
                 selected = null;
-                minecraft.setScreen(new FeatureSettingsScreen(this, external.feature));
+                MinecraftClientCompat.setScreen(minecraft, new FeatureSettingsScreen(this, external.feature));
                 return true;
             }
             Panel panel = panelAt(click.x(), click.y());
@@ -277,7 +278,7 @@ public final class HudLayoutScreen extends Screen {
     @Override
     public void onClose() {
         ConfigManager.save();
-        minecraft.setScreen(parent);
+        MinecraftClientCompat.setScreen(minecraft, parent);
     }
 
     @Override

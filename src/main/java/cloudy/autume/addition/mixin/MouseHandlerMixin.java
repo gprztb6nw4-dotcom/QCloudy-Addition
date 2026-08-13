@@ -2,6 +2,7 @@ package cloudy.autume.addition.mixin;
 
 import cloudy.autume.addition.QCloudyAdditionClient;
 import cloudy.autume.addition.chat.ChatPeekManager;
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ConfigScreen;
 import cloudy.autume.addition.inventory.CursorPositionSaver;
@@ -48,10 +49,11 @@ public abstract class MouseHandlerMixin {
     @Inject(method = "onButton", at = @At("HEAD"), cancellable = true)
     private void aca$handleMouseChords(long window, MouseButtonInfo button, int action, CallbackInfo ci) {
         MouseButtonEvent event = new MouseButtonEvent(xpos, ypos, button);
-        if (action != GLFW.GLFW_PRESS || minecraft.screen != null || minecraft.getOverlay() != null) return;
+        if (action != GLFW.GLFW_PRESS || MinecraftClientCompat.screen(minecraft) != null
+                || MinecraftClientCompat.hasOverlay(minecraft)) return;
         if (QCloudyAdditionClient.matchesMouseChord(
                 QCloudyAdditionClient.ChordAction.OPEN_CONFIG, event)) {
-            minecraft.setScreen(new ConfigScreen(null));
+            MinecraftClientCompat.setScreen(minecraft, new ConfigScreen(null));
             ci.cancel();
             return;
         }
@@ -71,7 +73,7 @@ public abstract class MouseHandlerMixin {
 
     @ModifyVariable(method = "onScroll", at = @At(value = "STORE"), name = "wheel")
     private int aca$scrollPeekedChat(int wheel) {
-        if (ChatPeekManager.scrollsChat()) Minecraft.getInstance().gui.getChat().scrollChat(wheel);
+        if (ChatPeekManager.scrollsChat()) MinecraftClientCompat.chat(Minecraft.getInstance()).scrollChat(wheel);
         return wheel;
     }
 }

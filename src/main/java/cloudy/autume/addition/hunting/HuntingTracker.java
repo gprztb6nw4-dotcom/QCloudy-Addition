@@ -1,5 +1,6 @@
 package cloudy.autume.addition.hunting;
 
+import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ModConfig;
 import cloudy.autume.addition.hud.CompactNumbers;
@@ -755,7 +756,7 @@ public final class HuntingTracker {
         }
         rememberBeeheemothSoundOrigin(found.position());
         if (!beeheemothBeaconDismissed && beeheemothSpawn != null
-                && client.player.distanceToSqr(beeheemothSpawn.getCenter())
+                && client.player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(beeheemothSpawn))
                 <= BEEHEEMOTH_BEACON_DISMISS_DISTANCE_SQR) {
             beeheemothBeaconDismissed = true;
             beeheemothSpawn = null;
@@ -982,7 +983,7 @@ public final class HuntingTracker {
                 for (BlockPos pos : chunk.getBlockEntitiesPos()) {
                     var state = client.level.getBlockState(pos);
                     if (!state.is(Blocks.CAMPFIRE) && !state.is(Blocks.SOUL_CAMPFIRE)) continue;
-                    double distance = client.player.distanceToSqr(pos.getCenter());
+                    double distance = client.player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(pos));
                     if (distance < bestDistance) {
                         bestDistance = distance;
                         best = pos.immutable();
@@ -1015,7 +1016,7 @@ public final class HuntingTracker {
                 for (int dz = -FLOOR_SCAN_RADIUS; dz <= FLOOR_SCAN_RADIUS; dz++) {
                     BlockPos pos = origin.offset(dx, dy, dz);
                     if (!client.level.getBlockState(pos).is(Blocks.TRIPWIRE)) continue;
-                    double distance = Math.sqrt(client.player.distanceToSqr(pos.getCenter()));
+                    double distance = Math.sqrt(client.player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(pos)));
                     nearest = Math.min(nearest, distance);
                     if (knownFloorDrops.add(pos.asLong()) && config.floorDropAlert) {
                         HuntingAlertManager.show(HuntingAlertManager.Channel.FLOOR_DROP,
@@ -1296,8 +1297,9 @@ public final class HuntingTracker {
     }
 
     private static void scanSafariMilestoneMenu(Minecraft client) {
-        if (client.player == null || client.screen == null) return;
-        String title = HuntingTextParser.plain(client.screen.getTitle().getString()).toLowerCase(Locale.ROOT);
+        var screen = MinecraftClientCompat.screen(client);
+        if (client.player == null || screen == null) return;
+        String title = HuntingTextParser.plain(screen.getTitle().getString()).toLowerCase(Locale.ROOT);
         if (!title.contains("safari") || !title.contains("milestone")) return;
         List<String> receivedItems = new ArrayList<>();
         for (var slot : client.player.containerMenu.slots) {
@@ -1310,8 +1312,9 @@ public final class HuntingTracker {
 
     /** Reads only text already present in the currently open Torrhus/HOTF menu. */
     private static void scanTorrhusMenu(Minecraft client) {
-        if (client.player == null || client.screen == null) return;
-        String title = HuntingTextParser.plain(client.screen.getTitle().getString());
+        var screen = MinecraftClientCompat.screen(client);
+        if (client.player == null || screen == null) return;
+        String title = HuntingTextParser.plain(screen.getTitle().getString());
         String lowerTitle = title.toLowerCase(Locale.ROOT);
         List<String> menuLines = new ArrayList<>();
         menuLines.add(title);

@@ -1,5 +1,20 @@
 # 更新日志
 
+## [2.6.16] - 2026-08-13
+
+适用于 Minecraft 26.1.2 与 26.2 的 Alpha 双版本平台更新。
+
+### 新增
+
+- 新增双版本矩阵：同一套 QCA 功能会分别使用对应的 Fabric API 与可选 Mod Menu 版本构建为 Minecraft 26.1.2 和 26.2 产物。
+- 新增 `tools/build_all_versions.sh`，一次运行即可测试并准备两个可运行 JAR 与两个 Sources JAR。
+
+### 兼容性
+
+- 适配 Minecraft 26.2 的界面读取/切换、Overlay 检查、HUD 隐藏状态、中央标题、聊天滚动、Tab 读取与方块中心距离计算，同时通过很薄的目标版本适配层保留 26.1.2 原行为。
+- 模组仍为纯客户端；本次适配没有新增数据包、命令、点击、自动操作、HTTP 或服务器数据读取。
+- 现有 SkyHanni、Skyblocker、Firmament 与 BabyZombieAddons 精确版本适配仍只对 26.1.2 完成审核；26.2 中会安全关闭，直到对应提供方版本通过审核。
+
 ## [2.6.15] - 2026-08-12
 
 适用于 Minecraft 26.1.2 的 Alpha 响应式 UI 修复。
