@@ -6,11 +6,11 @@ QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, 
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Alpha 2.6.17.** The same QCA-owned feature set is built for Minecraft 26.1.2 and 26.2. Exact-version third-party settings/HUD adapters remain reviewed for 26.1.2 only and safely stay unavailable on 26.2 until matching provider builds are audited.
+> **Current channel: Beta 2.7.17.** The same QCA-owned feature set is built for Minecraft 26.1.2 and 26.2. Exact-version third-party settings/HUD adapters remain reviewed for 26.1.2 only and safely stay unavailable on 26.2 until matching provider builds are audited.
 
 ## Main features
 
-### Unified settings and HUD editor — Alpha
+### Unified settings and HUD editor — Beta
 
 - One function-first catalog for QCA and compatible installed builds of SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1.
 - Exact top-level order: General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events.
@@ -72,7 +72,7 @@ The Shard database and fallback icons are bundled with the mod. The guide perfor
 - A manual **Reconnect** button with no timer, retry loop, or automatic join.
 - **Chat Peek** with keyboard, mouse-button, and modifier combinations.
 - In-place hotkey editing, including mouse buttons and multi-key chords.
-- Eight ordered top-level categories—General, Maps, Items & Menus, Combat, Mining, Foraging, Fishing, and Hunting—with searchable collapsible groups and exactly one owner for every feature.
+- Thirteen ordered top-level categories—General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, and Events—with searchable collapsible groups and exactly one owner for every feature.
 
 ## HUD customization
 
@@ -95,7 +95,7 @@ Optional:
 
 - Mod Menu **18.0.0** for MC 26.1.2, or **20.0.1** for MC 26.2
 
-Put either `QCloudy_Addition-Alpha-2.6.17+26.1.2.jar` or `QCloudy_Addition-Alpha-2.6.17+26.2.jar` in the instance's `mods` folder, matching the exact game version. Do not install the `-sources.jar` as the playable mod.
+Put either `QCloudy_Addition-Beta-2.7.17+26.1.2.jar` or `QCloudy_Addition-Beta-2.7.17+26.2.jar` in the instance's `mods` folder, matching the exact game version. Do not install the `-sources.jar` as the playable mod.
 
 Press `O`, open QCA through Mod Menu, or enter `/aca`, `/qca`, `/ca`, or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 
@@ -112,7 +112,7 @@ Both are sent only after the player explicitly enters the corresponding local sh
 
 ## Compatibility and disclaimer
 
-QCloudy_Addition is standalone. Firmament, SkyHanni, Skyblocker, BabyZombieAddons, JEI, and Mod Menu are not required. The unified editor supports only the exact reviewed versions listed above and fails closed on unknown versions. Complex native color/keybind editor objects remain in their provider's own screen during this first Alpha. A compatible Skyblocker is optional only for Bazaar-price routes; without it the planner's price mode is unavailable, not broken. SkyHanni and Firmament are not price providers because they expose no stable public cross-mod price API.
+QCloudy_Addition is standalone. Firmament, SkyHanni, Skyblocker, BabyZombieAddons, JEI, and Mod Menu are not required. The unified editor supports only the exact reviewed versions listed above and fails closed on unknown versions. Complex native color/keybind editor objects remain in their provider's own screen until their contracts are audited. A compatible Skyblocker is optional only for Bazaar-price routes; without it the planner's price mode is unavailable, not broken. SkyHanni and Firmament are not price providers because they expose no stable public cross-mod price API.
 
 All Minecraft modifications are used at the player's own risk. Passive HUDs, outlines, waypoint beams, overlays, and predictions are not the same as official Hypixel approval. Review Hypixel's current modification rules and disable any feature you are not comfortable using.
 

@@ -4,7 +4,7 @@
 
 QCloudy_Addition is an English-first, bilingual, client-only Fabric mod for Hypixel SkyBlock. It provides readable maps, task and resource HUDs, hunting and fishing cues, pet information, an offline Attribute Shard guide and planner, configurable visual helpers, and a function-first settings and HUD editor.
 
-> **Current build:** Alpha 2.6.17 for Minecraft 26.1.2 and 26.2
+> **Current build:** Beta 2.7.17 for Minecraft 26.1.2 and 26.2
 > **Required:** Java 25 and Fabric Loader 0.19.3 or newer; Fabric API 0.155.2+26.1.2 for Minecraft 26.1.2, or Fabric API 0.154.2+26.2 for Minecraft 26.2
 > **Optional:** Mod Menu and reviewed builds of supported SkyBlock mods  
 > **Important:** Every Minecraft modification is used at the player's own risk. QCloudy_Addition is not affiliated with Hypixel or Mojang.
@@ -233,7 +233,7 @@ When multiple supported mods implement the same exact function:
 4. Enabling the card enables the selected implementation and disables only exact equivalents from other detected providers.
 5. Related functions with different purposes remain separate.
 
-Changes are applied to the provider's live local configuration and saved through that provider's own save path. QCA never edits the config file of an unloaded mod. The first Alpha exposes reviewed Boolean, enum, bounded numeric, HUD position, and HUD scale values. Unsupported compound color/keybind types remain in the provider's native editor.
+Changes are applied to the provider's live local configuration and saved through that provider's own save path. QCA never edits the config file of an unloaded mod. The reviewed Beta exposes supported Boolean, enum, bounded numeric, HUD position, and HUD scale values. Unsupported compound color/keybind types remain in the provider's native editor.
 
 These integrations are version-locked and fail closed. A missing or structurally changed provider does not prevent standalone QCA features from loading.
 
@@ -313,7 +313,7 @@ Only enabled, loaded HUDs with visible content are included in the editor. Open 
 
 ### Text or controls overlap at my GUI scale
 
-Alpha 2.6.17 preserves the responsive layouts, independent scrolling, clipping, and safe short-screen fallbacks while correcting Dwarven overview synchronization. If a layout still overlaps, include the exact Minecraft window size, GUI Scale, QCA language, open page/tab, installed mods, and a full screenshot in the report.
+Beta 2.7.17 preserves the responsive layouts, independent scrolling, clipping, and safe short-screen fallbacks while correcting Dwarven overview synchronization. If a layout still overlaps, include the exact Minecraft window size, GUI Scale, QCA language, open page/tab, installed mods, and a full screenshot in the report.
 
 ### Cheapest or Bazaar planning is unavailable
 
@@ -350,9 +350,9 @@ Do not publish access tokens, session data, private chat, or other personal info
 
 ## Project status and validation
 
-Alpha 2.6.17 is built and archive-checked with Java 25 for both Minecraft 26.1.2 and 26.2. The Dwarven regression suite explicitly verifies continuous X/Z movement, The Mist bridge overlap, representative overview regions, and safe edge clamping.
+Beta 2.7.17 is built and archive-checked with Java 25 for both Minecraft 26.1.2 and 26.2. The Dwarven regression suite explicitly verifies continuous X/Z movement, The Mist bridge overlap, representative overview regions, and safe edge clamping.
 
-These checks do **not** replace authenticated in-game testing. Before treating an Alpha as stable, the project still needs live regression across the supported providers, different GUI scales/languages, resource packs, Hypixel wording changes, latency conditions, and a full target modpack.
+These checks do **not** replace authenticated in-game testing. Before treating a Beta as stable, the project still needs live regression across the supported providers, different GUI scales/languages, resource packs, Hypixel wording changes, latency conditions, and a full target modpack.
 
 - [Current changelog](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/CHANGELOG.md)
 - [Detailed feature specification](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/FEATURES.md)

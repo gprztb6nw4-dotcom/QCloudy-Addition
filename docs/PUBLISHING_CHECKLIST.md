@@ -6,8 +6,8 @@
 |---|---|
 | Name | QCloudy_Addition |
 | Suggested slug | `qcloudy-addition` |
-| Version | `Alpha-2.6.17+26.1.2` and `Alpha-2.6.17+26.2` |
-| Release channel | Alpha; dual-version 26.1.2/26.2 platform update |
+| Version | `Beta-2.7.17+26.1.2` and `Beta-2.7.17+26.2` |
+| Release channel | Beta; cumulative update since Beta 2.6.6 |
 | Environment | Client only |
 | Loader | Fabric |
 | Minecraft | 26.1.2 and 26.2 (separate files) |
@@ -29,8 +29,8 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 
 - Use `docs/MODRINTH_DESCRIPTION.md` as the English project description.
 - Keep English as the primary description; place `docs/MODRINTH_DESCRIPTION_zh_CN.md` in a linked Chinese page or below the English copy if desired.
-- Upload `release/QCloudy_Addition-Alpha-2.6.17+26.1.2.jar` for Minecraft 26.1.2 and `release/QCloudy_Addition-Alpha-2.6.17+26.2.jar` for Minecraft 26.2; never assign one file to both game versions.
-- Use the `2.6.17` section of `CHANGELOG.md` as the version changelog; the Chinese companion is the matching section of `CHANGELOG_zh_CN.md`.
+- Upload `release/QCloudy_Addition-Beta-2.7.17+26.1.2.jar` for Minecraft 26.1.2 and `release/QCloudy_Addition-Beta-2.7.17+26.2.jar` for Minecraft 26.2; never assign one file to both game versions.
+- Use `docs/MODRINTH_RELEASE_2.7.17.md` as the concise version changelog; the Chinese companion is `docs/MODRINTH_RELEASE_2.7.17_zh_CN.md`.
 - Mark Fabric API as required and Mod Menu as optional.
 - Mark client environment as required and server environment as unsupported.
 - Do not mark Firmament, SkyHanni, Skyblocker, or BabyzombieAddons as required.
@@ -47,14 +47,14 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 - Do not commit `run/`, `run-standalone/`, `.gradle/`, `.gradle-user-home/`, local configs, logs, crash ZIPs, or the supplied reference JARs.
 - Confirm `.gitignore` covers local build/runtime files before the first commit.
 
-## GitHub Alpha 2.6.17
+## GitHub Beta 2.7.17
 
-- Title: `QCloudy_Addition Alpha 2.6.17 for Minecraft 26.1.2 and 26.2`
-- Use the `2.6.17` sections of `CHANGELOG.md` and `CHANGELOG_zh_CN.md` as the release body source.
+- Title: `QCloudy_Addition Beta 2.7.17 for Minecraft 26.1.2 and 26.2`
+- Use `docs/GITHUB_RELEASE_2.7.17.md` as the English release body and optionally append/link `docs/GITHUB_RELEASE_2.7.17_zh_CN.md`.
 - Attach the binary JAR and optionally the Sources JAR.
 - Verify uploaded hashes against `docs/VALIDATION.md` after downloading the release once.
-- Mark it as **Pre-release** on GitHub because this is an Alpha, not a stable Release.
-- On Modrinth, choose **Alpha** as the version type.
+- Mark it as **Pre-release** on GitHub because this is a Beta, not a stable Release.
+- On Modrinth, choose **Beta** as the version type.
 
 ## Final safety and quality gate
 

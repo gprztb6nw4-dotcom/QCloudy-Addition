@@ -2,6 +2,42 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.7.17] - 2026-08-14
+
+Beta consolidation release for Minecraft 26.1.2 and 26.2, covering the completed work since Beta 2.6.6.
+
+### Added
+
+- Added the opt-in Fishing Bite Sound with its own 0–100% volume control at the shared 64% default. Directly owned water hooks and Hypixel's bounded ownerless lava-hook presentation are supported, and the cue plays only once for each confirmed bite.
+- Added the local 320-Shard Planner alongside the existing Fusion Guide: multi-step Fusion trees, alternative direct routes, Materials Only totals, editable acquisition rates, Fastest/Cheapest routing, Ironman mode, Kraken/Kuudra parameters, draggable Fusion Lines, and a profile-scoped Hunting Box warehouse recorded only from pages the player opens.
+- Added optional Bazaar-price routing through a compatible Skyblocker public cached-price API. QCA performs no price HTTP request and all price routes visibly stay unavailable when no reviewed provider is installed.
+- Added the first function-first unified settings/HUD layer for the reviewed SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1 builds. Exact equivalent features can select one provider, safe native values persist through that provider, and unsupported versions fail closed.
+- Added a maintained build matrix and one-command build script for separate Minecraft 26.1.2 and 26.2 playable and Sources artifacts.
+
+### Improved
+
+- Promoted Fishing to its own top-level category and made category spacing responsive on short screens.
+- Reworked the Shard Planner, Shard details, Settings, Fusion Lines, RGB picker, feature pages, and HUD editor for narrow windows, long bilingual text, independent scrolling, clipping, and hitboxes that follow visible controls.
+- Replaced the Dwarven Mines background and changed its live arrow to one continuous approximate X/Z-only projection across the complete single-layer overview. Y and scoreboard sub-locations do not influence the marker.
+
+### Fixed
+
+- Fixed missing Fishing Bite Sound support for the bounded Hypixel lava-hook presentation and prevented the cue from replaying when the player reels in.
+- Fixed owned Tree Gift creature alerts such as `A wild Groundhog appeared!` being discarded, while preserving the rejection of an unrelated nearby player's public line.
+- Fixed an unmaxed Ancient Golden Dragon being shown as `[Lvl 200]`; overflow levels now require received exact experience at or beyond the real maximum.
+- Fixed overlapping Shard detail/rate controls, Planner controls, Fusion Line nodes, settings fields, RGB controls, and HUD-editor rows at supported compact layouts; clipped rows no longer keep invisible hitboxes.
+- Fixed Dwarven marker jumps or disappearance on bridges above The Mist and other vertically overlapping paths, added `C&C Minecarts Co.` recognition, and kept out-of-range arrows safely inside the overview.
+
+### Replaced
+
+- Removed the old Dwarven scoreboard sub-location snapping and per-region marker clamping. No user-facing feature from Beta 2.6.6 was removed; the old positioning method was replaced by the continuous real-time X/Z projection.
+
+### Compatibility and safety
+
+- QCA remains a standalone, client-only Fabric mod. It adds no automatic click, Fusion, fishing action, movement, combat, capture, packet, chat, command, HTTP request, telemetry, or hidden server-data request.
+- The QCA-owned feature set is built for both Minecraft 26.1.2 and 26.2. Exact-version third-party settings/HUD adapters remain reviewed for 26.1.2 only and deliberately fail closed on 26.2 until matching provider builds are audited.
+- `/th` and `/helia` remain the only documented user-triggered server-command shortcuts; neither runs without direct player input.
+
 ## [2.6.17] - 2026-08-13
 
 Alpha Dwarven Mines overview synchronization correction for Minecraft 26.1.2 and 26.2.

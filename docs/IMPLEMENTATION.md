@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.6.17` for Minecraft 26.1.2 and 26.2.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.7.17` for Minecraft 26.1.2 and 26.2.
 
 ## 1. Runtime architecture
 
@@ -32,7 +32,7 @@ Those reviewed provider builds target Minecraft 26.1.2. QCA's 26.2 artifact keep
 
 The registry walks the live provider configuration and exposes only validated primitive Boolean/enum values, annotated or otherwise bounded numeric values, and audited HUD x/y/scale values. Writes call the provider's own update/save/dirty mechanism. It never edits an unloaded provider's JSON file. Exact cross-mod aliases merge one logical feature; enabling a selected provider first disables only bindings attached to that same alias. The provider choice is persisted in QCA config, while every provider's own values remain stored by that provider.
 
-`HudLayoutScreen` combines QCA's currently loaded panels with enabled HUDs belonging to the selected external provider. Drag/resize uses a transient preview and writes native coordinates/scale only on mouse release. The first Alpha intentionally excludes opaque compound color/keybind/config-editor objects whose setter and validation contract has not been audited.
+`HudLayoutScreen` combines QCA's currently loaded panels with enabled HUDs belonging to the selected external provider. Drag/resize uses a transient preview and writes native coordinates/scale only on mouse release. The reviewed adapter intentionally excludes opaque compound color/keybind/config-editor objects whose setter and validation contract has not been audited.
 
 Location detection first confirms a Hypixel host and a received SkyBlock scoreboard. It then classifies the current island from the location-marked scoreboard line and a bounded list of known original location names. Island-specific parsers and renders do not run globally.
 

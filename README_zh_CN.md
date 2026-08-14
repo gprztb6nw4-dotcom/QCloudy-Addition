@@ -7,7 +7,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 与 26.2 的纯客户端 Fabric �
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [当前 Alpha 2.6.17 更新日志](CHANGELOG_zh_CN.md)
+- [当前 Beta 2.7.17 更新日志](CHANGELOG_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
@@ -15,13 +15,13 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 与 26.2 的纯客户端 Fabric �
 
 语言选项只翻译 QCA 自己的界面标签。Hypixel 地点、任务、宠物、皮肤、配件、物品以及玩家重命名的 HOTM 配置均保留客户端收到的原始名称；例如 `Terminator` 不会被改写成中文名称。
 
-## 统一 SkyBlock 模组控制——Alpha
+## 统一 SkyBlock 模组控制——Beta
 
 QCA 现在可以作为统一的功能与 HUD 编辑入口，直接控制自己的功能，以及兼容版本的 **SkyHanni 7.41.0**、**Skyblocker 6.8.2**、**Firmament 44.3.0**、**BabyZombieAddons 3.4.1**。这些集成全部可选：QCA 仍能独立加载；提供方缺失或版本与已审查版本不符时会被隐藏。以上已审查提供方版本均面向 Minecraft 26.1.2；26.2 构建仍完整提供 QCA 自身功能，但在对应 26.2 提供方版本通过审核前会隐藏这些适配器。
 
 多个兼容模组存在完全相同的功能时，QCA 只显示一张统一卡片。右键卡片后，第一项用于选择提供方，下面直接显示所选模组中能够安全编辑的原生设置。开启卡片会启用所选实现，并只关闭其他模组中完全等价的实现；用途不同的价格、利润、Tooltip 或追踪功能不会被错误合并。所有数值都写入对应模组的实时配置，并通过该模组自己的保存路径落盘；QCA 不会在模组未加载时直接改写它的配置文件。
 
-原有 **编辑 HUD** 界面也会显示所选兼容提供方中已经启用的 HUD，并标注模组名称。拖动或缩放第三方 HUD 时只更新预览，松开鼠标才写回其原生位置/缩放。首个 Alpha 安全支持布尔、枚举、有边界数值、位置和缩放；自定义颜色对象、复合快捷键对象等提供方专属复杂编辑器暂时保留在对应模组自己的界面中。
+原有 **编辑 HUD** 界面也会显示所选兼容提供方中已经启用的 HUD，并标注模组名称。拖动或缩放第三方 HUD 时只更新预览，松开鼠标才写回其原生位置/缩放。本 Beta 安全支持已校验的布尔、枚举、有边界数值、位置和缩放；自定义颜色对象、复合快捷键对象等提供方专属复杂编辑器暂时保留在对应模组自己的界面中。
 
 一级分类固定顺序为：**通用、地图、物品与菜单、战斗、地牢、Slayer、挖矿、种地、砍树、钓鱼、狩猎、Rift、活动**。Safari 是狩猎下级组，Garden 是种地下级组，Crimson Isle/Kuudra 是战斗下级组。每个功能只有一个归属，只出现一次。
 
@@ -123,7 +123,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-当前 Alpha 2.6.17 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
+当前 Beta 2.7.17 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

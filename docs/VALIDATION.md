@@ -1,37 +1,38 @@
-# QCloudy_Addition Alpha 2.6.17 dual-version validation
+# QCloudy_Addition Beta 2.7.17 dual-version validation
 
-Date: 2026-08-13<br>
+Date: 2026-08-14<br>
 Minecraft: 26.1.2 and 26.2<br>
 Java: 25
 
 Validated artifacts:
 
-- `release/QCloudy_Addition-Alpha-2.6.17+26.1.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.17+26.1.2-sources.jar`
-- `release/QCloudy_Addition-Alpha-2.6.17+26.2.jar`
-- `release/QCloudy_Addition-Alpha-2.6.17+26.2-sources.jar`
+- `release/QCloudy_Addition-Beta-2.7.17+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.7.17+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Beta-2.7.17+26.2.jar`
+- `release/QCloudy_Addition-Beta-2.7.17+26.2-sources.jar`
 
-26.1.2 playable SHA-256: `ca630aaac534f9c03670093289b427bdf0eb378d179d73d981948d8564890037`<br>
-26.1.2 Sources SHA-256: `4afee3bab99b63b5f35b61b68efd6a5037b43f0b5c312db3a083f0805a72bffe`<br>
-26.2 playable SHA-256: `84a20822e23948608a8a99c46a1dba749c2007f07a4c41a9c5a6616a4964f862`<br>
-26.2 Sources SHA-256: `89dcf94158beda358916594e0f2cb0c7d6c06e794cbbfabb72c4c80012df9985`
+26.1.2 playable SHA-256: `20c0c29c3e94c1ee1febc6da7c268a791b4b71b3cc84caff8f9b88e986125efc`<br>
+26.1.2 Sources SHA-256: `a75c48b450ed4b20caf2b0d1a31ea7db5718bceccae71906fe5ff16c93a72996`<br>
+26.2 playable SHA-256: `2100fab3435510e5c26ca20f735a04083156f0478d36f113a66e94833f303537`<br>
+26.2 Sources SHA-256: `5924dcba7a5b17ca9496a69e6263d269d8440af54aa15b934b23e2a2c7e6ed29`
 
-Alpha 2.6.17 keeps the maintained 26.1.2/26.2 build matrix and replaces the Dwarven marker's named-region selection with one continuous approximate X/Z transform. Y and the scoreboard sub-location are absent from the projection API, so vertically overlapping routes such as Palace Bridge above the Royal Mines/The Mist cannot make the arrow jump between regions.
+Beta 2.7.17 consolidates all completed work since Beta 2.6.6 while retaining the maintained 26.1.2/26.2 build matrix. The latest map path replaces the Dwarven marker's named-region selection with one continuous approximate X/Z transform. Y and the scoreboard sub-location are absent from the projection API, so vertically overlapping routes such as Palace Bridge above the Royal Mines/The Mist cannot make the arrow jump between regions.
 
 Verified in this workspace:
 
 - Java 25 `clean test build prepareRelease` completed successfully for both targets: 159 tests per target, 0 failures, 0 errors, 0 skips.
+- Both playable JARs contain exactly 320 catalog Shards, 320 Shard item-model definitions, and 320 Shard textures; English and Simplified Chinese each contain 468 identical language keys.
 - Dwarven projection tests cover continuous one-axis movement, identical X/Z on The Mist and an overhead bridge, representative overview areas, and safe edge clamping. The official `C&C Minecarts Co.` sub-location is also classified as Dwarven Mines.
 - Deterministic geometry tests cover wide and narrow Shard detail columns, separated rate controls, compact Plan controls, narrow Settings stacking and safe short-screen fallback, Recipe field widths, Fusion Lines canvas growth, secondary-setting sliders, RGB bars, and preset swatches.
 - Main and test compilation completed from a clean output directory.
 - Expanded metadata declares the exact target in each artifact: 26.1.2 uses Fabric API 0.155.2+26.1.2; 26.2 uses Fabric API 0.154.2+26.2. Both remain client-only and require Fabric Loader 0.19.3+ and Java 25+.
 - Binary and Sources artifacts in `build/libs/` are byte-identical to the corresponding `release/` artifacts.
 - All four JARs pass JDK 25 `jar --validate` and `unzip -t`; English and Chinese language files remain shared between targets.
-- A 26.2 standalone development launch initialized QCA on the Render thread, completed resource reload, created the item and GUI atlases, and started the sound engine without `InjectionError`, `InvalidMixin`, or QCA exception.
+- The immediately preceding Alpha 2.6.17 code-identical 26.2 standalone development launch initialized QCA on the Render thread, completed resource reload, created the item and GUI atlases, and started the sound engine without `InjectionError`, `InvalidMixin`, or QCA exception. This Beta promotion changes the channel/version and publication documentation, but was not separately authenticated against Hypixel.
 - The optional integration has no compile-time dependency on any provider and does not add an HTTP client, packet, chat command, container click, gameplay input, or server-data request.
 - Static matrix/scissor review confirms balanced push/pop and enable/disable pairs in the edited configuration and inventory screens.
 
-Outstanding Alpha regression boundary:
+Outstanding Beta regression boundary:
 
 - Geometry tests and archive checks do not replace visual testing in a live Minecraft renderer. Before wider publication, open all six Shard Planner tabs, the main and secondary settings pages, the RGB picker, and the HUD editor at every GUI Scale used by the target modpack; verify both languages, resize/re-init, long provider names, mouse hitboxes, and scrolling.
 - The combined settings/provider integration still requires authenticated in-game regression for all four exact 26.1.2 provider builds. The 26.2 artifact deliberately hides these version-locked adapters until matching provider builds are reviewed.
