@@ -1,59 +1,70 @@
 # QCloudy_Addition Wiki
 
+[简体中文](Home-zh-CN)
+
 ![QCloudy_Addition icon](https://raw.githubusercontent.com/gprztb6nw4-dotcom/QCloudy-Addition/main/src/main/resources/assets/qcloudy_addition/icon.png)
 
-QCloudy_Addition is an English-first, bilingual, client-only Fabric mod for Hypixel SkyBlock. It provides readable maps, task and resource HUDs, hunting and fishing cues, pet information, an offline Attribute Shard guide and planner, configurable visual helpers, and a function-first settings and HUD editor.
+QCloudy_Addition (QCA) is an English-first, bilingual, client-only Fabric mod for Hypixel SkyBlock. It organizes maps, HUDs, passive visual helpers, pet information, Attribute Shard tools, and selected quality-of-life controls in one function-first interface.
 
-> **Current build:** Beta 2.7.17 for Minecraft 26.1.2 and 26.2
-> **Required:** Java 25 and Fabric Loader 0.19.3 or newer; Fabric API 0.155.2+26.1.2 for Minecraft 26.1.2, or Fabric API 0.154.2+26.2 for Minecraft 26.2
-> **Optional:** Mod Menu and reviewed builds of supported SkyBlock mods  
-> **Important:** Every Minecraft modification is used at the player's own risk. QCloudy_Addition is not affiliated with Hypixel or Mojang.
+> **Current version:** Beta 2.7.17<br>
+> **Minecraft:** 26.1.2 and 26.2<br>
+> **Required:** Java 25, Fabric Loader 0.19.3 or newer, and the matching Fabric API<br>
+> **Optional:** Mod Menu and reviewed builds of supported SkyBlock mods<br>
+> **Notice:** QCA is an independent community project. It is not affiliated with or endorsed by Hypixel, Mojang, Microsoft, SkyHanni, Skyblocker, Firmament, or BabyZombieAddons.
 
 ## Contents
 
 - [Installation](#installation)
-- [Opening QCloudy_Addition](#opening-qcloudy_addition)
-- [Settings and HUD editing](#settings-and-hud-editing)
+- [Opening the mod](#opening-the-mod)
+- [Settings, language, and HUD editing](#settings-language-and-hud-editing)
 - [Feature guide](#feature-guide)
-- [Attribute Shard guide and planner](#attribute-shard-guide-and-planner)
-- [Optional unified mod controls](#optional-unified-mod-controls)
-- [Commands and outbound actions](#commands-and-outbound-actions)
+- [Attribute Shard Guide and Planner](#attribute-shard-guide-and-planner)
+- [Unified controls for compatible SkyBlock mods](#unified-controls-for-compatible-skyblock-mods)
 - [Client-only and safety boundary](#client-only-and-safety-boundary)
-- [Configuration and saved data](#configuration-and-saved-data)
-- [Compatibility](#compatibility)
-- [Troubleshooting](#troubleshooting)
+- [Commands and outbound actions](#commands-and-outbound-actions)
+- [Saved data](#saved-data)
+- [Compatibility and troubleshooting](#compatibility-and-troubleshooting)
 - [Reporting a bug](#reporting-a-bug)
-- [Project status and validation](#project-status-and-validation)
-- [License and credits](#license-and-credits)
+- [Validation, license, and credits](#validation-license-and-credits)
 
 ## Installation
 
-1. Install **Minecraft 26.1.2** or **Minecraft 26.2**.
-2. Install **Fabric Loader 0.19.3 or newer**.
-3. Install the matching Fabric API: **0.155.2+26.1.2** for Minecraft 26.1.2, or **0.154.2+26.2** for Minecraft 26.2.
-4. Run the instance with **Java 25**.
-5. Download the playable `QCloudy_Addition-*.jar` whose filename ends in your exact Minecraft version. Do not install the file ending in `-sources.jar` as the playable mod.
-6. Put the playable JAR in the instance's `mods` folder.
-7. Remove older QCloudy_Addition JARs from the same folder to avoid loading duplicate versions.
-8. Start Minecraft and open the settings with `O` or a local settings command.
+Choose the JAR that exactly matches the Minecraft version used by the instance.
 
-Mod Menu is optional. SkyHanni, Skyblocker, Firmament, and BabyZombieAddons are **not required** for QCloudy_Addition to start or for its own features to work.
+| Minecraft | Required Fabric API | Playable file |
+|---|---|---|
+| 26.1.2 | 0.155.2+26.1.2 or newer compatible build | `QCloudy_Addition-Beta-2.7.17+26.1.2.jar` |
+| 26.2 | 0.154.2+26.2 or newer compatible build | `QCloudy_Addition-Beta-2.7.17+26.2.jar` |
 
-## Opening QCloudy_Addition
+Both targets require Fabric Loader 0.19.3 or newer and Java 25.
 
-Use any of the following local entry points:
+1. Install the matching Minecraft, Fabric Loader, Fabric API, and Java versions.
+2. Download the playable QCA JAR from the [GitHub Releases page](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/releases).
+3. Put the playable JAR in the instance's `mods` folder.
+4. Remove older QCA JARs from that folder so that only one QCA build is loaded.
+5. Start Minecraft and open QCA with `O` or one of its local settings commands.
 
-- Press `O` by default. The binding can be changed under **Controls → Key Binds → QCloudy_Addition**.
+Do not install the file ending in `-sources.jar` as the playable mod. It contains source code for developers and IDEs.
+
+QCA does not require SkyHanni, Skyblocker, Firmament, BabyZombieAddons, or Mod Menu to load. Mod Menu only adds another way to open QCA settings.
+
+## Opening the mod
+
+You can open the settings in any of these ways:
+
+- Press `O` by default. Rebind it under **Controls → Key Binds → QCloudy_Addition**.
 - Type `/aca`, `/qca`, `/ca`, or `/qc`.
-- Open QCloudy_Addition from Mod Menu when Mod Menu is installed.
+- Use the QCA entry in Mod Menu when Mod Menu is installed.
 
-The four settings commands are client-side commands. Each alias is registered only when another client command has not already claimed the same name, and none of them is sent to Hypixel.
+The four slash aliases are local client commands. Each alias is registered only when another client command has not already claimed that name. They open a local screen and are not sent to Hypixel.
 
-The interface language defaults to English and can be changed to Simplified Chinese. QCA translates its own interface labels, while Hypixel-provided item, pet, skin, task, location, and player-renamed preset names remain in their original client-received form.
+Use `/qshard [English query]` to open the offline Attribute Shard Guide with an optional prefilled search.
 
-## Settings and HUD editing
+## Settings, language, and HUD editing
 
-The settings screen is organized by function rather than by source mod. Its top-level order is:
+### Function-first categories
+
+The left sidebar always uses this order:
 
 1. General
 2. Maps
@@ -69,300 +80,277 @@ The settings screen is organized by function rather than by source mod. Its top-
 12. Rift
 13. Events
 
-Subgroups such as **Safari**, **Garden**, **Crimson Isle**, and **Kuudra** are collapsible and start closed. A function has one owner and appears in one place rather than being duplicated across categories.
+Safari is a collapsible subgroup under Hunting, Garden belongs under Farming, and Crimson Isle/Kuudra belong under Combat. A function has one owner and appears in one place rather than being duplicated across categories. Collapsible groups start closed.
 
 ### Feature cards
 
-- **Left-click** a feature card to enable or disable it.
-- A blue strip on the left side of the card indicates that the feature is enabled.
-- **Right-click** a card to open all settings belonging to that function.
+- Left-click a card to enable or disable the feature.
+- An enabled card has a blue strip on its left edge.
+- Right-click a card to open all settings belonging to that function.
 - Secondary pages do not repeat the primary enable switch.
-- Broad numeric values use draggable sliders; sound volume uses 0–100% and defaults to 64% unless a feature explicitly states otherwise.
-- Color settings use the shared RGB/HSV picker, presets, and a Transparent background option.
+- Broad numeric values use draggable sliders. Feature sound volume is 0–100% and defaults to 64% unless explicitly documented otherwise.
+- Editable colors use the shared RGB/HSV picker, presets, and a Transparent option for backgrounds.
+- Keybind rows accept keyboard keys, mouse buttons, and Ctrl/Shift/Alt/Cmd-Super combinations. Press `Esc`, Backspace, or Delete while listening to clear a binding.
+
+### Language
+
+English is the default. Simplified Chinese can be selected inside QCA settings.
+
+QCA translates its own interface text. Hypixel-provided item names, task names, location names, pets, skins, accessories, and player-renamed HOTM presets remain exactly as received from the client. This avoids incorrect translations and keeps searches compatible with in-game names.
 
 ### Edit HUD
 
 Select **Edit HUD** at the bottom-left of the settings screen.
 
-- Only enabled HUDs that are currently loaded and have content are editable.
+- Only enabled HUDs that are currently loaded and contain visible content are editable.
 - Drag a panel to move it.
-- Drag its border or corner to resize it, like a desktop window.
-- Each HUD keeps its own 50–200% scale.
-- The small gear button opens that HUD's settings.
+- Drag its border or corner to resize it like a desktop window.
+- Every HUD stores its own 50–200% scale.
+- The small gear on a HUD opens that HUD's own settings.
 - Position and scale are saved when the mouse is released and persist after restart.
-- A HUD with no visible rows does not leave an empty title or background panel on the screen.
-- Background color/opacity, border, border width/color, title color, bold text, and text shadow are configurable per HUD.
+- Background color/opacity, border visibility/width/color, title color, bold text, and text shadow are configurable per HUD.
+- A HUD with no visible rows renders nothing: no empty title, border, or background remains on screen.
 
 ## Feature guide
 
 ### General
 
-- **Manual Reconnect** adds one normal Reconnect button to connection-failed and disconnected screens. It reconnects only after a click and has no automatic retry loop.
-- **Chat Peek** temporarily shows expanded received chat while a configurable key or key combination is held. The mouse wheel can scroll chat or remain assigned to the hotbar.
-- **Interface animation and shared presentation controls** configure local menu behavior without changing gameplay.
+- **Interface animations** control QCA's local menu transitions.
+- **Alert master mute** suppresses QCA warning sounds without forcing every visual warning off.
+- **Manual Reconnect** adds one normal Reconnect button to failed-connection and disconnect screens. It reconnects only after a physical click and has no timer or retry loop.
+- **Chat Peek** temporarily expands already-received chat while a configurable key or chord is held. Its mouse wheel can scroll chat or remain assigned to the hotbar.
 
 ### Maps
 
-- **Dwarven Mines Map** uses the supplied single-layer 12-region schematic with a live red player arrow. One continuous approximate transform uses only the local player's real-time X/Z and yaw; Y and scoreboard sub-location names cannot move the marker between regions.
-- **Glacite Tunnels Map** selects low, middle, or high artwork from the local Y coordinate and keeps the live arrow aligned across layers.
-- **Fairy Soul Waypoints** can show the bundled Torrhus and Safari coordinates as optional pink beacon beams. This is one cross-island Maps feature rather than separate duplicate switches.
+- **Dwarven Mines Map** uses the supplied single-layer 12-region overview and a live red arrow. One continuous transform maps the local player's real-time **X/Z only** to the background; Y and scoreboard sub-location names are deliberately ignored. The marker is an approximate visual position, not a survey-grade coordinate. Bridges above The Mist therefore do not select a different floor or region transform.
+- **Glacite Tunnels Map** uses low, middle, and high artwork selected from the local Y coordinate. All layers share one coordinate system, and point-of-interest labels use collision avoidance.
+- **Fairy Soul Waypoints** is one Maps feature for the bundled Torrhus and Safari coordinates. The feature defaults off; enabling it activates both coordinate sets together. Pink beams disappear after a matching received success/already-found confirmation.
 
-Map labels and points of interest use canonical English names.
+Map point names use canonical English names.
 
 ### Items & Menus
 
-- **Equipped Pet HUD** shows the received pet level, rarity-colored name, real pet or skin head, XP progress, remaining XP to maximum, optional skin, and held pet item. Max-level pets automatically hide the redundant remaining-XP line without hiding their held item.
-- **Attribute Shard Fusion Guide and Planner** provide offline recipe browsing, reverse uses, detailed Shard information, route planning, materials, warehouse counts, and Fusion Lines. See the dedicated section below.
+- **Equipped Pet HUD** shows received pet level, rarity-colored name, real pet/skin head, XP progress, remaining XP to maximum, optional skin name, and held pet item. It supports level-200 Dragon curves and Ancient Golden Dragon overflow levels. A max-level pet hides only the redundant remaining-XP line, not its accessory.
+- **Attribute Shard Guide and Planner** provide the offline 320-Shard browser, direct recipes, uses, multi-step planning, warehouse, and Fusion Lines described in the dedicated section below.
 - **Item timestamps** display locally observed item creation times.
-- **Cursor memory** restores configured menu cursor positions for supported interfaces.
-- **AOTE/AOTV sounds** allow Instant Transmission and Etherwarp sounds, volume, and pitch to be customized locally. Teleport tools are not muted by default.
+- **Cursor memory** restores configured cursor positions for supported menus.
+- **AOTE/AOTV sounds** let Instant Transmission and Etherwarp use the original sound or a local preset at a configurable 0–100% volume, default 64%. QCA does not change teleport distance, cooldown, movement, packets, or item use.
 
-Slot locking, Storage Overlay, and menu middle-click conversion were removed from the mod rather than merely hidden from settings.
+Slot Locking, Storage Overlay, and menu middle-click conversion were removed from QCA completely rather than merely hidden from settings.
 
 ### Combat
 
-- **Ender Dragon Highlight** places received Hypixel Ender Dragons in Minecraft's vanilla outline pipeline while the player is in The End or Dragon's Nest. The outline color is configurable.
-- **Crimson Isle Faction Tasks** show incomplete received `Faction Quests:` rows with their original names and progress. Completed tasks are omitted from the HUD.
-- Compatible provider-backed Crimson Isle and Kuudra functions are grouped under Combat when the reviewed provider build is installed.
+- **Ender Dragon Highlight** places received Hypixel Ender Dragons into Minecraft's vanilla outline pipeline while the player is in The End or Dragon's Nest. The color is configurable.
+- **Crimson Isle Faction Tasks** show incomplete rows from the received `Faction Quests:` Tab block using their original names and progress. Completed tasks are omitted.
+- Compatible provider-backed Crimson Isle and Kuudra functions appear as Combat subgroups only when an exact reviewed provider is installed.
 
-### Dungeons and Slayer
+### Dungeons
 
-These categories are reserved for exact, function-matched settings exposed by compatible installed providers. QCA does not invent a replacement implementation when no reviewed provider is present, and incompatible adapters fail closed.
+This category contains exact function-matched settings supplied by compatible installed providers. QCA does not invent a replacement Dungeon implementation when no reviewed provider is present.
+
+### Slayer
+
+This category contains exact function-matched Slayer settings supplied by compatible installed providers. Unsupported or incompatible adapters remain hidden.
 
 ### Mining
 
 - **Mining Tasks & Powders** reads received Tab data in Dwarven Mines, Crystal Hollows, Glacite Tunnels, and Glacite Mineshafts.
-- Commission names are kept complete and are shown with progress bars.
-- Progress can be displayed as a one-decimal percentage or as current/target values.
+- Commission names are shown in full and use a separate measured progress bar.
+- Progress can use one-decimal percentage mode or current/target mode.
 - Mithril, Gemstone, and Glacite Powder are tracked separately.
 - The optional `HOTM: <slot name>` row remembers a selected Heart of the Mountain preset observed in the relevant menu.
 
 ### Farming
 
-Farming and Garden functions supplied by reviewed compatible providers appear in this category. Provider selection affects only exact equivalent functions; nearby profit, tooltip, tracker, or price features are not combined simply because their names are similar.
+Garden and Farming functions exposed by exact compatible provider builds appear here. QCA merges only truly equivalent functions; a price tooltip, profit tracker, and task tracker are not treated as the same feature simply because all relate to Farming.
 
 ### Foraging
 
-- **Torrhus Chapter & Resources** combines the current Helia Chapter, full task/progress, Forest Whispers, Desert Whispers, Forest Essence, Safari Essence, Sweep, and Forest Fortune in one wrapped HUD.
-- **Galatea tracking** uses separate settings for Hina Chapter and Agatha's Contest while following the same content and empty-panel rules.
-- **Tree Critter Timer** displays the exact visible server countdown rather than predicting one locally.
-- **Miria/Agatha Contest information** can show the next bracket, remaining score, and estimated Safari Ticket without duplicating the scoreboard timer.
-- **Benefactor state** is derived from bounded received Tab, scoreboard, chat, and physically opened menu content.
-- **Tree Gift alerts** use the player's ownership-proven reward block. Configured rare loot and exact creature lines such as `A wild Groundhog appeared!` can create a center title and local sound, while an unrelated nearby player's public line does not arm an alert by itself.
+- **Torrhus Chapter & Resources** combines the current Helia Chapter, complete task/progress, Forest Whispers, Desert Whispers, Forest Essence, Safari Essence, Sweep, and Forest Fortune in one wrapped HUD.
+- **Galatea tracking** has separate settings for Hina Chapter and Agatha's Contest while following the same content and empty-panel rules.
+- **Tree Critter Timer** shows the exact visible server countdown from a loaded Tree Protection Order nameplate. It does not start a guessed timer.
+- **Miria and Agatha Contest information** can show the next bracket, remaining score, and estimated Safari Ticket without duplicating the scoreboard timer.
+- **Benefactor state** is assembled from bounded received Tab, scoreboard, chat, and physically opened menu content.
+- **Tree Gift alerts** require the local player's ownership-proven reward block. Configured rare loot and exact creature lines can create a center title and local sound; an unrelated nearby player's public line cannot arm an alert by itself.
 
 ### Fishing
 
 - **Fishing Bite Sound** is disabled by default.
-- It detects the exact nearby `!!!` marker associated with the local player's water hook or bounded Hypixel lava-hook presentation.
-- It plays the bundled Ciallo sound once per hook at the configurable 0–100% volume, default 64%.
-- Reeling an active hook does not re-arm or replay the cue.
-- It never casts or reels automatically.
+- It associates an exact nearby received `!!!` marker with the local player's water hook or bounded Hypixel lava-hook presentation.
+- It plays the bundled Ciallo sound once per hook at a configurable 0–100% volume, default 64%.
+- Reeling an active hook does not replay or re-arm the cue.
+- QCA never casts or reels automatically.
 
 ### Hunting
 
-Safari belongs to Hunting and appears as a collapsible subgroup.
+- **Beeheemoth helper** offers a configurable outline, temporary yellow spawn beacon, and independent Beeheemoth sound control. The beacon clears when the player approaches, receives their own capture confirmation, or the entity disappears.
+- **Lasso REEL cue** plays once when the local player's received Lasso state changes to the exact `REEL` label.
+- **Critter Behavior Assistant** presents bounded center-screen prompts for documented Critter mechanics.
 
-- **Beeheemoth helper** provides an optional outline, a temporary yellow spawn beacon, and an independent 64%-default Beeheemoth sound control.
-- **Lasso REEL cue** plays once when the local player's visible Lasso state changes to the exact `REEL` label.
-- **Critter Behavior Assistant** provides center-screen prompts for supported special Critter mechanics.
-- **Safari Run Dashboard & Critterdex** show session time, Ticket Tier, captured/missing Critters, and optional Shard totals organized by biome and rarity.
-- **Cold safety** uses configurable warning thresholds and can mark the nearest already-loaded campfire until Cold begins falling.
-- **Doomspiral and Warden readiness** provide local inventory/entity-state warnings.
-- **Critter highlights** use received entities, Shard rarity colors, and vanilla outlines without highlighting Armor Stand capture props.
-- **Sparkling, Floor Drop, Quest Item, Wumpa, and Snoozle helpers** render local alerts, HUD state, outlines, lines, or exposed wall faces from already-received/loaded data.
-- **Safari Belt details** add all four observed milestone levels and received bonuses to the real belt tooltip and persist higher confirmed values per profile.
+#### Safari subgroup
 
-Wumpa route prediction and Fairy Soul beams default off. Other defaults are documented on their feature cards and secondary pages.
+- **Safari Run Dashboard** tracks local run time and Ticket Tier. The optional caught-Shard statistics are a separate switch and default off.
+- **Safari Run Critterdex** groups the current run by Cavern, Forest, Haunted, and Icy and shows captured/missing progress without truncating names.
+- **Critter highlights** use the official Shard rarity color on the real visible entity and do not render through walls. Armor Stand capture props are excluded.
+- **Cold Safety** provides configurable first/second warnings (80/90 by default) and an optional nearest-loaded-campfire beacon that closes once Cold begins falling.
+- **Doomspiral readiness** warns at four or more Soothing Incense. **Warden readiness** warns when the locally visible capture cooldown reaches its ready state.
+- **Sparkling, Floor Drop, and Quest Item assistants** use received chat, visible names/entities, nearby already-loaded blocks, and the local inventory only.
+- **Wumpa HUD** accepts personal and teammate Loot Share captures for the eight Icy prerequisites, then replaces the checklist with `Wumpa: Spawned`. Its red movement/collision projection is optional and defaults off.
+- **Snoozle wall overlay** colors only nearby exposed matching wall faces. Its color is configurable.
+- **Safari Belt tooltip** shows all four observed milestone levels and received attribute bonuses and saves confirmed progress per local account/profile.
 
-### Rift and Events
+### Rift
 
-These categories contain supported exact functions provided by compatible installed mods. When a provider is missing, unreviewed, or incompatible, QCA hides its adapter instead of guessing field names or editing files belonging to an unloaded mod.
+This category is reserved for exact compatible provider features. QCA hides the group when no reviewed implementation is available.
 
-## Attribute Shard guide and planner
+### Events
 
-Type `/qshard` to open the local Shard screen, or `/qshard <English query>` to open it with a search already filled in. The command does not send a message or command to Hypixel.
+This category is reserved for exact compatible provider event features. One function still appears only once even when several providers offer it.
+
+## Attribute Shard Guide and Planner
+
+The Shard system is read-only and completely informational. QCA never clicks a Fusion menu, selects an output, moves an item, sends `/hb`, or performs a Fusion.
 
 ### Guide
 
-The bundled guide contains all 320 current Bazaar-listed Attribute Shards and their Shard-specific icons.
+The bundled catalog contains exactly 320 current Bazaar-listed Attribute Shards and Shard-specific offline icons.
 
 - Search by canonical English name, Shard ID, effect, rarity, category, family, Skill, mob type, or acquisition text.
-- **Details** shows the effect and documented natural or Fusion acquisition methods.
-- **Recipes** shows ordered input pairs that can create the selected Shard, including Shards that have both natural and Fusion sources.
-- **Uses** shows what the selected Shard can create.
-- Recipe cards preserve left/right order, input quantities, output choices, normal or special yield, and Pure Reptile information.
-- Clickable Shard names darken and underline on hover.
-- Rarity and semantic fields use their matching Minecraft/SkyBlock colors.
-- The running mod never contacts the Wiki, an API, or an icon service for the guide.
+- **Details** shows the effect, semantic classifications, every bundled natural acquisition method, and whether the Shard is Fusion-only.
+- **Recipes** shows all ordered input pairs that can make the selected Shard, including Shards such as Queen Bee that also have a natural source.
+- **Uses** shows every recipe in which the selected Shard can be an input.
+- Recipe cards preserve left/right input order, required quantities, up to three selectable outputs, ID/Chameleon/Special yield, and the Pure Reptile double-output note.
+- Clickable Shard names darken and underline on hover. Rarity and semantic information use corresponding SkyBlock/Minecraft colors.
+- A matching native ItemStack already received by the client takes presentation priority; otherwise the bundled per-ID icon is used.
 
-### Planner
+The running mod never contacts the Wiki, Hypixel API, Bazaar API, SkyShards, or an icon service. The versioned data is generated and reviewed before release and bundled in the JAR.
 
-The planner keeps the direct guide intact and adds:
+### Planner pages
 
-- a target Shard and quantity;
-- complete multi-step Fusion trees;
-- Fastest or Cheapest route selection;
-- alternative routes for each result;
-- Materials Only totals;
-- separate direct input/output recipe filtering;
-- Shard effect, family, Skill, acquisition, and editable Shards-per-hour information;
-- draggable Fusion Lines for ID and Special Fusion routes;
-- Kraken/Kuudra parameters;
-- a local, per-profile Shard warehouse.
+- **Plan:** enter a target Shard and quantity, then build a bounded multi-step Fusion tree.
+- **Recipes:** filter direct ordered recipes by independent input and output fields.
+- **Shards:** inspect effect, family, Skill, mob type, acquisition, baseline rate, and an editable local Shards-per-hour rate.
+- **Fusion Lines:** view ID, Special, and Chameleon relationships; click and drag nodes, with positions saved locally.
+- **Warehouse:** use Shard counts observed from Hunting Box pages that the player physically opened.
+- **Settings:** configure route mode, price side, handling assumptions, Kuudra/Kraken inputs, warehouse use, and other planner options.
 
-Ironman mode uses local acquisition-rate planning and does not depend on Bazaar. Normal price-based planning is available only when a compatible installed Skyblocker exposes values already stored in its own client cache. QCA does not download Bazaar prices. Without a compatible price provider, price routes are marked unavailable and all offline/rate-based tools continue to work.
+Planner options include Fastest or Cheapest objectives, Normal or Ironman rules, alternative recipes, and **Materials Only** summaries. Ironman never uses Bazaar. Kraken calculations can include Kuudra tier, completion time, coins/hour opportunity cost, key cost, and downtime.
 
-The warehouse updates only from exact Shard counts visible while the player physically has a Hunting Box page open. QCA does not send `/hb`, turn pages, click slots, fuse Shards, or select an output.
+QCA contains no Bazaar downloader. Price-based routes are available only when a compatible installed Skyblocker exposes its already-cached prices through the reviewed public method. Without that provider, Cheapest is clearly unavailable while the offline Guide, Ironman planning, rates, Fusion Lines, and warehouse remain usable.
 
-## Optional unified mod controls
+The warehouse reads only visible Shard IDs and exact `Owned: N Shards` lore on the Hunting Box page currently open. It does not open `/hb`, change pages, inspect hidden inventory, or automate a plan.
 
-QCA can expose reviewed settings and HUDs from these optional exact builds:
+## Unified controls for compatible SkyBlock mods
 
-| Provider | Reviewed build |
-|---|---:|
-| SkyHanni | 7.41.0 |
-| Skyblocker | 6.8.2 |
-| Firmament | 44.3.0 |
-| BabyZombieAddons | 3.4.1 |
+On Minecraft 26.1.2, this Beta includes reviewed adapters for:
 
-When multiple supported mods implement the same exact function:
+- SkyHanni 7.41.0
+- Skyblocker 6.8.2
+- Firmament 44.3.0
+- BabyZombieAddons 3.4.1
 
-1. QCA shows one function card.
-2. Right-clicking the card shows the provider selector first.
-3. Selecting a provider shows that provider's safely editable native settings.
-4. Enabling the card enables the selected implementation and disables only exact equivalents from other detected providers.
-5. Related functions with different purposes remain separate.
+These mods are optional and are not QCA build or runtime dependencies.
 
-Changes are applied to the provider's live local configuration and saved through that provider's own save path. QCA never edits the config file of an unloaded mod. The reviewed Beta exposes supported Boolean, enum, bounded numeric, HUD position, and HUD scale values. Unsupported compound color/keybind types remain in the provider's native editor.
+When several supported mods implement the same exact function, QCA displays one feature card. The secondary page begins with a provider selector. Selecting SkyHanni, for example, makes the card control SkyHanni's matching implementation and disables only exact equivalents in the other providers when the card is enabled. The same page then exposes the safely editable settings belonging to that selected implementation.
 
-These integrations are version-locked and fail closed. A missing or structurally changed provider does not prevent standalone QCA features from loading.
+QCA writes to the provider's live local configuration object and asks that mod to save through its own path. It does not edit an unloaded mod's raw configuration file. Reviewed Boolean, enum, bounded numeric, HUD position, and HUD scale values can appear in QCA; unsupported compound color/keybind objects remain in the provider's native editor.
 
-## Commands and outbound actions
+Provider-owned HUDs can also appear in **Edit HUD** with the provider name shown. Changes are written on mouse release.
 
-| User input | Result | Sent to the server? |
-|---|---|---|
-| `/aca`, `/qca`, `/ca`, `/qc` | Opens local QCA settings | No |
-| `/qshard [English query]` | Opens the bundled offline Shard guide | No |
-| `/th` | Sends the exact command payload `warp torrhus` | **Yes, only after the user types it** |
-| `/helia` | Sends the exact command payload `chapter torrhus` | **Yes, only after the user types it** |
-| Click **Reconnect** | Starts one normal connection to the remembered in-memory server target | **Yes, only after the click** |
-
-QCA has no automatic command calls, no `sendChat` calls, and no automatically generated chat contents.
+The current reviewed provider builds target Minecraft 26.1.2. The 26.2 QCA build keeps every QCA-owned feature but hides these version-locked adapters until matching provider builds have been reviewed. All adapters fail closed when a mod is absent, its version differs, or its expected configuration shape is unavailable.
 
 ## Client-only and safety boundary
 
-QCloudy_Addition is declared with `"environment": "client"` and runs as a client-side mod.
+QCA is declared as a client-only Fabric mod. Its normal features consume information the client has already received or can already see: local position, loaded entities/blocks, scoreboard, Tab, chat, visible menus, item lore, and local input.
 
-Its normal features consume data already available to the client, including:
+QCA contains no Hypixel Mod API subscription, Hypixel public API client, HTTP client, WebSocket, telemetry, remote updater, macro, automatic movement, automatic click, automatic capture, automatic item use, hidden-inventory read, or chunk request.
 
-- local player coordinates and orientation;
-- received Tab, scoreboard, chat, item name, and lore text;
-- screens and slots the player physically opened;
-- entities, names, sounds, block states, and Block Entities already loaded by Minecraft;
-- local inventory contents;
-- bundled offline maps, Shard data, icons, pet metadata, and sounds;
-- compatible client-price values already cached by an optional provider.
+Using another local mod's already-cached value does not create a hard dependency or an extra QCA network request. The optional Skyblocker price bridge fails closed when the reviewed method is unavailable.
 
-The mod contains no Hypixel API subscription, HTTP client, WebSocket, telemetry, remote updater, macro, simulated input, automatic click, automatic movement, automatic item use, or automatic reconnect loop. It does not request chunks, hidden inventories, or server-only data.
+Passive rendering is not the same as official approval. Entity outlines, beacons, wall overlays, and movement projections can make received information easier to see and may carry greater policy risk. Every Minecraft modification is used at the player's own risk. Review the current [Hypixel Allowed Modifications guide](https://support.hypixel.net/hc/en-us/articles/6472550754962-Hypixel-Allowed-Modifications) and [Hypixel SkyBlock Rules](https://support.hypixel.net/hc/en-us/articles/4508088842898-Hypixel-SkyBlock-Rules).
 
-Some passive visual helpers—such as outlines, beacons, wall overlays, and motion projections—make already-received world information easier to see and therefore carry higher policy risk. Passive rendering is not the same as official approval. Review the current [Hypixel Allowed Modifications guide](https://support.hypixel.net/hc/en-us/articles/6472550754962-Hypixel-Allowed-Modifications) and [Hypixel SkyBlock Rules](https://support.hypixel.net/hc/en-us/articles/4508088842898-Hypixel-SkyBlock-Rules), and disable any feature you are not comfortable using.
+See the full [client data-flow and compliance inventory](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/COMPLIANCE.md).
 
-For the complete per-feature data-flow table, see [COMPLIANCE.md](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/COMPLIANCE.md).
+## Commands and outbound actions
 
-## Configuration and saved data
+| User action | Result | Server payload |
+|---|---|---|
+| `/aca`, `/qca`, `/ca`, `/qc` | Opens local QCA settings | None |
+| `/qshard [English query]` | Opens the local offline Shard Guide | None |
+| `/th` | User-triggered Torrhus shortcut | `warp torrhus` |
+| `/helia` | User-triggered Helia shortcut | `chapter torrhus` |
+| Click **Reconnect** | Starts one normal connection to the remembered in-memory server target | Normal Minecraft connection |
 
-QCA saves ordinary local JSON files in the Minecraft instance's `config` folder:
+`/th` is equivalent to manually entering `/warp torrhus`; `/helia` is equivalent to manually entering `/chapter torrhus`. Neither is triggered automatically. QCA has no `sendChat` call, automatic command, automatic reconnect loop, or generated chat message.
 
-- `config/qcloudy_addition.json` stores language, features, HUD appearance/position/scale, local tracker memory, pet details, planner settings/rates, and Fusion Lines positions.
-- `config/qcloudy_addition_shard_warehouse.json` stores per-profile Shard counts observed from Hunting Box pages and their last observation time.
+## Saved data
 
-The legacy `config/autumecloudyaddition.json` is read once for migration. Configuration writes use a temporary file followed by atomic replacement when supported.
+QCA stores ordinary local JSON only:
 
-QCA stores no password, access token, Hypixel API key, chat history, or remote account data. The reconnect address is kept only in memory.
+- `config/qcloudy_addition.json` — language, feature settings, HUD appearance/position/scale, remembered pet details, received profile-scoped Hunting values, Fairy Soul state, and Shard Planner settings/rates/graph positions.
+- `config/qcloudy_addition_shard_warehouse.json` — per-local-profile Shard counts from Hunting Box pages the player actually opened, plus observation time.
 
-## Compatibility
+The old `autumecloudyaddition.json` is read once for migration. Writes use a temporary file and atomic replacement when supported.
 
-### Required
+QCA does not store passwords, access tokens, Hypixel API keys, chat history, remote account data, or reconnect addresses on disk.
 
-- Minecraft 26.1.2
-- Java 25 or newer
-- Fabric Loader 0.19.3 or newer
-- Fabric API 0.155.2+26.1.2 or newer
+## Compatibility and troubleshooting
 
-### Optional
+### The game does not start
 
-- Mod Menu 18.x or a compatible build for direct settings access
-- Reviewed versions of SkyHanni, Skyblocker, Firmament, and BabyZombieAddons for unified provider controls
-- Compatible Skyblocker client-price cache for Normal-mode price routes
+- Confirm that the playable JAR matches Minecraft 26.1.2 or 26.2 exactly.
+- Confirm Java 25, Fabric Loader 0.19.3+, and the matching Fabric API.
+- Remove duplicate/older QCA JARs.
+- Do not put the `-sources.jar` in the mods folder as the playable file.
 
-QCA does not have a build-time or runtime dependency on any of the four reference SkyBlock mods. Unknown provider versions are hidden by the adapter rather than written through an unverified layout.
+### A HUD or edit box is missing
 
-## Troubleshooting
+This is often intentional. A HUD is drawn and exposed in Edit HUD only when its feature is enabled, its location/state is loaded, and it has real visible rows. A title or placeholder cannot keep an otherwise empty panel alive.
 
-### The settings command does not open QCA
+### The Dwarven marker is not an exact block position
 
-Try the default `O` key, Mod Menu, or a different alias. QCA skips an alias when another client command already owns that name.
+The Dwarven map is an approximate single-layer X/Z overview. It intentionally ignores Y and floor/sub-location names. The arrow should move continuously in real time, but the background is not a precise block-by-block survey.
 
-### A HUD is enabled but not visible
+### Cheapest Shard planning is unavailable
 
-Many HUDs appear only on the relevant island and only after the client receives content for them. Empty HUDs intentionally hide their title, border, and background. Enter the relevant area or wait for the corresponding Tab/scoreboard/chat/menu observation.
+QCA does not fetch Bazaar prices. Use the offline/Ironman/rate modes, or install a compatible reviewed Skyblocker build that exposes its existing client price cache. Provider-based prices and unified third-party controls are currently reviewed only for the listed Minecraft 26.1.2 provider builds.
 
-### A HUD cannot be moved in Edit HUD
+### A third-party provider does not appear
 
-Only enabled, loaded HUDs with visible content are included in the editor. Open the relevant island or state first, then return to **Edit HUD**.
+Provider adapters are version-locked and fail closed. Check the exact mod version. On Minecraft 26.2, current provider adapters are intentionally hidden until matching builds have been reviewed.
 
-### Text or controls overlap at my GUI scale
+### A native icon looks different from the bundled Shard icon
 
-Beta 2.7.17 preserves the responsive layouts, independent scrolling, clipping, and safe short-screen fallbacks while correcting Dwarven overview synchronization. If a layout still overlaps, include the exact Minecraft window size, GUI Scale, QCA language, open page/tab, installed mods, and a full screenshot in the report.
-
-### Cheapest or Bazaar planning is unavailable
-
-QCA has no Bazaar network client. Use Ironman or rate-based planning, or install a compatible reviewed Skyblocker build that already provides prices through its client cache.
-
-### An external provider is missing
-
-Check the installed provider version. Unified adapters are intentionally version-locked and disappear when the provider is absent or no longer matches the reviewed structure. QCA's own standalone features should remain available.
-
-### Pet, Shard, or item artwork looks wrong with a resource pack
-
-QCA prefers a matching real ItemStack already received by the client where supported. Include the resource-pack name/order, the affected item or pet, its canonical English name, and screenshots with and without the pack.
-
-### The fishing cue does not play
-
-Confirm that **Fishing Bite Sound** is enabled and its feature volume is above 0%. The cue requires the local hook association and the exact received `!!!` marker. Also check Minecraft's relevant master/category volume.
+When QCA has already received a matching real ItemStack, it lets Minecraft render that stack so resource-pack/server presentation can take priority. Unseen catalog entries use the bundled offline per-ID icon.
 
 ## Reporting a bug
 
 Open a [GitHub Issue](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/issues) and include:
 
-- QCloudy_Addition version and filename;
-- Minecraft, Fabric Loader, Fabric API, and Java versions;
-- all installed SkyBlock mods and versions;
-- QCA language, GUI Scale, window resolution, and active resource packs;
-- island/area and the feature involved;
-- exact steps to reproduce the problem;
-- expected and actual behavior;
-- screenshots or a short video for visual bugs;
-- `latest.log` and a crash report for crashes;
-- whether the problem still occurs with only QCA, Fabric API, and required dependencies.
+- QCA version and exact filename
+- Minecraft, Fabric Loader, Fabric API, and Java versions
+- Complete installed mod list with versions
+- Language and GUI Scale
+- Exact island/location and steps to reproduce
+- Expected result and actual result
+- Screenshot or short video for UI/rendering problems
+- `latest.log`, and the crash report when a crash occurred
+- Whether the issue still happens with only Fabric API and QCA installed
 
-Do not publish access tokens, session data, private chat, or other personal information in a report.
+Do not include access tokens, session identifiers, private chat, or other secrets.
 
-## Project status and validation
+## Validation, license, and credits
 
-Beta 2.7.17 is built and archive-checked with Java 25 for both Minecraft 26.1.2 and 26.2. The Dwarven regression suite explicitly verifies continuous X/Z movement, The Mist bridge overlap, representative overview regions, and safe edge clamping.
+Beta 2.7.17 was built for both supported targets with Java 25. The maintained validation report records 159 tests per target with no failures, 320 catalog Shards/models/textures, matching English/Chinese language-key sets, and validated playable/Sources archives.
 
-These checks do **not** replace authenticated in-game testing. Before treating a Beta as stable, the project still needs live regression across the supported providers, different GUI scales/languages, resource packs, Hypixel wording changes, latency conditions, and a full target modpack.
+Automated tests and archive checks do not replace an authenticated Hypixel regression, every GUI Scale, every resource pack, or every future modpack combination. See the current [validation report](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/VALIDATION.md) for the exact tested boundary.
 
-- [Current changelog](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/CHANGELOG.md)
-- [Detailed feature specification](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/FEATURES.md)
+Project documentation:
+
+- [Changelog](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/CHANGELOG.md)
+- [Feature specification](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/FEATURES.md)
 - [Implementation and data flow](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/IMPLEMENTATION.md)
-- [Validation report](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/VALIDATION.md)
+- [Compliance inventory](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/COMPLIANCE.md)
+- [Third-party notices](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/THIRD_PARTY_NOTICES.md)
 
-## License and credits
-
-QCloudy_Addition source code is licensed under **GNU Lesser General Public License v3.0 or later (`LGPL-3.0-or-later`)**. See the repository [LICENSE](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/LICENSE) file.
-
-The project uses reviewed, attributed offline facts or assets from sources listed in [THIRD_PARTY_NOTICES.md](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/THIRD_PARTY_NOTICES.md), including the Hypixel SkyBlock Wiki and MIT-licensed SkyShards icon data. The running mod does not contact those sources.
-
-QCloudy_Addition is an independent community project and is not endorsed by Hypixel, Mojang, Microsoft, SkyHanni, Skyblocker, Firmament, or BabyZombieAddons.
+QCloudy_Addition source code is licensed under the **GNU Lesser General Public License v3.0 or later (`LGPL-3.0-or-later`)**. Reviewed offline facts/assets and their licenses are documented in `THIRD_PARTY_NOTICES.md`, including the Hypixel SkyBlock Wiki and MIT-licensed SkyShards icon data. The running mod does not contact those sources.
