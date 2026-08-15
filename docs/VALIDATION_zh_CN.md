@@ -1,4 +1,4 @@
-# QCloudy_Addition Beta 2.8.17 双版本验证
+# QCloudy_Addition Alpha 2.8.22 双版本验证
 
 日期：2026-08-15<br>
 Minecraft：26.1.2 与 26.2<br>
@@ -6,38 +6,46 @@ Java：25
 
 已验证产物：
 
-- `release/QCloudy_Addition-Beta-2.8.17+26.1.2.jar`
-- `release/QCloudy_Addition-Beta-2.8.17+26.1.2-sources.jar`
-- `release/QCloudy_Addition-Beta-2.8.17+26.2.jar`
-- `release/QCloudy_Addition-Beta-2.8.17+26.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.8.22+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.22+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.8.22+26.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.22+26.2-sources.jar`
 
-26.1.2 可运行 SHA-256：`3a1386393f50188a5e20ea5c8069611fb1b9c896de98ff7a58ff0e1515db1932`<br>
-26.1.2 Sources SHA-256：`0c42f5ed9fa264ba89107267ddde33966b14f0481e1f349599cdb7bb5a59d4b2`<br>
-26.2 可运行 SHA-256：`9d06cc83a21f8228665805cb45480974bebd4baaa53daad96c5e8f9b5eb5b38e`<br>
-26.2 Sources SHA-256：`629b185d75b99d20be3cff03972c72d0ebd0330b694ace7b084e0d75d88e9ab0`
+26.1.2 可运行 SHA-256：`dd578074410305767e04be06b4550b981440c90095a3435c5169c44130bedf83`<br>
+26.1.2 Sources SHA-256：`58504336df7878ee9b1b9f0c5949db3a96e2ab37e4a6cea1c9d11ede195bd96d`<br>
+26.2 可运行 SHA-256：`bf4402961f8ca489e5b9f026d954da5ca3128de90a94bd3f509986886324a76c`<br>
+26.2 Sources SHA-256：`d0d738c4d3fbdb38b6dcebcb8ad90c465ffb73e5395f55fc18fb5488342ef45a`
 
-Beta 2.8.17 把统一编辑器的提供方精确版本白名单替换为实时能力探测。SkyHanni、Skyblocker、Firmament、BabyZombieAddons 是否出现不再由版本字符串决定。第三方设置和 HUD 分别由两个默认关闭的独立总开关控制，不影响 QCA 自身内容。启用对应总开关后，QCA 才检查已识别的配置/保存能力并以防御方式发现受支持的值。一个分支变化只会省略该分支，不会隐藏其他仍兼容的独立分支或 QCA 自身。本地 `/aca`、`/ca` 别名已删除，只保留 `/qca`、`/qc`。
+Alpha 2.8.22 保留五个可选、按能力探测的提供方，并为每一次提供方扫描加入明确的第二次确认。首次开启但没有有效会话快照时，以及每一次 Refresh，都必须先确认设置或 HUD 范围，之后才能创建任务。取消首次确认会保持总开关关闭；取消 Refresh 会保留上一份有效快照；重启后恢复为开启的开关不会静默扫描。提供方探测仍为分阶段、确定性、本地、只读过程。
 
 本工作区已验证：
 
-- Java 25 `clean test build prepareRelease` 在两个目标均成功：每个版本 164 项当前测试，0 failure、0 error、0 skip。
-- 两个可运行 JAR 均包含恰好 320 个目录 Shard、320 个 Shard 物品模型定义和 320 张 Shard 纹理；英文与简体中文各有 472 个完全一致的语言键。
+- Java 25 `clean test build prepareRelease` 在两个目标均成功：每个版本 31 个 suite、175 项当前测试，0 failure、0 error、0 skip。
+- 两个可运行 JAR 均包含恰好 320 个目录 Shard、320 个 Shard 物品模型定义和 320 张 Shard 纹理；英文与简体中文各有 515 个完全一致的语言键。
 - 矮人矿洞投影测试覆盖连续单轴移动、The Mist 与其上方桥梁相同 X/Z 得到相同点、代表区域和安全边界裁剪；官方子地点 `C&C Minecarts Co.` 也已归类为矮人矿洞。
 - 确定性几何测试覆盖宽/窄 Shard 详情栏、独立速度控件、紧凑 Plan 控件、窄屏 Settings 单列及矮屏安全提示、Recipe 输入框宽度、Fusion Lines 画布扩展、二级设置滑块、RGB 条和预设色块。
 - 主代码与测试已从干净输出目录重新编译。
 - 每个产物的展开元数据均精确声明目标：26.1.2 使用 Fabric API 0.155.2+26.1.2；26.2 使用 Fabric API 0.154.2+26.2。两者都保持纯客户端并要求 Fabric Loader 0.19.3+ 与 Java 25+。
-- `build/libs/` 的可运行与源码产物分别和 `release/` 中对应文件逐字节一致。
+- `build/<target>/libs/` 的可运行与源码产物分别和 `release/` 中对应文件逐字节一致。
 - 四个 JAR 均通过 JDK 25 `jar --validate` 与 `unzip -t`；两个目标共用同一套中英文资源。
 - 对用户提供的最新 MC 26.1.2 模组 JAR 进行静态接口检查，确认本版本使用的入口契约仍存在：SkyHanni 7.45.0 提供 `SkyHanniMod.feature` 与 `SkyHanniConfig.saveNow()`；Skyblocker 6.9.1 提供 `SkyblockerConfigManager.get()` 与 `update(Consumer)`；BabyZombieAddons 3.5.1 提供 `ModConfigManager.get()` 与 `save()`；Firmament 44.3.0 提供 ManagedConfig 注册表/选项路径。这只验证入口契约，不代表每个具体设置和 HUD 视觉行为都已实测。
-- 能力测试覆盖未来版本常见的前缀开关名称、只关联同一功能语义的设置，以及前缀 X/Y/scale 识别。源码/资源检查确认 `/qca`、`/qc` 是仅存的 QCA 设置命令别名。
-- 配置与功能测试确认两个第三方集成总开关均默认关闭、可以独立切换、作为一级卡片没有重复二级设置，并且旧配置迁移后保持主动选择启用的状态。
-- 可选集成不产生提供方编译依赖，也未新增 HTTP、数据包、聊天命令、菜单点击、玩法输入或服务器数据请求。写入只通过玩家所选已安装提供方的实时对象及其自己的保存/update 路径完成；QCA 不直接改动提供方配置文件。
+- 对 Feesh 官方源码提交 `9a5f9e074492a0f6c0eb4f6251ac361b7afb3992` 的静态检查确认了公开 `Settings` 单例/保存方法、七个分类单例、`FeeshGui.getAllRegisteredGuis()`、Overlay 可见性/内容访问器、原生对齐重算和 `PersistentDataManager.updateOverlayCoordsData(...)`。QCA 不复制 Feesh 代码或资源，也不把 Feesh 作为编译/运行依赖。
+- 聚焦测试验证 Feesh 二级设置的确定性关联、无关设置名称不会错误合并、实现后缀 `Overlay` 不会暴露，以及 LEFT/CENTER/RIGHT 锚点可精确往返。适配器使用公开访问器而不是生成的委托字段，在成功设置后调用原生保存，并把无法安全表达的非开关/复杂值报告为缺失，而不是伪造功能卡片。
+- 能力测试覆盖未来版本常见的前缀开关名称、只关联同一功能语义的设置、前缀 X/Y/scale 识别，以及把同一个提供方功能的“设置/HUD 编辑”缺失稳定合并、同时过滤正常支持与 QCA 自身项目。源码/资源检查确认 `/qca`、`/qc` 是仅存的 QCA 设置命令别名。
+- 配置与功能测试确认两个第三方集成总开关均默认关闭、可以独立切换，并且只有这两张功能卡可以打开首次扫描确认。确认文案测试区分设置与 HUD 范围，并且键盘只有 Enter/小键盘 Enter 可以确认。两个独立二级页面只显示自身的总数、当前扫描内容与手动 Refresh 操作。
+- 静态 UI/数据流检查确认“兼容性缺失报告”卡片与功能枚举、普通开关路径分离；左右键打开同一个报告；报告按提供方分组，并且不会调用数值 setter 或提供方保存/update 方法。
+- 静态检查与测试确认缓存的报告布局会在内容宽度改变时失效；报告读取最近一次已完成的不可变快照，打开报告本身不会静默重扫或写入提供方状态。
+- 分类器测试确认原生/路径验证分类优先；一个此前未知、具有明确钓鱼语义的选项可以由本地分类器分类；模糊低置信度文本继续保持未分类。静态数据流检查确认唯一任务创建调用位于首次开启或 Refresh 的确认窗口回调中；`IntegrationScanService.tick()` 只推进已经存在的任务，不负责自动创建，因此即使重启后恢复了开启状态，启动过程也不会扫描。打开普通设置页面不会扫描。
+- 删除未使用的“全部配方”重复列表后，Shard 反向索引测试仍确认精确输入、产物与用途一致。Lasso 检测保持本人拴绳、精确 `REEL` 标签、两格关联和 false→true 播放门不变，同时只遍历一遍已加载实体。
+- 两个目标的干净构建都没有出现项目脚本产生的 Gradle 弃用警告；两个资源处理任务都明确排除 `.DS_Store`。
+- 可选集成不产生提供方编译依赖，也未新增 HTTP、数据包、聊天命令、菜单点击、玩法输入或服务器数据请求。QCA 不会调用 Feesh 的 API、聊天、命令、分享或玩法操作。普通统一编辑器只有在玩家主动开启后，才通过所选已安装提供方的实时对象及其自己的保存/update 路径写入；报告完全只读，QCA 不直接改动提供方配置文件。
 - 对编辑过的配置与物品界面进行静态矩阵/裁剪审查，push/pop 与 enable/disable 均成对。
 
-尚未覆盖的 Beta 实服边界：
+尚未覆盖的 Alpha 实服边界：
 
 - 几何测试和归档检查不能代替 Minecraft 实际渲染检查。扩大发布前，应在目标整合包使用的每个 GUI Scale 下，分别安装每个提供方并打开主设置、二级设置和 HUD 编辑器，检查中英文、resize/re-init、长名称、点击区、原生持久化与滚动。
-- 能力探测是尽力而为的结构兼容，不代表未来每个提供方版本都必然兼容。未知新结构会刻意省略；如果提供方删除已识别的根对象或保存/update 契约，只关闭该适配器，直到 QCA 更新。
+- 本次根据 Feesh 官方源码契约完成静态检查，但没有在已登录 Minecraft/Hypixel 会话中加载 Feesh。扩大公开发布前，应实测若干 Boolean/enum/数值设置和 LEFT/CENTER/RIGHT HUD，然后重新打开 Feesh 原生编辑器并重启客户端，确认两边数值与持久化结果一致。
+- 能力探测是尽力而为的结构兼容，不代表未来每个提供方版本都必然兼容。可读取但低置信度的结构不会被塞入功能分类，而会显示为分类缺失；完全无法读取的结构在 QCA 学会安全识别具体名称前，只能显示提供方级的通用接入缺失。
 - 用户提供的四个模组 JAR 都是 MC 26.1.x 构建。MC 26.2 的 QCA 产物已经完成编译与压缩包验证，但 26.2 的第三方编辑仍需要各提供方自己发布 26.2 构建，并与这些构建完成登录实测。不得为了测试适配器而把 26.1 模组 JAR 强行装进 26.2 实例。
 
 ---

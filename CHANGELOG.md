@@ -2,6 +2,89 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.8.22] - 2026-08-15
+
+### Added
+
+- Added a second confirmation screen before every optional provider capability scan. The dialog identifies whether the scan is for the Unified Settings Editor or Unified HUD Editor and explains that the work is local, read-only, and may briefly use additional CPU.
+- The confirmation is required both when first enabling an editor without a valid session snapshot and whenever the player presses that editor's Refresh action.
+
+### Changed
+
+- Cancelling the initial confirmation leaves the selected master switch disabled and starts no scan. Cancelling Refresh keeps the existing validated snapshot unchanged.
+- Restoring an enabled master switch after restarting Minecraft no longer silently scans providers. A scan starts only after the player explicitly confirms it; Refresh is disabled while another scan is already running.
+- Alpha 2.8.22 is built separately for Minecraft 26.1.2 and 26.2.
+
+### Safety
+
+- The confirmation changes only local UI and scan scheduling. Provider discovery remains deterministic and read-only, with no server request, HTTP request, packet, command, chat, telemetry, automatic input, or direct provider-config file edit.
+
+## [2.8.21] - 2026-08-15
+
+### Added
+
+- Added **Feesh** as the fifth optional provider in QCA's independent Unified Settings Editor, Unified HUD Editor, visual scan progress, and Compatibility Gaps report.
+- Added capability-based Feesh setting discovery for live Kotlin delegated properties. QCA exposes only safely paired public getters/setters, classifies only still-uncategorised functions, and saves successful changes through Feesh's own `Settings.save()` path.
+- Added Feesh HUD discovery from its live overlay registry. Only enabled, currently drawable overlays with non-empty lines enter Edit HUD; position, scale, and alignment are converted through Feesh's native anchor model and persisted through its own coordinate store.
+
+### Compatibility and safety
+
+- Feesh support has no exact-version whitelist and no compile/runtime dependency. Compatible capabilities survive ordinary provider updates; changed or opaque settings/HUDs are omitted from the editors and reported as per-provider compatibility gaps without hiding valid siblings.
+- QCA does not invoke Feesh API, chat, command, sharing, or gameplay features. Changing a Feesh-owned option uses Feesh's normal setter and save contract, so any later behavior remains owned by the setting the player explicitly selected in Feesh.
+- The unified-editor master switches remain independent and disabled by default. No provider scan runs until one is enabled or the player presses Refresh.
+- Alpha 2.8.21 is built separately for Minecraft 26.1.2 and 26.2.
+
+## [2.8.20] - 2026-08-15
+
+### Added
+
+- Added an on-demand capability scan for the independent **Unified Settings Editor** and **Unified HUD Editor** master switches. Enabling either switch opens a live scan page with the current provider, phase, item, recent activity, and a progress bar.
+- Added a **Refresh** action to each unified editor page. Refresh preserves the last valid snapshot until the new read-only scan completes and validates, preventing a partial provider state from replacing working results.
+- Added a small deterministic local metadata classifier for provider functions that remain uncategorised after native paths and verified rules. It uses fixed local weights and a confidence threshold; low-confidence entries remain unclassified instead of being guessed.
+
+### Changed
+
+- Settings and HUD discovery now share one immutable session snapshot while keeping their switches, totals, and editor results independent. The settings page reports only manageable settings; the HUD page reports only manageable HUDs.
+- Scans run only when a master switch is enabled or the player presses Refresh. Opening the settings menu no longer performs an unconditional provider rescan, and disabling both switches cancels pending work and releases the session snapshot.
+- Scan results list only installed providers that produced readable capabilities. Uninstalled providers are not shown. Recognition remains best-effort and per capability, so one changed provider branch cannot hide every compatible branch.
+- Provider work is staged across client ticks and progress text states exactly which installed provider and phase is being processed.
+
+### Safety
+
+- Discovery and classification are local, read-only, and deterministic. This update adds no cloud AI, network request, server query, packet, command, chat, telemetry, automatic input, or direct configuration-file editing.
+
+## [2.8.19] - 2026-08-15
+
+### Improved
+
+- Cached the provider-grouped Compatibility Gaps layout and wrapped report rows. Opening the report still performs a fresh read-only capability audit, while normal rendering no longer rebuilds the same grouping and text layout every frame.
+- Reduced Lasso `REEL` detection to one loaded-entity traversal per active check and deferred ArmorStand name parsing until a local player's lasso target actually exists.
+- Removed the unused duplicate all-recipes reference list from the Shard Fusion index. Exact-pair, output, and input indexes continue to share the same immutable recipe objects and results.
+- Captured Fabric Loader metadata during Gradle configuration so resource processing no longer uses the deprecated execution-time `Task.project` API. Clean builds now complete without the Gradle 10 deprecation warning previously emitted by the project script.
+- Explicitly exclude Finder `.DS_Store` metadata from both playable and Sources archives.
+
+### Compatibility and safety
+
+- No feature defaults, recipe results, provider save behavior, HUD semantics, command payloads, or network behavior changed. QCA remains standalone and client-only.
+- Alpha 2.8.19 is built and validated separately for Minecraft 26.1.2 and 26.2.
+
+## [2.8.18] - 2026-08-15
+
+### Added
+
+- Added a read-only **Compatibility Gaps** card under **General → Supported Mods**. It is visually distinct from feature cards, has no toggle or enabled strip, and opens with either mouse button.
+- Added a provider-grouped report for installed SkyHanni, Skyblocker, Firmament, and BabyZombieAddons builds. Each confidently recognised but unmanaged function is labelled with `[Settings]`, `[HUD Editor]`, or both; fully supported functions are omitted.
+
+### Improved
+
+- The report performs a fresh, read-only capability audit when opened, independent of the two default-off unified-editor master switches. A provider with an unreadable or empty recognised configuration root is no longer incorrectly described as fully supported.
+- Recognised complex settings that QCA cannot safely write, including changed color, keybind, or position structures, remain hidden from the normal editor but are now visible in the compatibility report. Unknown future structures are not assigned invented feature names.
+
+### Channel and safety
+
+- Returned development builds to the **Alpha** channel as requested. This version is `Alpha 2.8.18` for Minecraft 26.1.2 and 26.2.
+- The report reads only installed client-mod runtime structures. It never changes another mod's values, edits configuration files, contacts a server, or sends packets, commands, chat, HTTP requests, or telemetry.
+
 ## [2.8.17] - 2026-08-15
 
 ### Improved

@@ -2,6 +2,7 @@ package cloudy.autume.addition.config;
 
 import cloudy.autume.addition.i18n.ModText;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.Nullable;
 import org.joml.Vector2i;
@@ -13,6 +14,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,6 +43,9 @@ final class UnifiedModIntegration {
     private static final int MAX_SCAN_DEPTH = 5;
     private static final int MAX_SETTINGS_PER_FEATURE = 48;
     private static volatile List<UnifiedFeature> cached;
+    private static volatile ScanSnapshot stableScan = ScanSnapshot.empty();
+    private static volatile ScanProgress scanProgress = ScanProgress.idle();
+    private static @Nullable ScanJob scanJob;
 
     private UnifiedModIntegration() { }
 
@@ -49,7 +54,8 @@ final class UnifiedModIntegration {
         SKYHANNI("skyhanni", "SkyHanni"),
         SKYBLOCKER("skyblocker", "SkyBlocker"),
         FIRMAMENT("firmament", "Firmament"),
-        BABYZOMBIE("babyzombieaddons", "BabyZombieAddons");
+        BABYZOMBIE("babyzombieaddons", "BabyZombieAddons"),
+        FEESH("feesh", "Feesh");
 
         final String modId;
         final String displayName;
@@ -61,6 +67,17 @@ final class UnifiedModIntegration {
     }
 
     enum ValueKind { BOOLEAN, INTEGER, DECIMAL, ENUM, STRING, UNSUPPORTED }
+
+    enum ClassificationSource { VERIFIED_RULE, LOCAL_CLASSIFIER, UNCLASSIFIED }
+
+    record Classification(ConfigScreen.Category category, ClassificationSource source,
+                          double confidence) { }
+
+    enum ScanView { SETTINGS, HUD }
+
+    enum ScanState { IDLE, SCANNING, READY, PARTIAL, FAILED }
+
+    enum ScanPhase { IDLE, DETECTING, READING, CLASSIFYING, VALIDATING, COMPLETE }
 
     static final class NativeSetting {
         final String id;
@@ -149,18 +166,20 @@ final class UnifiedModIntegration {
         final String title;
         final String description;
         final ConfigScreen.Category category;
+        final Classification classification;
         final String group;
         final NativeSetting primary;
         final List<NativeSetting> settings;
 
         NativeFeature(Provider provider, String id, String title, String description,
-                      ConfigScreen.Category category, String group, NativeSetting primary,
+                      Classification classification, String group, NativeSetting primary,
                       List<NativeSetting> settings) {
             this.provider = provider;
             this.id = id;
             this.title = title;
             this.description = description;
-            this.category = category;
+            this.category = classification.category;
+            this.classification = classification;
             this.group = group;
             this.primary = primary;
             this.settings = List.copyOf(settings);
@@ -192,6 +211,21 @@ final class UnifiedModIntegration {
                 return primary.set(enabled ? active : disabled);
             }
             return false;
+        }
+    }
+
+    /**
+     * One installed-provider function that QCA can identify but cannot fully
+     * expose through one or both unified editors.
+     *
+     * <p>This is deliberately a diagnostic result, not a feature toggle. The
+     * report never guesses names for unknown future structures and never
+     * writes a provider value while testing compatibility.</p>
+     */
+    record CompatibilityGap(Provider provider, String feature, boolean settings, boolean hud,
+                            boolean classification) {
+        CompatibilityGap(Provider provider, String feature, boolean settings, boolean hud) {
+            this(provider, feature, settings, hud, false);
         }
     }
 
@@ -285,7 +319,7 @@ final class UnifiedModIntegration {
             ConfigManager.save();
             if (qcloudyFeature == ConfigScreen.Feature.UNIFIED_SETTINGS_EDITOR
                     || qcloudyFeature == ConfigScreen.Feature.UNIFIED_HUD_EDITOR) {
-                invalidate();
+                onMasterToggleChanged();
             }
             return changed;
         }
@@ -309,14 +343,21 @@ final class UnifiedModIntegration {
         final NativeSetting x;
         final NativeSetting y;
         final @Nullable NativeSetting scale;
+        private final BooleanSupplier visible;
 
         ExternalHud(UnifiedFeature feature, NativeFeature binding, NativeSetting x,
                     NativeSetting y, @Nullable NativeSetting scale) {
+            this(feature, binding, x, y, scale, () -> true);
+        }
+
+        ExternalHud(UnifiedFeature feature, NativeFeature binding, NativeSetting x,
+                    NativeSetting y, @Nullable NativeSetting scale, BooleanSupplier visible) {
             this.feature = feature;
             this.binding = binding;
             this.x = x;
             this.y = y;
             this.scale = scale;
+            this.visible = visible;
         }
 
         String id() {
@@ -353,6 +394,76 @@ final class UnifiedModIntegration {
         boolean setScale(float newScale) {
             return scale != null && scale.set(Math.clamp(newScale, 0.25f, 4.0f));
         }
+
+        boolean visible() {
+            try {
+                return visible.getAsBoolean();
+            } catch (RuntimeException | LinkageError ignored) {
+                return false;
+            }
+        }
+    }
+
+    record ProviderScan(Provider provider, int discoveredFeatures, int settingsManaged,
+                        int hudManaged, boolean partial) { }
+
+    record ScanStatus(ScanState state, ScanPhase phase, int percent,
+                      String currentProvider, String currentItem, List<String> recentItems,
+                      List<ProviderScan> providers, int managedCount, int unresolvedCount) {
+        boolean running() {
+            return state == ScanState.SCANNING;
+        }
+    }
+
+    private record ScanSnapshot(List<NativeFeature> nativeFeatures,
+                                List<UnifiedFeature> allFeatures,
+                                List<ExternalHud> providerHuds,
+                                List<CompatibilityGap> gaps,
+                                List<ProviderScan> providers,
+                                int settingsManaged,
+                                int hudManaged,
+                                int unresolvedCount,
+                                long revision) {
+        static ScanSnapshot empty() {
+            return new ScanSnapshot(List.of(), List.of(), List.of(), List.of(), List.of(),
+                    0, 0, 0, 0L);
+        }
+
+        boolean valid() {
+            return revision > 0L;
+        }
+    }
+
+    private static final class ScanJob {
+        final List<Adapter> adapters;
+        final List<NativeFeature> nativeFeatures = new ArrayList<>();
+        final List<CompatibilityGap> gaps = new ArrayList<>();
+        final List<ProviderScan> providers = new ArrayList<>();
+        final List<String> recentItems = new ArrayList<>();
+        int adapterIndex;
+        boolean announced;
+
+        ScanJob(List<Adapter> adapters) {
+            this.adapters = List.copyOf(adapters);
+        }
+
+        @Nullable Adapter current() {
+            return adapterIndex < adapters.size() ? adapters.get(adapterIndex) : null;
+        }
+
+        void remember(String value) {
+            if (value == null || value.isBlank()) return;
+            recentItems.add(value.strip());
+            while (recentItems.size() > 4) recentItems.removeFirst();
+        }
+    }
+
+    private record ScanProgress(ScanState state, ScanPhase phase, int percent,
+                                String currentProvider, String currentItem,
+                                List<String> recentItems) {
+        static ScanProgress idle() {
+            return new ScanProgress(ScanState.IDLE, ScanPhase.IDLE, 0, "", "", List.of());
+        }
     }
 
     static List<UnifiedFeature> features() {
@@ -360,7 +471,9 @@ final class UnifiedModIntegration {
         if (result != null) return result;
         synchronized (UnifiedModIntegration.class) {
             if (cached == null) {
-                cached = buildFeatures(ConfigManager.get().integrations.unifiedSettingsEditor);
+                boolean includeExternal = ConfigManager.get().integrations.unifiedSettingsEditor
+                        && stableScan.valid();
+                cached = buildFeatures(includeExternal ? stableScan.nativeFeatures : List.of());
             }
             return cached;
         }
@@ -368,6 +481,243 @@ final class UnifiedModIntegration {
 
     static void invalidate() {
         cached = null;
+        ScanSnapshot snapshot = stableScan;
+        if (snapshot.valid()) {
+            stableScan = new ScanSnapshot(snapshot.nativeFeatures,
+                    buildFeatures(snapshot.nativeFeatures), snapshot.providerHuds,
+                    snapshot.gaps, snapshot.providers, snapshot.settingsManaged,
+                    snapshot.hudManaged, snapshot.unresolvedCount, snapshot.revision);
+        }
+    }
+
+    static void onMasterToggleChanged() {
+        invalidate();
+        ModConfig.Integrations integrations = ConfigManager.get().integrations;
+        if (!integrations.unifiedSettingsEditor && !integrations.unifiedHudEditor) {
+            scanJob = null;
+            stableScan = ScanSnapshot.empty();
+            scanProgress = ScanProgress.idle();
+        }
+    }
+
+    static boolean requiresScanConfirmation() {
+        return scanJob == null && !stableScan.valid();
+    }
+
+    static boolean scanRunning() {
+        return scanJob != null;
+    }
+
+    static void requestConfirmedScan(boolean refresh) {
+        if (!ConfigManager.get().integrations.unifiedSettingsEditor
+                && !ConfigManager.get().integrations.unifiedHudEditor) return;
+        requestScan(refresh);
+    }
+
+    private static void requestScan(boolean refresh) {
+        if (scanJob != null) return;
+        if (!refresh && stableScan.valid()) return;
+        List<Adapter> installed = new ArrayList<>();
+        for (Adapter adapter : adapters()) if (providerInstalled(adapter.provider())) installed.add(adapter);
+        scanJob = new ScanJob(installed);
+        scanProgress = new ScanProgress(ScanState.SCANNING, ScanPhase.DETECTING, 2,
+                "", "", List.of());
+    }
+
+    static void tickScan() {
+        ScanJob job = scanJob;
+        if (job == null) return;
+        Adapter adapter = job.current();
+        if (adapter == null) {
+            finishScan(job);
+            return;
+        }
+
+        int total = Math.max(1, job.adapters.size());
+        if (!job.announced) {
+            job.announced = true;
+            int percent = 5 + job.adapterIndex * 80 / total;
+            scanProgress = new ScanProgress(ScanState.SCANNING, ScanPhase.READING, percent,
+                    adapter.provider().displayName, ModText.get("config.integration.scan.configuration"),
+                    List.copyOf(job.recentItems));
+            return;
+        }
+
+        List<NativeFeature> discovered = List.of();
+        boolean partial = false;
+        try {
+            if (!adapter.available()) {
+                partial = true;
+                job.gaps.add(new CompatibilityGap(adapter.provider(),
+                        ModText.get("config.integration.report.configuration"), true, true));
+            } else {
+                discovered = adapter.discover();
+                if (discovered.isEmpty()) {
+                    partial = true;
+                    job.gaps.add(new CompatibilityGap(adapter.provider(),
+                            ModText.get("config.integration.report.configuration"), true, true));
+                } else {
+                    job.nativeFeatures.addAll(discovered);
+                    auditFeatureGaps(discovered, job.gaps);
+                    partial = job.gaps.stream().anyMatch(gap -> gap.provider == adapter.provider());
+                }
+                job.gaps.addAll(adapter.gaps());
+                partial |= job.gaps.stream().anyMatch(gap -> gap.provider == adapter.provider());
+            }
+        } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+            partial = true;
+            LOGGER.warn("Skipping unreadable {} configuration branches while preserving the previous scan snapshot",
+                    adapter.provider().displayName, exception);
+            job.gaps.add(new CompatibilityGap(adapter.provider(),
+                    ModText.get("config.integration.report.configuration"), true, true));
+        }
+
+        int settingsManaged = 0;
+        for (NativeFeature feature : discovered) {
+            if (feature.primary.editable() && feature.primary.value() != null) settingsManaged++;
+        }
+        job.providers.add(new ProviderScan(adapter.provider(), discovered.size(), settingsManaged, 0, partial));
+        if (!discovered.isEmpty()) {
+            NativeFeature last = discovered.getLast();
+            job.remember(adapter.provider().displayName + " · " + last.title);
+        } else {
+            job.remember(adapter.provider().displayName + " · "
+                    + ModText.get("config.integration.scan.partial"));
+        }
+        job.adapterIndex++;
+        job.announced = false;
+        int percent = 5 + job.adapterIndex * 80 / total;
+        scanProgress = new ScanProgress(ScanState.SCANNING, ScanPhase.CLASSIFYING, percent,
+                adapter.provider().displayName,
+                discovered.isEmpty() ? ModText.get("config.integration.scan.no_features")
+                        : discovered.getLast().title,
+                List.copyOf(job.recentItems));
+    }
+
+    private static void finishScan(ScanJob job) {
+        scanProgress = new ScanProgress(ScanState.SCANNING, ScanPhase.VALIDATING, 92,
+                "", ModText.get("config.integration.scan.snapshot"), List.copyOf(job.recentItems));
+        List<UnifiedFeature> allFeatures = buildFeatures(job.nativeFeatures);
+        List<ExternalHud> providerHuds = new ArrayList<>(babyZombieHuds());
+        providerHuds.addAll(feeshHuds(job.gaps));
+        collectBabyZombieHudGaps(job.gaps);
+
+        Map<Provider, Set<String>> hudIds = new LinkedHashMap<>();
+        for (UnifiedFeature feature : allFeatures) {
+            for (NativeFeature binding : feature.external) {
+                NativeSetting x = hudSetting(binding.settings, "x");
+                NativeSetting y = hudSetting(binding.settings, "y");
+                if (x == null || y == null || x.value() == null || y.value() == null) continue;
+                hudIds.computeIfAbsent(binding.provider, ignored -> new java.util.LinkedHashSet<>())
+                        .add(binding.provider.name() + ":" + x.id);
+            }
+        }
+        for (ExternalHud hud : providerHuds) {
+            hudIds.computeIfAbsent(hud.binding.provider, ignored -> new java.util.LinkedHashSet<>())
+                    .add(hud.id());
+        }
+
+        List<CompatibilityGap> gaps = mergeCompatibilityGaps(job.gaps);
+        List<ProviderScan> providers = new ArrayList<>();
+        for (ProviderScan provider : job.providers) {
+            boolean providerPartial = provider.partial || gaps.stream()
+                    .anyMatch(gap -> gap.provider == provider.provider);
+            providers.add(new ProviderScan(provider.provider, provider.discoveredFeatures,
+                    provider.settingsManaged,
+                    hudIds.getOrDefault(provider.provider, Set.of()).size(), providerPartial));
+        }
+        int settingsManaged = providers.stream().mapToInt(ProviderScan::settingsManaged).sum();
+        int hudManaged = hudIds.values().stream().mapToInt(Set::size).sum();
+        int unresolved = (int) job.nativeFeatures.stream()
+                .filter(feature -> feature.classification.source == ClassificationSource.UNCLASSIFIED).count();
+        boolean partial = providers.stream().anyMatch(ProviderScan::partial) || !gaps.isEmpty() || unresolved > 0;
+
+        stableScan = new ScanSnapshot(List.copyOf(job.nativeFeatures), allFeatures,
+                List.copyOf(providerHuds), gaps,
+                List.copyOf(providers), settingsManaged, hudManaged, unresolved, System.nanoTime());
+        cached = null;
+        scanJob = null;
+        scanProgress = new ScanProgress(partial ? ScanState.PARTIAL : ScanState.READY,
+                ScanPhase.COMPLETE, 100, "", ModText.get("config.integration.scan.complete"),
+                List.copyOf(job.recentItems));
+    }
+
+    static ScanStatus scanStatus(ScanView view) {
+        ScanProgress progress = scanProgress;
+        ScanSnapshot snapshot = stableScan;
+        int managed = view == ScanView.SETTINGS ? snapshot.settingsManaged : snapshot.hudManaged;
+        return new ScanStatus(progress.state, progress.phase, progress.percent,
+                progress.currentProvider, progress.currentItem, progress.recentItems,
+                snapshot.providers, managed, snapshot.unresolvedCount);
+    }
+
+    /**
+     * Returns unresolved capabilities from the most recently completed,
+     * immutable scan snapshot. Opening the report never starts another scan
+     * and never writes provider state.
+     */
+    static List<CompatibilityGap> compatibilityGaps() {
+        return stableScan.gaps;
+    }
+
+    static List<Provider> installedExternalProviders() {
+        List<Provider> result = new ArrayList<>();
+        for (ProviderScan provider : stableScan.providers) result.add(provider.provider);
+        return List.copyOf(result);
+    }
+
+    private static void auditFeatureGaps(List<NativeFeature> features, List<CompatibilityGap> gaps) {
+        for (NativeFeature feature : features) {
+            boolean settingsGap = !feature.primary.editable() || feature.primary.value() == null;
+            boolean hasX = false;
+            boolean hasY = false;
+            boolean xReady = false;
+            boolean yReady = false;
+            boolean hudGap = false;
+            for (NativeSetting setting : feature.settings) {
+                String segment = setting.id.substring(setting.id.lastIndexOf('.') + 1);
+                String role = coordinateRole(segment);
+                if ("x".equals(role)) {
+                    hasX = true;
+                    xReady |= setting.editable() && setting.value() != null;
+                } else if ("y".equals(role)) {
+                    hasY = true;
+                    yReady |= setting.editable() && setting.value() != null;
+                } else if (!setting.editable() || setting.value() == null) {
+                    String normalized = setting.id.toLowerCase(Locale.ROOT);
+                    if (normalized.contains("hud") || normalized.contains("position")) hudGap = true;
+                    else settingsGap = true;
+                }
+            }
+            hudGap |= (hasX || hasY) && !(hasX && hasY && xReady && yReady);
+            boolean classificationGap = feature.classification.source == ClassificationSource.UNCLASSIFIED;
+            if (settingsGap || hudGap || classificationGap) {
+                gaps.add(new CompatibilityGap(feature.provider, feature.title,
+                        settingsGap, hudGap, classificationGap));
+            }
+        }
+    }
+
+    static List<CompatibilityGap> mergeCompatibilityGaps(List<CompatibilityGap> gaps) {
+        Map<String, CompatibilityGap> merged = new LinkedHashMap<>();
+        for (CompatibilityGap gap : gaps) {
+            if (gap == null || gap.provider == Provider.QCLOUDY || gap.feature == null
+                    || gap.feature.isBlank() || (!gap.settings && !gap.hud && !gap.classification)) continue;
+            String key = gap.provider.name() + ":" + gap.feature.strip().toLowerCase(Locale.ROOT);
+            CompatibilityGap current = merged.get(key);
+            if (current == null) {
+                merged.put(key, new CompatibilityGap(gap.provider, gap.feature.strip(), gap.settings,
+                        gap.hud, gap.classification));
+            } else {
+                merged.put(key, new CompatibilityGap(current.provider, current.feature,
+                        current.settings || gap.settings, current.hud || gap.hud,
+                        current.classification || gap.classification));
+            }
+        }
+        List<CompatibilityGap> result = new ArrayList<>(merged.values());
+        result.sort(Comparator.comparing((CompatibilityGap gap) -> gap.provider.ordinal())
+                .thenComparing(CompatibilityGap::feature, String.CASE_INSENSITIVE_ORDER));
+        return List.copyOf(result);
     }
 
     static @Nullable UnifiedFeature forQCloudy(ConfigScreen.Feature feature) {
@@ -377,9 +727,8 @@ final class UnifiedModIntegration {
 
     static List<ExternalHud> externalHuds() {
         ModConfig.Integrations integrations = ConfigManager.get().integrations;
-        if (!integrations.unifiedHudEditor) return List.of();
-        List<UnifiedFeature> available = integrations.unifiedSettingsEditor
-                ? features() : buildFeatures(true);
+        if (!integrations.unifiedHudEditor || !stableScan.valid()) return List.of();
+        List<UnifiedFeature> available = stableScan.allFeatures;
         Map<String, ExternalHud> result = new LinkedHashMap<>();
         for (UnifiedFeature feature : available) {
             Provider selected = feature.selectedProvider();
@@ -391,10 +740,234 @@ final class UnifiedModIntegration {
             if (x == null || y == null || x.value() == null || y.value() == null) continue;
             NativeSetting scale = hudSetting(binding.settings, "scale");
             ExternalHud hud = new ExternalHud(feature, binding, x, y, scale);
-            result.putIfAbsent(hud.id(), hud);
+            if (hud.visible()) result.putIfAbsent(hud.id(), hud);
         }
-        for (ExternalHud hud : babyZombieHuds()) result.putIfAbsent(hud.id(), hud);
+        for (ExternalHud hud : stableScan.providerHuds) {
+            if (hud.visible()) result.putIfAbsent(hud.id(), hud);
+        }
         return List.copyOf(result.values());
+    }
+
+    /**
+     * Reads Feesh's live overlay registry without taking a ResourcefulConfig
+     * dependency. Positions are converted from Feesh's alignment anchor to
+     * the top-left coordinates used by QCA's shared editor, then converted
+     * back through Feesh's own setters when the player releases a drag.
+     */
+    private static List<ExternalHud> feeshHuds(List<CompatibilityGap> gaps) {
+        if (!providerInstalled(Provider.FEESH)) return List.of();
+        try {
+            Class<?> guiType = Class.forName("com.github.sleepypanda.feesh.utils.gui.FeeshGui");
+            Object companion = guiType.getField("Companion").get(null);
+            Object rawGuis = companion.getClass().getMethod("getAllRegisteredGuis").invoke(companion);
+            if (!(rawGuis instanceof Collection<?> guis)) {
+                gaps.add(new CompatibilityGap(Provider.FEESH,
+                        ModText.get("config.integration.report.hud_registry"), false, true));
+                return List.of();
+            }
+            List<ExternalHud> result = new ArrayList<>();
+            for (Object gui : guis) {
+                String key = "";
+                try {
+                    key = String.valueOf(gui.getClass().getMethod("getCoordsDataKey").invoke(gui));
+                    if (key.isBlank()) {
+                        gaps.add(new CompatibilityGap(Provider.FEESH,
+                                ModText.get("config.integration.report.hud_registry"), false, true));
+                        continue;
+                    }
+                    String stableKey = key;
+                    String title = humanize(stableKey);
+                    BooleanSupplier visible = () -> feeshHudVisible(gui);
+                    NativeSetting primary = new NativeSetting("hud." + stableKey + ".visible", title,
+                            ValueKind.BOOLEAN, null, null, new ValueAccess() {
+                        @Override public Object get() {
+                            return feeshFunctionValue(invokeQuietly(gui, "getSettingsKey"), true);
+                        }
+
+                        @Override public void set(@Nullable Object value) {
+                            throw new UnsupportedOperationException("Visibility is owned by Feesh settings");
+                        }
+                    });
+                    NativeSetting x = feeshHudX(gui, stableKey);
+                    NativeSetting y = feeshHudY(gui, stableKey);
+                    NativeSetting scale = feeshHudScale(gui, stableKey);
+                    NativeSetting alignment = feeshHudAlignment(gui, stableKey);
+                    List<NativeSetting> settings = List.of(x, y, scale, alignment);
+                    Classification classification = classifyFeesh("Overlays", stableKey, title);
+                    NativeFeature binding = new NativeFeature(Provider.FEESH,
+                            canonicalId(classification.category, title), title,
+                            Provider.FEESH.displayName + " HUD", classification, "Overlays", primary, settings);
+                    UnifiedFeature feature = new UnifiedFeature(binding.id, binding.title, binding.description,
+                            binding.category, binding.group, null, List.of(binding));
+                    result.add(new ExternalHud(feature, binding, x, y, scale, visible));
+                } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+                    gaps.add(new CompatibilityGap(Provider.FEESH,
+                            key.isBlank() ? ModText.get("config.integration.report.hud_registry") : humanize(key),
+                            false, true));
+                    LOGGER.debug("Skipping one changed Feesh HUD while preserving sibling HUDs", exception);
+                }
+            }
+            return List.copyOf(result);
+        } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+            gaps.add(new CompatibilityGap(Provider.FEESH,
+                    ModText.get("config.integration.report.hud_registry"), false, true));
+            return List.of();
+        }
+    }
+
+    private static boolean feeshHudVisible(Object gui) {
+        Object setting = invokeQuietly(gui, "getSettingsKey");
+        if (!feeshFunctionValue(setting, true)) return false;
+        Object condition = invokeQuietly(gui, "getCondition");
+        if (!feeshFunctionValue(condition, true)) return false;
+        Object lines = invokeQuietly(gui, "getLines");
+        // Feesh itself returns before drawing when its line collection is
+        // empty. Mirroring that condition prevents an empty QCA edit panel.
+        return lines instanceof Collection<?> collection && !collection.isEmpty();
+    }
+
+    private static boolean feeshFunctionValue(@Nullable Object function, boolean fallback) {
+        if (function == null) return fallback;
+        try {
+            Object value = function.getClass().getMethod("invoke").invoke(function);
+            return value instanceof Boolean bool ? bool : fallback;
+        } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
+            return false;
+        }
+    }
+
+    private static @Nullable Object invokeQuietly(Object owner, String method) {
+        try {
+            return owner.getClass().getMethod(method).invoke(owner);
+        } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
+            return null;
+        }
+    }
+
+    private static NativeSetting feeshHudX(Object gui, String key) {
+        return new NativeSetting("hud." + key + ".x", "X", ValueKind.INTEGER,
+                -4096.0, 4096.0, new ValueAccess() {
+            @Override public Object get() throws ReflectiveOperationException {
+                int anchor = ((Number) gui.getClass().getMethod("getX").invoke(gui)).intValue();
+                return feeshLeftEdge(anchor, feeshHudWidth(gui), feeshAlignmentName(gui));
+            }
+
+            @Override public void set(@Nullable Object value) throws ReflectiveOperationException {
+                int left = ((Number) value).intValue();
+                int anchor = feeshAnchorX(left, feeshHudWidth(gui), feeshAlignmentName(gui));
+                gui.getClass().getMethod("setX", int.class).invoke(gui, anchor);
+            }
+        });
+    }
+
+    private static NativeSetting feeshHudY(Object gui, String key) {
+        return new NativeSetting("hud." + key + ".y", "Y", ValueKind.INTEGER,
+                -4096.0, 4096.0, new ValueAccess() {
+            @Override public Object get() throws ReflectiveOperationException {
+                return gui.getClass().getMethod("getY").invoke(gui);
+            }
+
+            @Override public void set(@Nullable Object value) throws ReflectiveOperationException {
+                gui.getClass().getMethod("setY", int.class).invoke(gui, ((Number) value).intValue());
+                saveFeeshHud(gui, key);
+            }
+        });
+    }
+
+    private static NativeSetting feeshHudScale(Object gui, String key) {
+        return new NativeSetting("hud." + key + ".scale", ModText.get("config.setting.scale"),
+                ValueKind.DECIMAL, 0.2, 4.0, new ValueAccess() {
+            @Override public Object get() throws ReflectiveOperationException {
+                return gui.getClass().getMethod("getScale").invoke(gui);
+            }
+
+            @Override public void set(@Nullable Object value) throws ReflectiveOperationException {
+                gui.getClass().getMethod("setScale", float.class)
+                        .invoke(gui, ((Number) value).floatValue());
+                saveFeeshHud(gui, key);
+            }
+        });
+    }
+
+    private static NativeSetting feeshHudAlignment(Object gui, String key) throws ReflectiveOperationException {
+        Object current = gui.getClass().getMethod("getAlignment").invoke(gui);
+        return new NativeSetting("hud." + key + ".alignment", humanize("alignment"),
+                ValueKind.ENUM, null, null, new ValueAccess() {
+            @Override public Object get() throws ReflectiveOperationException {
+                return gui.getClass().getMethod("getAlignment").invoke(gui);
+            }
+
+            @Override public void set(@Nullable Object value) throws ReflectiveOperationException {
+                Object old = gui.getClass().getMethod("getAlignment").invoke(gui);
+                if (value == null || !old.getClass().isInstance(value)) return;
+                try {
+                    Method recalculate = Arrays.stream(gui.getClass().getMethods())
+                            .filter(method -> method.getName().equals("recalculateXForAlignment"))
+                            .filter(method -> method.getParameterCount() == 3)
+                            .findFirst()
+                            .orElseThrow(NoSuchMethodException::new);
+                    recalculate.invoke(gui, Minecraft.getInstance().font, old, value);
+                } catch (NoSuchMethodException ignored) {
+                    int left = feeshLeftEdge(((Number) gui.getClass().getMethod("getX").invoke(gui)).intValue(),
+                            feeshHudWidth(gui), ((Enum<?>) old).name());
+                    gui.getClass().getMethod("setX", int.class)
+                            .invoke(gui, feeshAnchorX(left, feeshHudWidth(gui), ((Enum<?>) value).name()));
+                }
+                gui.getClass().getMethod("setAlignment", old.getClass()).invoke(gui, value);
+                saveFeeshHud(gui, key);
+            }
+        });
+    }
+
+    private static int feeshHudWidth(Object gui) throws ReflectiveOperationException {
+        Object rawLines = gui.getClass().getMethod("getSampleLines").invoke(gui);
+        int width = 0;
+        if (rawLines instanceof Collection<?> lines) {
+            for (Object line : lines) {
+                width = Math.max(width, Minecraft.getInstance().font.width(Component.literal(String.valueOf(line))));
+            }
+        }
+        float scale = ((Number) gui.getClass().getMethod("getScale").invoke(gui)).floatValue();
+        return Math.max(0, (int) (width * scale));
+    }
+
+    private static String feeshAlignmentName(Object gui) throws ReflectiveOperationException {
+        Object value = gui.getClass().getMethod("getAlignment").invoke(gui);
+        return value instanceof Enum<?> enumeration ? enumeration.name() : "LEFT";
+    }
+
+    static int feeshLeftEdge(int anchor, int width, String alignment) {
+        return switch (alignment.toUpperCase(Locale.ROOT)) {
+            case "CENTER" -> anchor - width / 2;
+            case "RIGHT" -> anchor - width;
+            default -> anchor;
+        };
+    }
+
+    static int feeshAnchorX(int left, int width, String alignment) {
+        return switch (alignment.toUpperCase(Locale.ROOT)) {
+            case "CENTER" -> left + width / 2;
+            case "RIGHT" -> left + width;
+            default -> left;
+        };
+    }
+
+    private static void saveFeeshHud(Object gui, String key) throws ReflectiveOperationException {
+        Class<?> manager = Class.forName("com.github.sleepypanda.feesh.utils.data.PersistentDataManager");
+        Object instance = manager.getField("INSTANCE").get(null);
+        Method update = null;
+        for (Method method : manager.getMethods()) {
+            if (method.getName().equals("updateOverlayCoordsData") && method.getParameterCount() == 5) {
+                update = method;
+                break;
+            }
+        }
+        if (update == null) throw new NoSuchMethodException(manager.getName() + ".updateOverlayCoordsData");
+        update.invoke(instance, key,
+                ((Number) gui.getClass().getMethod("getX").invoke(gui)).intValue(),
+                ((Number) gui.getClass().getMethod("getY").invoke(gui)).intValue(),
+                ((Number) gui.getClass().getMethod("getScale").invoke(gui)).floatValue(),
+                gui.getClass().getMethod("getAlignment").invoke(gui));
     }
 
     private static List<ExternalHud> babyZombieHuds() {
@@ -428,10 +1001,12 @@ final class UnifiedModIntegration {
                             babyZombieHudField(manager, element, name, "y", ValueKind.INTEGER, -4096.0, 4096.0),
                             babyZombieHudField(manager, element, name, "scale", ValueKind.DECIMAL, 0.25, 4.0)
                     );
-                    ConfigScreen.Category category = classify(name);
+                    String title = humanize(name);
+                    String description = Provider.BABYZOMBIE.displayName + " HUD";
+                    Classification classification = classify(name, title, description);
+                    ConfigScreen.Category category = classification.category;
                     NativeFeature binding = new NativeFeature(Provider.BABYZOMBIE,
-                            canonicalId(category, humanize(name)), humanize(name),
-                            Provider.BABYZOMBIE.displayName + " HUD", category, groupName(name, "HUD"),
+                            canonicalId(category, title), title, description, classification, groupName(name, "HUD"),
                             primary, settings);
                     UnifiedFeature feature = new UnifiedFeature(binding.id, binding.title, binding.description,
                             category, binding.group, null, List.of(binding));
@@ -443,6 +1018,47 @@ final class UnifiedModIntegration {
             return List.copyOf(result);
         } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
             return List.of();
+        }
+    }
+
+    private static void collectBabyZombieHudGaps(List<CompatibilityGap> gaps) {
+        if (!providerInstalled(Provider.BABYZOMBIE)) return;
+        try {
+            Class<?> manager = Class.forName("top.babyzombie.addons.config.hud.HudManager");
+            Field elementsField = manager.getDeclaredField("elements");
+            elementsField.setAccessible(true);
+            Object rawElements = elementsField.get(null);
+            if (!(rawElements instanceof Map<?, ?> elements)) {
+                gaps.add(new CompatibilityGap(Provider.BABYZOMBIE,
+                        ModText.get("config.integration.report.hud_registry"), false, true));
+                return;
+            }
+            for (Map.Entry<?, ?> entry : elements.entrySet()) {
+                String name = humanize(String.valueOf(entry.getKey()));
+                try {
+                    Object element = entry.getValue();
+                    Field showField = findField(element.getClass(), "showCondition");
+                    showField.setAccessible(true);
+                    Object show = showField.get(element);
+                    if (!(show instanceof BooleanSupplier)) {
+                        gaps.add(new CompatibilityGap(Provider.BABYZOMBIE, name, false, true));
+                        continue;
+                    }
+                    Field x = findField(element.getClass(), "x");
+                    Field y = findField(element.getClass(), "y");
+                    x.setAccessible(true);
+                    y.setAccessible(true);
+                    if (!(x.get(element) instanceof Number) || !(y.get(element) instanceof Number)
+                            || !hasZeroArgumentMethod(manager, "save")) {
+                        gaps.add(new CompatibilityGap(Provider.BABYZOMBIE, name, false, true));
+                    }
+                } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+                    gaps.add(new CompatibilityGap(Provider.BABYZOMBIE, name, false, true));
+                }
+            }
+        } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+            gaps.add(new CompatibilityGap(Provider.BABYZOMBIE,
+                    ModText.get("config.integration.report.hud_registry"), false, true));
         }
     }
 
@@ -480,20 +1096,7 @@ final class UnifiedModIntegration {
         return null;
     }
 
-    private static List<UnifiedFeature> buildFeatures(boolean includeExternal) {
-        List<NativeFeature> nativeFeatures = new ArrayList<>();
-        if (includeExternal) {
-            for (Adapter adapter : adapters()) {
-                if (!adapter.available()) continue;
-                try {
-                    nativeFeatures.addAll(adapter.discover());
-                } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
-                    LOGGER.warn("Skipping unreadable {} configuration branches while preserving the rest of QCloudy",
-                            adapter.provider().displayName, exception);
-                }
-            }
-        }
-
+    private static List<UnifiedFeature> buildFeatures(List<NativeFeature> nativeFeatures) {
         Map<String, MutableUnified> merged = new LinkedHashMap<>();
         for (ConfigScreen.Feature feature : ConfigScreen.Feature.values()) {
             String id = canonicalId(feature.category, ModText.get(feature.titleKey));
@@ -534,7 +1137,8 @@ final class UnifiedModIntegration {
                 new SkyBlockerAdapter(),
                 new ObjectGraphAdapter(Provider.BABYZOMBIE,
                         "top.babyzombie.addons.config.ModConfigManager", null, "get", "save"),
-                new FirmamentAdapter()
+                new FirmamentAdapter(),
+                new FeeshAdapter()
         );
     }
 
@@ -546,6 +1150,9 @@ final class UnifiedModIntegration {
         Provider provider();
         boolean available();
         List<NativeFeature> discover() throws ReflectiveOperationException;
+        default List<CompatibilityGap> gaps() {
+            return List.of();
+        }
     }
 
     private abstract static class BaseAdapter implements Adapter {
@@ -754,9 +1361,10 @@ final class UnifiedModIntegration {
                 if (setting != null) settings.add(setting);
             }
             String path = categoryName + "." + configName + "." + property;
-            ConfigScreen.Category category = classify(path);
+            Classification classification = classify(path, title, description);
+            ConfigScreen.Category category = classification.category;
             return new NativeFeature(provider, canonicalId(category, title), title, description,
-                    category, groupName(path, configName), primary, settings);
+                    classification, groupName(path, configName), primary, settings);
         }
 
         private @Nullable NativeSetting firmamentSetting(Object config, String configName, Object option) {
@@ -843,6 +1451,277 @@ final class UnifiedModIntegration {
         }
     }
 
+    /**
+     * Feesh stores category values as Kotlin delegated properties. Public
+     * getter/setter pairs are the stable native mutation boundary across its
+     * ResourcefulConfig 4/5 builds, so this adapter deliberately avoids both
+     * the generated delegate fields and ResourcefulConfig implementation
+     * classes. Every successful write uses Feesh's own save method.
+     */
+    private static final class FeeshAdapter extends BaseAdapter {
+        private static final String SETTINGS = "com.github.sleepypanda.feesh.settings.Settings";
+        private static final List<String> CATEGORY_NAMES = List.of(
+                "General", "Alerts", "Chat", "Overlays", "Items", "WorldRendering", "Commands");
+        private List<CompatibilityGap> discoveredGaps = List.of();
+
+        FeeshAdapter() {
+            super(Provider.FEESH);
+        }
+
+        @Override
+        void probeCapabilities() throws ReflectiveOperationException {
+            Object settings = kotlinObject(SETTINGS);
+            settings.getClass().getMethod("save");
+            boolean foundCategory = false;
+            for (String category : CATEGORY_NAMES) {
+                try {
+                    kotlinObject(feeshCategoryClass(category));
+                    foundCategory = true;
+                    break;
+                } catch (ClassNotFoundException | NoSuchFieldException ignored) { }
+            }
+            if (!foundCategory) throw new ClassNotFoundException("No recognised Feesh setting category");
+        }
+
+        @Override
+        public List<NativeFeature> discover() throws ReflectiveOperationException {
+            Object settings = kotlinObject(SETTINGS);
+            List<NativeFeature> result = new ArrayList<>();
+            List<CompatibilityGap> gaps = new ArrayList<>();
+            for (String categoryName : CATEGORY_NAMES) {
+                try {
+                    Object category = kotlinObject(feeshCategoryClass(categoryName));
+                    discoverFeeshCategory(settings, category, categoryName, result, gaps);
+                } catch (ClassNotFoundException | NoSuchFieldException ignored) {
+                    // Future Feesh builds may remove or rename an independent
+                    // category. Continue scanning all remaining categories.
+                } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+                    gaps.add(new CompatibilityGap(Provider.FEESH, humanize(categoryName), true, false));
+                    LOGGER.debug("Skipping one changed Feesh category while preserving siblings", exception);
+                }
+            }
+            discoveredGaps = mergeCompatibilityGaps(gaps);
+            return List.copyOf(result);
+        }
+
+        @Override
+        public List<CompatibilityGap> gaps() {
+            return discoveredGaps;
+        }
+
+        private void discoverFeeshCategory(Object settingsRoot, Object category, String categoryName,
+                                           List<NativeFeature> result, List<CompatibilityGap> gaps)
+                throws ReflectiveOperationException {
+            List<FeeshProperty> properties = feeshProperties(category);
+            List<FeeshProperty> roots = new ArrayList<>();
+            for (FeeshProperty property : properties) {
+                if (property.kind != ValueKind.BOOLEAN) continue;
+                boolean child = false;
+                for (FeeshProperty possibleRoot : properties) {
+                    if (possibleRoot == property || possibleRoot.kind != ValueKind.BOOLEAN) continue;
+                    if (feeshRelationScore(possibleRoot.name, property.name) > 0
+                            && feeshRootPriority(possibleRoot.name) > feeshRootPriority(property.name)) {
+                        child = true;
+                        break;
+                    }
+                }
+                if (!child) roots.add(property);
+            }
+
+            Map<FeeshProperty, List<FeeshProperty>> children = new LinkedHashMap<>();
+            for (FeeshProperty root : roots) children.put(root, new ArrayList<>());
+            Set<FeeshProperty> claimed = Collections.newSetFromMap(new IdentityHashMap<>());
+            claimed.addAll(roots);
+            for (FeeshProperty property : properties) {
+                if (roots.contains(property)) continue;
+                FeeshProperty best = null;
+                int bestScore = 0;
+                for (FeeshProperty root : roots) {
+                    int score = feeshRelationScore(root.name, property.name);
+                    if (score > bestScore) {
+                        bestScore = score;
+                        best = root;
+                    }
+                }
+                if (best != null && bestScore > 0) {
+                    children.get(best).add(property);
+                    claimed.add(property);
+                }
+            }
+
+            for (FeeshProperty root : roots) {
+                String title = feeshFeatureTitle(root.name);
+                Classification classification = classifyFeesh(categoryName, root.name, title);
+                NativeSetting primary = feeshSetting(settingsRoot, category, categoryName, root);
+                List<NativeSetting> secondary = new ArrayList<>();
+                for (FeeshProperty child : children.get(root)) {
+                    if (secondary.size() >= MAX_SETTINGS_PER_FEATURE) break;
+                    secondary.add(feeshSetting(settingsRoot, category, categoryName, child));
+                }
+                result.add(new NativeFeature(Provider.FEESH,
+                        canonicalId(classification.category, title), title,
+                        Provider.FEESH.displayName + " · " + humanize(categoryName),
+                        classification, humanize(categoryName), primary, secondary));
+            }
+
+            for (FeeshProperty property : properties) {
+                if (claimed.contains(property)) continue;
+                // A non-toggle value without a deterministically related
+                // feature cannot safely become a fake enable card. Report it
+                // as a settings gap instead of guessing or silently dropping it.
+                gaps.add(new CompatibilityGap(Provider.FEESH, humanize(property.name), true, false));
+            }
+        }
+
+        private NativeSetting feeshSetting(Object settingsRoot, Object category,
+                                           String categoryName, FeeshProperty property) {
+            double[] range = feeshRange(property.name, property.kind, property.current);
+            return new NativeSetting("feesh." + categoryName + "." + property.name,
+                    humanize(property.name), property.kind,
+                    range == null ? null : range[0], range == null ? null : range[1], new ValueAccess() {
+                @Override public Object get() throws ReflectiveOperationException {
+                    return property.getter.invoke(category);
+                }
+
+                @Override public void set(@Nullable Object value) throws ReflectiveOperationException {
+                    Object converted = coerce(value, property.setter.getParameterTypes()[0]);
+                    property.setter.invoke(category, converted);
+                    settingsRoot.getClass().getMethod("save").invoke(settingsRoot);
+                }
+            });
+        }
+    }
+
+    private record FeeshProperty(String name, Method getter, Method setter,
+                                 ValueKind kind, @Nullable Object current) { }
+
+    private static List<FeeshProperty> feeshProperties(Object category) {
+        Map<String, Method> setters = new LinkedHashMap<>();
+        for (Method method : category.getClass().getMethods()) {
+            if (!method.getName().startsWith("set") || method.getName().length() <= 3
+                    || method.getParameterCount() != 1 || Modifier.isStatic(method.getModifiers())) continue;
+            setters.put(method.getName().substring(3), method);
+        }
+        List<FeeshProperty> result = new ArrayList<>();
+        for (Method getter : category.getClass().getMethods()) {
+            if (!getter.getName().startsWith("get") || getter.getName().length() <= 3
+                    || getter.getParameterCount() != 0 || Modifier.isStatic(getter.getModifiers())) continue;
+            String suffix = getter.getName().substring(3);
+            Method setter = setters.get(suffix);
+            if (setter == null) continue;
+            ValueKind kind = valueKind(getter.getReturnType());
+            if (kind == ValueKind.UNSUPPORTED) continue;
+            try {
+                Object current = getter.invoke(category);
+                result.add(new FeeshProperty(decapitalize(suffix), getter, setter, kind, current));
+            } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
+                // Continue with independent delegated properties.
+            }
+        }
+        result.sort(Comparator.comparing(FeeshProperty::name, String.CASE_INSENSITIVE_ORDER));
+        return List.copyOf(result);
+    }
+
+    private static String feeshCategoryClass(String category) {
+        return "com.github.sleepypanda.feesh.settings.categories." + category;
+    }
+
+    private static Object kotlinObject(String className) throws ReflectiveOperationException {
+        Class<?> type = Class.forName(className);
+        return type.getField("INSTANCE").get(null);
+    }
+
+    static String feeshFeatureTitle(String property) {
+        String title = featureTitle(property);
+        title = title.replaceFirst("(?i)\\s+Overlay$", "");
+        return title.isBlank() ? humanize(property) : title;
+    }
+
+    private static Classification classifyFeesh(String categoryName, String property, String title) {
+        String normalized = property.toLowerCase(Locale.ROOT);
+        String path;
+        if (containsAny(normalized, "spiritmask", "crimson", "combat", "archfiend")) {
+            path = "combat.feesh." + categoryName + "." + property;
+        } else if (containsAny(normalized, "item", "tooltip", "slot", "price", "gearcraft", "shop")) {
+            path = "items.feesh." + categoryName + "." + property;
+        } else if (containsAny(normalized, "festival", "jerryworkshop", "rain")) {
+            path = "events.feesh." + categoryName + "." + property;
+        } else {
+            path = "fishing.feesh." + categoryName + "." + property;
+        }
+        return classify(path, title, Provider.FEESH.displayName + " · " + humanize(categoryName));
+    }
+
+    static int feeshRootPriority(String property) {
+        String normalized = property.toLowerCase(Locale.ROOT);
+        int score = normalized.endsWith("overlay") ? 120 : 40;
+        if (normalized.startsWith("alerton") || normalized.startsWith("compact")
+                || normalized.startsWith("share") || normalized.startsWith("messageon")
+                || normalized.startsWith("automessageon") || normalized.startsWith("hide")
+                || normalized.startsWith("mute")) score += 50;
+        if (containsAny(normalized, "customstyle", "usegradient", "showprice", "include",
+                "reset", "source", "mode", "template")) score -= 45;
+        return score;
+    }
+
+    static int feeshRelationScore(String root, String candidate) {
+        if (root.equals(candidate)) return 0;
+        String normalizedRoot = root.toLowerCase(Locale.ROOT);
+        String normalizedCandidate = candidate.toLowerCase(Locale.ROOT);
+        if (normalizedCandidate.startsWith(normalizedRoot)) return 1000 + normalizedRoot.length();
+        List<String> rootTokens = feeshCoreTokens(root);
+        List<String> candidateTokens = feeshCoreTokens(candidate);
+        if (rootTokens.isEmpty() || candidateTokens.isEmpty()) return 0;
+        int common = 0;
+        for (String token : rootTokens) if (candidateTokens.contains(token)) common++;
+        if (common < Math.min(2, rootTokens.size())) return 0;
+        boolean containsAll = candidateTokens.containsAll(rootTokens);
+        return (containsAll ? 200 : 0) + common * 20 - Math.abs(candidateTokens.size() - rootTokens.size());
+    }
+
+    private static List<String> feeshCoreTokens(String property) {
+        String words = property.replaceAll("([a-z0-9])([A-Z])", "$1 $2")
+                .replace('_', ' ').toLowerCase(Locale.ROOT);
+        Set<String> ignored = Set.of("alert", "on", "show", "display", "enable", "enabled", "overlay",
+                "custom", "style", "use", "reset", "session", "game", "closed", "source", "mode",
+                "include", "template", "should", "be", "when", "the", "a", "an", "for", "to");
+        List<String> result = new ArrayList<>();
+        for (String token : words.split("\\s+")) {
+            if (token.isBlank() || ignored.contains(token)) continue;
+            if (token.endsWith("s") && token.length() > 3) token = token.substring(0, token.length() - 1);
+            result.add(token);
+        }
+        return List.copyOf(result);
+    }
+
+    private static @Nullable double[] feeshRange(String property, ValueKind kind, @Nullable Object current) {
+        if (kind != ValueKind.INTEGER && kind != ValueKind.DECIMAL) return null;
+        String normalized = property.toLowerCase(Locale.ROOT);
+        if (normalized.contains("scale")) return new double[]{0.2, 4.0};
+        if (normalized.contains("opacity") || normalized.contains("alpha")) return new double[]{0.0, 255.0};
+        if (normalized.contains("volume")) return new double[]{0.0, 100.0};
+        if (normalized.contains("distance")) return new double[]{0.0, 64.0};
+        if (normalized.contains("seconds") || normalized.contains("duration")
+                || normalized.contains("timer")) return new double[]{0.0, 3600.0};
+        if (normalized.contains("price") || normalized.contains("cheaper")
+                || normalized.contains("coins")) return new double[]{0.0, 2_000_000_000.0};
+        if (normalized.contains("count") || normalized.contains("threshold")
+                || normalized.contains("showtop") || normalized.contains("width")) {
+            return new double[]{0.0, 1000.0};
+        }
+        if (current instanceof Number number) {
+            double value = Math.abs(number.doubleValue());
+            if (value == 0.0) return null;
+            return new double[]{0.0, Math.max(10.0, Math.ceil(value * 4.0))};
+        }
+        return null;
+    }
+
+    private static String decapitalize(String value) {
+        if (value.isEmpty()) return value;
+        return Character.toLowerCase(value.charAt(0)) + value.substring(1);
+    }
+
     private static void scanObject(ObjectGraphAdapter adapter, Object object, List<String> path,
                                    String fallbackName, int depth, Set<Object> visited,
                                    List<NativeFeature> result) throws ReflectiveOperationException {
@@ -855,11 +1734,12 @@ final class UnifiedModIntegration {
             String description = memberDescription(primary.ownerMember(),
                     adapter.provider.displayName + " · " + String.join(" / ", path));
             String fullPath = String.join(".", path);
-            ConfigScreen.Category category = classify(fullPath);
+            Classification classification = classify(fullPath, title, description);
+            ConfigScreen.Category category = classification.category;
             NativeSetting primarySetting = setting(adapter, append(path, primary.name()), primary, title);
             List<NativeSetting> settings = collectSettings(adapter, object, path, members, primary);
             result.add(new NativeFeature(adapter.provider, canonicalId(category, title), title, description,
-                    category, groupName(fullPath, fallbackName), primarySetting, settings));
+                    classification, groupName(fullPath, fallbackName), primarySetting, settings));
             return;
         }
         for (Member member : members) {
@@ -869,11 +1749,12 @@ final class UnifiedModIntegration {
                     String description = memberDescription(member.ownerMember(), adapter.provider.displayName
                             + " · " + String.join(" / ", path));
                     String fullPath = String.join(".", append(path, member.name()));
-                    ConfigScreen.Category category = classify(fullPath);
+                    Classification classification = classify(fullPath, title, description);
+                    ConfigScreen.Category category = classification.category;
                     NativeSetting primarySetting = setting(adapter, append(path, member.name()), member, title);
                     List<NativeSetting> settings = collectRelatedSettings(adapter, path, members, member);
                     result.add(new NativeFeature(adapter.provider, canonicalId(category, title), title, description,
-                            category, groupName(fullPath, path.getLast()), primarySetting, settings));
+                            classification, groupName(fullPath, path.getLast()), primarySetting, settings));
                 }
                 continue;
             }
@@ -907,6 +1788,13 @@ final class UnifiedModIntegration {
                     && member.ownerMember().getType().getName()
                     .equals("at.hannibal2.skyhanni.config.core.config.Position")) {
                 result.addAll(skyHanniPositionSettings(adapter, append(path, member.name())));
+            } else {
+                // Keep a named complex value as a read-only diagnostic row.
+                // The regular settings screen filters UNSUPPORTED values, but
+                // the compatibility report can still tell the player which
+                // recognised feature has settings QCA cannot safely expose.
+                result.add(setting(adapter, append(path, member.name()), member,
+                        memberLabel(member.ownerMember(), humanize(member.name()))));
             }
         }
         return result;
@@ -934,7 +1822,10 @@ final class UnifiedModIntegration {
                         ? memberLabel(member.ownerMember(), humanize(member.name()))
                         : role.equals("scale") ? ModText.get("config.setting.scale") : role.toUpperCase(Locale.ROOT);
                 NativeSetting candidate = setting(adapter, append(path, member.name()), member, label);
-                if (candidate.editable()) result.add(candidate);
+                // Keep a recognised but unsupported setting in the binding so
+                // the read-only compatibility report can explain the gap. The
+                // normal secondary editor already filters non-editable rows.
+                result.add(candidate);
                 continue;
             }
             if (adapter.provider == Provider.SKYHANNI
@@ -942,6 +1833,9 @@ final class UnifiedModIntegration {
                     && member.ownerMember().getType().getName()
                     .equals("at.hannibal2.skyhanni.config.core.config.Position")) {
                 result.addAll(skyHanniPositionSettings(adapter, append(path, member.name())));
+            } else if (!member.simple() && relatedToStem(member.name(), stem)) {
+                result.add(setting(adapter, append(path, member.name()), member,
+                        memberLabel(member.ownerMember(), humanize(member.name()))));
             }
         }
         return List.copyOf(result);
@@ -1017,7 +1911,8 @@ final class UnifiedModIntegration {
     private static @Nullable Member findPrimary(Object object, List<Member> members) {
         for (String preferred : List.of("enabled", "enable", "isEnabled", "visible", "active")) {
             for (Member member : members) {
-                if (member.name().equalsIgnoreCase(preferred) && (member.kind() == ValueKind.BOOLEAN
+                if (member.simple() && member.name().equalsIgnoreCase(preferred)
+                        && (member.kind() == ValueKind.BOOLEAN
                         || member.kind() == ValueKind.ENUM)) return member;
             }
         }
@@ -1025,7 +1920,8 @@ final class UnifiedModIntegration {
     }
 
     private static boolean isToggleCandidate(Member member) {
-        return member.kind() == ValueKind.BOOLEAN || member.kind() == ValueKind.ENUM;
+        return member.simple()
+                && (member.kind() == ValueKind.BOOLEAN || member.kind() == ValueKind.ENUM);
     }
 
     static String featureTitle(String name) {
@@ -1200,11 +2096,23 @@ final class UnifiedModIntegration {
             case SKYHANNI -> name.startsWith("at.hannibal2.skyhanni.config");
             case SKYBLOCKER -> name.startsWith("de.hysky.skyblocker.config");
             case BABYZOMBIE -> name.startsWith("top.babyzombie.addons.config");
+            case FEESH -> name.startsWith("com.github.sleepypanda.feesh.settings");
             default -> false;
         };
     }
 
-    private static ConfigScreen.Category classify(String path) {
+    static Classification classify(String path, String title, String description) {
+        ConfigScreen.Category verified = classifyByVerifiedRule(path);
+        if (verified != null) return new Classification(verified, ClassificationSource.VERIFIED_RULE, 1.0);
+        LocalFeatureClassifier.Result local = LocalFeatureClassifier.classify(path, title, description);
+        if (local != null) {
+            return new Classification(local.category(), ClassificationSource.LOCAL_CLASSIFIER,
+                    local.confidence());
+        }
+        return new Classification(ConfigScreen.Category.GENERAL, ClassificationSource.UNCLASSIFIED, 0.0);
+    }
+
+    private static ConfigScreen.@Nullable Category classifyByVerifiedRule(String path) {
         String normalized = path.toLowerCase(Locale.ROOT);
         if (containsAny(normalized, "dungeon", "catacomb", "terminal", "secret")) return ConfigScreen.Category.DUNGEONS;
         if (normalized.contains("slayer")) return ConfigScreen.Category.SLAYER;
@@ -1222,7 +2130,10 @@ final class UnifiedModIntegration {
         if (containsAny(normalized, "combat", "crimson", "kuudra", "dragon", "dojo", "mob")) {
             return ConfigScreen.Category.COMBAT;
         }
-        return ConfigScreen.Category.GENERAL;
+        if (containsAny(normalized, "chat", "notification", "performance", "interface", "general")) {
+            return ConfigScreen.Category.GENERAL;
+        }
+        return null;
     }
 
     private static String groupName(String path, String fallback) {

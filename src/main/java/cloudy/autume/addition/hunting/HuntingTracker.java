@@ -788,21 +788,25 @@ public final class HuntingTracker {
             return;
         }
         List<Vec3> localLassoLabels = new ArrayList<>();
+        List<ArmorStand> armorStands = new ArrayList<>();
         for (Entity entity : client.level.entitiesForRendering()) {
-            if (entity.isRemoved() || !(entity instanceof Leashable leashable)
-                    || leashable.getLeashHolder() != client.player) continue;
-            localLassoLabels.add(entity.position().add(0.0, 2.0, 0.0));
+            if (entity.isRemoved()) continue;
+            if (entity instanceof Leashable leashable && leashable.getLeashHolder() == client.player) {
+                localLassoLabels.add(entity.position().add(0.0, 2.0, 0.0));
+            }
+            if (entity instanceof ArmorStand armorStand) armorStands.add(armorStand);
         }
         boolean reel = false;
-        if (!localLassoLabels.isEmpty()) {
-            for (Entity entity : client.level.entitiesForRendering()) {
-                if (!(entity instanceof ArmorStand) || entity.isRemoved()
-                        || !HuntingTextParser.lassoReelLabel(entity.getDisplayName().getString())) continue;
-                Vec3 labelPosition = entity.position();
-                if (localLassoLabels.stream().anyMatch(position -> position.distanceToSqr(labelPosition) <= 4.0)) {
+        if (!localLassoLabels.isEmpty() && !armorStands.isEmpty()) {
+            for (ArmorStand armorStand : armorStands) {
+                if (!HuntingTextParser.lassoReelLabel(armorStand.getDisplayName().getString())) continue;
+                Vec3 labelPosition = armorStand.position();
+                for (Vec3 position : localLassoLabels) {
+                    if (position.distanceToSqr(labelPosition) > 4.0) continue;
                     reel = true;
                     break;
                 }
+                if (reel) break;
             }
         }
         if (reel && !lassoReelActive) {

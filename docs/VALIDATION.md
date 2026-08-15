@@ -1,4 +1,4 @@
-# QCloudy_Addition Beta 2.8.17 dual-version validation
+# QCloudy_Addition Alpha 2.8.22 dual-version validation
 
 Date: 2026-08-15<br>
 Minecraft: 26.1.2 and 26.2<br>
@@ -6,38 +6,46 @@ Java: 25
 
 Validated artifacts:
 
-- `release/QCloudy_Addition-Beta-2.8.17+26.1.2.jar`
-- `release/QCloudy_Addition-Beta-2.8.17+26.1.2-sources.jar`
-- `release/QCloudy_Addition-Beta-2.8.17+26.2.jar`
-- `release/QCloudy_Addition-Beta-2.8.17+26.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.8.22+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.22+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.8.22+26.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.22+26.2-sources.jar`
 
-26.1.2 playable SHA-256: `3a1386393f50188a5e20ea5c8069611fb1b9c896de98ff7a58ff0e1515db1932`<br>
-26.1.2 Sources SHA-256: `0c42f5ed9fa264ba89107267ddde33966b14f0481e1f349599cdb7bb5a59d4b2`<br>
-26.2 playable SHA-256: `9d06cc83a21f8228665805cb45480974bebd4baaa53daad96c5e8f9b5eb5b38e`<br>
-26.2 Sources SHA-256: `629b185d75b99d20be3cff03972c72d0ebd0330b694ace7b084e0d75d88e9ab0`
+26.1.2 playable SHA-256: `dd578074410305767e04be06b4550b981440c90095a3435c5169c44130bedf83`<br>
+26.1.2 Sources SHA-256: `58504336df7878ee9b1b9f0c5949db3a96e2ab37e4a6cea1c9d11ede195bd96d`<br>
+26.2 playable SHA-256: `bf4402961f8ca489e5b9f026d954da5ca3128de90a94bd3f509986886324a76c`<br>
+26.2 Sources SHA-256: `d0d738c4d3fbdb38b6dcebcb8ad90c465ffb73e5395f55fc18fb5488342ef45a`
 
-Beta 2.8.17 replaces the unified editor's exact provider-version whitelist with live capability discovery. Provider version strings no longer decide whether SkyHanni, Skyblocker, Firmament, or BabyZombieAddons appears. Separate default-off settings and HUD master switches make both integration paths explicitly opt-in and independently gated without affecting QCA-owned controls. After the relevant switch is enabled, QCA checks recognised configuration/save capabilities and discovers supported values defensively. One changed branch is omitted without hiding independent compatible branches or QCA itself. The local `/aca` and `/ca` aliases are removed; `/qca` and `/qc` remain.
+Alpha 2.8.22 preserves the five optional capability-detected providers and adds an explicit second confirmation before every provider scan. First enable without a valid session snapshot and every Refresh identify their Settings or HUD scope before a job can be created. Cancelling initial confirmation leaves the master off; cancelling Refresh preserves the previous validated snapshot; restoring an enabled master after restart does not silently scan. Provider discovery remains staged, deterministic, local, and read-only.
 
 Verified in this workspace:
 
-- Java 25 `clean test build prepareRelease` completed successfully for both targets: 164 current tests per target, 0 failures, 0 errors, 0 skips.
-- Both playable JARs contain exactly 320 catalog Shards, 320 Shard item-model definitions, and 320 Shard textures; English and Simplified Chinese each contain 472 identical language keys.
+- Java 25 `clean test build prepareRelease` completed successfully for both targets: 175 current tests in 31 suites per target, 0 failures, 0 errors, 0 skips.
+- Both playable JARs contain exactly 320 catalog Shards, 320 Shard item-model definitions, and 320 Shard textures; English and Simplified Chinese each contain 515 identical language keys.
 - Dwarven projection tests cover continuous one-axis movement, identical X/Z on The Mist and an overhead bridge, representative overview areas, and safe edge clamping. The official `C&C Minecarts Co.` sub-location is also classified as Dwarven Mines.
 - Deterministic geometry tests cover wide and narrow Shard detail columns, separated rate controls, compact Plan controls, narrow Settings stacking and safe short-screen fallback, Recipe field widths, Fusion Lines canvas growth, secondary-setting sliders, RGB bars, and preset swatches.
 - Main and test compilation completed from a clean output directory.
 - Expanded metadata declares the exact target in each artifact: 26.1.2 uses Fabric API 0.155.2+26.1.2; 26.2 uses Fabric API 0.154.2+26.2. Both remain client-only and require Fabric Loader 0.19.3+ and Java 25+.
-- Binary and Sources artifacts in `build/libs/` are byte-identical to the corresponding `release/` artifacts.
+- Binary and Sources artifacts in `build/<target>/libs/` are byte-identical to the corresponding `release/` artifacts.
 - All four JARs pass JDK 25 `jar --validate` and `unzip -t`; English and Chinese language files remain shared between targets.
 - Static interface inspection of the supplied latest MC 26.1.2 provider JARs confirmed the recognised entry contracts used by this build: SkyHanni 7.45.0 exposes `SkyHanniMod.feature` and `SkyHanniConfig.saveNow()`; Skyblocker 6.9.1 exposes `SkyblockerConfigManager.get()` and `update(Consumer)`; BabyZombieAddons 3.5.1 exposes `ModConfigManager.get()` and `save()`; Firmament 44.3.0 exposes the ManagedConfig registry/options path. This verifies entry contracts, not every individual setting or visual HUD behavior.
-- Capability tests cover prefixed future-version toggle names, semantic association of only same-function settings, and prefixed X/Y/scale recognition. Source/resource checks confirm that `/qca` and `/qc` are the only QCA settings-command aliases.
-- Configuration and feature tests verify that both provider-integration masters default off, are independently toggleable, remain settings-free first-level cards, and migrate existing configs to the opt-in state.
-- The optional integration has no compile-time dependency on any provider and adds no HTTP client, packet, chat command, container click, gameplay input, or server-data request. Writes use only the selected installed provider's live object and own save/update path; QCA does not edit provider configuration files directly.
+- Static inspection of official Feesh source commit `9a5f9e074492a0f6c0eb4f6251ac361b7afb3992` confirms the public `Settings` singleton/save method, seven category singletons, `FeeshGui.getAllRegisteredGuis()`, overlay visibility/content accessors, native alignment recalculation, and `PersistentDataManager.updateOverlayCoordsData(...)`. QCA copies no Feesh code or resource and has no Feesh compile/runtime dependency.
+- Focused tests verify deterministic Feesh secondary-setting grouping, exclusion of unrelated setting names, removal of implementation-only `Overlay` suffixes, and exact LEFT/CENTER/RIGHT anchor round trips. The adapter uses public accessors instead of generated delegate fields, saves after a successful setting write, and reports unsupported non-toggle or complex values rather than inventing enable cards.
+- Capability tests cover prefixed future-version toggle names, semantic association of only same-function settings, prefixed X/Y/scale recognition, and deterministic merging of Settings/HUD gaps for one provider function while filtering fully supported and QCA-owned rows. Source/resource checks confirm that `/qca` and `/qc` are the only QCA settings-command aliases.
+- Configuration and feature tests verify that both provider-integration masters default off, remain independently toggleable, and are the only feature cards that can open the initial scan confirmation. Confirmation-copy tests distinguish Settings from HUD scope and allow only Enter/Numpad Enter as keyboard confirmation. Their separate secondary pages expose only their own total, current scan activity and manual Refresh action.
+- Static UI/data-flow inspection confirms that the Compatibility Gaps card is separate from the feature enum and normal toggle path, both left and right click open the same report, report rows are provider-grouped, and the report path invokes neither value setters nor provider save/update methods.
+- Static and test review confirms the cached report layout is invalidated when its content width changes. The report reads the latest completed immutable snapshot and does not silently rescan or write provider state when opened.
+- Classifier tests confirm that verified native/path classification has priority, an unknown fishing-like option can be classified locally, and ambiguous low-confidence text remains unclassified. Static data-flow review confirms that the only job-creation calls are inside callbacks reached from the confirmation screen for initial enable or Refresh. `IntegrationScanService.tick()` only advances an existing job and never bootstraps one, so startup does not scan even when a master was restored as enabled. Opening ordinary settings pages does not scan.
+- Shard reverse-index tests still verify exact/output/input consistency after removal of the unused duplicate all-recipes list. Lasso detection retains the same local leash, exact `REEL` label, two-block association, and false-to-true sound gate while using one loaded-entity traversal.
+- Both clean target builds completed without a Gradle deprecation warning from the project script. Both resource-processing tasks explicitly exclude `.DS_Store`.
+- The optional integration has no compile-time dependency on any provider and adds no HTTP client, packet, chat command, container click, gameplay input, or server-data request. QCA does not invoke Feesh API, chat, command, sharing, or gameplay actions. Normal opt-in editor writes use only the selected installed provider's live object and own save/update path; the report is read-only and QCA does not edit provider configuration files directly.
 - Static matrix/scissor review confirms balanced push/pop and enable/disable pairs in the edited configuration and inventory screens.
 
-Outstanding Beta regression boundary:
+Outstanding Alpha regression boundary:
 
 - Geometry tests and archive checks do not replace visual testing in a live Minecraft renderer. Before wider publication, open the main and secondary settings pages and HUD editor with each installed provider at every GUI Scale used by the target modpack; verify both languages, resize/re-init, long names, mouse hitboxes, native persistence, and scrolling.
-- Capability discovery is best-effort structural compatibility, not proof that every future provider release is compatible. Unknown new structures are intentionally absent; if a provider removes its recognised root or save/update contract, only that adapter closes until updated.
+- Feesh was inspected from its official source contract but was not loaded into an authenticated Minecraft/Hypixel session during this build. Before wider publication, test representative Boolean/enum/numeric Feesh settings and several LEFT/CENTER/RIGHT overlays, then reopen Feesh's native editor and restart the client to confirm identical values and persistence.
+- Capability discovery is best-effort structural compatibility, not proof that every future provider release is compatible. Readable but low-confidence structures remain out of functional categories and appear as classification gaps; completely unreadable structures can produce only a generic provider-level integration gap until QCA learns a safe named structure.
 - The supplied provider JARs are MC 26.1.x builds. The MC 26.2 QCA artifact is compiled and archive-validated, but third-party editing on 26.2 still requires separate provider builds for 26.2 and an authenticated in-game test with those builds. No 26.1 provider JAR should be installed into a 26.2 instance merely to exercise this adapter.
 
 ---

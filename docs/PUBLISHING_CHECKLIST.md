@@ -6,8 +6,8 @@
 |---|---|
 | Name | QCloudy_Addition |
 | Suggested slug | `qcloudy-addition` |
-| Version | `Beta-2.8.17+26.1.2` and `Beta-2.8.17+26.2` |
-| Release channel | Beta; capability-discovery compatibility update |
+| Version | `Alpha-2.8.22+26.1.2` and `Alpha-2.8.22+26.2` |
+| Release channel | Alpha; provider-scan confirmation update |
 | Environment | Client only |
 | Loader | Fabric |
 | Minecraft | 26.1.2 and 26.2 (separate files) |
@@ -15,7 +15,7 @@
 | License | LGPL-3.0-or-later |
 | Required dependency | Fabric API 0.155.2+26.1.2 for MC 26.1.2; 0.154.2+26.2 for MC 26.2 |
 | Optional dependency | Mod Menu 18.0.0 for MC 26.1.2; 20.0.1 for MC 26.2 |
-| Standalone from | Firmament, SkyHanni, Skyblocker, BabyZombieAddons; optional capability-detected integrations only |
+| Standalone from | Firmament, SkyHanni, Skyblocker, BabyZombieAddons, Feesh; optional capability-detected integrations only |
 
 Suggested Modrinth summary:
 
@@ -29,11 +29,11 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 
 - Use `docs/MODRINTH_DESCRIPTION.md` as the English project description.
 - Keep English as the primary description; place `docs/MODRINTH_DESCRIPTION_zh_CN.md` in a linked Chinese page or below the English copy if desired.
-- Upload `release/QCloudy_Addition-Beta-2.8.17+26.1.2.jar` for Minecraft 26.1.2 and `release/QCloudy_Addition-Beta-2.8.17+26.2.jar` for Minecraft 26.2; never assign one file to both game versions.
-- Use `docs/MODRINTH_RELEASE_2.8.17.md` as the concise version changelog; the Chinese companion is `docs/MODRINTH_RELEASE_2.8.17_zh_CN.md`.
+- Upload `release/QCloudy_Addition-Alpha-2.8.22+26.1.2.jar` for Minecraft 26.1.2 and `release/QCloudy_Addition-Alpha-2.8.22+26.2.jar` for Minecraft 26.2; never assign one file to both game versions.
+- Use `docs/MODRINTH_RELEASE_2.8.22.md` as the concise version changelog; the Chinese companion is `docs/MODRINTH_RELEASE_2.8.22_zh_CN.md`.
 - Mark Fabric API as required and Mod Menu as optional.
 - Mark client environment as required and server environment as unsupported.
-- Do not mark Firmament, SkyHanni, Skyblocker, or BabyzombieAddons as required.
+- Do not mark Firmament, SkyHanni, Skyblocker, BabyzombieAddons, or Feesh as required.
 - Add at least: one settings overview, one HUD editor, Dwarven map, Glacite map, Mining HUD, combined Torrhus HUD, Safari HUD, and Pet HUD screenshot.
 - Avoid screenshots that expose player UUIDs, private chat, server IPs, session data, or other players' private information.
 
@@ -47,14 +47,14 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 - Do not commit `run/`, `run-standalone/`, `.gradle/`, `.gradle-user-home/`, local configs, logs, crash ZIPs, or the supplied reference JARs.
 - Confirm `.gitignore` covers local build/runtime files before the first commit.
 
-## GitHub Beta 2.8.17
+## GitHub Alpha 2.8.22
 
-- Title: `QCloudy_Addition Beta 2.8.17 for Minecraft 26.1.2 and 26.2`
-- Use `docs/GITHUB_RELEASE_2.8.17.md` as the English release body and optionally append/link `docs/GITHUB_RELEASE_2.8.17_zh_CN.md`.
+- Title: `QCloudy_Addition Alpha 2.8.22 for Minecraft 26.1.2 and 26.2`
+- Use `docs/GITHUB_RELEASE_2.8.22.md` as the English release body and optionally append/link `docs/GITHUB_RELEASE_2.8.22_zh_CN.md`.
 - Attach the binary JAR and optionally the Sources JAR.
 - Verify uploaded hashes against `docs/VALIDATION.md` after downloading the release once.
-- Mark it as **Pre-release** on GitHub because this is a Beta, not a stable Release.
-- On Modrinth, choose **Beta** as the version type.
+- Mark it as **Pre-release** on GitHub because this is an Alpha, not a stable Release.
+- On Modrinth, choose **Alpha** as the version type.
 
 ## Final safety and quality gate
 
@@ -65,8 +65,8 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 - Confirm search focus exits through outside click, `Esc`, and `Tab`, can be restored by clicking search, and does not block recipe navigation shortcuts.
 - Confirm compact input/output bounds and their click targets remain aligned at the supported GUI scales.
 - Confirm Epic uses `§5`, Details wraps every effect/acquisition line, hover styling applies only to visible clickable text, and natural-plus-Fusion Shards expose both source types.
-- Test at least one standalone launch and one launch with the four reference mods.
-- In the four-mod launch, verify that both integration masters default off, independently gate provider settings/HUD discovery, leave QCA-owned controls available, and then verify provider selection, exact-equivalent exclusivity, native persistence, version-mismatch capability discovery, per-branch omission, and every recognised external HUD position/scale at multiple GUI scales.
+- Test at least one standalone launch and one launch with all five optional providers, including Feesh.
+- In the five-provider launch, verify that both integration masters default off, cancelling their first confirmation keeps them off, confirmation starts exactly one scoped scan, every Refresh confirms again, restart never silently scans, and both editors independently gate provider settings/HUD discovery while leaving QCA-owned controls available. Then verify provider selection, exact-equivalent exclusivity, native persistence, version-mismatch capability discovery, per-branch omission, every recognised external HUD position/scale/alignment at multiple GUI scales, and the read-only Compatibility Gaps report.
 - Recheck every command/chat payload in `docs/COMPLIANCE.md`.
 - Confirm the uploaded icon has transparent corners and remains recognizable at 32×32.
 - Confirm the README never claims official Hypixel approval, guaranteed safety, or complete authenticated-server validation.

@@ -6,19 +6,23 @@ QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, 
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Beta 2.8.17.** The same QCA-owned feature set is built for Minecraft 26.1.2 and 26.2. Optional third-party settings/HUD adapters use capability discovery instead of an exact-version whitelist.
+> **Current channel: Alpha 2.8.22.** The same QCA-owned feature set is built for Minecraft 26.1.2 and 26.2. Optional third-party settings/HUD adapters use on-demand capability discovery instead of an exact-version whitelist.
 
 ## Main features
 
-### Unified settings and HUD editor — Beta
+### Unified settings and HUD editor — Alpha
 
-- One function-first catalog for QCA and safely recognised live settings from installed SkyHanni, Skyblocker, Firmament, and BabyZombieAddons builds.
+- One function-first catalog for QCA and safely recognised live settings from installed SkyHanni, Skyblocker, Firmament, BabyZombieAddons, and Feesh builds.
 - Separate **Unified Settings Editor** and **Unified HUD Editor** master switches under General; both default to off, work independently, and never hide QCA-owned controls.
+- Every provider scan requires a second confirmation. First enable without a valid snapshot and every Refresh show a scope-specific local dialog before work begins; cancelling does not start a job, restored switches do not scan silently after restart, and confirmed jobs open a visual provider/phase/item progress page.
+- Only installed providers with successfully read capabilities are shown. Native and verified categories run first; a fixed offline classifier handles only remaining uncategorised metadata and cannot merge or change features.
 - Exact top-level order: General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events.
 - One shared card for one exact function. Right-click selects the provider first, then edits that provider's safe native Boolean, enum, numeric, position, and scale settings.
+- Feesh uses its live delegated-property setters and native save path; enabled, non-empty Feesh overlays use anchor-aware position, scale, and alignment editing through Feesh's own persistence store. Unsupported Feesh branches appear only in Compatibility Gaps.
 - Enabling a shared card enables the selected implementation and disables only exact equivalents in the other compatible providers.
 - With its independent master enabled, Edit HUD includes selected, enabled third-party HUDs and writes native position/scale on mouse release.
 - Optional capability-detected integrations: provider version changes alone do not hide a mod; compatible known fields remain editable and unsupported new structures are omitted safely.
+- A non-toggle **Compatibility Gaps** card under General → Supported Mods groups only recognised unmanaged functions by provider and marks missing Settings/HUD Editor support. It performs a read-only audit and hides fully supported functions.
 
 ### Maps
 
@@ -96,7 +100,7 @@ Optional:
 
 - Mod Menu **18.0.0** for MC 26.1.2, or **20.0.1** for MC 26.2
 
-Put either `QCloudy_Addition-Beta-2.8.17+26.1.2.jar` or `QCloudy_Addition-Beta-2.8.17+26.2.jar` in the instance's `mods` folder, matching the exact game version. Do not install the `-sources.jar` as the playable mod.
+Put either `QCloudy_Addition-Alpha-2.8.22+26.1.2.jar` or `QCloudy_Addition-Alpha-2.8.22+26.2.jar` in the instance's `mods` folder, matching the exact game version. Do not install the `-sources.jar` as the playable mod.
 
 Press `O`, open QCA through Mod Menu, or enter `/qca` or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 
@@ -113,7 +117,7 @@ Both are sent only after the player explicitly enters the corresponding local sh
 
 ## Compatibility and disclaimer
 
-QCloudy_Addition is standalone. Firmament, SkyHanni, Skyblocker, BabyZombieAddons, JEI, and Mod Menu are not required. The unified editor does not reject a provider only because its version changed: it probes recognised live configuration and save capabilities, keeps compatible existing functions editable, and omits new or changed structures it cannot safely understand. Complex native color/keybind editor objects remain in their provider's own screen until their contracts are supported. A compatible Skyblocker is optional only for Bazaar-price routes; without it the planner's price mode is unavailable, not broken. SkyHanni and Firmament are not price providers because they expose no stable public cross-mod price API.
+QCloudy_Addition is standalone. Firmament, SkyHanni, Skyblocker, BabyZombieAddons, Feesh, JEI, and Mod Menu are not required. The unified editor does not reject a provider only because its version changed: it probes recognised live configuration and save capabilities, keeps compatible existing functions editable, and omits new or changed structures it cannot safely understand. Complex native color/keybind editor objects remain in their provider's own screen until their contracts are supported. A compatible Skyblocker is optional only for Bazaar-price routes; without it the planner's price mode is unavailable, not broken. SkyHanni and Firmament are not price providers because they expose no stable public cross-mod price API.
 
 All Minecraft modifications are used at the player's own risk. Passive HUDs, outlines, waypoint beams, overlays, and predictions are not the same as official Hypixel approval. Review Hypixel's current modification rules and disable any feature you are not comfortable using.
 

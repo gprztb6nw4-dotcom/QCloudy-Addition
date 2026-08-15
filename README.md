@@ -7,7 +7,7 @@ QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2 and 26.2. It f
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [Current Beta 2.8.17 changelog](CHANGELOG.md)
+- [Current Alpha 2.8.22 changelog](CHANGELOG.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -15,13 +15,15 @@ Default language: English. Press `O` (rebindable under Controls → Key Binds �
 
 The language option translates QCA interface labels only. Hypixel location names, task names, pets, skins, accessories, items, and player-renamed HOTM slots remain in their original client-received form.
 
-## Unified SkyBlock mod controls — Beta
+## Unified SkyBlock mod controls — Alpha
 
-QCA can act as one function-first settings and HUD editor for its own features and installed builds of **SkyHanni**, **Skyblocker**, **Firmament**, and **BabyZombieAddons**. The separate **Unified Settings Editor** and **Unified HUD Editor** master switches are both disabled by default and can be enabled independently. With a master switch off, QCA does not discover or edit that type of provider data; QCA-owned settings and HUDs remain available. These integrations no longer use an exact-version whitelist. QCA probes live provider capabilities only after the relevant switch is enabled, then exposes recognised values it can safely read and write. A newer provider version therefore keeps working when those contracts remain compatible; unknown or changed functions are omitted instead of disabling the whole provider. QCA remains independently loadable on both Minecraft targets.
+QCA can act as one function-first settings and HUD editor for its own features and installed builds of **SkyHanni**, **Skyblocker**, **Firmament**, **BabyZombieAddons**, and **Feesh**. The separate **Unified Settings Editor** and **Unified HUD Editor** master switches are both disabled by default and can be enabled independently. Every provider scan requires a second confirmation: the first enable without a valid session snapshot and every **Refresh** action open a scope-specific dialog before any work starts. Cancelling the first dialog leaves that master off; cancelling Refresh preserves the last validated snapshot. Restoring an enabled master after restart never starts a silent scan. Confirmed scans open a live progress page. The settings page reports only manageable settings, while the HUD page reports only manageable HUDs. Opening the normal settings menu does not rescan, uninstalled providers are not listed, and disabling both switches cancels pending work and releases the session snapshot. QCA probes live provider capabilities rather than enforcing an exact-version whitelist, so recognised compatible branches can remain available after a provider update while unknown or changed branches are omitted. QCA remains independently loadable on both Minecraft targets.
+
+Native paths and verified classification rules run first. Only provider functions that are still uncategorised are passed to a small deterministic local metadata classifier. It uses fixed weights and a confidence threshold, runs without a model download or network connection, and never decides that two functions are equivalent or writes a provider value.
 
 When several supported mods implement the same exact function, QCA shows one card. Right-clicking that card puts the provider selector first and then shows the safely editable native settings of the selected provider. Enabling the card enables the selected implementation and disables only its exact equivalents; nearby price, profit, tooltip, or tracker features with different purposes are not merged. Values are written to the provider's live configuration and saved through that mod's own save path. QCA never edits an unloaded mod's configuration file.
 
-The existing **Edit HUD** screen also includes enabled HUDs owned by the selected compatible provider. External panels are labelled with the provider name; dragging or resizing writes the native position/scale only when the mouse is released. This reviewed Beta exposes validated Boolean, enum, bounded numeric, position, and scale values. Provider-specific compound color/keybind objects remain in their native editors until a safe adapter is implemented.
+The existing **Edit HUD** screen also includes enabled HUDs owned by the selected compatible provider. External panels are labelled with the provider name; dragging or resizing writes the native position/scale only when the mouse is released. This Alpha exposes validated Boolean, enum, bounded numeric, position, and scale values. Provider-specific compound color/keybind objects remain in their native editors until a safe adapter is implemented.
 
 The exact top-level order is **General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events**. Safari is a Hunting subgroup, Garden is a Farming subgroup, and Crimson Isle/Kuudra are Combat subgroups. Every feature has one owner and appears once.
 
@@ -125,7 +127,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-Current Beta 2.8.17 changes: [CHANGELOG.md](CHANGELOG.md)
+Current Alpha 2.8.22 changes: [CHANGELOG.md](CHANGELOG.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 

@@ -6,11 +6,11 @@
 
 QCloudy_Addition (QCA) is an English-first, bilingual, client-only Fabric mod for Hypixel SkyBlock. It organizes maps, HUDs, passive visual helpers, pet information, Attribute Shard tools, and selected quality-of-life controls in one function-first interface.
 
-> **Current version:** Beta 2.8.17<br>
+> **Current version:** Alpha 2.8.22<br>
 > **Minecraft:** 26.1.2 and 26.2<br>
 > **Required:** Java 25, Fabric Loader 0.19.3 or newer, and the matching Fabric API<br>
 > **Optional:** Mod Menu and reviewed builds of supported SkyBlock mods<br>
-> **Notice:** QCA is an independent community project. It is not affiliated with or endorsed by Hypixel, Mojang, Microsoft, SkyHanni, Skyblocker, Firmament, or BabyZombieAddons.
+> **Notice:** QCA is an independent community project. It is not affiliated with or endorsed by Hypixel, Mojang, Microsoft, SkyHanni, Skyblocker, Firmament, BabyZombieAddons, or Feesh.
 
 ## Contents
 
@@ -33,8 +33,8 @@ Choose the JAR that exactly matches the Minecraft version used by the instance.
 
 | Minecraft | Required Fabric API | Playable file |
 |---|---|---|
-| 26.1.2 | 0.155.2+26.1.2 or newer compatible build | `QCloudy_Addition-Beta-2.8.17+26.1.2.jar` |
-| 26.2 | 0.154.2+26.2 or newer compatible build | `QCloudy_Addition-Beta-2.8.17+26.2.jar` |
+| 26.1.2 | 0.155.2+26.1.2 or newer compatible build | `QCloudy_Addition-Alpha-2.8.22+26.1.2.jar` |
+| 26.2 | 0.154.2+26.2 or newer compatible build | `QCloudy_Addition-Alpha-2.8.22+26.2.jar` |
 
 Both targets require Fabric Loader 0.19.3 or newer and Java 25.
 
@@ -46,7 +46,7 @@ Both targets require Fabric Loader 0.19.3 or newer and Java 25.
 
 Do not install the file ending in `-sources.jar` as the playable mod. It contains source code for developers and IDEs.
 
-QCA does not require SkyHanni, Skyblocker, Firmament, BabyZombieAddons, or Mod Menu to load. Mod Menu only adds another way to open QCA settings.
+QCA does not require SkyHanni, Skyblocker, Firmament, BabyZombieAddons, Feesh, or Mod Menu to load. Mod Menu only adds another way to open QCA settings.
 
 ## Opening the mod
 
@@ -146,7 +146,7 @@ Slot Locking, Storage Overlay, and menu middle-click conversion were removed fro
 
 ### Dungeons
 
-This category contains exact function-matched settings supplied by compatible installed providers. QCA does not invent a replacement Dungeon implementation when no reviewed provider is present.
+This category contains function-matched settings discovered from compatible live capabilities in installed providers. QCA does not invent a replacement Dungeon implementation when a provider exposes no recognised usable capability.
 
 ### Slayer
 
@@ -162,7 +162,7 @@ This category contains exact function-matched Slayer settings supplied by compat
 
 ### Farming
 
-Garden and Farming functions exposed by exact compatible provider builds appear here. QCA merges only truly equivalent functions; a price tooltip, profit tracker, and task tracker are not treated as the same feature simply because all relate to Farming.
+Garden and Farming functions exposed through recognised live provider capabilities appear here. QCA merges only truly equivalent functions; a price tooltip, profit tracker, and task tracker are not treated as the same feature simply because all relate to Farming.
 
 ### Foraging
 
@@ -201,11 +201,11 @@ Garden and Farming functions exposed by exact compatible provider builds appear 
 
 ### Rift
 
-This category is reserved for exact compatible provider features. QCA hides the group when no reviewed implementation is available.
+This category is reserved for recognised compatible provider capabilities. QCA hides the group when no usable implementation is discovered.
 
 ### Events
 
-This category is reserved for exact compatible provider event features. One function still appears only once even when several providers offer it.
+This category is reserved for recognised compatible provider event capabilities. One function still appears only once even when several providers offer it.
 
 ## Attribute Shard Guide and Planner
 
@@ -242,16 +242,19 @@ The warehouse reads only visible Shard IDs and exact `Owned: N Shards` lore on t
 
 ## Unified controls for compatible SkyBlock mods
 
-This Beta includes optional capability-detected adapters for installed builds of:
+This Alpha includes optional capability-detected adapters for installed builds of:
 
 - SkyHanni
 - Skyblocker
 - Firmament
 - BabyZombieAddons
+- Feesh
 
 These mods are optional and are not QCA build or runtime dependencies.
 
-Two independent master switches are located under **General**. **Unified Settings Editor** controls provider-setting discovery and editing; **Unified HUD Editor** controls provider HUD discovery and position editing. Both are disabled by default. Turning either one off stops that provider integration path without disabling QCA's own settings or HUDs.
+Feesh support pairs its live public delegated-property getters/setters and saves through Feesh's own path. Its enabled, condition-valid, non-empty Overlays can enter Edit HUD with correct LEFT/CENTER/RIGHT anchor conversion, scale/alignment editing, and Feesh-native persistence. Ambiguous settings or changed HUD contracts are omitted and shown only in Compatibility Gaps.
+
+Two independent master switches are located under **General**. **Unified Settings Editor** controls provider-setting discovery and editing; **Unified HUD Editor** controls provider HUD discovery and position editing. Both are disabled by default. Every provider scan requires a second confirmation. First enable without a valid session snapshot and every Refresh open a scope-specific dialog; cancelling the first dialog leaves the master off, cancelling Refresh preserves the latest validated snapshot, and an enabled master restored after restart does not scan silently. Confirmed jobs open the visual progress page. The settings page shows only settings totals and the HUD page only HUD totals. Uninstalled providers are not listed. Turning both off cancels pending work and unloads the session snapshot without disabling QCA's own settings or HUDs.
 
 When several supported mods implement the same exact function, QCA displays one feature card. The secondary page begins with a provider selector. Selecting SkyHanni, for example, makes the card control SkyHanni's matching implementation and disables only exact equivalents in the other providers when the card is enabled. The same page then exposes the safely editable settings belonging to that selected implementation.
 
@@ -259,7 +262,9 @@ QCA writes to the provider's live local configuration object and asks that mod t
 
 When the HUD master switch is enabled, provider-owned HUDs can also appear in **Edit HUD** with the provider name shown. Changes are written on mouse release.
 
-Provider version strings are not used as a whitelist. After the relevant master switch is enabled, every editor opening probes the installed provider's recognised configuration and save capabilities. Compatible existing functions therefore remain editable after ordinary provider updates; new or changed structures that QCA cannot safely understand are omitted. An absent provider or a missing required root/save contract fails closed without affecting QCA's own features.
+Provider version strings are not used as a whitelist. Only an explicitly confirmed initial scan or Refresh probes the installed provider's recognised configuration and save capabilities; opening an editor by itself does not scan. Compatible existing functions therefore remain editable after ordinary provider updates; new or changed structures that QCA cannot safely understand are omitted. An absent provider or a missing required root/save contract fails closed without affecting QCA's own features.
+
+Under **General → Supported Mods**, **Compatibility Gaps** is a read-only information card rather than a function. It has no toggle or enabled strip, and either mouse button opens it. The report reads the latest completed snapshot, groups installed providers, and lists only confidently recognised functions that QCA cannot manage through Settings, HUD Editor, classification, or a combination of these. Fully supported functions are hidden. The report does not change provider values, and completely unknown future structures are not assigned guessed names.
 
 ## Client-only and safety boundary
 
@@ -343,7 +348,7 @@ Do not include access tokens, session identifiers, private chat, or other secret
 
 ## Validation, license, and credits
 
-Beta 2.8.17 is built for both supported targets with Java 25. The maintained validation report records the exact automated-test, archive, language, and compatibility-contract checks for this build.
+Alpha 2.8.22 is built for both supported targets with Java 25. The maintained validation report records the exact automated-test, archive, language, and compatibility-contract checks for this build.
 
 Automated tests and archive checks do not replace an authenticated Hypixel regression, every GUI Scale, every resource pack, or every future modpack combination. See the current [validation report](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/VALIDATION.md) for the exact tested boundary.
 

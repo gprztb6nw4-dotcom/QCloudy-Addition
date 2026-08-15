@@ -208,7 +208,6 @@ public final class ShardFusionCatalog {
 
     private RecipeIndex buildRecipeIndex() {
         int pairCount = shards.size() * shards.size();
-        List<Recipe> allRecipes = new ArrayList<>(pairCount);
         Recipe[] byPair = new Recipe[pairCount];
         Map<String, List<Recipe>> byOutput = new HashMap<>();
         Map<String, List<Recipe>> byInput = new HashMap<>();
@@ -219,7 +218,6 @@ public final class ShardFusionCatalog {
                 if (result.isEmpty()) continue;
 
                 Recipe recipe = new Recipe(left, right, left.inputCount(), result, pureReptile(left, right));
-                allRecipes.add(recipe);
                 byPair[pairIndex(left, right, shards.size())] = recipe;
                 byInput.computeIfAbsent(left.id(), ignored -> new ArrayList<>()).add(recipe);
                 if (left != right) {
@@ -257,7 +255,7 @@ public final class ShardFusionCatalog {
             entry.getValue().sort(usesOrder);
             immutableInputs.put(entry.getKey(), List.copyOf(entry.getValue()));
         }
-        return new RecipeIndex(shards.size(), List.copyOf(allRecipes), byPair,
+        return new RecipeIndex(shards.size(), byPair,
                 Map.copyOf(immutableOutputs), Map.copyOf(immutableInputs));
     }
 
@@ -736,17 +734,14 @@ public final class ShardFusionCatalog {
 
     /** One immutable snapshot shared by exact, reverse, and uses lookups. */
     private static final class RecipeIndex {
-        @SuppressWarnings("unused")
-        private final List<Recipe> allRecipes;
         private final Recipe[] byPair;
         private final Map<String, List<Recipe>> byOutput;
         private final Map<String, List<Recipe>> byInput;
         private final int shardCount;
 
-        private RecipeIndex(int shardCount, List<Recipe> allRecipes, Recipe[] byPair,
+        private RecipeIndex(int shardCount, Recipe[] byPair,
                             Map<String, List<Recipe>> byOutput, Map<String, List<Recipe>> byInput) {
             this.shardCount = shardCount;
-            this.allRecipes = allRecipes;
             this.byPair = byPair;
             this.byOutput = byOutput;
             this.byInput = byInput;

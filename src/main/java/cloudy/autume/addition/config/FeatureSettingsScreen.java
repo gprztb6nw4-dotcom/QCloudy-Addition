@@ -112,6 +112,19 @@ final class FeatureSettingsScreen extends Screen {
         graphics.outline(x, y, rowWidth, ROW_HEIGHT,
                 listening ? AcaUiTheme.ACCENT : hovered ? AcaUiTheme.ACCENT_DARK : AcaUiTheme.BORDER_SOFT);
         String value = setting.value();
+        if (setting.kind == Kind.INTEGRATION_SCAN_PROGRESS) {
+            UnifiedModIntegration.ScanStatus status = UnifiedModIntegration.scanStatus(integrationScanView());
+            drawFittedText(graphics, setting.label(), x + 10, y + 4, Math.max(1, rowWidth - 75));
+            drawFittedTextRight(graphics, value, x + rowWidth - 10, y + 4, 60, AcaUiTheme.TEXT_MUTED);
+            int trackX = x + 10;
+            int trackY = y + 18;
+            int trackWidth = Math.max(1, rowWidth - 20);
+            int filled = Math.round(trackWidth * Math.clamp(status.percent(), 0, 100) / 100.0f);
+            graphics.fill(trackX, trackY, trackX + trackWidth, trackY + 4, AcaUiTheme.CONTROL);
+            graphics.fill(trackX, trackY, trackX + filled, trackY + 4,
+                    status.state() == UnifiedModIntegration.ScanState.FAILED ? 0xFFE14D4D : AcaUiTheme.ACCENT);
+            return;
+        }
         if (setting.chordAction() != null) {
             int maximumValueWidth = Math.max(1, Math.min(rowWidth / 2, rowWidth - 21));
             int labelWidth = Math.max(1, rowWidth - maximumValueWidth - 30);
@@ -187,8 +200,27 @@ final class FeatureSettingsScreen extends Screen {
         graphics.pose().popMatrix();
     }
 
+    private UnifiedModIntegration.ScanView integrationScanView() {
+        return feature == ConfigScreen.Feature.UNIFIED_HUD_EDITOR
+                ? UnifiedModIntegration.ScanView.HUD : UnifiedModIntegration.ScanView.SETTINGS;
+    }
+
     private List<Setting> settings() {
         List<Setting> rows = new ArrayList<>();
+        if (feature == ConfigScreen.Feature.UNIFIED_SETTINGS_EDITOR
+                || feature == ConfigScreen.Feature.UNIFIED_HUD_EDITOR) {
+            rows.add(new Setting(Kind.INTEGRATION_SCAN_PROGRESS, "config.integration.scan.progress"));
+            rows.add(new Setting(Kind.INTEGRATION_SCAN_CURRENT, "config.integration.scan.current"));
+            rows.add(new Setting(Kind.INTEGRATION_SCAN_SUMMARY, "config.integration.scan.summary"));
+            rows.add(new Setting(Kind.INTEGRATION_SCAN_PROVIDERS, "config.integration.scan.providers"));
+            UnifiedModIntegration.ScanStatus status = UnifiedModIntegration.scanStatus(integrationScanView());
+            int events = Math.min(3, status.recentItems().size());
+            if (events >= 1) rows.add(new Setting(Kind.INTEGRATION_SCAN_EVENT_1, "config.integration.scan.recent"));
+            if (events >= 2) rows.add(new Setting(Kind.INTEGRATION_SCAN_EVENT_2, "config.integration.scan.recent"));
+            if (events >= 3) rows.add(new Setting(Kind.INTEGRATION_SCAN_EVENT_3, "config.integration.scan.recent"));
+            rows.add(new Setting(Kind.INTEGRATION_SCAN_REFRESH, "config.integration.scan.refresh"));
+            return rows;
+        }
         rows.add(new Setting(Kind.PROVIDER, "config.integration.provider"));
         UnifiedModIntegration.Provider provider = unifiedFeature.selectedProvider();
         if (provider != UnifiedModIntegration.Provider.QCLOUDY) {
@@ -416,6 +448,16 @@ final class FeatureSettingsScreen extends Screen {
                 scroll = 0;
             }
             case EXTERNAL_STATUS -> { }
+            case INTEGRATION_SCAN_REFRESH -> {
+                UnifiedModIntegration.ScanView view = integrationScanView();
+                MinecraftClientCompat.setScreen(minecraft, new IntegrationScanConfirmScreen(this, view, () -> {
+                    UnifiedModIntegration.requestConfirmedScan(true);
+                    MinecraftClientCompat.setScreen(minecraft, this);
+                }));
+            }
+            case INTEGRATION_SCAN_PROGRESS, INTEGRATION_SCAN_CURRENT, INTEGRATION_SCAN_SUMMARY,
+                    INTEGRATION_SCAN_PROVIDERS, INTEGRATION_SCAN_EVENT_1,
+                    INTEGRATION_SCAN_EVENT_2, INTEGRATION_SCAN_EVENT_3 -> { }
             case OPEN_SHARD_GUIDE -> QCloudyAdditionClient.openShardFusionGuide(minecraft, this, "");
             case OPEN_SHARD_PLANNER -> MinecraftClientCompat.setScreen(minecraft, new ShardPlanningScreen(this,
                     ConfigManager.get().inventory.shardPlannerTarget));
@@ -543,6 +585,9 @@ final class FeatureSettingsScreen extends Screen {
 
     private enum Kind {
         PROVIDER, EXTERNAL_STATUS,
+        INTEGRATION_SCAN_PROGRESS, INTEGRATION_SCAN_CURRENT, INTEGRATION_SCAN_SUMMARY,
+        INTEGRATION_SCAN_PROVIDERS, INTEGRATION_SCAN_EVENT_1, INTEGRATION_SCAN_EVENT_2,
+        INTEGRATION_SCAN_EVENT_3, INTEGRATION_SCAN_REFRESH,
         DRAGON_COLOR, OPACITY, BACKGROUND_COLOR, BORDER, BORDER_SIZE, BORDER_COLOR,
         TITLE_COLOR, BOLD, SHADOW, SCALE, PET_ICON, PET_LEVEL_XP, PET_MAX_XP, PET_OVERFLOW_LEVEL,
         PET_SKIN_NAME, PET_ACCESSORY, COMMISSION_PROGRESS, HOTM_SLOT, EDIT_LAYOUT,
@@ -605,6 +650,14 @@ final class FeatureSettingsScreen extends Screen {
             return switch (kind) {
                 case PROVIDER -> unifiedFeature.selectedProvider().displayName;
                 case EXTERNAL_STATUS -> ModText.get("config.integration.unavailable");
+                case INTEGRATION_SCAN_PROGRESS -> scanProgressValue();
+                case INTEGRATION_SCAN_CURRENT -> scanCurrentValue();
+                case INTEGRATION_SCAN_SUMMARY -> scanSummaryValue();
+                case INTEGRATION_SCAN_PROVIDERS -> scanProvidersValue();
+                case INTEGRATION_SCAN_EVENT_1 -> scanEventValue(0);
+                case INTEGRATION_SCAN_EVENT_2 -> scanEventValue(1);
+                case INTEGRATION_SCAN_EVENT_3 -> scanEventValue(2);
+                case INTEGRATION_SCAN_REFRESH -> ModText.get("config.integration.scan.refresh_action");
                 case OPEN_SHARD_GUIDE, OPEN_SHARD_PLANNER ->
                         ModText.get(available() ? "config.open" : "config.disabled");
                 case YIELD_FIRMAMENT -> onOff(config.inventory.yieldToFirmament);
@@ -652,9 +705,59 @@ final class FeatureSettingsScreen extends Screen {
             };
         }
 
+        private UnifiedModIntegration.ScanStatus scanStatus() {
+            return UnifiedModIntegration.scanStatus(integrationScanView());
+        }
+
+        private String scanProgressValue() {
+            UnifiedModIntegration.ScanStatus status = scanStatus();
+            String state = ModText.get("config.integration.scan.state."
+                    + status.state().name().toLowerCase(java.util.Locale.ROOT));
+            return state + " · " + status.percent() + "%";
+        }
+
+        private String scanCurrentValue() {
+            UnifiedModIntegration.ScanStatus status = scanStatus();
+            if (!status.currentProvider().isBlank() || !status.currentItem().isBlank()) {
+                if (status.currentProvider().isBlank()) return status.currentItem();
+                if (status.currentItem().isBlank()) return status.currentProvider();
+                return status.currentProvider() + " · " + status.currentItem();
+            }
+            return ModText.get("config.integration.scan.phase."
+                    + status.phase().name().toLowerCase(java.util.Locale.ROOT));
+        }
+
+        private String scanSummaryValue() {
+            UnifiedModIntegration.ScanStatus status = scanStatus();
+            String key = integrationScanView() == UnifiedModIntegration.ScanView.HUD
+                    ? "config.integration.scan.hud_count" : "config.integration.scan.settings_count";
+            return ModText.get(key, status.managedCount());
+        }
+
+        private String scanProvidersValue() {
+            List<String> names = new ArrayList<>();
+            for (UnifiedModIntegration.ProviderScan provider : scanStatus().providers()) {
+                if (provider.discoveredFeatures() <= 0 && provider.hudManaged() <= 0) continue;
+                names.add(provider.provider().displayName
+                        + (provider.partial() ? " · " + ModText.get("config.integration.scan.partial") : " ✓"));
+            }
+            return names.isEmpty() ? ModText.get("config.integration.scan.none") : String.join("  |  ", names);
+        }
+
+        private String scanEventValue(int newestOffset) {
+            List<String> events = scanStatus().recentItems();
+            int index = events.size() - 1 - newestOffset;
+            return index >= 0 && index < events.size() ? events.get(index)
+                    : ModText.get("config.integration.scan.none");
+        }
+
         boolean available() {
             if (externalSetting != null) return externalSetting.editable() && externalSetting.value() != null;
             if (kind == Kind.EXTERNAL_STATUS) return false;
+            if (kind == Kind.INTEGRATION_SCAN_REFRESH) {
+                return feature != null && feature.enabled(ConfigManager.get())
+                        && !UnifiedModIntegration.scanRunning();
+            }
             return (kind != Kind.OPEN_SHARD_GUIDE && kind != Kind.OPEN_SHARD_PLANNER)
                     || shardGuideEntryEnabled(ConfigManager.get());
         }

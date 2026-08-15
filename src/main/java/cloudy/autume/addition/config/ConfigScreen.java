@@ -29,11 +29,13 @@ public final class ConfigScreen extends Screen {
     private static final int TOP_CONTROL_HEIGHT = 18;
     private static final int SEARCH_HORIZONTAL_PADDING = 5;
     private static final int SEARCH_NAVIGATION_GAP = 8;
+    private static final int REPORT_ACCENT = 0xFFF2C14E;
 
     private final @Nullable Screen parent;
     private final long openedAt = System.nanoTime();
     private final List<Hit<UnifiedModIntegration.UnifiedFeature>> featureHits = new ArrayList<>();
     private final List<Hit<String>> groupHits = new ArrayList<>();
+    private @Nullable Hit<Boolean> compatibilityReportHit;
     private final Set<String> expandedGroups = new HashSet<>();
     private Category category = Category.GENERAL;
     private EditBox searchBox;
@@ -65,10 +67,6 @@ public final class ConfigScreen extends Screen {
     public ConfigScreen(@Nullable Screen parent, @Nullable HudFocus focus) {
         super(Component.literal("QCloudy_Addition"));
         this.parent = parent;
-        // Re-probe installed provider capabilities each time the unified
-        // editor is opened. This avoids carrying an early/partial config scan
-        // when another mod finishes initialising after QCA.
-        UnifiedModIntegration.invalidate();
         if (focus != null) {
             category = switch (focus) {
                 case MAP -> Category.MAPS;
@@ -210,6 +208,7 @@ public final class ConfigScreen extends Screen {
     private void drawContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         featureHits.clear();
         groupHits.clear();
+        compatibilityReportHit = null;
         graphics.enableScissor(contentX, contentY, contentX + contentWidth, contentY + contentHeight);
         drawFeatureCards(graphics, mouseX, mouseY);
         graphics.disableScissor();
@@ -229,7 +228,8 @@ public final class ConfigScreen extends Screen {
         for (GroupBlock block : blocks) {
             totalHeight += GROUP_HEADER_HEIGHT;
             if (block.expanded()) {
-                int rows = (block.features().size() + columns - 1) / columns;
+                int itemCount = block.features().size() + (block.compatibilityReport() ? 1 : 0);
+                int rows = (itemCount + columns - 1) / columns;
                 totalHeight += 5 + rows * (CARD_HEIGHT + CARD_GAP) - CARD_GAP;
             }
             totalHeight += CARD_GAP;
@@ -245,18 +245,27 @@ public final class ConfigScreen extends Screen {
             }
             y += GROUP_HEADER_HEIGHT + 5;
             if (block.expanded()) {
-                for (int index = 0; index < block.features().size(); index++) {
-                    UnifiedModIntegration.UnifiedFeature feature = block.features().get(index);
+                int itemCount = block.features().size() + (block.compatibilityReport() ? 1 : 0);
+                for (int index = 0; index < itemCount; index++) {
                     int column = index % columns;
                     int row = index / columns;
                     int x = contentX + column * (cardWidth + CARD_GAP);
                     int cardY = y + row * (CARD_HEIGHT + CARD_GAP);
+                    if (block.compatibilityReport() && index == 0) {
+                        drawCompatibilityReportCard(graphics, x, cardY, cardWidth, mouseX, mouseY);
+                        if (intersectsContent(cardY, CARD_HEIGHT)) {
+                            compatibilityReportHit = new Hit<>(Boolean.TRUE, x, cardY, cardWidth, CARD_HEIGHT);
+                        }
+                        continue;
+                    }
+                    int featureIndex = index - (block.compatibilityReport() ? 1 : 0);
+                    UnifiedModIntegration.UnifiedFeature feature = block.features().get(featureIndex);
                     drawFeatureCard(graphics, feature, x, cardY, cardWidth, mouseX, mouseY);
                     if (intersectsContent(cardY, CARD_HEIGHT)) {
                         featureHits.add(new Hit<>(feature, x, cardY, cardWidth, CARD_HEIGHT));
                     }
                 }
-                int rows = (block.features().size() + columns - 1) / columns;
+                int rows = (itemCount + columns - 1) / columns;
                 y += rows * (CARD_HEIGHT + CARD_GAP) - CARD_GAP;
             }
             y += CARD_GAP;
@@ -270,13 +279,23 @@ public final class ConfigScreen extends Screen {
     private List<GroupBlock> groupBlocks() {
         List<GroupBlock> blocks = new ArrayList<>();
         boolean searching = !query.trim().isEmpty();
+        String integrationGroup = ModText.get(FeatureGroup.INTEGRATIONS.key);
+        boolean reportMatches = category == Category.GENERAL
+                && matches(ModText.get("config.integration.report.title"),
+                ModText.get("config.desc.integration.report"));
         java.util.Map<String, List<UnifiedModIntegration.UnifiedFeature>> byGroup = new java.util.LinkedHashMap<>();
         for (UnifiedModIntegration.UnifiedFeature feature : UnifiedModIntegration.features()) {
             if (feature.category != category || !matches(feature.title, feature.description)) continue;
             byGroup.computeIfAbsent(feature.group, ignored -> new ArrayList<>()).add(feature);
         }
         for (var entry : byGroup.entrySet()) {
-            blocks.add(new GroupBlock(entry.getKey(), entry.getValue(), searching || expandedGroups.contains(entry.getKey())));
+            boolean compatibilityReport = reportMatches && entry.getKey().equals(integrationGroup);
+            blocks.add(new GroupBlock(entry.getKey(), entry.getValue(),
+                    searching || expandedGroups.contains(entry.getKey()), compatibilityReport));
+            if (compatibilityReport) reportMatches = false;
+        }
+        if (reportMatches) {
+            blocks.addFirst(new GroupBlock(integrationGroup, List.of(), true, true));
         }
         return blocks;
     }
@@ -289,7 +308,7 @@ public final class ConfigScreen extends Screen {
         graphics.outline(x, y, width, GROUP_HEADER_HEIGHT,
                 hovered ? AcaUiTheme.ACCENT_DARK : AcaUiTheme.BORDER_SOFT);
         graphics.text(font, block.expanded() ? "▾" : "▸", x + 8, y + 7, AcaUiTheme.ACCENT, false);
-        String count = Integer.toString(block.features().size());
+        String count = Integer.toString(block.features().size() + (block.compatibilityReport() ? 1 : 0));
         drawFittedText(graphics, Component.literal(block.group()).withStyle(ChatFormatting.BOLD),
                 x + 22, y + 7, Math.max(1, width - font.width(count) - 46), AcaUiTheme.TEXT);
         graphics.text(font, count, x + width - font.width(count) - 10, y + 7, AcaUiTheme.TEXT_DIM, false);
@@ -316,6 +335,30 @@ public final class ConfigScreen extends Screen {
                 Math.max(1, cardWidth - 20), AcaUiTheme.TEXT_DIM);
     }
 
+    private void drawCompatibilityReportCard(GuiGraphicsExtractor graphics, int x, int y, int cardWidth,
+                                             int mouseX, int mouseY) {
+        boolean hovered = AcaUiTheme.contains(mouseX, mouseY, x, y, cardWidth, CARD_HEIGHT);
+        graphics.fill(x, y, x + cardWidth, y + CARD_HEIGHT,
+                hovered ? AcaUiTheme.CARD_HOVER : 0xFF2D2D29);
+        graphics.outline(x, y, cardWidth, CARD_HEIGHT, hovered ? REPORT_ACCENT : AcaUiTheme.BORDER_SOFT);
+        // Amber information strip deliberately differs from the blue enabled
+        // strip used by real feature toggles. This card has no on/off state.
+        graphics.fill(x, y, x + 3, y + CARD_HEIGHT, REPORT_ACCENT);
+        graphics.fill(x + 10, y + 8, x + 23, y + 21, 0xFF554516);
+        graphics.outline(x + 10, y + 8, 13, 13, REPORT_ACCENT);
+        graphics.centeredText(font, "i", x + 16, y + 10, REPORT_ACCENT);
+        drawFittedText(graphics,
+                Component.literal(ModText.get("config.integration.report.title")).withStyle(ChatFormatting.BOLD),
+                x + 29, y + 9, Math.max(1, cardWidth - 39), AcaUiTheme.TEXT);
+        List<FormattedCharSequence> lines = font.split(
+                Component.literal(ModText.get("config.desc.integration.report")), Math.max(1, cardWidth - 20));
+        for (int i = 0; i < Math.min(2, lines.size()); i++) {
+            graphics.text(font, lines.get(i), x + 10, y + 27 + i * 10, AcaUiTheme.TEXT_MUTED, false);
+        }
+        drawFittedText(graphics, Component.literal(ModText.get("config.integration.report.read_only")),
+                x + 10, y + 57, Math.max(1, cardWidth - 20), REPORT_ACCENT);
+    }
+
     private void drawEmpty(GuiGraphicsExtractor graphics) {
         graphics.centeredText(font, ModText.get("config.empty"), contentX + contentWidth / 2,
                 contentY + contentHeight / 2 - 5, AcaUiTheme.TEXT_MUTED);
@@ -339,6 +382,11 @@ public final class ConfigScreen extends Screen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
+        if (opensCompatibilityReport(click.button()) && compatibilityReportHit != null
+                && compatibilityReportHit.contains(click.x(), click.y())) {
+            MinecraftClientCompat.setScreen(minecraft, new IntegrationCompatibilityScreen(this));
+            return true;
+        }
         if (click.button() == 1
                 && AcaUiTheme.contains(click.x(), click.y(), contentX, contentY, contentWidth, contentHeight)) {
             for (Hit<UnifiedModIntegration.UnifiedFeature> hit : featureHits) {
@@ -405,10 +453,35 @@ public final class ConfigScreen extends Screen {
         }
         for (Hit<UnifiedModIntegration.UnifiedFeature> hit : featureHits) {
             if (!hit.contains(mouseX, mouseY)) continue;
-            hit.value.toggle();
+            if (isIntegrationScanMaster(hit.value.qcloudyFeature) && !hit.value.enabled()
+                    && UnifiedModIntegration.requiresScanConfirmation()) {
+                UnifiedModIntegration.ScanView view = hit.value.qcloudyFeature == Feature.UNIFIED_HUD_EDITOR
+                        ? UnifiedModIntegration.ScanView.HUD : UnifiedModIntegration.ScanView.SETTINGS;
+                MinecraftClientCompat.setScreen(minecraft, new IntegrationScanConfirmScreen(this, view, () -> {
+                    boolean changed = hit.value.toggle();
+                    if (changed && hit.value.enabled()) {
+                        UnifiedModIntegration.requestConfirmedScan(false);
+                        MinecraftClientCompat.setScreen(minecraft, new FeatureSettingsScreen(this, hit.value));
+                    } else {
+                        MinecraftClientCompat.setScreen(minecraft, this);
+                    }
+                }));
+                return true;
+            }
+            boolean changed = hit.value.toggle();
+            if (changed && hit.value.enabled()
+                    && (hit.value.qcloudyFeature == Feature.UNIFIED_SETTINGS_EDITOR
+                    || hit.value.qcloudyFeature == Feature.UNIFIED_HUD_EDITOR)) {
+                MinecraftClientCompat.setScreen(minecraft, new FeatureSettingsScreen(this, hit.value));
+            }
             return true;
         }
         return false;
+    }
+
+    static boolean isIntegrationScanMaster(Feature feature) {
+        return feature == Feature.UNIFIED_SETTINGS_EDITOR
+                || feature == Feature.UNIFIED_HUD_EDITOR;
     }
 
     @Override
@@ -442,6 +515,10 @@ public final class ConfigScreen extends Screen {
     static int sidebarCategorySlotHeight(int windowHeight) {
         int availableHeight = windowHeight - 43 - 52 - 9;
         return Math.clamp(availableHeight / Category.values().length, 18, 24);
+    }
+
+    static boolean opensCompatibilityReport(int mouseButton) {
+        return mouseButton == 0 || mouseButton == 1;
     }
 
     private void drawFittedText(GuiGraphicsExtractor graphics, Component value, int x, int y,
@@ -699,7 +776,6 @@ public final class ConfigScreen extends Screen {
 
         boolean hasSettings() {
             if (this == HUD_ANIMATIONS || this == HUNTING_ALERT_SOUND
-                    || this == UNIFIED_SETTINGS_EDITOR || this == UNIFIED_HUD_EDITOR
                     || this == MANUAL_RECONNECT) return false;
             if (this == FAIRY_SOUL_WAYPOINTS) return false;
             if (huntingFeature()) return hudType() != null || !HuntingOption.forFeature(this).isEmpty();
@@ -708,7 +784,7 @@ public final class ConfigScreen extends Screen {
     }
 
     private record GroupBlock(String group, List<UnifiedModIntegration.UnifiedFeature> features,
-                              boolean expanded) { }
+                              boolean expanded, boolean compatibilityReport) { }
 
     private record Hit<T>(T value, int x, int y, int width, int height) {
         boolean contains(double mouseX, double mouseY) {

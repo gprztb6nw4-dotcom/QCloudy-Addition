@@ -14,6 +14,7 @@ if (targetPlatform == null) {
 }
 def targetFabricApiVersion = targetPlatform.fabricApi
 def targetModMenuVersion = targetPlatform.modMenu
+def targetLoaderVersion = project.loader_version.toString()
 
 version = "${project.release_channel}-${project.mod_version}+${targetMinecraftVersion}"
 group = project.maven_group
@@ -52,10 +53,10 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${targetMinecraftVersion}"
-    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc:fabric-loader:${targetLoaderVersion}"
     implementation "net.fabricmc.fabric-api:fabric-api:${targetFabricApiVersion}"
     compileOnly "com.terraformersmc:modmenu:${targetModMenuVersion}"
-    testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
+    testImplementation "net.fabricmc:fabric-loader-junit:${targetLoaderVersion}"
 }
 
 test {
@@ -66,16 +67,17 @@ processResources {
     inputs.property 'version', metadataVersion
     inputs.property 'minecraft_version', targetMinecraftVersion
     inputs.property 'fabric_api_version', targetFabricApiVersion
-    inputs.property 'loader_version', project.loader_version
+    inputs.property 'loader_version', targetLoaderVersion
     // Legacy pre-rendered pet PNGs caused stale/wrong fallbacks. Pet HUD icons
     // now render only verified player-head profiles, so do not ship them.
     exclude 'assets/qcloudy_addition/textures/gui/pets/**'
     exclude 'assets/qcloudy_addition/textures/gui/pet_skins/**'
+    exclude '**/.DS_Store'
     filesMatching('fabric.mod.json') {
         expand version: metadataVersion,
                 minecraft_version: targetMinecraftVersion,
                 fabric_api_version: targetFabricApiVersion,
-                loader_version: project.loader_version
+                loader_version: targetLoaderVersion
     }
 }
 
@@ -101,14 +103,15 @@ tasks.named('sourcesJar') {
     inputs.property 'version', metadataVersion
     inputs.property 'minecraft_version', targetMinecraftVersion
     inputs.property 'fabric_api_version', targetFabricApiVersion
-    inputs.property 'loader_version', project.loader_version
+    inputs.property 'loader_version', targetLoaderVersion
     exclude 'assets/qcloudy_addition/textures/gui/pets/**'
     exclude 'assets/qcloudy_addition/textures/gui/pet_skins/**'
+    exclude '**/.DS_Store'
     filesMatching('fabric.mod.json') {
         expand version: metadataVersion,
                 minecraft_version: targetMinecraftVersion,
                 fabric_api_version: targetFabricApiVersion,
-                loader_version: project.loader_version
+                loader_version: targetLoaderVersion
     }
     from('LICENSE') {
         rename 'LICENSE', licenseArchiveName

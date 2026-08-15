@@ -94,8 +94,8 @@ final class ConfigScreenFeatureTest {
         assertEquals(ConfigScreen.FeatureGroup.INTEGRATIONS, hud.group);
         assertFalse(settings.enabled(config));
         assertFalse(hud.enabled(config));
-        assertFalse(settings.hasSettings());
-        assertFalse(hud.hasSettings());
+        assertTrue(settings.hasSettings());
+        assertTrue(hud.hasSettings());
 
         settings.toggle(config);
         assertTrue(config.integrations.unifiedSettingsEditor);
@@ -108,6 +108,23 @@ final class ConfigScreenFeatureTest {
         settings.toggle(config);
         assertFalse(config.integrations.unifiedSettingsEditor);
         assertTrue(config.integrations.unifiedHudEditor);
+    }
+
+    @Test
+    void onlyUnifiedEditorMastersOpenTheInitialScanConfirmation() {
+        assertTrue(ConfigScreen.isIntegrationScanMaster(ConfigScreen.Feature.UNIFIED_SETTINGS_EDITOR));
+        assertTrue(ConfigScreen.isIntegrationScanMaster(ConfigScreen.Feature.UNIFIED_HUD_EDITOR));
+        assertFalse(ConfigScreen.isIntegrationScanMaster(ConfigScreen.Feature.HUD_ANIMATIONS));
+        assertFalse(ConfigScreen.isIntegrationScanMaster(ConfigScreen.Feature.MANUAL_RECONNECT));
+    }
+
+    @Test
+    void compatibilityReportIsNotAFeatureToggleAndAcceptsEitherMainMouseButton() {
+        assertTrue(ConfigScreen.opensCompatibilityReport(0));
+        assertTrue(ConfigScreen.opensCompatibilityReport(1));
+        assertFalse(ConfigScreen.opensCompatibilityReport(2));
+        assertTrue(java.util.Arrays.stream(ConfigScreen.Feature.values())
+                .noneMatch(feature -> feature.name().contains("COMPATIBILITY_REPORT")));
     }
 
     @Test

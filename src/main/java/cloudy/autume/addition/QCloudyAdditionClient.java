@@ -2,6 +2,7 @@ package cloudy.autume.addition;
 
 import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ConfigScreen;
+import cloudy.autume.addition.config.IntegrationScanService;
 import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.fishing.FishingBiteAlert;
 import cloudy.autume.addition.hud.HudRenderer;
@@ -74,6 +75,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             ticks++;
+            IntegrationScanService.tick();
             if (ticks % 20 == 0) {
                 LocationTracker.update(client);
                 TabListTracker.update(client);
