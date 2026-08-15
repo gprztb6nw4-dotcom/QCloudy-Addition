@@ -83,6 +83,34 @@ final class ConfigScreenFeatureTest {
     }
 
     @Test
+    void unifiedEditorsAreIndependentDefaultOffGeneralMasterSwitches() {
+        ModConfig config = new ModConfig();
+        ConfigScreen.Feature settings = ConfigScreen.Feature.UNIFIED_SETTINGS_EDITOR;
+        ConfigScreen.Feature hud = ConfigScreen.Feature.UNIFIED_HUD_EDITOR;
+
+        assertEquals(ConfigScreen.Category.GENERAL, settings.category);
+        assertEquals(ConfigScreen.Category.GENERAL, hud.category);
+        assertEquals(ConfigScreen.FeatureGroup.INTEGRATIONS, settings.group);
+        assertEquals(ConfigScreen.FeatureGroup.INTEGRATIONS, hud.group);
+        assertFalse(settings.enabled(config));
+        assertFalse(hud.enabled(config));
+        assertFalse(settings.hasSettings());
+        assertFalse(hud.hasSettings());
+
+        settings.toggle(config);
+        assertTrue(config.integrations.unifiedSettingsEditor);
+        assertFalse(config.integrations.unifiedHudEditor);
+
+        hud.toggle(config);
+        assertTrue(config.integrations.unifiedSettingsEditor);
+        assertTrue(config.integrations.unifiedHudEditor);
+
+        settings.toggle(config);
+        assertFalse(config.integrations.unifiedSettingsEditor);
+        assertTrue(config.integrations.unifiedHudEditor);
+    }
+
+    @Test
     void fishingBiteSoundIsAnOptInTopLevelFishingFeatureWithItsOwnSettings() {
         ModConfig config = new ModConfig();
         ConfigScreen.Feature feature = ConfigScreen.Feature.FISHING_BITE_ALERT;

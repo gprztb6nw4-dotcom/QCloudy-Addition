@@ -65,6 +65,10 @@ public final class ConfigScreen extends Screen {
     public ConfigScreen(@Nullable Screen parent, @Nullable HudFocus focus) {
         super(Component.literal("QCloudy_Addition"));
         this.parent = parent;
+        // Re-probe installed provider capabilities each time the unified
+        // editor is opened. This avoids carrying an early/partial config scan
+        // when another mod finishes initialising after QCA.
+        UnifiedModIntegration.invalidate();
         if (focus != null) {
             category = switch (focus) {
                 case MAP -> Category.MAPS;
@@ -481,6 +485,7 @@ public final class ConfigScreen extends Screen {
 
     enum FeatureGroup {
         HUD(Category.GENERAL, "config.group.hud"),
+        INTEGRATIONS(Category.GENERAL, "config.group.integrations"),
         CONNECTION(Category.GENERAL, "config.group.connection"),
         FISHING(Category.FISHING, "config.group.fishing"),
         MAPS(Category.MAPS, "config.group.maps"),
@@ -514,6 +519,10 @@ public final class ConfigScreen extends Screen {
     enum Feature {
         HUD_ANIMATIONS(FeatureGroup.HUD, "config.setting.animations", "config.desc.animations"),
         HUNTING_ALERT_SOUND(FeatureGroup.HUD, "config.hunting.alert_sound", "config.desc.hunting.alert_sound"),
+        UNIFIED_SETTINGS_EDITOR(FeatureGroup.INTEGRATIONS, "config.integration.settings_editor",
+                "config.desc.integration.settings_editor"),
+        UNIFIED_HUD_EDITOR(FeatureGroup.INTEGRATIONS, "config.integration.hud_editor",
+                "config.desc.integration.hud_editor"),
         MANUAL_RECONNECT(FeatureGroup.CONNECTION, "config.manual_reconnect", "config.desc.manual_reconnect"),
         FISHING_BITE_ALERT(FeatureGroup.FISHING, "config.fishing.bite_alert", "config.desc.fishing.bite_alert"),
         DWARVEN_MAP(FeatureGroup.MAPS, "config.dwarven_map", "config.desc.dwarven_map"),
@@ -572,6 +581,8 @@ public final class ConfigScreen extends Screen {
                 case GLACITE_MAP -> config.maps.glaciteTunnels;
                 case MINING_TRACKER -> config.mining.taskAndPowderTracker;
                 case HUNTING_ALERT_SOUND -> config.hunting.alertSound;
+                case UNIFIED_SETTINGS_EDITOR -> config.integrations.unifiedSettingsEditor;
+                case UNIFIED_HUD_EDITOR -> config.integrations.unifiedHudEditor;
                 case COLD_SAFETY -> config.hunting.coldSafety;
                 case DOOMSPIRAL_READY -> config.hunting.doomspiralReadyAlert;
                 case WARDEN_READY_ALERT -> config.hunting.wardenReadyAlert;
@@ -615,6 +626,10 @@ public final class ConfigScreen extends Screen {
                 case GLACITE_MAP -> config.maps.glaciteTunnels = !config.maps.glaciteTunnels;
                 case MINING_TRACKER -> config.mining.taskAndPowderTracker = !config.mining.taskAndPowderTracker;
                 case HUNTING_ALERT_SOUND -> config.hunting.alertSound = !config.hunting.alertSound;
+                case UNIFIED_SETTINGS_EDITOR -> config.integrations.unifiedSettingsEditor =
+                        !config.integrations.unifiedSettingsEditor;
+                case UNIFIED_HUD_EDITOR -> config.integrations.unifiedHudEditor =
+                        !config.integrations.unifiedHudEditor;
                 case COLD_SAFETY -> config.hunting.coldSafety = !config.hunting.coldSafety;
                 case DOOMSPIRAL_READY -> config.hunting.doomspiralReadyAlert = !config.hunting.doomspiralReadyAlert;
                 case WARDEN_READY_ALERT -> config.hunting.wardenReadyAlert = !config.hunting.wardenReadyAlert;
@@ -662,7 +677,8 @@ public final class ConfigScreen extends Screen {
                         SAFARI_DASHBOARD, SAFARI_SHARD_STATS, SAFARI_CRITTERDEX,
                         FLOOR_QUEST_ASSISTANT, WUMPA_HUD -> ModConfig.HudType.HUNTING;
                 case PET_HUD -> ModConfig.HudType.PET;
-                case HUD_ANIMATIONS, HUNTING_ALERT_SOUND, MANUAL_RECONNECT, FISHING_BITE_ALERT,
+                case HUD_ANIMATIONS, HUNTING_ALERT_SOUND, UNIFIED_SETTINGS_EDITOR, UNIFIED_HUD_EDITOR,
+                        MANUAL_RECONNECT, FISHING_BITE_ALERT,
                         COLD_SAFETY, DOOMSPIRAL_READY, WARDEN_READY_ALERT,
                         FAIRY_SOUL_WAYPOINTS, SAFARI_CRITTER_HIGHLIGHT, BEEHEEMOTH_HELPER,
                         LASSO_REEL_SOUND, TREE_GIFT_ALERTS,
@@ -682,7 +698,9 @@ public final class ConfigScreen extends Screen {
         }
 
         boolean hasSettings() {
-            if (this == HUD_ANIMATIONS || this == HUNTING_ALERT_SOUND || this == MANUAL_RECONNECT) return false;
+            if (this == HUD_ANIMATIONS || this == HUNTING_ALERT_SOUND
+                    || this == UNIFIED_SETTINGS_EDITOR || this == UNIFIED_HUD_EDITOR
+                    || this == MANUAL_RECONNECT) return false;
             if (this == FAIRY_SOUL_WAYPOINTS) return false;
             if (huntingFeature()) return hudType() != null || !HuntingOption.forFeature(this).isEmpty();
             return true;

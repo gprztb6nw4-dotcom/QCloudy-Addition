@@ -2,6 +2,25 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.8.17] - 2026-08-15
+
+### Improved
+
+- Added separate **Unified Settings Editor** and **Unified HUD Editor** master switches under General. Both are disabled by default, can be enabled independently, and do not affect QCA-owned settings or HUDs.
+- Replaced the exact-version whitelist for SkyHanni, Skyblocker, Firmament, and BabyZombieAddons with capability discovery. An installed provider can continue exposing recognised settings and HUD positions after a version update when its live configuration and save contracts remain compatible.
+- Added per-field defensive discovery for provider configuration trees. Recognised writable toggles, enums, bounded numeric settings, and known HUD position structures are shown; new or changed structures that QCA cannot safely edit are omitted without hiding the rest of the provider or preventing QCA from opening.
+- Added prefixed toggle/HUD-coordinate recognition so layouts such as `enabledCommissions` with `commissionsX`, `commissionsY`, and `commissionsScale` remain editable without a version-specific field list.
+- When the relevant master is enabled, re-probes provider capabilities whenever the unified settings screen is opened, preventing an early partial scan from remaining cached after another mod finishes initialising.
+
+### Removed
+
+- Removed the local `/aca` and `/ca` settings aliases. `/qca` and `/qc` remain available when their client-command names are free.
+
+### Compatibility boundary
+
+- This is best-effort structural compatibility, not a claim that unknown future provider code is automatically understood. A recognised live field is exposed only when QCA can read it, safely write its supported value type, and use the provider's own save path. Unsupported new functions remain in their original mod and are simply absent from QCA until an adapter is added.
+- No provider configuration files are edited directly, and this change adds no server packet, command, chat, HTTP request, gameplay automation, or provider runtime dependency.
+
 ## [2.7.17] - 2026-08-14
 
 Beta consolidation release for Minecraft 26.1.2 and 26.2, covering the completed work since Beta 2.6.6.

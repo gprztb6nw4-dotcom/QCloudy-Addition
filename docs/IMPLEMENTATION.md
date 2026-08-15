@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.7.17` for Minecraft 26.1.2 and 26.2.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.8.17` for Minecraft 26.1.2 and 26.2.
 
 ## 1. Runtime architecture
 
@@ -26,13 +26,13 @@ received Tab / scoreboard / chat / menu / title / entity / inventory / loaded bl
 
 ### 1.1 Optional unified-provider adapters
 
-`UnifiedModIntegration` discovers only the reviewed provider IDs and exact versions: SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1. It has no compile-time dependency on them. Reflection is used only after the Fabric loader confirms the mod and reviewed version, and failures are caught per provider so an absent or changed provider cannot prevent QCA from loading.
+`UnifiedModIntegration` recognises the provider IDs for SkyHanni, Skyblocker, Firmament, and BabyZombieAddons, but does not reject an installed build because its version string is newer or differs from a whitelist. It has no compile-time dependency on them. Two independent `ModConfig.Integrations` gates default to false. Unless **Unified Settings Editor** is enabled, the normal settings catalog is built from QCA features only and no provider configuration is probed. Unless **Unified HUD Editor** is enabled, `externalHuds()` returns an empty list before provider discovery. Enabling only the HUD gate is valid and performs the minimum provider discovery needed for HUD ownership without exposing provider-setting cards. QCA-owned settings and HUDs bypass both gates.
 
-Those reviewed provider builds target Minecraft 26.1.2. QCA's 26.2 artifact keeps its standalone feature set but leaves these adapters unavailable until equivalent 26.2 provider builds and native config contracts have been reviewed.
+After the relevant gate is enabled, QCA probes the provider's live root object, supported value accessors, and native update/save/dirty capability. If the required root or save contract is absent, only that adapter is skipped. Toggling either master invalidates the discovery cache so the visible catalog updates immediately.
 
-The registry walks the live provider configuration and exposes only validated primitive Boolean/enum values, annotated or otherwise bounded numeric values, and audited HUD x/y/scale values. Writes call the provider's own update/save/dirty mechanism. It never edits an unloaded provider's JSON file. Exact cross-mod aliases merge one logical feature; enabling a selected provider first disables only bindings attached to that same alias. The provider choice is persisted in QCA config, while every provider's own values remain stored by that provider.
+The registry defensively walks the live provider configuration and exposes only readable/writable Boolean or enum toggles, annotated or otherwise bounded numeric values, and recognised HUD position structures. Exact `enabled` objects can expose their validated sibling settings; future prefixed layouts such as `enabledCommissions` can attach only settings sharing the `commissions` stem, including `commissionsX`, `commissionsY`, and `commissionsScale`. One inaccessible or unknown field is omitted without discarding unrelated recognised branches. Writes call the provider's own update/save/dirty mechanism and never edit another mod's JSON file directly. Exact cross-mod aliases merge one logical feature; enabling a selected provider first disables only bindings attached to that same alias. The provider choice is persisted in QCA config, while every provider's own values remain stored by that provider.
 
-`HudLayoutScreen` combines QCA's currently loaded panels with enabled HUDs belonging to the selected external provider. Drag/resize uses a transient preview and writes native coordinates/scale only on mouse release. The reviewed adapter intentionally excludes opaque compound color/keybind/config-editor objects whose setter and validation contract has not been audited.
+`HudLayoutScreen` combines QCA's currently loaded panels with enabled HUDs belonging to the selected external provider. Drag/resize uses a transient preview and writes native coordinates/scale only on mouse release. Capability discovery intentionally excludes opaque compound color/keybind/config-editor objects and new structures whose setter, range, or validation contract QCA cannot prove safe. Such options remain available in their original mod instead of being guessed by QCA.
 
 Location detection first confirms a Hypixel host and a received SkyBlock scoreboard. It then classifies the current island from the location-marked scoreboard line and a bounded list of known original location names. Island-specific parsers and renders do not run globally.
 
@@ -378,7 +378,7 @@ QCA stores no password, access token, Hypixel API key, chat history, remote acco
 
 | Trigger | Exact action | Automatic? |
 |---|---|---|
-| `/aca`, `/qca`, `/ca`, `/qc` | Opens the local QCA settings screen | No server payload |
+| `/qca`, `/qc` | Opens the local QCA settings screen | No server payload |
 | `/qshard [English query]` | Opens the local offline Shard Fusion Guide and pre-fills its search | No server payload |
 | Player types `/th` | `sendCommand("warp torrhus")` | No |
 | Player types `/helia` | `sendCommand("chapter torrhus")` | No |

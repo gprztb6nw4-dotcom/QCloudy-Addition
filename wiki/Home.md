@@ -6,7 +6,7 @@
 
 QCloudy_Addition (QCA) is an English-first, bilingual, client-only Fabric mod for Hypixel SkyBlock. It organizes maps, HUDs, passive visual helpers, pet information, Attribute Shard tools, and selected quality-of-life controls in one function-first interface.
 
-> **Current version:** Beta 2.7.17<br>
+> **Current version:** Beta 2.8.17<br>
 > **Minecraft:** 26.1.2 and 26.2<br>
 > **Required:** Java 25, Fabric Loader 0.19.3 or newer, and the matching Fabric API<br>
 > **Optional:** Mod Menu and reviewed builds of supported SkyBlock mods<br>
@@ -33,8 +33,8 @@ Choose the JAR that exactly matches the Minecraft version used by the instance.
 
 | Minecraft | Required Fabric API | Playable file |
 |---|---|---|
-| 26.1.2 | 0.155.2+26.1.2 or newer compatible build | `QCloudy_Addition-Beta-2.7.17+26.1.2.jar` |
-| 26.2 | 0.154.2+26.2 or newer compatible build | `QCloudy_Addition-Beta-2.7.17+26.2.jar` |
+| 26.1.2 | 0.155.2+26.1.2 or newer compatible build | `QCloudy_Addition-Beta-2.8.17+26.1.2.jar` |
+| 26.2 | 0.154.2+26.2 or newer compatible build | `QCloudy_Addition-Beta-2.8.17+26.2.jar` |
 
 Both targets require Fabric Loader 0.19.3 or newer and Java 25.
 
@@ -53,10 +53,10 @@ QCA does not require SkyHanni, Skyblocker, Firmament, BabyZombieAddons, or Mod M
 You can open the settings in any of these ways:
 
 - Press `O` by default. Rebind it under **Controls → Key Binds → QCloudy_Addition**.
-- Type `/aca`, `/qca`, `/ca`, or `/qc`.
+- Type `/qca` or `/qc`.
 - Use the QCA entry in Mod Menu when Mod Menu is installed.
 
-The four slash aliases are local client commands. Each alias is registered only when another client command has not already claimed that name. They open a local screen and are not sent to Hypixel.
+Both slash aliases are local client commands. Each alias is registered only when another client command has not already claimed that name. They open a local screen and are not sent to Hypixel.
 
 Use `/qshard [English query]` to open the offline Attribute Shard Guide with an optional prefilled search.
 
@@ -142,7 +142,7 @@ Slot Locking, Storage Overlay, and menu middle-click conversion were removed fro
 
 - **Ender Dragon Highlight** places received Hypixel Ender Dragons into Minecraft's vanilla outline pipeline while the player is in The End or Dragon's Nest. The color is configurable.
 - **Crimson Isle Faction Tasks** show incomplete rows from the received `Faction Quests:` Tab block using their original names and progress. Completed tasks are omitted.
-- Compatible provider-backed Crimson Isle and Kuudra functions appear as Combat subgroups only when an exact reviewed provider is installed.
+- Recognised provider-backed Crimson Isle and Kuudra functions appear as Combat subgroups when the installed provider still exposes compatible live configuration capabilities.
 
 ### Dungeons
 
@@ -242,22 +242,24 @@ The warehouse reads only visible Shard IDs and exact `Owned: N Shards` lore on t
 
 ## Unified controls for compatible SkyBlock mods
 
-On Minecraft 26.1.2, this Beta includes reviewed adapters for:
+This Beta includes optional capability-detected adapters for installed builds of:
 
-- SkyHanni 7.41.0
-- Skyblocker 6.8.2
-- Firmament 44.3.0
-- BabyZombieAddons 3.4.1
+- SkyHanni
+- Skyblocker
+- Firmament
+- BabyZombieAddons
 
 These mods are optional and are not QCA build or runtime dependencies.
 
+Two independent master switches are located under **General**. **Unified Settings Editor** controls provider-setting discovery and editing; **Unified HUD Editor** controls provider HUD discovery and position editing. Both are disabled by default. Turning either one off stops that provider integration path without disabling QCA's own settings or HUDs.
+
 When several supported mods implement the same exact function, QCA displays one feature card. The secondary page begins with a provider selector. Selecting SkyHanni, for example, makes the card control SkyHanni's matching implementation and disables only exact equivalents in the other providers when the card is enabled. The same page then exposes the safely editable settings belonging to that selected implementation.
 
-QCA writes to the provider's live local configuration object and asks that mod to save through its own path. It does not edit an unloaded mod's raw configuration file. Reviewed Boolean, enum, bounded numeric, HUD position, and HUD scale values can appear in QCA; unsupported compound color/keybind objects remain in the provider's native editor.
+QCA writes to the provider's live local configuration object and asks that mod to save through its own path. It does not edit an unloaded mod's raw configuration file. Recognised Boolean, enum, bounded numeric, HUD position, and HUD scale values can appear in QCA; unsupported compound color/keybind objects remain in the provider's native editor.
 
-Provider-owned HUDs can also appear in **Edit HUD** with the provider name shown. Changes are written on mouse release.
+When the HUD master switch is enabled, provider-owned HUDs can also appear in **Edit HUD** with the provider name shown. Changes are written on mouse release.
 
-The current reviewed provider builds target Minecraft 26.1.2. The 26.2 QCA build keeps every QCA-owned feature but hides these version-locked adapters until matching provider builds have been reviewed. All adapters fail closed when a mod is absent, its version differs, or its expected configuration shape is unavailable.
+Provider version strings are not used as a whitelist. After the relevant master switch is enabled, every editor opening probes the installed provider's recognised configuration and save capabilities. Compatible existing functions therefore remain editable after ordinary provider updates; new or changed structures that QCA cannot safely understand are omitted. An absent provider or a missing required root/save contract fails closed without affecting QCA's own features.
 
 ## Client-only and safety boundary
 
@@ -275,7 +277,7 @@ See the full [client data-flow and compliance inventory](https://github.com/gprz
 
 | User action | Result | Server payload |
 |---|---|---|
-| `/aca`, `/qca`, `/ca`, `/qc` | Opens local QCA settings | None |
+| `/qca`, `/qc` | Opens local QCA settings | None |
 | `/qshard [English query]` | Opens the local offline Shard Guide | None |
 | `/th` | User-triggered Torrhus shortcut | `warp torrhus` |
 | `/helia` | User-triggered Helia shortcut | `chapter torrhus` |
@@ -317,7 +319,7 @@ QCA does not fetch Bazaar prices. Use the offline/Ironman/rate modes, or install
 
 ### A third-party provider does not appear
 
-Provider adapters are version-locked and fail closed. Check the exact mod version. On Minecraft 26.2, current provider adapters are intentionally hidden until matching builds have been reviewed.
+QCA no longer rejects a provider only because its version number changed. Reopen QCA settings so it can probe the provider's live configuration and native save/update capabilities again. Existing recognised fields remain editable when their contracts still match; unknown new fields are omitted. If the provider changed or removed its root configuration/save contract, only that adapter stays hidden until QCA learns the new structure.
 
 ### A native icon looks different from the bundled Shard icon
 
@@ -341,7 +343,7 @@ Do not include access tokens, session identifiers, private chat, or other secret
 
 ## Validation, license, and credits
 
-Beta 2.7.17 was built for both supported targets with Java 25. The maintained validation report records 159 tests per target with no failures, 320 catalog Shards/models/textures, matching English/Chinese language-key sets, and validated playable/Sources archives.
+Beta 2.8.17 is built for both supported targets with Java 25. The maintained validation report records the exact automated-test, archive, language, and compatibility-contract checks for this build.
 
 Automated tests and archive checks do not replace an authenticated Hypixel regression, every GUI Scale, every resource pack, or every future modpack combination. See the current [validation report](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/VALIDATION.md) for the exact tested boundary.
 

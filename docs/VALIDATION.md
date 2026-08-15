@@ -1,41 +1,44 @@
-# QCloudy_Addition Beta 2.7.17 dual-version validation
+# QCloudy_Addition Beta 2.8.17 dual-version validation
 
-Date: 2026-08-14<br>
+Date: 2026-08-15<br>
 Minecraft: 26.1.2 and 26.2<br>
 Java: 25
 
 Validated artifacts:
 
-- `release/QCloudy_Addition-Beta-2.7.17+26.1.2.jar`
-- `release/QCloudy_Addition-Beta-2.7.17+26.1.2-sources.jar`
-- `release/QCloudy_Addition-Beta-2.7.17+26.2.jar`
-- `release/QCloudy_Addition-Beta-2.7.17+26.2-sources.jar`
+- `release/QCloudy_Addition-Beta-2.8.17+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.8.17+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Beta-2.8.17+26.2.jar`
+- `release/QCloudy_Addition-Beta-2.8.17+26.2-sources.jar`
 
-26.1.2 playable SHA-256: `20c0c29c3e94c1ee1febc6da7c268a791b4b71b3cc84caff8f9b88e986125efc`<br>
-26.1.2 Sources SHA-256: `a75c48b450ed4b20caf2b0d1a31ea7db5718bceccae71906fe5ff16c93a72996`<br>
-26.2 playable SHA-256: `2100fab3435510e5c26ca20f735a04083156f0478d36f113a66e94833f303537`<br>
-26.2 Sources SHA-256: `5924dcba7a5b17ca9496a69e6263d269d8440af54aa15b934b23e2a2c7e6ed29`
+26.1.2 playable SHA-256: `3a1386393f50188a5e20ea5c8069611fb1b9c896de98ff7a58ff0e1515db1932`<br>
+26.1.2 Sources SHA-256: `0c42f5ed9fa264ba89107267ddde33966b14f0481e1f349599cdb7bb5a59d4b2`<br>
+26.2 playable SHA-256: `9d06cc83a21f8228665805cb45480974bebd4baaa53daad96c5e8f9b5eb5b38e`<br>
+26.2 Sources SHA-256: `629b185d75b99d20be3cff03972c72d0ebd0330b694ace7b084e0d75d88e9ab0`
 
-Beta 2.7.17 consolidates all completed work since Beta 2.6.6 while retaining the maintained 26.1.2/26.2 build matrix. The latest map path replaces the Dwarven marker's named-region selection with one continuous approximate X/Z transform. Y and the scoreboard sub-location are absent from the projection API, so vertically overlapping routes such as Palace Bridge above the Royal Mines/The Mist cannot make the arrow jump between regions.
+Beta 2.8.17 replaces the unified editor's exact provider-version whitelist with live capability discovery. Provider version strings no longer decide whether SkyHanni, Skyblocker, Firmament, or BabyZombieAddons appears. Separate default-off settings and HUD master switches make both integration paths explicitly opt-in and independently gated without affecting QCA-owned controls. After the relevant switch is enabled, QCA checks recognised configuration/save capabilities and discovers supported values defensively. One changed branch is omitted without hiding independent compatible branches or QCA itself. The local `/aca` and `/ca` aliases are removed; `/qca` and `/qc` remain.
 
 Verified in this workspace:
 
-- Java 25 `clean test build prepareRelease` completed successfully for both targets: 159 tests per target, 0 failures, 0 errors, 0 skips.
-- Both playable JARs contain exactly 320 catalog Shards, 320 Shard item-model definitions, and 320 Shard textures; English and Simplified Chinese each contain 468 identical language keys.
+- Java 25 `clean test build prepareRelease` completed successfully for both targets: 164 current tests per target, 0 failures, 0 errors, 0 skips.
+- Both playable JARs contain exactly 320 catalog Shards, 320 Shard item-model definitions, and 320 Shard textures; English and Simplified Chinese each contain 472 identical language keys.
 - Dwarven projection tests cover continuous one-axis movement, identical X/Z on The Mist and an overhead bridge, representative overview areas, and safe edge clamping. The official `C&C Minecarts Co.` sub-location is also classified as Dwarven Mines.
 - Deterministic geometry tests cover wide and narrow Shard detail columns, separated rate controls, compact Plan controls, narrow Settings stacking and safe short-screen fallback, Recipe field widths, Fusion Lines canvas growth, secondary-setting sliders, RGB bars, and preset swatches.
 - Main and test compilation completed from a clean output directory.
 - Expanded metadata declares the exact target in each artifact: 26.1.2 uses Fabric API 0.155.2+26.1.2; 26.2 uses Fabric API 0.154.2+26.2. Both remain client-only and require Fabric Loader 0.19.3+ and Java 25+.
 - Binary and Sources artifacts in `build/libs/` are byte-identical to the corresponding `release/` artifacts.
 - All four JARs pass JDK 25 `jar --validate` and `unzip -t`; English and Chinese language files remain shared between targets.
-- The immediately preceding Alpha 2.6.17 code-identical 26.2 standalone development launch initialized QCA on the Render thread, completed resource reload, created the item and GUI atlases, and started the sound engine without `InjectionError`, `InvalidMixin`, or QCA exception. This Beta promotion changes the channel/version and publication documentation, but was not separately authenticated against Hypixel.
-- The optional integration has no compile-time dependency on any provider and does not add an HTTP client, packet, chat command, container click, gameplay input, or server-data request.
+- Static interface inspection of the supplied latest MC 26.1.2 provider JARs confirmed the recognised entry contracts used by this build: SkyHanni 7.45.0 exposes `SkyHanniMod.feature` and `SkyHanniConfig.saveNow()`; Skyblocker 6.9.1 exposes `SkyblockerConfigManager.get()` and `update(Consumer)`; BabyZombieAddons 3.5.1 exposes `ModConfigManager.get()` and `save()`; Firmament 44.3.0 exposes the ManagedConfig registry/options path. This verifies entry contracts, not every individual setting or visual HUD behavior.
+- Capability tests cover prefixed future-version toggle names, semantic association of only same-function settings, and prefixed X/Y/scale recognition. Source/resource checks confirm that `/qca` and `/qc` are the only QCA settings-command aliases.
+- Configuration and feature tests verify that both provider-integration masters default off, are independently toggleable, remain settings-free first-level cards, and migrate existing configs to the opt-in state.
+- The optional integration has no compile-time dependency on any provider and adds no HTTP client, packet, chat command, container click, gameplay input, or server-data request. Writes use only the selected installed provider's live object and own save/update path; QCA does not edit provider configuration files directly.
 - Static matrix/scissor review confirms balanced push/pop and enable/disable pairs in the edited configuration and inventory screens.
 
 Outstanding Beta regression boundary:
 
-- Geometry tests and archive checks do not replace visual testing in a live Minecraft renderer. Before wider publication, open all six Shard Planner tabs, the main and secondary settings pages, the RGB picker, and the HUD editor at every GUI Scale used by the target modpack; verify both languages, resize/re-init, long provider names, mouse hitboxes, and scrolling.
-- The combined settings/provider integration still requires authenticated in-game regression for all four exact 26.1.2 provider builds. The 26.2 artifact deliberately hides these version-locked adapters until matching provider builds are reviewed.
+- Geometry tests and archive checks do not replace visual testing in a live Minecraft renderer. Before wider publication, open the main and secondary settings pages and HUD editor with each installed provider at every GUI Scale used by the target modpack; verify both languages, resize/re-init, long names, mouse hitboxes, native persistence, and scrolling.
+- Capability discovery is best-effort structural compatibility, not proof that every future provider release is compatible. Unknown new structures are intentionally absent; if a provider removes its recognised root or save/update contract, only that adapter closes until updated.
+- The supplied provider JARs are MC 26.1.x builds. The MC 26.2 QCA artifact is compiled and archive-validated, but third-party editing on 26.2 still requires separate provider builds for 26.2 and an authenticated in-game test with those builds. No 26.1 provider JAR should be installed into a 26.2 instance merely to exercise this adapter.
 
 ---
 

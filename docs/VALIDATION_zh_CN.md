@@ -1,41 +1,44 @@
-# QCloudy_Addition Beta 2.7.17 双版本验证
+# QCloudy_Addition Beta 2.8.17 双版本验证
 
-日期：2026-08-14<br>
+日期：2026-08-15<br>
 Minecraft：26.1.2 与 26.2<br>
 Java：25
 
 已验证产物：
 
-- `release/QCloudy_Addition-Beta-2.7.17+26.1.2.jar`
-- `release/QCloudy_Addition-Beta-2.7.17+26.1.2-sources.jar`
-- `release/QCloudy_Addition-Beta-2.7.17+26.2.jar`
-- `release/QCloudy_Addition-Beta-2.7.17+26.2-sources.jar`
+- `release/QCloudy_Addition-Beta-2.8.17+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.8.17+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Beta-2.8.17+26.2.jar`
+- `release/QCloudy_Addition-Beta-2.8.17+26.2-sources.jar`
 
-26.1.2 可运行 SHA-256：`20c0c29c3e94c1ee1febc6da7c268a791b4b71b3cc84caff8f9b88e986125efc`<br>
-26.1.2 Sources SHA-256：`a75c48b450ed4b20caf2b0d1a31ea7db5718bceccae71906fe5ff16c93a72996`<br>
-26.2 可运行 SHA-256：`2100fab3435510e5c26ca20f735a04083156f0478d36f113a66e94833f303537`<br>
-26.2 Sources SHA-256：`5924dcba7a5b17ca9496a69e6263d269d8440af54aa15b934b23e2a2c7e6ed29`
+26.1.2 可运行 SHA-256：`3a1386393f50188a5e20ea5c8069611fb1b9c896de98ff7a58ff0e1515db1932`<br>
+26.1.2 Sources SHA-256：`0c42f5ed9fa264ba89107267ddde33966b14f0481e1f349599cdb7bb5a59d4b2`<br>
+26.2 可运行 SHA-256：`9d06cc83a21f8228665805cb45480974bebd4baaa53daad96c5e8f9b5eb5b38e`<br>
+26.2 Sources SHA-256：`629b185d75b99d20be3cff03972c72d0ebd0330b694ace7b084e0d75d88e9ab0`
 
-Beta 2.7.17 在保留 26.1.2/26.2 双版本矩阵的同时，整合了 Beta 2.6.6 之后已完成的全部变化。最新地图路径把矮人矿洞箭头从“按地点名称选分区”改为整张背景共用的一套连续大致 X/Z 映射。投影 API 完全没有 Y 与计分板子地点参数，因此位于 Royal Mines/The Mist 上方的 Palace Bridge 等垂直重叠路径不会再导致箭头跨区域跳动。
+Beta 2.8.17 把统一编辑器的提供方精确版本白名单替换为实时能力探测。SkyHanni、Skyblocker、Firmament、BabyZombieAddons 是否出现不再由版本字符串决定。第三方设置和 HUD 分别由两个默认关闭的独立总开关控制，不影响 QCA 自身内容。启用对应总开关后，QCA 才检查已识别的配置/保存能力并以防御方式发现受支持的值。一个分支变化只会省略该分支，不会隐藏其他仍兼容的独立分支或 QCA 自身。本地 `/aca`、`/ca` 别名已删除，只保留 `/qca`、`/qc`。
 
 本工作区已验证：
 
-- Java 25 `clean test build prepareRelease` 在两个目标均成功：每个版本 159 项测试，0 failure、0 error、0 skip。
-- 两个可运行 JAR 均包含恰好 320 个目录 Shard、320 个 Shard 物品模型定义和 320 张 Shard 纹理；英文与简体中文各有 468 个完全一致的语言键。
+- Java 25 `clean test build prepareRelease` 在两个目标均成功：每个版本 164 项当前测试，0 failure、0 error、0 skip。
+- 两个可运行 JAR 均包含恰好 320 个目录 Shard、320 个 Shard 物品模型定义和 320 张 Shard 纹理；英文与简体中文各有 472 个完全一致的语言键。
 - 矮人矿洞投影测试覆盖连续单轴移动、The Mist 与其上方桥梁相同 X/Z 得到相同点、代表区域和安全边界裁剪；官方子地点 `C&C Minecarts Co.` 也已归类为矮人矿洞。
 - 确定性几何测试覆盖宽/窄 Shard 详情栏、独立速度控件、紧凑 Plan 控件、窄屏 Settings 单列及矮屏安全提示、Recipe 输入框宽度、Fusion Lines 画布扩展、二级设置滑块、RGB 条和预设色块。
 - 主代码与测试已从干净输出目录重新编译。
 - 每个产物的展开元数据均精确声明目标：26.1.2 使用 Fabric API 0.155.2+26.1.2；26.2 使用 Fabric API 0.154.2+26.2。两者都保持纯客户端并要求 Fabric Loader 0.19.3+ 与 Java 25+。
 - `build/libs/` 的可运行与源码产物分别和 `release/` 中对应文件逐字节一致。
 - 四个 JAR 均通过 JDK 25 `jar --validate` 与 `unzip -t`；两个目标共用同一套中英文资源。
-- 紧邻的代码完全相同 Alpha 2.6.17 已完成 26.2 独立开发客户端启动：在 Render thread 初始化 QCA，完成资源重载、创建物品/GUI 图集并启动声音引擎，没有 `InjectionError`、`InvalidMixin` 或 QCA 异常。本 Beta 只变更通道/版本号与发布文档，未单独完成 Hypixel 登录实服验证。
-- 可选集成不产生提供方编译依赖，也未新增 HTTP、数据包、聊天命令、菜单点击、玩法输入或服务器数据请求。
+- 对用户提供的最新 MC 26.1.2 模组 JAR 进行静态接口检查，确认本版本使用的入口契约仍存在：SkyHanni 7.45.0 提供 `SkyHanniMod.feature` 与 `SkyHanniConfig.saveNow()`；Skyblocker 6.9.1 提供 `SkyblockerConfigManager.get()` 与 `update(Consumer)`；BabyZombieAddons 3.5.1 提供 `ModConfigManager.get()` 与 `save()`；Firmament 44.3.0 提供 ManagedConfig 注册表/选项路径。这只验证入口契约，不代表每个具体设置和 HUD 视觉行为都已实测。
+- 能力测试覆盖未来版本常见的前缀开关名称、只关联同一功能语义的设置，以及前缀 X/Y/scale 识别。源码/资源检查确认 `/qca`、`/qc` 是仅存的 QCA 设置命令别名。
+- 配置与功能测试确认两个第三方集成总开关均默认关闭、可以独立切换、作为一级卡片没有重复二级设置，并且旧配置迁移后保持主动选择启用的状态。
+- 可选集成不产生提供方编译依赖，也未新增 HTTP、数据包、聊天命令、菜单点击、玩法输入或服务器数据请求。写入只通过玩家所选已安装提供方的实时对象及其自己的保存/update 路径完成；QCA 不直接改动提供方配置文件。
 - 对编辑过的配置与物品界面进行静态矩阵/裁剪审查，push/pop 与 enable/disable 均成对。
 
 尚未覆盖的 Beta 实服边界：
 
-- 几何测试和归档检查不能代替 Minecraft 实际渲染检查。扩大发布前，应在目标整合包使用的每个 GUI Scale 下打开 Shard Planner 六个页签、主设置、二级设置、RGB 选择器和 HUD 编辑器，检查中英文、resize/re-init、长提供方名称、点击区和滚动。
-- 四个精确 26.1.2 提供方版本的统一设置集成仍需已登录实服回归；26.2 产物会刻意隐藏这些锁定版本的适配器，直到对应提供方构建完成审核。
+- 几何测试和归档检查不能代替 Minecraft 实际渲染检查。扩大发布前，应在目标整合包使用的每个 GUI Scale 下，分别安装每个提供方并打开主设置、二级设置和 HUD 编辑器，检查中英文、resize/re-init、长名称、点击区、原生持久化与滚动。
+- 能力探测是尽力而为的结构兼容，不代表未来每个提供方版本都必然兼容。未知新结构会刻意省略；如果提供方删除已识别的根对象或保存/update 契约，只关闭该适配器，直到 QCA 更新。
+- 用户提供的四个模组 JAR 都是 MC 26.1.x 构建。MC 26.2 的 QCA 产物已经完成编译与压缩包验证，但 26.2 的第三方编辑仍需要各提供方自己发布 26.2 构建，并与这些构建完成登录实测。不得为了测试适配器而把 26.1 模组 JAR 强行装进 26.2 实例。
 
 ---
 

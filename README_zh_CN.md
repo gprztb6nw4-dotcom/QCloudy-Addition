@@ -7,17 +7,17 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 与 26.2 的纯客户端 Fabric �
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [当前 Beta 2.7.17 更新日志](CHANGELOG_zh_CN.md)
+- [当前 Beta 2.8.17 更新日志](CHANGELOG_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
-默认语言为英文。按 `O`（可在“控制 → 按键绑定 → QCloudy_Addition”中改键）或输入 `/aca`、`/qca`、`/ca`、`/qc` 可打开客户端设置，并随时切换为简体中文。只有名称未被其他客户端命令占用时才会注册对应别名；这些命令只打开本地界面，不会发送给 Hypixel。
+默认语言为英文。按 `O`（可在“控制 → 按键绑定 → QCloudy_Addition”中改键）或输入 `/qca`、`/qc` 可打开客户端设置，并随时切换为简体中文。只有名称未被其他客户端命令占用时才会注册对应别名；这些命令只打开本地界面，不会发送给 Hypixel。
 
 语言选项只翻译 QCA 自己的界面标签。Hypixel 地点、任务、宠物、皮肤、配件、物品以及玩家重命名的 HOTM 配置均保留客户端收到的原始名称；例如 `Terminator` 不会被改写成中文名称。
 
 ## 统一 SkyBlock 模组控制——Beta
 
-QCA 现在可以作为统一的功能与 HUD 编辑入口，直接控制自己的功能，以及兼容版本的 **SkyHanni 7.41.0**、**Skyblocker 6.8.2**、**Firmament 44.3.0**、**BabyZombieAddons 3.4.1**。这些集成全部可选：QCA 仍能独立加载；提供方缺失或版本与已审查版本不符时会被隐藏。以上已审查提供方版本均面向 Minecraft 26.1.2；26.2 构建仍完整提供 QCA 自身功能，但在对应 26.2 提供方版本通过审核前会隐藏这些适配器。
+QCA 可以作为统一的功能与 HUD 编辑入口，直接控制自己的功能，以及已安装的 **SkyHanni**、**Skyblocker**、**Firmament**、**BabyZombieAddons** 中能够安全识别的内容。“统一设置编辑”和“统一 HUD 编辑”是两个相互独立的总开关，均默认关闭。某个总开关关闭时，QCA 不探测也不编辑对应类型的第三方数据；QCA 自己的设置与 HUD 始终可用。这些集成不再使用精确版本白名单。只有启用对应总开关后，QCA 才探测提供方的实时能力，并只显示可以安全读写的已识别内容。因此其他模组更新后，只要这些结构仍兼容，原有功能就能继续编辑；QCA 不认识的新功能会被跳过，而不是让整个模组失效。QCA 在两个 Minecraft 目标版本中仍可独立加载。
 
 多个兼容模组存在完全相同的功能时，QCA 只显示一张统一卡片。右键卡片后，第一项用于选择提供方，下面直接显示所选模组中能够安全编辑的原生设置。开启卡片会启用所选实现，并只关闭其他模组中完全等价的实现；用途不同的价格、利润、Tooltip 或追踪功能不会被错误合并。所有数值都写入对应模组的实时配置，并通过该模组自己的保存路径落盘；QCA 不会在模组未加载时直接改写它的配置文件。
 
@@ -123,7 +123,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-当前 Beta 2.7.17 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
+当前 Beta 2.8.17 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

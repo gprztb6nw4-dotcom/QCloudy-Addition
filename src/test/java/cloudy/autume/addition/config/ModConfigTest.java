@@ -45,7 +45,7 @@ final class ModConfigTest {
         assertEquals(1, config.hudStyle.pet.borderThickness);
         assertEquals(1.0f, config.hudStyle.pet.scale);
         assertEquals(1.75f, config.hudStyle.map.scale);
-        assertEquals(20, config.configVersion);
+        assertEquals(21, config.configVersion);
         assertEquals(true, config.manualReconnectButton);
         assertEquals(true, config.pets.showMaxProgress);
         assertEquals(true, config.pets.showOverflowLevel);
@@ -55,6 +55,8 @@ final class ModConfigTest {
         assertEquals("", config.mining.lastHotmSlotName);
         assertEquals(true, config.mining.showHotmSlot);
         assertEquals(true, config.inventory.yieldToFirmament);
+        assertEquals(false, config.integrations.unifiedSettingsEditor);
+        assertEquals(false, config.integrations.unifiedHudEditor);
         assertEquals(true, config.inventory.shardFusionHelper);
         assertEquals("IRONMAN", config.inventory.shardPlannerMode);
         assertEquals("FASTEST", config.inventory.shardPlannerObjective);
@@ -137,13 +139,15 @@ final class ModConfigTest {
 
         migrated.normalize();
 
-        assertEquals(20, migrated.configVersion);
+        assertEquals(21, migrated.configVersion);
         assertEquals("VANILLA", migrated.inventory.instantTransmissionSoundMode);
         assertEquals("VANILLA", migrated.inventory.etherwarpSoundMode);
         assertEquals(false, migrated.hunting.safariShards);
         assertEquals(true, migrated.inventory.shardFusionHelper);
         assertEquals(false, migrated.fishing.biteAlert);
         assertEquals(64, migrated.fishing.biteAlertVolume);
+        assertEquals(false, migrated.integrations.unifiedSettingsEditor);
+        assertEquals(false, migrated.integrations.unifiedHudEditor);
 
         migrated.inventory.instantTransmissionSoundMode = "invalid";
         migrated.inventory.instantTransmissionCustomSound = "invalid";

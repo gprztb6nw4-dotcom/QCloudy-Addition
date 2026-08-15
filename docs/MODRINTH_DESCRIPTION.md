@@ -6,18 +6,19 @@ QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, 
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Beta 2.7.17.** The same QCA-owned feature set is built for Minecraft 26.1.2 and 26.2. Exact-version third-party settings/HUD adapters remain reviewed for 26.1.2 only and safely stay unavailable on 26.2 until matching provider builds are audited.
+> **Current channel: Beta 2.8.17.** The same QCA-owned feature set is built for Minecraft 26.1.2 and 26.2. Optional third-party settings/HUD adapters use capability discovery instead of an exact-version whitelist.
 
 ## Main features
 
 ### Unified settings and HUD editor — Beta
 
-- One function-first catalog for QCA and compatible installed builds of SkyHanni 7.41.0, Skyblocker 6.8.2, Firmament 44.3.0, and BabyZombieAddons 3.4.1.
+- One function-first catalog for QCA and safely recognised live settings from installed SkyHanni, Skyblocker, Firmament, and BabyZombieAddons builds.
+- Separate **Unified Settings Editor** and **Unified HUD Editor** master switches under General; both default to off, work independently, and never hide QCA-owned controls.
 - Exact top-level order: General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events.
 - One shared card for one exact function. Right-click selects the provider first, then edits that provider's safe native Boolean, enum, numeric, position, and scale settings.
 - Enabling a shared card enables the selected implementation and disables only exact equivalents in the other compatible providers.
-- Edit HUD includes selected, enabled third-party HUDs and writes native position/scale on mouse release.
-- Optional, version-locked, fail-closed integrations: QCA remains standalone and hides missing/incompatible providers.
+- With its independent master enabled, Edit HUD includes selected, enabled third-party HUDs and writes native position/scale on mouse release.
+- Optional capability-detected integrations: provider version changes alone do not hide a mod; compatible known fields remain editable and unsupported new structures are omitted safely.
 
 ### Maps
 
@@ -95,9 +96,9 @@ Optional:
 
 - Mod Menu **18.0.0** for MC 26.1.2, or **20.0.1** for MC 26.2
 
-Put either `QCloudy_Addition-Beta-2.7.17+26.1.2.jar` or `QCloudy_Addition-Beta-2.7.17+26.2.jar` in the instance's `mods` folder, matching the exact game version. Do not install the `-sources.jar` as the playable mod.
+Put either `QCloudy_Addition-Beta-2.8.17+26.1.2.jar` or `QCloudy_Addition-Beta-2.8.17+26.2.jar` in the instance's `mods` folder, matching the exact game version. Do not install the `-sources.jar` as the playable mod.
 
-Press `O`, open QCA through Mod Menu, or enter `/aca`, `/qca`, `/ca`, or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
+Press `O`, open QCA through Mod Menu, or enter `/qca` or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 
 ## Client-only boundary
 
@@ -112,7 +113,7 @@ Both are sent only after the player explicitly enters the corresponding local sh
 
 ## Compatibility and disclaimer
 
-QCloudy_Addition is standalone. Firmament, SkyHanni, Skyblocker, BabyZombieAddons, JEI, and Mod Menu are not required. The unified editor supports only the exact reviewed versions listed above and fails closed on unknown versions. Complex native color/keybind editor objects remain in their provider's own screen until their contracts are audited. A compatible Skyblocker is optional only for Bazaar-price routes; without it the planner's price mode is unavailable, not broken. SkyHanni and Firmament are not price providers because they expose no stable public cross-mod price API.
+QCloudy_Addition is standalone. Firmament, SkyHanni, Skyblocker, BabyZombieAddons, JEI, and Mod Menu are not required. The unified editor does not reject a provider only because its version changed: it probes recognised live configuration and save capabilities, keeps compatible existing functions editable, and omits new or changed structures it cannot safely understand. Complex native color/keybind editor objects remain in their provider's own screen until their contracts are supported. A compatible Skyblocker is optional only for Bazaar-price routes; without it the planner's price mode is unavailable, not broken. SkyHanni and Firmament are not price providers because they expose no stable public cross-mod price API.
 
 All Minecraft modifications are used at the player's own risk. Passive HUDs, outlines, waypoint beams, overlays, and predictions are not the same as official Hypixel approval. Review Hypixel's current modification rules and disable any feature you are not comfortable using.
 

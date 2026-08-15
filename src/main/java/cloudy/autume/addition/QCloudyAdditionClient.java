@@ -54,7 +54,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
     private static final KeyMapping OPEN_SHARD_FUSION = KeyMappingHelper.registerKeyMapping(new KeyMapping(
             "key.qcloudy_addition.open_shard_fusion", InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_UNKNOWN, KEY_CATEGORY));
-    private static final String[] COMMAND_ALIASES = {"aca", "qca", "ca", "qc"};
+    private static final String[] COMMAND_ALIASES = {"qca", "qc"};
     private int ticks;
 
     @Override

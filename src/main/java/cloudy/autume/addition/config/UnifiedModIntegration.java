@@ -2,10 +2,11 @@ package cloudy.autume.addition.config;
 
 import cloudy.autume.addition.i18n.ModText;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.Nullable;
 import org.joml.Vector2i;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -28,11 +29,15 @@ import java.util.function.BooleanSupplier;
  * Optional, reflection-only adapters for supported SkyBlock mods.
  *
  * <p>No external mod is a compile or runtime dependency. An adapter is only
- * enabled for the exact version it was audited against. Reads and writes go
- * through the installed mod's live configuration object and save hook; this
- * deliberately avoids editing another mod's JSON file behind its back.</p>
+ * enabled only when its required live configuration and save capabilities are
+ * present. Version strings are deliberately not used as a compatibility gate:
+ * recognised fields from newer provider versions remain editable, while
+ * unknown structures are skipped. Reads and writes go through the installed
+ * mod's live configuration object and save hook; this deliberately avoids
+ * editing another mod's JSON file behind its back.</p>
  */
 final class UnifiedModIntegration {
+    private static final Logger LOGGER = LoggerFactory.getLogger("QCloudy_Addition/UnifiedIntegration");
     private static final int MAX_SCAN_DEPTH = 5;
     private static final int MAX_SETTINGS_PER_FEATURE = 48;
     private static volatile List<UnifiedFeature> cached;
@@ -40,20 +45,18 @@ final class UnifiedModIntegration {
     private UnifiedModIntegration() { }
 
     enum Provider {
-        QCLOUDY("qcloudy_addition", "QCloudy", "2.6.15"),
-        SKYHANNI("skyhanni", "SkyHanni", "7.41.0"),
-        SKYBLOCKER("skyblocker", "SkyBlocker", "6.8.2+26.1.2"),
-        FIRMAMENT("firmament", "Firmament", "44.3.0+mc26.1.2"),
-        BABYZOMBIE("babyzombieaddons", "BabyZombieAddons", "3.4.1");
+        QCLOUDY("qcloudy_addition", "QCloudy"),
+        SKYHANNI("skyhanni", "SkyHanni"),
+        SKYBLOCKER("skyblocker", "SkyBlocker"),
+        FIRMAMENT("firmament", "Firmament"),
+        BABYZOMBIE("babyzombieaddons", "BabyZombieAddons");
 
         final String modId;
         final String displayName;
-        final String auditedVersion;
 
-        Provider(String modId, String displayName, String auditedVersion) {
+        Provider(String modId, String displayName) {
             this.modId = modId;
             this.displayName = displayName;
-            this.auditedVersion = auditedVersion;
         }
     }
 
@@ -80,7 +83,7 @@ final class UnifiedModIntegration {
         @Nullable Object value() {
             try {
                 return access.get();
-            } catch (ReflectiveOperationException | RuntimeException ignored) {
+            } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
                 return null;
             }
         }
@@ -89,7 +92,7 @@ final class UnifiedModIntegration {
             try {
                 access.set(value);
                 return true;
-            } catch (ReflectiveOperationException | RuntimeException ignored) {
+            } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
                 return false;
             }
         }
@@ -280,6 +283,10 @@ final class UnifiedModIntegration {
                 changed = binding != null && binding.setEnabled(next);
             }
             ConfigManager.save();
+            if (qcloudyFeature == ConfigScreen.Feature.UNIFIED_SETTINGS_EDITOR
+                    || qcloudyFeature == ConfigScreen.Feature.UNIFIED_HUD_EDITOR) {
+                invalidate();
+            }
             return changed;
         }
 
@@ -293,7 +300,7 @@ final class UnifiedModIntegration {
      * A movable HUD owned by the currently selected external provider.
      *
      * <p>The editor never invents a separate QCloudy position. It writes the
-     * provider's own audited live x/y/scale values, so reopening that mod's
+     * provider's own recognised live x/y/scale values, so reopening that mod's
      * native editor shows the same result.</p>
      */
     static final class ExternalHud {
@@ -314,7 +321,7 @@ final class UnifiedModIntegration {
 
         String id() {
             // One native HUD can be surfaced by more than one Boolean option
-            // in a provider config. The audited position path is the stable
+            // in a provider config. The recognised position path is the stable
             // identity; including the feature binding would duplicate the
             // same live panel in QCA's editor.
             return binding.provider.name() + ":" + x.id;
@@ -352,7 +359,9 @@ final class UnifiedModIntegration {
         List<UnifiedFeature> result = cached;
         if (result != null) return result;
         synchronized (UnifiedModIntegration.class) {
-            if (cached == null) cached = buildFeatures();
+            if (cached == null) {
+                cached = buildFeatures(ConfigManager.get().integrations.unifiedSettingsEditor);
+            }
             return cached;
         }
     }
@@ -367,8 +376,12 @@ final class UnifiedModIntegration {
     }
 
     static List<ExternalHud> externalHuds() {
+        ModConfig.Integrations integrations = ConfigManager.get().integrations;
+        if (!integrations.unifiedHudEditor) return List.of();
+        List<UnifiedFeature> available = integrations.unifiedSettingsEditor
+                ? features() : buildFeatures(true);
         Map<String, ExternalHud> result = new LinkedHashMap<>();
-        for (UnifiedFeature feature : features()) {
+        for (UnifiedFeature feature : available) {
             Provider selected = feature.selectedProvider();
             if (selected == Provider.QCLOUDY || !feature.enabled()) continue;
             NativeFeature binding = feature.binding(selected);
@@ -385,7 +398,7 @@ final class UnifiedModIntegration {
     }
 
     private static List<ExternalHud> babyZombieHuds() {
-        if (!providerCompatible(Provider.BABYZOMBIE)) return List.of();
+        if (!providerInstalled(Provider.BABYZOMBIE)) return List.of();
         try {
             Class<?> manager = Class.forName("top.babyzombie.addons.config.hud.HudManager");
             Field elementsField = manager.getDeclaredField("elements");
@@ -393,38 +406,42 @@ final class UnifiedModIntegration {
             Map<?, ?> elements = (Map<?, ?>) elementsField.get(null);
             List<ExternalHud> result = new ArrayList<>();
             for (Map.Entry<?, ?> entry : elements.entrySet()) {
-                Object element = entry.getValue();
-                Field showField = findField(element.getClass(), "showCondition");
-                showField.setAccessible(true);
-                Object show = showField.get(element);
-                if (!(show instanceof BooleanSupplier supplier) || !supplier.getAsBoolean()) continue;
-                String name = String.valueOf(entry.getKey());
-                NativeSetting primary = new NativeSetting("hud." + name + ".visible", humanize(name),
-                        ValueKind.BOOLEAN, null, null, new ValueAccess() {
-                    @Override public Object get() {
-                        return supplier.getAsBoolean();
-                    }
+                try {
+                    Object element = entry.getValue();
+                    Field showField = findField(element.getClass(), "showCondition");
+                    showField.setAccessible(true);
+                    Object show = showField.get(element);
+                    if (!(show instanceof BooleanSupplier supplier) || !supplier.getAsBoolean()) continue;
+                    String name = String.valueOf(entry.getKey());
+                    NativeSetting primary = new NativeSetting("hud." + name + ".visible", humanize(name),
+                            ValueKind.BOOLEAN, null, null, new ValueAccess() {
+                        @Override public Object get() {
+                            return supplier.getAsBoolean();
+                        }
 
-                    @Override public void set(@Nullable Object value) {
-                        throw new UnsupportedOperationException("Visibility is owned by the feature config");
-                    }
-                });
-                List<NativeSetting> settings = List.of(
-                        babyZombieHudField(manager, element, name, "x", ValueKind.INTEGER, -4096.0, 4096.0),
-                        babyZombieHudField(manager, element, name, "y", ValueKind.INTEGER, -4096.0, 4096.0),
-                        babyZombieHudField(manager, element, name, "scale", ValueKind.DECIMAL, 0.25, 4.0)
-                );
-                ConfigScreen.Category category = classify(name);
-                NativeFeature binding = new NativeFeature(Provider.BABYZOMBIE,
-                        canonicalId(category, humanize(name)), humanize(name),
-                        Provider.BABYZOMBIE.displayName + " HUD", category, groupName(name, "HUD"),
-                        primary, settings);
-                UnifiedFeature feature = new UnifiedFeature(binding.id, binding.title, binding.description,
-                        category, binding.group, null, List.of(binding));
-                result.add(new ExternalHud(feature, binding, settings.get(0), settings.get(1), settings.get(2)));
+                        @Override public void set(@Nullable Object value) {
+                            throw new UnsupportedOperationException("Visibility is owned by the feature config");
+                        }
+                    });
+                    List<NativeSetting> settings = List.of(
+                            babyZombieHudField(manager, element, name, "x", ValueKind.INTEGER, -4096.0, 4096.0),
+                            babyZombieHudField(manager, element, name, "y", ValueKind.INTEGER, -4096.0, 4096.0),
+                            babyZombieHudField(manager, element, name, "scale", ValueKind.DECIMAL, 0.25, 4.0)
+                    );
+                    ConfigScreen.Category category = classify(name);
+                    NativeFeature binding = new NativeFeature(Provider.BABYZOMBIE,
+                            canonicalId(category, humanize(name)), humanize(name),
+                            Provider.BABYZOMBIE.displayName + " HUD", category, groupName(name, "HUD"),
+                            primary, settings);
+                    UnifiedFeature feature = new UnifiedFeature(binding.id, binding.title, binding.description,
+                            category, binding.group, null, List.of(binding));
+                    result.add(new ExternalHud(feature, binding, settings.get(0), settings.get(1), settings.get(2)));
+                } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+                    LOGGER.debug("Skipping one changed BabyZombieAddons HUD while preserving other HUDs", exception);
+                }
             }
             return List.copyOf(result);
-        } catch (ReflectiveOperationException | RuntimeException ignored) {
+        } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
             return List.of();
         }
     }
@@ -457,17 +474,24 @@ final class UnifiedModIntegration {
         for (NativeSetting setting : settings) {
             String normalized = setting.id.toLowerCase(Locale.ROOT);
             if (normalized.endsWith("." + suffix)) return setting;
+            String lastSegment = setting.id.substring(setting.id.lastIndexOf('.') + 1);
+            if (suffix.equals(coordinateRole(lastSegment))) return setting;
         }
         return null;
     }
 
-    private static List<UnifiedFeature> buildFeatures() {
+    private static List<UnifiedFeature> buildFeatures(boolean includeExternal) {
         List<NativeFeature> nativeFeatures = new ArrayList<>();
-        for (Adapter adapter : adapters()) {
-            if (!adapter.compatible()) continue;
-            try {
-                nativeFeatures.addAll(adapter.discover());
-            } catch (ReflectiveOperationException | RuntimeException ignored) { }
+        if (includeExternal) {
+            for (Adapter adapter : adapters()) {
+                if (!adapter.available()) continue;
+                try {
+                    nativeFeatures.addAll(adapter.discover());
+                } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+                    LOGGER.warn("Skipping unreadable {} configuration branches while preserving the rest of QCloudy",
+                            adapter.provider().displayName, exception);
+                }
+            }
         }
 
         Map<String, MutableUnified> merged = new LinkedHashMap<>();
@@ -514,18 +538,13 @@ final class UnifiedModIntegration {
         );
     }
 
-    private static boolean providerCompatible(Provider provider) {
-        ModContainer container = FabricLoader.getInstance().getModContainer(provider.modId).orElse(null);
-        if (container == null) return false;
-        String version = container.getMetadata().getVersion().getFriendlyString();
-        return version.equals(provider.auditedVersion)
-                || version.startsWith(provider.auditedVersion + "+")
-                || provider.auditedVersion.startsWith(version + "+");
+    private static boolean providerInstalled(Provider provider) {
+        return FabricLoader.getInstance().isModLoaded(provider.modId);
     }
 
     private interface Adapter {
         Provider provider();
-        boolean compatible();
+        boolean available();
         List<NativeFeature> discover() throws ReflectiveOperationException;
     }
 
@@ -542,9 +561,19 @@ final class UnifiedModIntegration {
         }
 
         @Override
-        public boolean compatible() {
-            return providerCompatible(provider);
+        public boolean available() {
+            if (!providerInstalled(provider)) return false;
+            try {
+                probeCapabilities();
+                return true;
+            } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+                LOGGER.warn("Skipping {} integration because its recognised configuration capabilities are unavailable",
+                        provider.displayName, exception);
+                return false;
+            }
         }
+
+        abstract void probeCapabilities() throws ReflectiveOperationException;
     }
 
     private static class ObjectGraphAdapter extends BaseAdapter {
@@ -560,6 +589,18 @@ final class UnifiedModIntegration {
             this.staticField = staticField;
             this.staticGetter = staticGetter;
             this.saveMethod = saveMethod;
+        }
+
+        @Override
+        void probeCapabilities() throws ReflectiveOperationException {
+            Object root = root();
+            if (root == null) throw new IllegalStateException("Configuration root is not initialised");
+            if (saveMethod == null) return;
+            if (hasZeroArgumentMethod(root.getClass(), saveMethod)) return;
+            Class<?> type = Class.forName(rootClass);
+            if (!hasZeroArgumentMethod(type, saveMethod)) {
+                throw new NoSuchMethodException(type.getName() + "." + saveMethod + "()");
+            }
         }
 
         @Override
@@ -610,6 +651,13 @@ final class UnifiedModIntegration {
         }
 
         @Override
+        void probeCapabilities() throws ReflectiveOperationException {
+            super.probeCapabilities();
+            Class<?> manager = Class.forName("de.hysky.skyblocker.config.SkyblockerConfigManager");
+            manager.getMethod("update", Consumer.class);
+        }
+
+        @Override
         void write(List<String> path, @Nullable Object value) throws ReflectiveOperationException {
             Class<?> manager = Class.forName("de.hysky.skyblocker.config.SkyblockerConfigManager");
             Method update = manager.getMethod("update", Consumer.class);
@@ -630,6 +678,14 @@ final class UnifiedModIntegration {
         }
 
         @Override
+        void probeCapabilities() throws ReflectiveOperationException {
+            Class<?> managedConfig = Class.forName("moe.nea.firmament.util.data.ManagedConfig");
+            Object companion = managedConfig.getField("Companion").get(null);
+            Object instanceList = companion.getClass().getMethod("getAllManagedConfigs").invoke(companion);
+            instanceList.getClass().getMethod("getAll");
+        }
+
+        @Override
         public List<NativeFeature> discover() throws ReflectiveOperationException {
             Class<?> managedConfig = Class.forName("moe.nea.firmament.util.data.ManagedConfig");
             Object companion = managedConfig.getField("Companion").get(null);
@@ -637,50 +693,70 @@ final class UnifiedModIntegration {
             Collection<?> configs = (Collection<?>) instanceList.getClass().getMethod("getAll").invoke(instanceList);
             List<NativeFeature> result = new ArrayList<>();
             for (Object config : configs) {
-                String configName = String.valueOf(config.getClass().getMethod("getName").invoke(config));
-                String categoryName = String.valueOf(config.getClass().getMethod("getCategory").invoke(config));
-                Map<?, ?> options = (Map<?, ?>) config.getClass().getMethod("getAllOptions").invoke(config);
-                for (Object option : options.values()) {
-                    Object value = option.getClass().getMethod("get").invoke(option);
-                    ValueKind kind = valueKind(value == null ? Object.class : value.getClass());
-                    if (kind != ValueKind.BOOLEAN && kind != ValueKind.ENUM) continue;
-                    String property = String.valueOf(option.getClass().getMethod("getPropertyName").invoke(option));
-                    String title = componentString(option, "getLabelText", humanize(property));
-                    String description = componentString(option, "getLabelDescription",
-                            provider.displayName + " · " + configName);
-                    ValueAccess access = new ValueAccess() {
-                        @Override public Object get() throws ReflectiveOperationException {
-                            return option.getClass().getMethod("get").invoke(option);
-                        }
-
-                        @Override public void set(@Nullable Object newValue) throws ReflectiveOperationException {
-                            option.getClass().getMethod("set", Object.class).invoke(option, newValue);
-                            markFirmamentDirty(config);
-                        }
-                    };
-                    NativeSetting primary = new NativeSetting(configName + "." + property, title, kind,
-                            null, null, access);
-                    List<NativeSetting> settings = new ArrayList<>();
-                    for (Object sibling : options.values()) {
-                        if (sibling == option || settings.size() >= MAX_SETTINGS_PER_FEATURE) continue;
-                        List<NativeSetting> hudSettings = firmamentHudSettings(config, configName, sibling);
-                        if (!hudSettings.isEmpty()) {
-                            for (NativeSetting setting : hudSettings) {
-                                if (settings.size() >= MAX_SETTINGS_PER_FEATURE) break;
-                                settings.add(setting);
-                            }
-                            continue;
-                        }
-                        NativeSetting setting = firmamentSetting(config, configName, sibling);
-                        if (setting != null) settings.add(setting);
-                    }
-                    String path = categoryName + "." + configName + "." + property;
-                    ConfigScreen.Category category = classify(path);
-                    result.add(new NativeFeature(provider, canonicalId(category, title), title, description,
-                            category, groupName(path, configName), primary, settings));
+                try {
+                    discoverConfig(config, result);
+                } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+                    LOGGER.debug("Skipping one changed Firmament config while preserving other configs", exception);
                 }
             }
-            return result;
+            return List.copyOf(result);
+        }
+
+        private void discoverConfig(Object config, List<NativeFeature> result)
+                throws ReflectiveOperationException {
+            String configName = String.valueOf(config.getClass().getMethod("getName").invoke(config));
+            String categoryName = String.valueOf(config.getClass().getMethod("getCategory").invoke(config));
+            Map<?, ?> options = (Map<?, ?>) config.getClass().getMethod("getAllOptions").invoke(config);
+            for (Object option : options.values()) {
+                try {
+                    NativeFeature feature = discoverOption(config, configName, categoryName, options, option);
+                    if (feature != null) result.add(feature);
+                } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+                    LOGGER.debug("Skipping one changed Firmament option while preserving sibling options", exception);
+                }
+            }
+        }
+
+        private @Nullable NativeFeature discoverOption(Object config, String configName, String categoryName,
+                                                        Map<?, ?> options, Object option)
+                throws ReflectiveOperationException {
+            Object value = option.getClass().getMethod("get").invoke(option);
+            ValueKind kind = valueKind(value == null ? Object.class : value.getClass());
+            if (kind != ValueKind.BOOLEAN && kind != ValueKind.ENUM) return null;
+            String property = String.valueOf(option.getClass().getMethod("getPropertyName").invoke(option));
+            String title = componentString(option, "getLabelText", humanize(property));
+            String description = componentString(option, "getLabelDescription",
+                    provider.displayName + " · " + configName);
+            ValueAccess access = new ValueAccess() {
+                @Override public Object get() throws ReflectiveOperationException {
+                    return option.getClass().getMethod("get").invoke(option);
+                }
+
+                @Override public void set(@Nullable Object newValue) throws ReflectiveOperationException {
+                    option.getClass().getMethod("set", Object.class).invoke(option, newValue);
+                    markFirmamentDirty(config);
+                }
+            };
+            NativeSetting primary = new NativeSetting(configName + "." + property, title, kind,
+                    null, null, access);
+            List<NativeSetting> settings = new ArrayList<>();
+            for (Object sibling : options.values()) {
+                if (sibling == option || settings.size() >= MAX_SETTINGS_PER_FEATURE) continue;
+                List<NativeSetting> hudSettings = firmamentHudSettings(config, configName, sibling);
+                if (!hudSettings.isEmpty()) {
+                    for (NativeSetting setting : hudSettings) {
+                        if (settings.size() >= MAX_SETTINGS_PER_FEATURE) break;
+                        settings.add(setting);
+                    }
+                    continue;
+                }
+                NativeSetting setting = firmamentSetting(config, configName, sibling);
+                if (setting != null) settings.add(setting);
+            }
+            String path = categoryName + "." + configName + "." + property;
+            ConfigScreen.Category category = classify(path);
+            return new NativeFeature(provider, canonicalId(category, title), title, description,
+                    category, groupName(path, configName), primary, settings);
         }
 
         private @Nullable NativeSetting firmamentSetting(Object config, String configName, Object option) {
@@ -704,7 +780,7 @@ final class UnifiedModIntegration {
                     }
                 };
                 return new NativeSetting(configName + "." + property, label, kind, null, null, access);
-            } catch (ReflectiveOperationException | RuntimeException ignored) {
+            } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
                 return null;
             }
         }
@@ -721,7 +797,7 @@ final class UnifiedModIntegration {
                         firmamentHudAxis(config, configName, property, option, "y"),
                         firmamentHudScale(config, configName, property, option)
                 );
-            } catch (ReflectiveOperationException | RuntimeException ignored) {
+            } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
                 return List.of();
             }
         }
@@ -788,26 +864,32 @@ final class UnifiedModIntegration {
         }
         for (Member member : members) {
             if (member.simple()) {
-                if ((member.kind() == ValueKind.BOOLEAN || member.kind() == ValueKind.ENUM) && !path.isEmpty()) {
-                    String title = memberLabel(member.ownerMember(), humanize(member.name()));
+                if (isToggleCandidate(member) && !path.isEmpty()) {
+                    String title = memberLabel(member.ownerMember(), featureTitle(member.name()));
                     String description = memberDescription(member.ownerMember(), adapter.provider.displayName
                             + " · " + String.join(" / ", path));
                     String fullPath = String.join(".", append(path, member.name()));
                     ConfigScreen.Category category = classify(fullPath);
                     NativeSetting primarySetting = setting(adapter, append(path, member.name()), member, title);
+                    List<NativeSetting> settings = collectRelatedSettings(adapter, path, members, member);
                     result.add(new NativeFeature(adapter.provider, canonicalId(category, title), title, description,
-                            category, groupName(fullPath, path.getLast()), primarySetting, List.of()));
+                            category, groupName(fullPath, path.getLast()), primarySetting, settings));
                 }
                 continue;
             }
             Object child;
             try {
                 child = member.read(object);
-            } catch (ReflectiveOperationException | RuntimeException ignored) {
+            } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
                 continue;
             }
             if (child == null || !belongsToProvider(adapter.provider, child.getClass())) continue;
-            scanObject(adapter, child, append(path, member.name()), member.name(), depth + 1, visited, result);
+            try {
+                scanObject(adapter, child, append(path, member.name()), member.name(), depth + 1, visited, result);
+            } catch (ReflectiveOperationException | RuntimeException | LinkageError exception) {
+                LOGGER.debug("Skipping one changed {} config branch while preserving siblings",
+                        adapter.provider.displayName, exception);
+            }
         }
     }
 
@@ -828,6 +910,41 @@ final class UnifiedModIntegration {
             }
         }
         return result;
+    }
+
+    /**
+     * Associates settings with prefixed future-version toggles without
+     * guessing across unrelated functions in the same provider object. For
+     * example, {@code enabledCommissions} owns {@code commissionsX} and
+     * {@code commissionsY}, while {@code enabledPowder} remains a separate
+     * feature.
+     */
+    private static List<NativeSetting> collectRelatedSettings(ObjectGraphAdapter adapter,
+                                                               List<String> path,
+                                                               List<Member> members,
+                                                               Member primary) {
+        String stem = semanticStem(primary.name());
+        if (stem.isBlank()) return List.of();
+        List<NativeSetting> result = new ArrayList<>();
+        for (Member member : members) {
+            if (member == primary || result.size() >= MAX_SETTINGS_PER_FEATURE || isToggleCandidate(member)) continue;
+            if (member.simple() && relatedToStem(member.name(), stem)) {
+                String role = coordinateRole(member.name());
+                String label = role == null
+                        ? memberLabel(member.ownerMember(), humanize(member.name()))
+                        : role.equals("scale") ? ModText.get("config.setting.scale") : role.toUpperCase(Locale.ROOT);
+                NativeSetting candidate = setting(adapter, append(path, member.name()), member, label);
+                if (candidate.editable()) result.add(candidate);
+                continue;
+            }
+            if (adapter.provider == Provider.SKYHANNI
+                    && relatedToStem(member.name(), stem)
+                    && member.ownerMember().getType().getName()
+                    .equals("at.hannibal2.skyhanni.config.core.config.Position")) {
+                result.addAll(skyHanniPositionSettings(adapter, append(path, member.name())));
+            }
+        }
+        return List.copyOf(result);
     }
 
     private static List<NativeSetting> skyHanniPositionSettings(ObjectGraphAdapter adapter, List<String> path) {
@@ -877,11 +994,12 @@ final class UnifiedModIntegration {
     private static NativeSetting setting(ObjectGraphAdapter adapter, List<String> path,
                                          Member member, String label) {
         double[] range = sliderRange(member.ownerMember());
+        String role = coordinateRole(member.name());
         if (range == null && member.kind() == ValueKind.INTEGER
-                && (member.name().equalsIgnoreCase("x") || member.name().equalsIgnoreCase("y"))) {
+                && ("x".equals(role) || "y".equals(role))) {
             range = new double[]{-4096.0, 4096.0};
         } else if (range == null && member.kind() == ValueKind.DECIMAL
-                && member.name().equalsIgnoreCase("scale")) {
+                && "scale".equals(role)) {
             range = new double[]{0.25, 4.0};
         }
         return new NativeSetting(String.join(".", path), label, member.kind(),
@@ -906,6 +1024,33 @@ final class UnifiedModIntegration {
         return null;
     }
 
+    private static boolean isToggleCandidate(Member member) {
+        return member.kind() == ValueKind.BOOLEAN || member.kind() == ValueKind.ENUM;
+    }
+
+    static String featureTitle(String name) {
+        String stripped = name.replaceFirst("^(?i:isEnabled|enabled|enable|display|show|visible|active|use)(?=[A-Z_])", "");
+        return humanize(stripped.isBlank() ? name : stripped);
+    }
+
+    static String semanticStem(String name) {
+        String stripped = name.replaceFirst("^(?i:isEnabled|enabled|enable|display|show|visible|active|use)(?=[A-Z_])", "");
+        return stripped.replaceAll("[^A-Za-z0-9]", "").toLowerCase(Locale.ROOT);
+    }
+
+    static boolean relatedToStem(String candidate, String stem) {
+        if (stem == null || stem.isBlank()) return false;
+        String normalized = candidate.replaceAll("[^A-Za-z0-9]", "").toLowerCase(Locale.ROOT);
+        return normalized.startsWith(stem) || normalized.endsWith(stem);
+    }
+
+    static @Nullable String coordinateRole(String name) {
+        if (name.equalsIgnoreCase("x") || name.endsWith("X") || name.endsWith("_x")) return "x";
+        if (name.equalsIgnoreCase("y") || name.endsWith("Y") || name.endsWith("_y")) return "y";
+        if (name.equalsIgnoreCase("scale") || name.endsWith("Scale") || name.endsWith("_scale")) return "scale";
+        return null;
+    }
+
     private static List<Member> members(Object owner) {
         Class<?> type = owner.getClass();
         Map<String, Field> fields = new LinkedHashMap<>();
@@ -917,18 +1062,25 @@ final class UnifiedModIntegration {
         }
         List<Member> result = new ArrayList<>();
         for (Field field : fields.values()) {
-            field.setAccessible(true);
-            Class<?> valueType = field.getType();
-            ValueKind kind = valueKind(valueType);
-            boolean property = isProperty(valueType);
-            if (property) {
-                try {
+            try {
+                field.setAccessible(true);
+                Class<?> valueType = field.getType();
+                ValueKind kind = valueKind(valueType);
+                boolean property = isProperty(valueType);
+                if (property) {
                     Object wrapper = field.get(owner);
                     Object actual = wrapper == null ? null : wrapper.getClass().getMethod("get").invoke(wrapper);
                     kind = actual == null ? ValueKind.UNSUPPORTED : valueKind(actual.getClass());
-                } catch (ReflectiveOperationException | RuntimeException ignored) { }
+                    if (wrapper != null) findSingleArgumentMethod(wrapper.getClass(), "set");
+                }
+                boolean writableSimple = kind != ValueKind.UNSUPPORTED
+                        && (!Modifier.isFinal(field.getModifiers()) || property);
+                result.add(new Member(field.getName(), field, kind, writableSimple, property));
+            } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) {
+                // A provider update may make one branch inaccessible. Keep
+                // discovering other independent branches instead of hiding the
+                // whole provider.
             }
-            result.add(new Member(field.getName(), field, kind, kind != ValueKind.UNSUPPORTED, property));
         }
         return result;
     }
@@ -995,6 +1147,15 @@ final class UnifiedModIntegration {
             if (method.getName().equals(name) && method.getParameterCount() == 1) return method;
         }
         throw new NoSuchMethodException(type.getName() + "." + name);
+    }
+
+    private static boolean hasZeroArgumentMethod(Class<?> type, String name) {
+        for (Class<?> cursor = type; cursor != null; cursor = cursor.getSuperclass()) {
+            for (Method method : cursor.getDeclaredMethods()) {
+                if (method.getName().equals(name) && method.getParameterCount() == 0) return true;
+            }
+        }
+        return false;
     }
 
     private static Object unwrap(Object value) throws ReflectiveOperationException {
@@ -1140,7 +1301,7 @@ final class UnifiedModIntegration {
                     String translated = Component.translatable(value).getString();
                     return translated.equals(value) ? humanize(value) : translated;
                 }
-            } catch (ReflectiveOperationException | RuntimeException ignored) { }
+            } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) { }
         }
         return fallback;
     }
@@ -1152,7 +1313,7 @@ final class UnifiedModIntegration {
                 double minimum = ((Number) annotation.annotationType().getMethod("minValue").invoke(annotation)).doubleValue();
                 double maximum = ((Number) annotation.annotationType().getMethod("maxValue").invoke(annotation)).doubleValue();
                 if (maximum > minimum) return new double[]{minimum, maximum};
-            } catch (ReflectiveOperationException | RuntimeException ignored) { }
+            } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) { }
         }
         return null;
     }
@@ -1164,7 +1325,7 @@ final class UnifiedModIntegration {
                 String text = value.getString();
                 if (!text.isBlank() && !text.contains("firmament.config.")) return text;
             }
-        } catch (ReflectiveOperationException | RuntimeException ignored) { }
+        } catch (ReflectiveOperationException | RuntimeException | LinkageError ignored) { }
         return fallback;
     }
 

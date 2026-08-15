@@ -145,6 +145,14 @@ public final class ModConfig {
             // Provider selections are local and do not make external mods required.
             configVersion = 20;
         }
+        if (configVersion < 21) {
+            // Cross-mod settings and HUD editing are powerful optional tools.
+            // Keep both integrations opt-in and independent on every existing
+            // installation instead of enabling provider writes during migration.
+            integrations.unifiedSettingsEditor = false;
+            integrations.unifiedHudEditor = false;
+            configVersion = 21;
+        }
         hudStyle.map.normalize();
         hudStyle.mining.normalize();
         hudStyle.hunting.normalize();
@@ -633,6 +641,10 @@ public final class ModConfig {
     }
 
     public static final class Integrations {
+        /** Expose recognised live settings from installed provider mods. */
+        public boolean unifiedSettingsEditor;
+        /** Expose recognised live provider HUD positions in QCA's HUD editor. */
+        public boolean unifiedHudEditor;
         /** Logical feature id -> selected live configuration provider. */
         public Map<String, String> selectedProviders = new LinkedHashMap<>();
 
