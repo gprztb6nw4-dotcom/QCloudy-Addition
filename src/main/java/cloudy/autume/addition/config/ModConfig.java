@@ -17,6 +17,7 @@ public final class ModConfig {
     public Hunting hunting = new Hunting();
     public CrimsonIsle crimsonIsle = new CrimsonIsle();
     public Combat combat = new Combat();
+    public CenturyCakes centuryCakes = new CenturyCakes();
     public Pets pets = new Pets();
     public Chat chat = new Chat();
     public Inventory inventory = new Inventory();
@@ -32,6 +33,7 @@ public final class ModConfig {
         if (hunting == null) hunting = new Hunting();
         if (crimsonIsle == null) crimsonIsle = new CrimsonIsle();
         if (combat == null) combat = new Combat();
+        if (centuryCakes == null) centuryCakes = new CenturyCakes();
         if (pets == null) pets = new Pets();
         if (chat == null) chat = new Chat();
         if (inventory == null) inventory = new Inventory();
@@ -153,11 +155,26 @@ public final class ModConfig {
             integrations.unifiedHudEditor = false;
             configVersion = 21;
         }
+        if (configVersion < 22) {
+            // Power Orb and Flare expiry warnings are enabled by default and
+            // keep an independent, locally played 64% alert sound.
+            combat.deployableExpiryAlert = true;
+            combat.deployableExpiryAudio = new AlertAudio();
+            configVersion = 22;
+        }
+        if (configVersion < 23) {
+            // Century Cake expiry alerts use one master switch for all twenty
+            // effects. Sound remains local and follows the shared 64% default.
+            centuryCakes.expiryAlerts = true;
+            centuryCakes.expiryAudio = new AlertAudio();
+            configVersion = 23;
+        }
         hudStyle.map.normalize();
         hudStyle.mining.normalize();
         hudStyle.hunting.normalize();
         hudStyle.pet.normalize();
-        combat.enderDragonHighlightColor &= 0xFFFFFF;
+        combat.normalize();
+        centuryCakes.normalize();
         mining.normalize();
         fishing.normalize();
         hunting.normalize();
@@ -470,6 +487,25 @@ public final class ModConfig {
     public static final class Combat {
         public boolean enderDragonHighlight = true;
         public int enderDragonHighlightColor = 0xFF405C;
+        public boolean deployableExpiryAlert = true;
+        public AlertAudio deployableExpiryAudio = new AlertAudio();
+
+        private void normalize() {
+            enderDragonHighlightColor &= 0xFFFFFF;
+            if (deployableExpiryAudio == null) deployableExpiryAudio = new AlertAudio();
+            deployableExpiryAudio.normalize();
+        }
+    }
+
+    public static final class CenturyCakes {
+        /** One master switch; individual cake effects never get separate toggles. */
+        public boolean expiryAlerts = true;
+        public AlertAudio expiryAudio = new AlertAudio();
+
+        private void normalize() {
+            if (expiryAudio == null) expiryAudio = new AlertAudio();
+            expiryAudio.normalize();
+        }
     }
 
     public static final class Pets {

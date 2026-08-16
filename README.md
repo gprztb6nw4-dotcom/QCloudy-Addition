@@ -7,7 +7,7 @@ QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [Current Alpha 2.8.24 changelog](CHANGELOG.md)
+- [Current Alpha 2.8.25 changelog](CHANGELOG.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -76,6 +76,7 @@ Foraging and Hunting are separate top-level settings categories, while Safari is
 
 - **Ender Dragon Highlight** — puts Hypixel Ender Dragons in the vanilla outline pipeline while the scoreboard location is The End or Dragon's Nest. The outline color is selectable from red, yellow, cyan, green, purple, and white.
 - **Deployable Expiry Alert** — exact received messages for the local player's four Power Orbs and Warning/Alert/SOS Flares show a large English center title. Its local sound is independently switchable and defaults to 64%.
+- **Century Cake Effect Expiry Alert** — one default-on master switch tracks all 20 received cake refreshes for 48 real-world hours, merges simultaneous expiries, and shows a center title plus an underlined chat action. `/cake` and `/centurycakeeffect` open the local timer screen; clicking the chat action runs `/visit northwestcloudy`.
 
 ### Pets
 
@@ -119,7 +120,7 @@ Install JDK 25 and run `./tools/build_all_versions.sh`. For an Alpha channel thi
 
 ## Safety boundary
 
-The release contains no `sendChat`, Hypixel Mod API subscription, WebSocket, HTTP client, runtime Shard-data request, macro, automatic movement, or chunk-request code. Its normal HUD features consume only client-received state. `/qshard` is a local screen command and sends nothing. The always-available local `/th` and `/helia` shortcuts send exactly `warp torrhus` and `chapter torrhus`, equivalent to entering `/warp torrhus` and `/chapter torrhus`; they run only when the player types the corresponding shortcut. No command, chat, click, or movement action is generated without physical user input.
+The release contains no `sendChat`, Hypixel Mod API subscription, WebSocket, HTTP client, runtime Shard-data request, macro, automatic movement, or chunk-request code. Its normal HUD features consume only client-received state. `/qshard`, `/cake`, and `/centurycakeeffect` are local screen commands and send nothing. The always-available local `/th` and `/helia` shortcuts send exactly `warp torrhus` and `chapter torrhus`, equivalent to entering `/warp torrhus` and `/chapter torrhus`; they run only when the player types the corresponding shortcut. The underlined Century Cake renewal action sends exactly `/visit northwestcloudy`, but only after the player physically clicks it. No server command, chat, click, or movement action is generated automatically.
 
 Hypixel states that all modifications are used at the player's own risk and that an unlisted feature is not guaranteed to be allowed. Review [docs/COMPLIANCE.md](docs/COMPLIANCE.md) and the current [Hypixel Allowed Modifications guide](https://support.hypixel.net/hc/en-us/articles/6472550754962-Hypixel-Allowed-Modifications) before use.
 
@@ -131,7 +132,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-Current Alpha 2.8.24 changes: [CHANGELOG.md](CHANGELOG.md)
+Current Alpha 2.8.25 changes: [CHANGELOG.md](CHANGELOG.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 

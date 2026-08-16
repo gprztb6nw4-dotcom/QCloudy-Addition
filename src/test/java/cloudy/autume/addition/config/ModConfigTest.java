@@ -16,6 +16,7 @@ final class ModConfigTest {
         config.hunting = null;
         config.crimsonIsle = null;
         config.combat = null;
+        config.centuryCakes = null;
         config.pets = null;
         config.chat = null;
         config.hudStyle = null;
@@ -29,6 +30,7 @@ final class ModConfigTest {
         assertNotNull(config.hunting);
         assertNotNull(config.crimsonIsle);
         assertNotNull(config.combat);
+        assertNotNull(config.centuryCakes);
         assertNotNull(config.pets);
         assertNotNull(config.chat);
         assertNotNull(config.hudStyle);
@@ -45,7 +47,7 @@ final class ModConfigTest {
         assertEquals(1, config.hudStyle.pet.borderThickness);
         assertEquals(1.0f, config.hudStyle.pet.scale);
         assertEquals(1.75f, config.hudStyle.map.scale);
-        assertEquals(21, config.configVersion);
+        assertEquals(23, config.configVersion);
         assertEquals(true, config.manualReconnectButton);
         assertEquals(true, config.pets.showMaxProgress);
         assertEquals(true, config.pets.showOverflowLevel);
@@ -78,6 +80,12 @@ final class ModConfigTest {
         assertEquals(64, config.inventory.instantTransmissionSoundVolume);
         assertEquals(64, config.inventory.etherwarpSoundVolume);
         assertEquals(true, config.hunting.alertSound);
+        assertEquals(true, config.combat.deployableExpiryAlert);
+        assertEquals(true, config.combat.deployableExpiryAudio.sound);
+        assertEquals(64, config.combat.deployableExpiryAudio.volume);
+        assertEquals(true, config.centuryCakes.expiryAlerts);
+        assertEquals(true, config.centuryCakes.expiryAudio.sound);
+        assertEquals(64, config.centuryCakes.expiryAudio.volume);
         assertEquals(64, config.hunting.treeGiftAudio.volume);
         assertEquals(64, config.hunting.sparklingAudio.volume);
         assertEquals(true, config.hunting.coldAudio.sound);
@@ -139,7 +147,7 @@ final class ModConfigTest {
 
         migrated.normalize();
 
-        assertEquals(21, migrated.configVersion);
+        assertEquals(23, migrated.configVersion);
         assertEquals("VANILLA", migrated.inventory.instantTransmissionSoundMode);
         assertEquals("VANILLA", migrated.inventory.etherwarpSoundMode);
         assertEquals(false, migrated.hunting.safariShards);
@@ -148,6 +156,10 @@ final class ModConfigTest {
         assertEquals(64, migrated.fishing.biteAlertVolume);
         assertEquals(false, migrated.integrations.unifiedSettingsEditor);
         assertEquals(false, migrated.integrations.unifiedHudEditor);
+        assertEquals(true, migrated.combat.deployableExpiryAlert);
+        assertEquals(64, migrated.combat.deployableExpiryAudio.volume);
+        assertEquals(true, migrated.centuryCakes.expiryAlerts);
+        assertEquals(64, migrated.centuryCakes.expiryAudio.volume);
 
         migrated.inventory.instantTransmissionSoundMode = "invalid";
         migrated.inventory.instantTransmissionCustomSound = "invalid";

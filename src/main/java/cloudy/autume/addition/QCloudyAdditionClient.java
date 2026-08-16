@@ -3,12 +3,15 @@ package cloudy.autume.addition;
 import cloudy.autume.addition.config.ConfigManager;
 import cloudy.autume.addition.config.ConfigScreen;
 import cloudy.autume.addition.config.IntegrationScanService;
+import cloudy.autume.addition.combat.DeployableExpiryAlert;
 import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.fishing.FishingBiteAlert;
 import cloudy.autume.addition.hud.HudRenderer;
 import cloudy.autume.addition.i18n.ModText;
 import cloudy.autume.addition.input.HotkeyInputs;
 import cloudy.autume.addition.inventory.ItemTimestampTooltip;
+import cloudy.autume.addition.inventory.CenturyCakeEffectsScreen;
+import cloudy.autume.addition.inventory.CenturyCakeManager;
 import cloudy.autume.addition.inventory.ShardFusionScreen;
 import cloudy.autume.addition.inventory.ShardWarehouseManager;
 import cloudy.autume.addition.hunting.HuntingTracker;
@@ -62,6 +65,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
     public void onInitializeClient() {
         ConfigManager.load();
         ShardWarehouseManager.load();
+        CenturyCakeManager.load();
         ItemTimestampTooltip.register();
         SafariBeltTooltip.register();
         HuntingWorldRenderer.register();
@@ -83,6 +87,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
                 HotmSlotTracker.update(client);
                 PetSkinTracker.update(client);
                 ShardWarehouseManager.update(client);
+                CenturyCakeManager.tick(client);
             }
             HuntingTracker.tick(client);
             FishingBiteAlert.tick(client);
@@ -91,11 +96,17 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
             PetTracker.onChat(message.getString(), overlay);
             HuntingTracker.onMessage(message, overlay);
+            DeployableExpiryAlert.onMessage(message, overlay);
+            CenturyCakeManager.onMessage(message, overlay);
             if (!overlay) PetSkinTracker.onChat(message.getString());
         });
         // Compatibility path for chat compactors (for example SkyHanni): GAME
         // and GAME_CANCELED are mutually exclusive for one received message.
-        ClientReceiveMessageEvents.GAME_CANCELED.register(HuntingTracker::onMessage);
+        ClientReceiveMessageEvents.GAME_CANCELED.register((message, overlay) -> {
+            HuntingTracker.onMessage(message, overlay);
+            DeployableExpiryAlert.onMessage(message, overlay);
+            CenturyCakeManager.onMessage(message, overlay);
+        });
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             resetTrackers();
         });
@@ -143,6 +154,8 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
             } else {
                 LOGGER.warn("Skipping client command /qshard because another mod already registered it");
             }
+            registerCenturyCakeCommand(dispatcher, "cake");
+            registerCenturyCakeCommand(dispatcher, "centurycakeeffect");
         });
 
         LOGGER.info("QCloudy_Addition initialized in client-side mode");
@@ -211,6 +224,20 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         Minecraft client = source.getClient();
         client.execute(() -> openShardFusionGuide(client, MinecraftClientCompat.screen(client), query));
         return 1;
+    }
+
+    private static void registerCenturyCakeCommand(
+            com.mojang.brigadier.CommandDispatcher<FabricClientCommandSource> dispatcher, String name) {
+        if (dispatcher.getRoot().getChild(name) != null) {
+            LOGGER.warn("Skipping client command /{} because another mod already registered it", name);
+            return;
+        }
+        dispatcher.register(ClientCommands.literal(name).executes(context -> {
+            Minecraft client = context.getSource().getClient();
+            client.execute(() -> MinecraftClientCompat.setScreen(client,
+                    new CenturyCakeEffectsScreen(MinecraftClientCompat.screen(client))));
+            return 1;
+        }));
     }
 
     private static void setChord(ChordAction action, InputConstants.Key input, int modifiers) {
@@ -292,5 +319,6 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
         PetSkinTracker.reset();
         HuntingTracker.reset();
         FishingBiteAlert.reset();
+        DeployableExpiryAlert.reset();
     }
 }

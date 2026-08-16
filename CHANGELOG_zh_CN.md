@@ -1,5 +1,19 @@
 # 更新日志
 
+## [2.8.25] - 2026-08-17
+
+### 新增
+
+- 在 **物品与菜单 → Century Cakes** 中加入 **Century Cake 效果过期提醒**。全部 20 种蛋糕效果共用一个默认开启的总开关，不存在分效果开关。
+- 客户端收到 Century Cake 刷新消息后会记录真实世界 48 小时倒计时，玩家离线期间也会继续计算。输入 `/cake` 或 `/centurycakeeffect` 可打开仿原版 `/effects` 的只读菜单，查看真实蛋糕头像、加成、品质和剩余时间。
+- 单个效果到期时显示中央大字，并在本地聊天栏显示 `[QC] Century Cake <Effect> Expired! Click Here For Cake Eating`；同批多个效果到期会合并为一条，例如 `[QC] 8 Century Cake Effect Expired! Click Here For Cake Eating`。
+- 带下划线的 `Click Here For Cake Eating` 只有在玩家点击后才会执行精确指令 `/visit northwestcloudy`。该功能拥有独立本地音效，默认开启且音量为 64%。
+
+### 安全边界与构建
+
+- 蛋糕追踪只读取客户端收到的聊天并保存本地绝对到期时间；不会查询 Hypixel、自动吃蛋糕或自动发送命令。
+- Alpha 2.8.25 仅构建 Minecraft 26.1.2 版本。
+
 ## [2.8.24] - 2026-08-16
 
 ### 新增

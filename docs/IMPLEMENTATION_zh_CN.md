@@ -1,6 +1,6 @@
 # QCloudy_Addition 功能实现与数据流细致说明
 
-本文对应 Minecraft 26.1.2 的 `Alpha-2.8.24`，逐项说明每个公开功能的用途、读取的客户端信息、实现方式、应呈现的效果、默认状态，以及是否会产生对外操作。当前 Alpha 只构建 26.1.2。
+本文对应 Minecraft 26.1.2 的 `Alpha-2.8.25`，逐项说明每个公开功能的用途、读取的客户端信息、实现方式、应呈现的效果、默认状态，以及是否会产生对外操作。当前 Alpha 只构建 26.1.2。
 
 ## 1. 总体架构
 
@@ -289,6 +289,14 @@ Feesh 使用 Kotlin 委托设置，而不是可直接修改的公开字段。适
 - **效果：**每次收到到期消息时，以英文大字显示 `<Deployable Name> Despawned!!!`。
 - **默认/对外：**功能开启；音效开启且为 64%；不发送聊天、命令、数据包、交互或网络请求。
 
+### Century Cake 效果过期提醒
+
+- **用途：**跨重连和离线时间保留全部 Century Cake 加成的真实到期点，并在需要续效果时给出唯一、明确的提醒。
+- **读取内容：**精确收到的 `Big Yum! You refresh/gain <加成> for 48 hours!` 聊天行与本地系统时间。离线目录严格包含 20 组已验证蛋糕/效果及其物品头 Profile。
+- **实现：**规范化后的加成对应唯一目录项，并在当前账号/Profile 下保存绝对 `当前时间 + 48 小时`。每秒检查器先标记本次新过期项，再决定是否展示，将同一次检查发现的过期合并；配置中不存在分效果开关。
+- **效果：**一个默认开启的总提醒开关、中央大字、共享默认 64% 的独立本地音效，以及本地聊天 Component。`/cake` 与 `/centurycakeeffect` 打开只读效果菜单，显示蛋糕图标、加成、品质和剩余时间。
+- **默认/对外：**开启；不会自动执行任何操作。带下划线的 `Click Here For Cake Eating` 只绑定精确 `/visit northwestcloudy`，只有玩家点击后才由 Minecraft 执行。
+
 ## 10. Pet HUD
 
 ### 用途
@@ -381,8 +389,10 @@ QCA不会在磁盘保存密码、Token、Hypixel API Key、聊天历史、远程
 |---|---|---|
 | `/qca`、`/qc` | 打开本地QCA设置 | 无服务器载荷 |
 | `/qshard [英文查询]` | 打开本地离线 Shard Fusion Guide 并预填搜索 | 无服务器载荷 |
+| `/cake`、`/centurycakeeffect` | 打开本地 Century Cake 效果/计时界面 | 无服务器载荷 |
 | 玩家输入 `/th` | `sendCommand("warp torrhus")` | 否 |
 | 玩家输入 `/helia` | `sendCommand("chapter torrhus")` | 否 |
+| 玩家点击带下划线的 Century Cake 续效果文字 | 通过 Minecraft 聊天 `RUN_COMMAND` 点击事件执行 `sendCommand("visit northwestcloudy")` | 否 |
 | 玩家点击“重新连接” | 对本次内存中记录的目标发起一次普通Minecraft连接 | 否 |
 
 `sendChat`：无。自动生成聊天：无。自动命令：无。自动移动、战斗、捕捉、物品使用、方块交互或重连：无。

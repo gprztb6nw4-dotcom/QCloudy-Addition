@@ -603,6 +603,7 @@ public final class ConfigScreen extends Screen {
         COMBAT_DEPLOYABLES(Category.COMBAT, "config.group.deployables"),
         COMBAT_VISIBILITY(Category.COMBAT, "config.group.combat_visibility"),
         PET_DISPLAY(Category.ITEMS_AND_MENUS, "config.group.pet_display"),
+        CENTURY_CAKES(Category.ITEMS_AND_MENUS, "config.group.century_cakes"),
         SHARD_FUSION(Category.ITEMS_AND_MENUS, "config.group.shard_fusion"),
         CHAT_UI(Category.GENERAL, "config.group.chat_ui"),
         INVENTORY_TOOLS(Category.ITEMS_AND_MENUS, "config.group.inventory_tools"),
@@ -661,6 +662,8 @@ public final class ConfigScreen extends Screen {
                 "config.desc.combat.deployable_expiry"),
         DRAGON_HIGHLIGHT(FeatureGroup.COMBAT_VISIBILITY, "config.dragon_highlight", "config.desc.dragon_highlight"),
         PET_HUD(FeatureGroup.PET_DISPLAY, "config.pet_hud", "config.desc.pet_hud"),
+        CENTURY_CAKE_EFFECTS(FeatureGroup.CENTURY_CAKES, "config.century_cake",
+                "config.desc.century_cake"),
         SHARD_FUSION_HELPER(FeatureGroup.SHARD_FUSION, "config.shard_fusion", "config.desc.shard_fusion"),
         CHAT_PEEK(FeatureGroup.CHAT_UI, "config.chat_peek", "config.desc.chat_peek"),
         ITEM_TIMESTAMPS(FeatureGroup.INVENTORY_TOOLS, "config.item_timestamps", "config.desc.item_timestamps"),
@@ -717,6 +720,7 @@ public final class ConfigScreen extends Screen {
                 case DEPLOYABLE_EXPIRY_ALERT -> config.combat.deployableExpiryAlert;
                 case DRAGON_HIGHLIGHT -> config.combat.enderDragonHighlight;
                 case PET_HUD -> config.pets.equippedPetHud;
+                case CENTURY_CAKE_EFFECTS -> config.centuryCakes.expiryAlerts;
                 case SHARD_FUSION_HELPER -> config.inventory.shardFusionHelper;
                 case CHAT_PEEK -> config.chat.chatPeek;
                 case ITEM_TIMESTAMPS -> config.inventory.itemTimestamps;
@@ -770,6 +774,8 @@ public final class ConfigScreen extends Screen {
                         !config.combat.deployableExpiryAlert;
                 case DRAGON_HIGHLIGHT -> config.combat.enderDragonHighlight = !config.combat.enderDragonHighlight;
                 case PET_HUD -> config.pets.equippedPetHud = !config.pets.equippedPetHud;
+                case CENTURY_CAKE_EFFECTS -> config.centuryCakes.expiryAlerts =
+                        !config.centuryCakes.expiryAlerts;
                 case SHARD_FUSION_HELPER -> config.inventory.shardFusionHelper = !config.inventory.shardFusionHelper;
                 case CHAT_PEEK -> config.chat.chatPeek = !config.chat.chatPeek;
                 case ITEM_TIMESTAMPS -> config.inventory.itemTimestamps = !config.inventory.itemTimestamps;
@@ -793,7 +799,8 @@ public final class ConfigScreen extends Screen {
                         FAIRY_SOUL_WAYPOINTS, SAFARI_CRITTER_HIGHLIGHT, BEEHEEMOTH_HELPER,
                         LASSO_REEL_SOUND, TREE_GIFT_ALERTS,
                         SPARKLING_ALERT, SNOOZLE_WALL_OVERLAY, SAFARI_BELT,
-                        DEPLOYABLE_EXPIRY_ALERT, DRAGON_HIGHLIGHT, CHAT_PEEK -> null;
+                        DEPLOYABLE_EXPIRY_ALERT, DRAGON_HIGHLIGHT, CHAT_PEEK,
+                        CENTURY_CAKE_EFFECTS -> null;
                 case SHARD_FUSION_HELPER, ITEM_TIMESTAMPS, CURSOR_MEMORY, TELEPORT_SOUNDS -> null;
             };
         }

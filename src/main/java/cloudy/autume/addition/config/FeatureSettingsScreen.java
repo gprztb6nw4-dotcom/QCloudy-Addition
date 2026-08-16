@@ -3,6 +3,7 @@ package cloudy.autume.addition.config;
 import cloudy.autume.addition.compat.MinecraftClientCompat;
 import cloudy.autume.addition.QCloudyAdditionClient;
 import cloudy.autume.addition.i18n.ModText;
+import cloudy.autume.addition.inventory.CenturyCakeEffectsScreen;
 import cloudy.autume.addition.inventory.ShardPlanningScreen;
 import cloudy.autume.addition.input.HotkeyInputs;
 import net.minecraft.ChatFormatting;
@@ -267,6 +268,17 @@ final class FeatureSettingsScreen extends Screen {
             rows.add(new Setting(Kind.FISHING_BITE_VOLUME, "config.setting.fishing_bite_volume"));
             return rows;
         }
+        if (feature == ConfigScreen.Feature.DEPLOYABLE_EXPIRY_ALERT) {
+            rows.add(new Setting(Kind.DEPLOYABLE_EXPIRY_SOUND, "config.alert.sound"));
+            rows.add(new Setting(Kind.DEPLOYABLE_EXPIRY_VOLUME, "config.alert.volume"));
+            return rows;
+        }
+        if (feature == ConfigScreen.Feature.CENTURY_CAKE_EFFECTS) {
+            rows.add(new Setting(Kind.OPEN_CENTURY_CAKES, "config.setting.open_century_cakes"));
+            rows.add(new Setting(Kind.CENTURY_CAKE_SOUND, "config.setting.century_cake_sound"));
+            rows.add(new Setting(Kind.CENTURY_CAKE_VOLUME, "config.setting.century_cake_volume"));
+            return rows;
+        }
         if (feature.inventoryFeature()) {
             rows.add(new Setting(Kind.YIELD_FIRMAMENT, "config.setting.yield_firmament"));
             switch (feature) {
@@ -484,6 +496,16 @@ final class FeatureSettingsScreen extends Screen {
                     config.inventory.etherwarpSoundVolume, 0, 100);
             case FISHING_BITE_VOLUME -> config.fishing.biteAlertVolume = nextPercent(
                     config.fishing.biteAlertVolume, 0, 100);
+            case DEPLOYABLE_EXPIRY_SOUND -> config.combat.deployableExpiryAudio.sound =
+                    !config.combat.deployableExpiryAudio.sound;
+            case DEPLOYABLE_EXPIRY_VOLUME -> config.combat.deployableExpiryAudio.volume = nextPercent(
+                    config.combat.deployableExpiryAudio.volume, 0, 100);
+            case OPEN_CENTURY_CAKES -> MinecraftClientCompat.setScreen(minecraft,
+                    new CenturyCakeEffectsScreen(this));
+            case CENTURY_CAKE_SOUND -> config.centuryCakes.expiryAudio.sound =
+                    !config.centuryCakes.expiryAudio.sound;
+            case CENTURY_CAKE_VOLUME -> config.centuryCakes.expiryAudio.volume = nextPercent(
+                    config.centuryCakes.expiryAudio.volume, 0, 100);
             case DRAGON_COLOR -> openColor(config.combat.enderDragonHighlightColor,
                     color -> config.combat.enderDragonHighlightColor = color);
             case CHAT_PEEK_KEY -> listeningChord = QCloudyAdditionClient.ChordAction.PEEK_CHAT;
@@ -596,7 +618,8 @@ final class FeatureSettingsScreen extends Screen {
         TIMESTAMP_FORMAT, CURSOR_TOLERANCE,
         INSTANT_SOUND_MODE, INSTANT_CUSTOM_SOUND, INSTANT_SOUND_VOLUME,
         ETHERWARP_SOUND_MODE, ETHERWARP_CUSTOM_SOUND, ETHERWARP_SOUND_VOLUME,
-        FISHING_BITE_VOLUME,
+        FISHING_BITE_VOLUME, DEPLOYABLE_EXPIRY_SOUND, DEPLOYABLE_EXPIRY_VOLUME,
+        OPEN_CENTURY_CAKES, CENTURY_CAKE_SOUND, CENTURY_CAKE_VOLUME,
         CHAT_PEEK_KEY, CHAT_SCROLL_TARGET
     }
 
@@ -681,6 +704,11 @@ final class FeatureSettingsScreen extends Screen {
                         + config.inventory.etherwarpCustomSound.toLowerCase());
                 case ETHERWARP_SOUND_VOLUME -> config.inventory.etherwarpSoundVolume + "%";
                 case FISHING_BITE_VOLUME -> config.fishing.biteAlertVolume + "%";
+                case DEPLOYABLE_EXPIRY_SOUND -> onOff(config.combat.deployableExpiryAudio.sound);
+                case DEPLOYABLE_EXPIRY_VOLUME -> config.combat.deployableExpiryAudio.volume + "%";
+                case OPEN_CENTURY_CAKES -> ModText.get("config.open");
+                case CENTURY_CAKE_SOUND -> onOff(config.centuryCakes.expiryAudio.sound);
+                case CENTURY_CAKE_VOLUME -> config.centuryCakes.expiryAudio.volume + "%";
                 case CHAT_SCROLL_TARGET -> ModText.get("config.value."
                         + config.chat.peekScrollTarget.toLowerCase());
                 case BACKGROUND_COLOR -> style.backgroundOpacity == 0
@@ -803,7 +831,8 @@ final class FeatureSettingsScreen extends Screen {
             if (huntingOption != null) return huntingOption.type == HuntingOption.Type.SLIDER;
             return switch (kind) {
                 case OPACITY, SCALE, CURSOR_TOLERANCE, INSTANT_SOUND_VOLUME,
-                        ETHERWARP_SOUND_VOLUME, FISHING_BITE_VOLUME -> true;
+                        ETHERWARP_SOUND_VOLUME, FISHING_BITE_VOLUME, DEPLOYABLE_EXPIRY_VOLUME,
+                        CENTURY_CAKE_VOLUME -> true;
                 default -> false;
             };
         }
@@ -822,6 +851,8 @@ final class FeatureSettingsScreen extends Screen {
                 case INSTANT_SOUND_VOLUME -> fraction(config.inventory.instantTransmissionSoundVolume, 0, 100);
                 case ETHERWARP_SOUND_VOLUME -> fraction(config.inventory.etherwarpSoundVolume, 0, 100);
                 case FISHING_BITE_VOLUME -> fraction(config.fishing.biteAlertVolume, 0, 100);
+                case DEPLOYABLE_EXPIRY_VOLUME -> fraction(config.combat.deployableExpiryAudio.volume, 0, 100);
+                case CENTURY_CAKE_VOLUME -> fraction(config.centuryCakes.expiryAudio.volume, 0, 100);
                 default -> 0.0;
             };
         }
@@ -847,6 +878,8 @@ final class FeatureSettingsScreen extends Screen {
                 case INSTANT_SOUND_VOLUME -> config.inventory.instantTransmissionSoundVolume = ranged(clamped, 0, 100);
                 case ETHERWARP_SOUND_VOLUME -> config.inventory.etherwarpSoundVolume = ranged(clamped, 0, 100);
                 case FISHING_BITE_VOLUME -> config.fishing.biteAlertVolume = ranged(clamped, 0, 100);
+                case DEPLOYABLE_EXPIRY_VOLUME -> config.combat.deployableExpiryAudio.volume = ranged(clamped, 0, 100);
+                case CENTURY_CAKE_VOLUME -> config.centuryCakes.expiryAudio.volume = ranged(clamped, 0, 100);
                 default -> { }
             }
         }

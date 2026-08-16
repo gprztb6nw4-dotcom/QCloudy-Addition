@@ -1,3 +1,43 @@
+# QCloudy_Addition Alpha 2.8.25 单目标验证
+
+日期：2026-08-17<br>
+Minecraft：26.1.2<br>
+Java：25
+
+已验证产物：
+
+- `release/QCloudy_Addition-Alpha-2.8.25+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.25+26.1.2-sources.jar`
+
+可运行 SHA-256：`74dd1e2ccedebb93ee4ac02d75057ddc77548fc47ba4b3f2d94e2f8b1d4f4f69`<br>
+Sources SHA-256：`b9fafaee07402d20bb578b0259807c874bd2417c62512cec593a6c6b58c9226c`
+
+Alpha 2.8.25 有意只为 Minecraft 26.1.2 构建。本版使用一个统一总开关管理全部 20 种 Century Cake 到期提醒，以绝对时间跨离线期保存真实世界 48 小时到期点，并保留 Alpha 2.8.24 的 Power Orb/Flare 到期提醒。
+
+本工作区已验证：
+
+- Java 25 `clean test build prepareRelease` 成功：36 个 suite、186 项当前测试，0 failure、0 error、0 skip。
+- 提交的 Century Cake 目录包含恰好 20 个唯一内部 ID 与 20 个唯一效果。每项都有预期的 `UNCOMMON` 品质、加成文字与蛋糕头颅纹理属性。
+- 解析器接受带或不带格式的精确 `Big Yum! You refresh/gain <已知加成> for 48 hours!`，并拒绝未知效果和非 48 小时消息。
+- 一个默认开启的 `expiryAlerts` 字段统一控制全部蛋糕到期提醒；不存在分蛋糕或分效果开关。独立本地音效默认开启，使用项目统一的 64% 音量。
+- 倒计时保存绝对到期时间，因此真实世界离线时间继续计算。再次刷新会替换当前账号/Profile 下该效果的到期点。
+- 同一次 tick 发现的到期效果只收集一次并合并。单个消息精确为 `[QC] Century Cake <Effect> Expired! Click Here For Cake Eating`；批量消息为 `[QC] <数量> Century Cake Effect Expired! Click Here For Cake Eating`。
+- 测试确认 `Click Here For Cake Eating` 带下划线，并且只有一个精确执行 `/visit northwestcloudy` 的 Minecraft `RUN_COMMAND` 点击事件；计时器不会自动执行该命令。
+- `/cake` 与 `/centurycakeeffect` 是带冲突保护的本地客户端命令，只打开效果计时界面，不发送聊天或服务器命令。
+- 英文与简体中文各有 531 个完全一致的语言键。
+- 展开元数据声明 `2.8.25-alpha+26.1.2` 与纯客户端环境；class major version 为 69。
+- `build/libs/` 中的可运行与 Sources 产物分别和 `release/` 副本逐字节一致；四个副本全部通过 JDK 25 `jar --validate` 与 `unzip -t`。
+- 可运行 JAR 包含 `CenturyCakeManager`、已提交的 Century Cake 数据资源与预期 Fabric 元数据。
+- 没有生成 Minecraft 26.2 的 Alpha 2.8.25 产物；当前 Alpha 规则只构建 Minecraft 26.1.2。
+
+尚未覆盖的 Alpha 实服边界：
+
+- 自动测试和归档验证不能代替已登录 Hypixel 的测试。扩大发布前，应至少刷新一种真实 Century Cake 效果，重连/重启后确认剩余时间，并使用受控的过期测试 Profile 检查中央大字、本地音效、Tooltip、单个/批量聊天文字、下划线以及点击后 `/visit northwestcloudy` 的行为。
+- Hypixel 可见的蛋糕刷新文字未来可能改变；解析器会安全拒绝未知消息，而不会猜测触发。
+- Power Orb/Flare 到期功能仍需按 Alpha 2.8.24 记录完成一次自然到期实服回归。
+
+---
+
 # QCloudy_Addition Alpha 2.8.24 单目标验证
 
 日期：2026-08-16<br>

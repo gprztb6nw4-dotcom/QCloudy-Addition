@@ -6,7 +6,7 @@ QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, 
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Alpha 2.8.24 for Minecraft 26.1.2.** Alpha builds use one Minecraft target. Optional third-party settings/HUD adapters use on-demand capability discovery instead of an exact-version whitelist.
+> **Current channel: Alpha 2.8.25 for Minecraft 26.1.2.** Alpha builds use one Minecraft target. Optional third-party settings/HUD adapters use on-demand capability discovery instead of an exact-version whitelist.
 
 ## Main features
 
@@ -31,6 +31,8 @@ The interface is English by default and can be switched to Simplified Chinese. N
 - Optional pink **Fairy Soul waypoint beams** for Torrhus and Critter Safari, with locally saved collected state.
 
 ### Items, menus, and pets
+
+- **Century Cake Effect Expiry Alert** tracks all 20 received cake bonuses with one default-on master switch. Timers use 48 real-world hours, including offline time; `/cake` and `/centurycakeeffect` open a local effects-style timer screen. Simultaneous expiries are merged into one center/chat alert, and the underlined renewal action runs `/visit northwestcloudy` only after a direct click.
 
 - A standalone, JEI-inspired **Attribute Shard Fusion Guide** covering the official 320-Shard catalog.
 - Search by English Shard name, ID, effect, rarity, category, family, skill, mob type, or acquisition source.
@@ -107,7 +109,7 @@ Optional:
 
 - Mod Menu **18.0.0**
 
-Put `QCloudy_Addition-Alpha-2.8.24+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
+Put `QCloudy_Addition-Alpha-2.8.25+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
 
 Press `O`, open QCA through Mod Menu, or enter `/qca` or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 
@@ -119,8 +121,9 @@ The only server-command payloads implemented by QCA are:
 
 - `/th` → `warp torrhus`
 - `/helia` → `chapter torrhus`
+- clicked Century Cake renewal action → `visit northwestcloudy`
 
-Both are sent only after the player explicitly enters the corresponding local shortcut. Manual reconnect creates one normal Minecraft connection only after the player clicks the button.
+The first two are sent only after the player explicitly enters the corresponding local shortcut; the cake command is sent only after the player physically clicks the underlined chat component. `/cake` and `/centurycakeeffect` are local screen commands and send nothing. Manual reconnect creates one normal Minecraft connection only after the player clicks the button.
 
 ## Compatibility and disclaimer
 

@@ -7,7 +7,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [当前 Alpha 2.8.24 更新日志](CHANGELOG_zh_CN.md)
+- [当前 Alpha 2.8.25 更新日志](CHANGELOG_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
@@ -76,6 +76,7 @@ QCA 可以作为统一的功能与 HUD 编辑入口，直接控制自己的功�
 
 - **末影龙高亮**：当计分板地点为 The End 或 Dragon's Nest 时，将末影龙加入原版轮廓渲染管线；轮廓色可选红、黄、青、绿、紫或白。
 - **Deployable 到期提醒**：精确读取本人四种 Power Orb 与 Warning/Alert/SOS Flare 的消失消息，在屏幕中央显示英文大字；本地音效可独立关闭，默认音量 64%。
+- **Century Cake 效果过期提醒**：使用一个默认开启的总开关追踪全部 20 种蛋糕效果的真实世界 48 小时倒计时；同批过期会合并提醒，并显示中央大字和带下划线的聊天操作。`/cake` 与 `/centurycakeeffect` 打开本地计时菜单；只有点击聊天操作后才执行 `/visit northwestcloudy`。
 
 ### 宠物
 
@@ -119,7 +120,7 @@ QCA 可以作为统一的功能与 HUD 编辑入口，直接控制自己的功�
 
 ## 安全边界
 
-发布版不包含 `sendChat`、Hypixel Mod API 订阅、WebSocket、HTTP 请求、运行时 Shard 数据请求、宏、自动移动或区块请求代码。普通 HUD 只读取客户端已收到的数据；`/qshard` 只打开本地界面，不发送任何内容。永久可用的本地 `/th` 与 `/helia` 只会在玩家输入时分别发送准确内容 `warp torrhus` 与 `chapter torrhus`，等同手动输入 `/warp torrhus` 与 `/chapter torrhus`。没有真实用户输入时，模组不会生成命令、聊天、点击或移动。
+发布版不包含 `sendChat`、Hypixel Mod API 订阅、WebSocket、HTTP 请求、运行时 Shard 数据请求、宏、自动移动或区块请求代码。普通 HUD 只读取客户端已收到的数据；`/qshard`、`/cake` 与 `/centurycakeeffect` 只打开本地界面，不发送任何内容。永久可用的本地 `/th` 与 `/helia` 只会在玩家输入时分别发送准确内容 `warp torrhus` 与 `chapter torrhus`，等同手动输入 `/warp torrhus` 与 `/chapter torrhus`。Century Cake 提醒中的带下划线续效果文字只会在玩家实际点击后发送精确 `/visit northwestcloudy`。模组不会自动生成服务器命令、聊天、点击或移动。
 
 Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确列出的功能也不代表获得许可。使用前请阅读 [docs/COMPLIANCE_zh_CN.md](docs/COMPLIANCE_zh_CN.md) 和最新的 [Hypixel Allowed Modifications 说明](https://support.hypixel.net/hc/en-us/articles/6472550754962-Hypixel-Allowed-Modifications)。
 
@@ -129,7 +130,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-当前 Alpha 2.8.24 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
+当前 Alpha 2.8.25 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

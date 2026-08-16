@@ -1,0 +1,164 @@
+{
+  "cakes": [
+    {
+      "internalId": "EPOCH_CAKE_AQUA",
+      "name": "Barry Century Cake",
+      "effect": "Intelligence",
+      "bonus": "+5 Intelligence",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcxOTQ1NjgzMDYzNiwKICAicHJvZmlsZUlkIiA6ICJlZGUyYzdhMGFjNjM0MTNiYjA5ZDNmMGJlZTllYzhlYyIsCiAgInByb2ZpbGVOYW1lIiA6ICJ0aGVEZXZKYWRlIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzVlZmYwOTA0ZDVlYzY5MWRkOGUzOGQxZjYzZDM4YmVmMDQ5MjAxM2VjZTkzZDMyYWY5MGRjMDMyMDExNmM1OTciLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+    },
+    {
+      "internalId": "EPOCH_CAKE_BLACK",
+      "name": "Century Cake of the Next Dungeon Floor",
+      "effect": "Magic Find",
+      "bonus": "+1 Magic Find",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcxOTQ1NjkxMjk0OCwKICAicHJvZmlsZUlkIiA6ICI1ZjU5NmViY2JlOTQ0NmQxYmI0M2JlNGYzZjRiOGJlNSIsCiAgInByb2ZpbGVOYW1lIiA6ICJUZWlsMHNzIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzY0NTkyNzQ2Y2MzNTY3MmVlMjliYjNhMTUzZDc0ZjdhNWQwZTVmZTg2MTI3MjlhMzRmYWQyNTJmZTc5MDQyODMiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+    },
+    {
+      "internalId": "EPOCH_CAKE_BLUE",
+      "name": "Sea Emperor Century Cake",
+      "effect": "Sea Creature Chance",
+      "bonus": "+1 Sea Creature Chance",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcxOTQ1Njk0MzMwMiwKICAicHJvZmlsZUlkIiA6ICI3MzE4MWQxZDRjYWQ0ZmU0YTcxNWNjNmUxOGNjYzVkNyIsCiAgInByb2ZpbGVOYW1lIiA6ICJaZmVybjRuZGl0byIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9lMTJhMjhlNjlkYTVlNDNjZThmZGVjYzZhODIzYzkyZmZmODQ3MTllMDE0N2NhYWM3MWM1YzhkOTlkYTU3ODFjIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+    },
+    {
+      "internalId": "EPOCH_CAKE_BROWN",
+      "name": "Chocolate Century Cake",
+      "effect": "Farming Fortune",
+      "bonus": "+5 Farming Fortune",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY0Nzk1NDY4MzMwMCwKICAicHJvZmlsZUlkIiA6ICJlMmVkYTM1YjMzZGU0M2UxOTVhZmRkNDgxNzQ4ZDlhOSIsCiAgInByb2ZpbGVOYW1lIiA6ICJDaGFsa19SaWNlR0kiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjIzN2NkZmQ3ZDNmMjBlMGY1YjY5N2EyMGM4NTMyNGZiYjdiY2Q0MDllNjUzMzM3Y2NkNWE5Y2U4Y2NhZmMxZCIKICAgIH0KICB9Cn0="
+    },
+    {
+      "internalId": "EPOCH_CAKE_CYAN",
+      "name": "Century Cake of Hype",
+      "effect": "Mining Fortune",
+      "bonus": "+5 Mining Fortune",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY0Nzk1NDY2NDEyNywKICAicHJvZmlsZUlkIiA6ICI1MTY4ZjZlMjIyM2E0Y2FjYjdiN2QyZjYyZWMxZGFhOSIsCiAgInByb2ZpbGVOYW1lIiA6ICJkZWZfbm90X2FzaCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9mYjdjZmJiNmFmNzAwZTQ5YmZkYjYwMjM2OTIwYzUyMjA4NGJiODA4YWI2MTI0NzRmYjFmODNlYTQxMGQ1NDg0IgogICAgfQogIH0KfQ=="
+    },
+    {
+      "internalId": "EPOCH_CAKE_DARK_GREEN",
+      "name": "Undead Century Cake",
+      "effect": "Vitality",
+      "bonus": "+1 Vitality",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY5MjgwNDA3NTczNSwKICAicHJvZmlsZUlkIiA6ICIwYmM5ZDc3YmQ1YTA0NWMzOTY4MWUzYTRhNDIzODZlMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJWaXRvcmlpaW5oYSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9jMzgzMGQyMzVjOWRlNzAzOTQ2ODY0YzI4MWY0MmY5ZDQ1NjQ3NjkxZWUzNTNmYmJiMDcyMjcxNzcwNmI4YmRhIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+    },
+    {
+      "internalId": "EPOCH_CAKE_EXPIRED",
+      "name": "Long-Expired Century Cake",
+      "effect": "Sweep",
+      "bonus": "+5 Sweep",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc4MDkwNjM0Nzk2OSwKICAicHJvZmlsZUlkIiA6ICIwNTljODIxYzhhODU0NGJiOWJiODVhOGMxNjVhYTc5YiIsCiAgInByb2ZpbGVOYW1lIiA6ICJoZWxsc3RydWNrZWR6IiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzQ1NDVjNmJmZDc3MzAyNDUxMWUyMzVlMTJmNmEyYTJlZGUwNjBjYjhkYmJhOTVlMWZjMjQ1YzE2MDEwNjc2YWIiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+    },
+    {
+      "internalId": "EPOCH_CAKE_GRAY",
+      "name": "Not-a-lie Century Cake",
+      "effect": "True Defense",
+      "bonus": "+1 True Defense",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY5MjgwMzkwNTI0NSwKICAicHJvZmlsZUlkIiA6ICIzNTE2NjhhMTk5MmM0ZGZlOWRkNmY5NTUxNWFkNzVmNyIsCiAgInByb2ZpbGVOYW1lIiA6ICJCbHVlX1BrIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2Q0MGY5Mjk5NTA4Mzg3NjE4Y2ZhZDZkYjM1YzlmNmQ4MDdjNDkzMzdkMzMzZDZlYzNiMTNkOWU4N2QwZDQ4OGYiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+    },
+    {
+      "internalId": "EPOCH_CAKE_GREEN",
+      "name": "Pet Rock Century Cake",
+      "effect": "Defense",
+      "bonus": "+3 Defense",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTYyMjI3MzY1NzM1NCwKICAicHJvZmlsZUlkIiA6ICJjOTAzOGQzZjRiMTg0M2JiYjUwNTU5ZGE3MWFjMTk2MiIsCiAgInByb2ZpbGVOYW1lIiA6ICJUQk5SY29vbGNhdCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9iYTdiZmE4MGE4NWU3MDdlZWRmOTQ1Yjg4OTA1OTQyZjVmNzc5NWVhNTI2NGQ2OTJhMjJlNzA3ZmM1NzdhODhiIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+    },
+    {
+      "internalId": "EPOCH_CAKE_HEPHAESTUS",
+      "name": "Hephaestus' Century Cake",
+      "effect": "Tracking",
+      "bonus": "+1 Tracking",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc4MDkwNjI3Nzk5MywKICAicHJvZmlsZUlkIiA6ICI2NDEwZjRiZjMwNDU0OTdmODBjZDI4NWIyYmJiNTk5NSIsCiAgInByb2ZpbGVOYW1lIiA6ICJNaW5lU2tpbl8xNSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8zYjhhM2UyMmQ5N2MwMzFhM2YyZjg3Yzg1ZjgzMWI0YWJmYTQ3MzU4ZDMyNDljYWMwNDNhYmU5OTlmNTQ5YWI2IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+    },
+    {
+      "internalId": "EPOCH_CAKE_MAGENTA",
+      "name": "ekaC yrutneC tfiR",
+      "effect": "Rift Time",
+      "bonus": "+10 Rift Time",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcyOTYxOTQ4NTk3OCwKICAicHJvZmlsZUlkIiA6ICIyYjcyZWYyYWUzMmQ0Zjc1OGEyMThlMDI4MTViYmNjZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJ2b2xrb2RhZl82MyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kMzdiMWZiNGQwOTgxOTAxYTI5MmM0MmM2NTM5NDZjYTBlMmRlYTE4YmU5Y2FmYTJmMmY5OTMzZmRhYmFhOTg0IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+    },
+    {
+      "internalId": "EPOCH_CAKE_ORANGE",
+      "name": "Latest Update Century Cake",
+      "effect": "Ferocity",
+      "bonus": "+2 Ferocity",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcxOTQ1NzE2MTczOSwKICAicHJvZmlsZUlkIiA6ICI4MDBmNmU2ZGNiMTk0Yzc2OGE1OWU1Y2Q2MzFlNjI2YyIsCiAgInByb2ZpbGVOYW1lIiA6ICJ5dXl1dXUxIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2Y1OGNkMjc1MDg4NDQ3MWMwODM2MzQzMzQzZWM2ZTE4ODIyOWRhMDU0ZWYzNjcxMDEzYWU4ZDQzZDZiMDI1NDgiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ=="
+    },
+    {
+      "internalId": "EPOCH_CAKE_PINK",
+      "name": "Crab-Colored Century Cake",
+      "effect": "Health",
+      "bonus": "+10 Health",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcwODM1MTMzMjczMSwKICAicHJvZmlsZUlkIiA6ICJmOGJmNDBjOWExYzY0ZTllOTIyZTc4M2UwMzNiODBiMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJUeGxvbjUiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjExODU2NzY0MTY2NTNiZjcwNjAzYzcyM2ZmN2E0OGUwODBkYjY0OWE4Y2U1ZDY1YjQ2MWJmNjU0ODc0OTM1YSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+    },
+    {
+      "internalId": "EPOCH_CAKE_PURPLE",
+      "name": "Streamer's Century Cake",
+      "effect": "Pet Luck",
+      "bonus": "+1 Pet Luck",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTYyMjI5OTg2NzkxMiwKICAicHJvZmlsZUlkIiA6ICJmMjU5MTFiOTZkZDU0MjJhYTcwNzNiOTBmOGI4MTUyMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJmYXJsb3VjaDEwMCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8yNWQ5MjQzYzYxZTJjM2UxZTBmOTkzMTg0M2NhZGJkMGRmZjRhNjQ2MjI1ZWY1NGM1NTc5NzljZjM5YmIyMDU3IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+    },
+    {
+      "internalId": "EPOCH_CAKE_RED",
+      "name": "Fruit Century Cake",
+      "effect": "Strength",
+      "bonus": "+2 Strength",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY2MDEwMzYwODk2NywKICAicHJvZmlsZUlkIiA6ICI3NTE0NDQ4MTkxZTY0NTQ2OGM5NzM5YTZlMzk1N2JlYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaGFua3NNb2phbmciLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTBmMTQ0ZmQ0ZDdjODllMDNmMzVkN2VmZTQxZDM5NzgzOTY4MjM1OTE2YTAwOWU0ZDBmODgyZWMyYzhlNmViNyIKICAgIH0KICB9Cn0="
+    },
+    {
+      "internalId": "EPOCH_CAKE_SEVEN_SEAS",
+      "name": "Century Cake of the Seven Seas",
+      "effect": "Treasure Chance",
+      "bonus": "+1 Treasure Chance",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc4MDkwNjExNTY3NSwKICAicHJvZmlsZUlkIiA6ICI0MDUxNzNiODY0OTM0NTUxOThlOGMzOGJmNmJmNjZiMSIsCiAgInByb2ZpbGVOYW1lIiA6ICJzcGFjZWNhZGV0MTgiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMjIwZjIzNWYyODRmY2M1ZmRjNDVkZGQ5Zjk3ZDY2NjA0ZGEyYTZhZDQxYWI4OTRhNjNmZGU4YjdlNDk5NSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+    },
+    {
+      "internalId": "EPOCH_CAKE_SILVER",
+      "name": "Corpse-Flavored Century Cake",
+      "effect": "Cold Resistance",
+      "bonus": "+1 Cold Resistance",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTcyOTYxOTM4NjE2NCwKICAicHJvZmlsZUlkIiA6ICIzZGE2ZDgxOTI5MTY0MTNlODhlNzg2MjQ3NzA4YjkzZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJGZXJTdGlsZSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS80OThjODhkYWZlMTMzZTc5N2YyOTk0YWNjMDUzYjM5MjZlOTI5MWQwYjcwOTM1OThiMzlkMjcyYzdjOTRhMzY2IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+    },
+    {
+      "internalId": "EPOCH_CAKE_STARBORN",
+      "name": "Starborn Century Cake",
+      "effect": "Hunter Fortune",
+      "bonus": "+1 Hunter Fortune",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTc4MDkwNjE3MzM2MiwKICAicHJvZmlsZUlkIiA6ICI2ZjMzNmQxNzI4ODY0ZTJkOTYxNTFjOGY4YjkzMGFjOCIsCiAgInByb2ZpbGVOYW1lIiA6ICJTVVNfQUoiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjA5MzljYzk4Y2VlMjBkODQ4ODljYTBkY2JjODNlMzVkZjcwYzNjOTgyNDViZjJlNmU2ZjZhM2FkMjg0Y2M3ZSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
+    },
+    {
+      "internalId": "EPOCH_CAKE_WHITE",
+      "name": "Cloudy Century Cake",
+      "effect": "Foraging Fortune",
+      "bonus": "+5 Foraging Fortune",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTY0Nzk1NDY0ODIwMCwKICAicHJvZmlsZUlkIiA6ICI4Zjk3NzhmNWVhMTY0MDVmOWEwMDM0YjU4YjljMWM2MCIsCiAgInByb2ZpbGVOYW1lIiA6ICJ1bm5hbWVkYXV0aG9yIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2JhMGE1YjUxMGE4ZDgyNGZmNDkxMGNhNWIyNjk4YWEzZDAzMGY4Mzc4MTBlOGQ3ZjBiYmNhOGNmMDZjZTIwMjMiCiAgICB9CiAgfQp9"
+    },
+    {
+      "internalId": "EPOCH_CAKE_YELLOW",
+      "name": "Potato-Style Century Cake",
+      "effect": "Speed",
+      "bonus": "+10 Speed",
+      "rarity": "UNCOMMON",
+      "texture": "ewogICJ0aW1lc3RhbXAiIDogMTYyMjMwMDI1NDI3MSwKICAicHJvZmlsZUlkIiA6ICIwYTUzMDU0MTM4YWI0YjIyOTVhMGNlZmJiMGU4MmFkYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJQX0hpc2lybyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9lMjU1ODg5OTliNjc0YjM5OWExOTgwYTI1ZDljYTMyMzYzOWQwMzNlM2Y4NTA0MGMxZGU3ZmZiNDI4YmNhMDk1IiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0="
+    }
+  ]
+}

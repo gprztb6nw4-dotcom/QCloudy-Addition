@@ -17,6 +17,10 @@ QCloudy_Addition's Java implementation and visual design are original. The follo
 
 `assets/qcloudy_addition/sounds/fishing/ciallo.ogg` is a transcoded copy of `Ciallo.mp3`, supplied by the project owner specifically for the Fishing Bite Sound feature. QCA bundles it inside its client resource pack and never downloads it at runtime. The project publisher is responsible for confirming redistribution rights before making a public release that contains this audio.
 
+## Century Cake metadata and icons
+
+The 20-entry Century Cake catalog is generated before release from compact factual effect mappings verified against the [Hypixel SkyBlock Wiki Century Cake page](https://hypixelskyblock.minecraft.wiki/w/Century_Cake) and the official [SkyBlock Year 500 Century Celebration announcement](https://hypixel.net/threads/skyblock-year-500-century-celebration.6114883/). Cake names and player-head texture properties are read from the local MIT-licensed NotEnoughUpdates item-repository snapshot already credited above. The committed JSON contains only identifiers, names, bonuses, rarity, and texture properties needed for local display. QCA performs no runtime Wiki, forum, repository, Hypixel API, or texture-metadata request; Minecraft may resolve a normal player-head texture through its standard client texture path when the effects screen renders that head.
+
 ## Hypixel SkyBlock pet resources
 
 Compact offline metadata for 88 base-pet profiles, 352 applied-pet-skin profiles, 5,422 pet-owned current/animated texture mappings, and 87 pet accessories is generated from the local NotEnoughUpdates item-repository snapshot. QCA constructs a normal Minecraft player head from the verified profile at runtime. It does not ship or select pre-rendered pet PNG fallbacks, does not add synthetic SkyBlock `petInfo`, and does not reuse an unrelated nearby item stack. These resources are used only to interpret and present client-received pet data. No Wiki, item-repository, Hypixel API, or texture request occurs while the mod is running.

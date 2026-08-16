@@ -6,7 +6,7 @@ QCloudy_Addition 将地图、任务追踪、砍树与狩猎辅助、宠物信息
 
 界面默认英文，可在设置中切换简体中文。Hypixel 返回的地点、物品、任务、宠物、皮肤、配件、Shard 和玩家重命名 HOTM 配置始终保留原名，避免翻译改变游戏数据的实际含义。
 
-> **当前通道：Minecraft 26.1.2 的 Alpha 2.8.24。** Alpha 只构建一个 Minecraft 目标。可选第三方设置/HUD 适配使用按需能力探测，不再使用精确版本白名单。
+> **当前通道：Minecraft 26.1.2 的 Alpha 2.8.25。** Alpha 只构建一个 Minecraft 目标。可选第三方设置/HUD 适配使用按需能力探测，不再使用精确版本白名单。
 
 ## 核心功能
 
@@ -31,6 +31,8 @@ QCloudy_Addition 将地图、任务追踪、砍树与狩猎辅助、宠物信息
 - Torrhus 与 Critter Safari 的可选粉色 **Fairy Soul 光柱**，已收集状态保存在本地。
 
 ### 物品、菜单与宠物
+
+- **Century Cake 效果过期提醒**使用一个默认开启的总开关管理全部 20 种收到的蛋糕加成。倒计时按真实世界 48 小时计算并包含离线时间；`/cake` 与 `/centurycakeeffect` 打开本地效果计时界面。同批过期会合并为一条中央/聊天提醒，带下划线的续效果文字只有在玩家直接点击后才执行 `/visit northwestcloudy`。
 
 - 独立运行、受 JEI 信息结构启发的 **Attribute Shard Fusion Guide**，覆盖官方 320-Shard 目录。
 - 可按英文 Shard 名称、ID、效果、品质、分类、家族、Skill、生物类型或获取来源搜索。
@@ -107,7 +109,7 @@ HUD 编辑器只显示当前已经加载且确实存在内容的面板。拖动�
 
 - Mod Menu **18.0.0**
 
-将 `QCloudy_Addition-Alpha-2.8.24+26.1.2.jar` 放入实例 `mods` 文件夹。不要把 `-sources.jar` 当作可运行模组安装。
+将 `QCloudy_Addition-Alpha-2.8.25+26.1.2.jar` 放入实例 `mods` 文件夹。不要把 `-sources.jar` 当作可运行模组安装。
 
 默认按 `O`、通过 Mod Menu，或输入 `/qca`、`/qc` 打开设置。这些设置别名和 `/qshard` 都是本地客户端命令，不会发送给 Hypixel。
 
@@ -119,8 +121,9 @@ QCA 唯一实现的服务器命令载荷为：
 
 - `/th` → `warp torrhus`
 - `/helia` → `chapter torrhus`
+- 点击 Century Cake 续效果文字 → `visit northwestcloudy`
 
-两者都只会在玩家明确输入对应本地快捷命令后发送。手动重连也只会在玩家点击按钮后建立一次普通 Minecraft 连接。
+前两项只会在玩家明确输入对应本地快捷命令后发送；蛋糕续效果命令只会在玩家实际点击带下划线的聊天文字后发送。`/cake` 与 `/centurycakeeffect` 只是本地界面命令，不发送任何内容。手动重连也只会在玩家点击按钮后建立一次普通 Minecraft 连接。
 
 ## 兼容性与免责声明
 

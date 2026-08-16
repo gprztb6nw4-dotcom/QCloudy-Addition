@@ -1,3 +1,43 @@
+# QCloudy_Addition Alpha 2.8.25 single-target validation
+
+Date: 2026-08-17<br>
+Minecraft: 26.1.2<br>
+Java: 25
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Alpha-2.8.25+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.25+26.1.2-sources.jar`
+
+Playable SHA-256: `74dd1e2ccedebb93ee4ac02d75057ddc77548fc47ba4b3f2d94e2f8b1d4f4f69`<br>
+Sources SHA-256: `b9fafaee07402d20bb578b0259807c874bd2417c62512cec593a6c6b58c9226c`
+
+Alpha 2.8.25 is intentionally built only for Minecraft 26.1.2. It adds one unified Century Cake expiry-alert switch for all twenty effects, persists absolute 48-hour real-world expiry times across offline periods, and preserves the Power Orb/Flare expiry work from Alpha 2.8.24.
+
+Verified in this workspace:
+
+- Java 25 `clean test build prepareRelease` completed successfully: 186 current tests in 36 suites, 0 failures, 0 errors, and 0 skips.
+- The committed Century Cake catalog contains exactly 20 unique internal IDs and 20 unique effects. Every entry has the expected `UNCOMMON` rarity, bonus text, and a cake-head texture property.
+- The parser accepts exact formatted or unformatted `Big Yum! You refresh/gain <known bonus> for 48 hours!` lines and rejects unknown effects and non-48-hour durations.
+- One default-on `expiryAlerts` field controls every cake expiry. There is no per-cake or per-effect alert switch. Its separate local sound is enabled by default at the project-standard 64% volume.
+- Timers store an absolute expiry timestamp, so offline real-world time continues to count. A refresh replaces the saved expiry for that account/profile and effect.
+- Expiries discovered in one tick are collected once and merged. The single message is exactly `[QC] Century Cake <Effect> Expired! Click Here For Cake Eating`; a batch uses `[QC] <count> Century Cake Effect Expired! Click Here For Cake Eating`.
+- Tests verify that `Click Here For Cake Eating` is underlined and carries exactly one Minecraft `RUN_COMMAND` click action for `/visit northwestcloudy`. The timer never executes that command automatically.
+- `/cake` and `/centurycakeeffect` are collision-guarded local client commands that only open the effects-style timer screen. They send no chat or server command.
+- English and Simplified Chinese each contain 531 identical language keys.
+- Expanded metadata declares `2.8.25-alpha+26.1.2` and a client-only environment. Class files use Java major version 69.
+- Binary and Sources artifacts in `build/libs/` are byte-identical to their `release/` copies. All four copies pass JDK 25 `jar --validate` and `unzip -t`.
+- The playable JAR contains `CenturyCakeManager`, the committed Century Cake data resource, and the expected Fabric metadata.
+- No Alpha 2.8.25 artifact for Minecraft 26.2 was produced; current Alpha policy targets only Minecraft 26.1.2.
+
+Outstanding Alpha regression boundary:
+
+- Automated tests and archive validation do not replace an authenticated Hypixel test. Before wider publication, refresh at least one real Century Cake effect, verify its saved remaining time after reconnect/restart, and use a controlled expired test profile to confirm the title, local sound, tooltip, single/batch chat wording, underline, and clicked `/visit northwestcloudy` behavior.
+- Hypixel-visible cake refresh wording may change. The parser deliberately fails closed instead of guessing an unknown message.
+- The Power Orb/Flare expiry feature also still needs a natural in-game expiry regression as recorded under Alpha 2.8.24.
+
+---
+
 # QCloudy_Addition Alpha 2.8.24 single-target validation
 
 Date: 2026-08-16<br>

@@ -2,6 +2,20 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.8.25] - 2026-08-17
+
+### Added
+
+- Added **Century Cake Effect Expiry Alert** under **Items & Menus → Century Cakes**. One master switch, enabled by default, controls expiry warnings for all 20 Century Cake effects; there are no per-effect switches.
+- Century Cake refresh lines received by the client now start a 48-hour real-world timer that continues while the player is offline. `/cake` and `/centurycakeeffect` open a read-only effects-style screen with the actual cake heads, bonuses, rarity, and remaining time.
+- A single expiry shows a large center title and the local chat line `[QC] Century Cake <Effect> Expired! Click Here For Cake Eating`. Effects that expire together are merged into one message such as `[QC] 8 Century Cake Effect Expired! Click Here For Cake Eating`.
+- The underlined `Click Here For Cake Eating` text runs exactly `/visit northwestcloudy` only after the player clicks it. The feature has its own local sound, enabled by default at 64%.
+
+### Safety and build
+
+- Cake tracking reads only received chat and stores local absolute expiry timestamps. It does not query Hypixel, automate cake use, or send a command automatically.
+- Alpha 2.8.25 is built only for Minecraft 26.1.2.
+
 ## [2.8.24] - 2026-08-16
 
 ### Added

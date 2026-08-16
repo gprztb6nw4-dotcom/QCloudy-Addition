@@ -160,6 +160,27 @@ final class ConfigScreenFeatureTest {
     }
 
     @Test
+    void centuryCakeEffectsUseOneEnabledMasterSwitchWithSharedAudio() {
+        ModConfig config = new ModConfig();
+        ConfigScreen.Feature feature = ConfigScreen.Feature.CENTURY_CAKE_EFFECTS;
+
+        assertEquals(ConfigScreen.Category.ITEMS_AND_MENUS, feature.category);
+        assertEquals(ConfigScreen.FeatureGroup.CENTURY_CAKES, feature.group);
+        assertTrue(feature.enabled(config));
+        assertTrue(feature.hasSettings());
+        assertEquals(null, feature.hudType());
+        assertTrue(config.centuryCakes.expiryAudio.sound);
+        assertEquals(64, config.centuryCakes.expiryAudio.volume);
+        assertArrayEquals(new String[]{"expiryAlerts", "expiryAudio"},
+                java.util.Arrays.stream(ModConfig.CenturyCakes.class.getDeclaredFields())
+                        .map(java.lang.reflect.Field::getName).sorted().toArray(String[]::new));
+
+        feature.toggle(config);
+        assertFalse(feature.enabled(config));
+        assertFalse(config.centuryCakes.expiryAlerts);
+    }
+
+    @Test
     void requestedTopLevelCategoriesUseTheExactPublishedOrder() {
         assertArrayEquals(new ConfigScreen.Category[]{
                         ConfigScreen.Category.GENERAL,
