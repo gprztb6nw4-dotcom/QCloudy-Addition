@@ -6,7 +6,7 @@
 
 QCloudy_Addition (QCA) is an English-first, bilingual, client-only Fabric mod for Hypixel SkyBlock. It organizes maps, HUDs, passive visual helpers, pet information, Attribute Shard tools, and selected quality-of-life controls in one function-first interface.
 
-> **Current version:** Alpha 2.8.23<br>
+> **Current version:** Alpha 2.8.24<br>
 > **Minecraft:** 26.1.2<br>
 > **Required:** Java 25, Fabric Loader 0.19.3 or newer, and the matching Fabric API<br>
 > **Optional:** Mod Menu and reviewed builds of supported SkyBlock mods<br>
@@ -33,7 +33,7 @@ This Alpha release has one Minecraft target.
 
 | Minecraft | Required Fabric API | Playable file |
 |---|---|---|
-| 26.1.2 | 0.155.2+26.1.2 or newer compatible build | `QCloudy_Addition-Alpha-2.8.23+26.1.2.jar` |
+| 26.1.2 | 0.155.2+26.1.2 or newer compatible build | `QCloudy_Addition-Alpha-2.8.24+26.1.2.jar` |
 
 This target requires Fabric Loader 0.19.3 or newer and Java 25.
 
@@ -140,6 +140,7 @@ Slot Locking, Storage Overlay, and menu middle-click conversion were removed fro
 ### Combat
 
 - **Ender Dragon Highlight** places received Hypixel Ender Dragons into Minecraft's vanilla outline pipeline while the player is in The End or Dragon's Nest. The color is configurable.
+- **Deployable Expiry Alert** shows a large English center title when an exact received message confirms that the local player's Radiant, Mana Flux, Overflux, or Plasmaflux Power Orb, or Warning, Alert, or SOS Flare has despawned. Its independent local sound defaults to 64%.
 - **Crimson Isle Faction Tasks** show incomplete rows from the received `Faction Quests:` Tab block using their original names and progress. Completed tasks are omitted.
 - Recognised provider-backed Crimson Isle and Kuudra functions appear as Combat subgroups when the installed provider still exposes compatible live configuration capabilities.
 
@@ -349,7 +350,7 @@ Do not include access tokens, session identifiers, private chat, or other secret
 
 ## Validation, license, and credits
 
-Alpha 2.8.23 is built for Minecraft 26.1.2 with Java 25. The maintained validation report records the exact automated-test, archive, language, and compatibility-contract checks for this build.
+Alpha 2.8.24 is built for Minecraft 26.1.2 with Java 25. The maintained validation report records the exact automated-test, archive, language, and compatibility-contract checks for this build.
 
 Automated tests and archive checks do not replace an authenticated Hypixel regression, every GUI Scale, every resource pack, or every future modpack combination. See the current [validation report](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/VALIDATION.md) for the exact tested boundary.
 

@@ -26,6 +26,7 @@
 | Floor Drop/Quest Item assistant | Already-loaded nearby block states and local inventory | Distance/item HUD and center title | None |
 | Safari Belt details | Received item ID/lore and already-open milestone-menu items | Tooltip and account/profile-scoped local config cache | None |
 | Dragon highlight | Received Ender Dragon entity and parsed location | Vanilla outline render state | None |
+| Deployable expiry alert | Exact received player-owned Power Orb/Flare despawn chat line | Large center title and independently configured local sound | None |
 | Pet HUD | Received chat and Tab display names | Text HUD | None |
 | Chat Peek | Physical held key and already received chat history | Temporarily changes local chat rendering/scroll target | None |
 | AOTE/AOTV sound customization | Held-item ID and received nearby sound event | Keeps the original sound or replaces it with a local vanilla sound at configured volume/pitch | None |

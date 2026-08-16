@@ -1,3 +1,37 @@
+# QCloudy_Addition Alpha 2.8.24 单目标验证
+
+日期：2026-08-16<br>
+Minecraft：26.1.2<br>
+Java：25
+
+已验证产物：
+
+- `release/QCloudy_Addition-Alpha-2.8.24+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.24+26.1.2-sources.jar`
+
+可运行 SHA-256：`12d511b898c43d066b9dd498162fd0e33a7c167440cfb8499af175321d1919c8`<br>
+Sources SHA-256：`7fb0fa2ed9bd0f78a7a153663be8e409e2e61b0e209e8f0affee45fada5d732c`
+
+Alpha 2.8.24 有意只为 Minecraft 26.1.2 构建。本版为玩家本人的四种 Power Orb 与三种 Flare 加入中央大字到期提醒，并带独立、默认 64% 的本地提示音。
+
+本工作区已验证：
+
+- Java 25 `clean test build prepareRelease` 成功：32 个 suite、179 项当前测试，0 failure、0 error、0 skip。
+- 解析器只接受 Radiant、Mana Flux、Overflux、Plasmaflux Power Orb 与 Warning、Alert、SOS Flare 的完整 `Your <白名单 Deployable> despawned.` 消息。匹配前去除格式代码；其他玩家的消息、无关实体、生成消息或标点变化都会被拒绝。
+- 配置迁移版本 22 会为现有安装启用本功能与音效，使用项目统一的 64% 默认音量，并把音效/音量保留在 **战斗 → Deployables** 功能自己的二级设置页。
+- 静态数据流检查确认新处理器只读取已经收到的游戏聊天、显示本地 Title 并播放客户端本地音效；不发送聊天、命令、数据包、交互或网络请求。
+- 可运行 JAR 包含恰好 320 个目录 Shard、320 个 Shard 物品模型定义和 320 张 Shard 纹理；英文与简体中文各有 518 个完全一致的语言键。
+- 展开元数据声明 `2.8.24-alpha+26.1.2`、Minecraft 26.1.2、Fabric API 0.155.2+26.1.2、Fabric Loader 0.19.3+、Java 25+ 与纯客户端环境；class major version 为 69。
+- `build/26.1.2/libs/` 的可运行与 Sources 产物分别和 `release/` 副本逐字节一致；两个 JAR 均通过 JDK 25 `jar --validate` 与 `unzip -t`。
+- 没有生成任何 Minecraft 26.2 的 Alpha 2.8.24 产物；`tools/build_all_versions.sh` 会在发布通道为 Alpha 时跳过 26.2。
+
+尚未覆盖的 Alpha 实服边界：
+
+- 自动解析测试和压缩包检查不能代替已登录 Hypixel 的真实时机测试。扩大发布前，应让至少一种 Power Orb 和一种 Flare 自然到期，确认每条精确消息只产生一次中央大字和一次已配置音效。
+- 固定白名单会安全地拒绝未知内容。如果 Hypixel 新增或改名 Deployable，需要先复核客户端可见名称再加入，未知名称不会被猜测触发。
+
+---
+
 # QCloudy_Addition Alpha 2.8.23 单目标验证
 
 日期：2026-08-16<br>

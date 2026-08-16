@@ -2,6 +2,18 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.8.24] - 2026-08-16
+
+### Added
+
+- Added **Deployable Expiry Alert** under **Combat → Deployables**. Exact player-owned despawn messages for Radiant, Mana Flux, Overflux, and Plasmaflux Power Orbs and Warning, Alert, and SOS Flares now produce a large English center-screen warning.
+- Added an independent alert sound toggle and 0–100% volume slider for this feature. The sound is enabled by default at 64%.
+
+### Safety and build
+
+- Detection is restricted to exact received `Your <approved deployable> despawned.` chat lines. It sends no chat, command, packet, interaction, or network request.
+- Alpha 2.8.24 is built only for Minecraft 26.1.2.
+
 ## [2.8.23] - 2026-08-16
 
 ### Fixed

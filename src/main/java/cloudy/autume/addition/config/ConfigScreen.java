@@ -600,6 +600,7 @@ public final class ConfigScreen extends Screen {
         HUNTING_CORE(Category.HUNTING, "config.group.hunting_core"),
         HUNTING_SAFARI(Category.HUNTING, "config.group.safari"),
         CRIMSON_OBJECTIVES(Category.COMBAT, "config.group.crimson_objectives"),
+        COMBAT_DEPLOYABLES(Category.COMBAT, "config.group.deployables"),
         COMBAT_VISIBILITY(Category.COMBAT, "config.group.combat_visibility"),
         PET_DISPLAY(Category.ITEMS_AND_MENUS, "config.group.pet_display"),
         SHARD_FUSION(Category.ITEMS_AND_MENUS, "config.group.shard_fusion"),
@@ -656,6 +657,8 @@ public final class ConfigScreen extends Screen {
         SNOOZLE_WALL_OVERLAY(FeatureGroup.HUNTING_SAFARI, "config.hunting.snoozle_wall", "config.desc.hunting.snoozle_wall"),
         SAFARI_BELT(FeatureGroup.HUNTING_SAFARI, "config.hunting.safari_belt", "config.desc.hunting.safari_belt"),
         CRIMSON_TASKS(FeatureGroup.CRIMSON_OBJECTIVES, "config.crimson_tasks", "config.desc.crimson_tasks"),
+        DEPLOYABLE_EXPIRY_ALERT(FeatureGroup.COMBAT_DEPLOYABLES, "config.combat.deployable_expiry",
+                "config.desc.combat.deployable_expiry"),
         DRAGON_HIGHLIGHT(FeatureGroup.COMBAT_VISIBILITY, "config.dragon_highlight", "config.desc.dragon_highlight"),
         PET_HUD(FeatureGroup.PET_DISPLAY, "config.pet_hud", "config.desc.pet_hud"),
         SHARD_FUSION_HELPER(FeatureGroup.SHARD_FUSION, "config.shard_fusion", "config.desc.shard_fusion"),
@@ -711,6 +714,7 @@ public final class ConfigScreen extends Screen {
                 case SNOOZLE_WALL_OVERLAY -> config.hunting.snoozleWallOverlay;
                 case SAFARI_BELT -> config.hunting.safariBeltTooltip;
                 case CRIMSON_TASKS -> config.crimsonIsle.taskTracker;
+                case DEPLOYABLE_EXPIRY_ALERT -> config.combat.deployableExpiryAlert;
                 case DRAGON_HIGHLIGHT -> config.combat.enderDragonHighlight;
                 case PET_HUD -> config.pets.equippedPetHud;
                 case SHARD_FUSION_HELPER -> config.inventory.shardFusionHelper;
@@ -762,6 +766,8 @@ public final class ConfigScreen extends Screen {
                 case SNOOZLE_WALL_OVERLAY -> config.hunting.snoozleWallOverlay = !config.hunting.snoozleWallOverlay;
                 case SAFARI_BELT -> config.hunting.safariBeltTooltip = !config.hunting.safariBeltTooltip;
                 case CRIMSON_TASKS -> config.crimsonIsle.taskTracker = !config.crimsonIsle.taskTracker;
+                case DEPLOYABLE_EXPIRY_ALERT -> config.combat.deployableExpiryAlert =
+                        !config.combat.deployableExpiryAlert;
                 case DRAGON_HIGHLIGHT -> config.combat.enderDragonHighlight = !config.combat.enderDragonHighlight;
                 case PET_HUD -> config.pets.equippedPetHud = !config.pets.equippedPetHud;
                 case SHARD_FUSION_HELPER -> config.inventory.shardFusionHelper = !config.inventory.shardFusionHelper;
@@ -786,7 +792,8 @@ public final class ConfigScreen extends Screen {
                         COLD_SAFETY, DOOMSPIRAL_READY, WARDEN_READY_ALERT,
                         FAIRY_SOUL_WAYPOINTS, SAFARI_CRITTER_HIGHLIGHT, BEEHEEMOTH_HELPER,
                         LASSO_REEL_SOUND, TREE_GIFT_ALERTS,
-                        SPARKLING_ALERT, SNOOZLE_WALL_OVERLAY, SAFARI_BELT, DRAGON_HIGHLIGHT, CHAT_PEEK -> null;
+                        SPARKLING_ALERT, SNOOZLE_WALL_OVERLAY, SAFARI_BELT,
+                        DEPLOYABLE_EXPIRY_ALERT, DRAGON_HIGHLIGHT, CHAT_PEEK -> null;
                 case SHARD_FUSION_HELPER, ITEM_TIMESTAMPS, CURSOR_MEMORY, TELEPORT_SOUNDS -> null;
             };
         }

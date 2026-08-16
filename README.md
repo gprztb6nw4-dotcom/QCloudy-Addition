@@ -7,7 +7,7 @@ QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [Current Alpha 2.8.23 changelog](CHANGELOG.md)
+- [Current Alpha 2.8.24 changelog](CHANGELOG.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -75,6 +75,7 @@ Foraging and Hunting are separate top-level settings categories, while Safari is
 ### Combat
 
 - **Ender Dragon Highlight** — puts Hypixel Ender Dragons in the vanilla outline pipeline while the scoreboard location is The End or Dragon's Nest. The outline color is selectable from red, yellow, cyan, green, purple, and white.
+- **Deployable Expiry Alert** — exact received messages for the local player's four Power Orbs and Warning/Alert/SOS Flares show a large English center title. Its local sound is independently switchable and defaults to 64%.
 
 ### Pets
 
@@ -130,7 +131,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-Current Alpha 2.8.23 changes: [CHANGELOG.md](CHANGELOG.md)
+Current Alpha 2.8.24 changes: [CHANGELOG.md](CHANGELOG.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 

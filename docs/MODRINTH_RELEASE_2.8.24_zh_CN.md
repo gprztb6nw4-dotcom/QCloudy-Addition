@@ -1,0 +1,7 @@
+## Alpha 2.8.24
+
+- 为玩家本人的四种 Power Orb 与 Warning、Alert、SOS Flare 加入 **Deployable 到期提醒**。
+- 精确收到 `Your <白名单 Deployable> despawned.` 时，会在屏幕中央显示红色英文大字。
+- 加入独立本地音效开关与 0–100% 音量滑条，默认开启且为 64%。
+- 纯客户端：不发送聊天、命令、数据包、交互或网络请求。
+- 本 Alpha 仅对应 Minecraft 26.1.2。

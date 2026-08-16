@@ -1,5 +1,17 @@
 # 更新日志
 
+## [2.8.24] - 2026-08-16
+
+### 新增
+
+- 在 **战斗 → Deployables** 中加入 **Deployable 到期提醒**。当客户端收到本人 Radiant、Mana Flux、Overflux、Plasmaflux Power Orb，或 Warning、Alert、SOS Flare 的精确消失消息时，在屏幕中央显示英文大字提醒。
+- 为此功能加入独立音效开关与 0–100% 音量滑条；音效默认开启，音量默认 64%。
+
+### 安全边界与构建
+
+- 只匹配客户端收到的精确 `Your <白名单 Deployable> despawned.` 聊天行；不会发送聊天、命令、数据包、交互或网络请求。
+- Alpha 2.8.24 仅构建 Minecraft 26.1.2 版本。
+
 ## [2.8.23] - 2026-08-16
 
 ### 修复

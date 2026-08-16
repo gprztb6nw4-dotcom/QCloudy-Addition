@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.8.23` for Minecraft 26.1.2. Alpha builds currently target 26.1.2 only.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.8.24` for Minecraft 26.1.2. Alpha builds currently target 26.1.2 only.
 
 ## 1. Runtime architecture
 
@@ -295,6 +295,14 @@ On by default. One physical click starts one ordinary server connection. No save
 - **Implementation:** `EntityRendererMixin` uses the vanilla glowing/outline pipeline and returns the configured RGB color.
 - **Expected effect:** clean configurable dragon outline, not an altered model or hitbox.
 - **Default/outbound:** on; local rendering only.
+
+### Deployable expiry alert
+
+- **Purpose:** warn when the local player's temporary Power Orb or Flare has ended.
+- **Inputs:** exact client-received `Your <name> despawned.` game-chat line and a fixed seven-item allow-list.
+- **Implementation:** strips formatting, requires an exact full-line match, suppresses only duplicate copies received within two seconds, then presents a red bold title. A separate local sound toggle and 0–100% volume value are stored under Combat.
+- **Expected effect:** `<Deployable Name> Despawned!!!` appears in large English center text once per received expiry.
+- **Default/outbound:** feature on; sound on at 64%; no chat, command, packet, interaction, or network request.
 
 ## 10. Equipped Pet HUD
 

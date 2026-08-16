@@ -1,3 +1,37 @@
+# QCloudy_Addition Alpha 2.8.24 single-target validation
+
+Date: 2026-08-16<br>
+Minecraft: 26.1.2<br>
+Java: 25
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Alpha-2.8.24+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.24+26.1.2-sources.jar`
+
+Playable SHA-256: `12d511b898c43d066b9dd498162fd0e33a7c167440cfb8499af175321d1919c8`<br>
+Sources SHA-256: `7fb0fa2ed9bd0f78a7a153663be8e409e2e61b0e209e8f0affee45fada5d732c`
+
+Alpha 2.8.24 is intentionally built only for Minecraft 26.1.2. It adds a center-screen expiry reminder for the local player's four Power Orbs and three Flares, with an independent local alert sound that defaults to 64%.
+
+Verified in this workspace:
+
+- Java 25 `clean test build prepareRelease` completed successfully: 179 current tests in 32 suites, 0 failures, 0 errors, and 0 skips.
+- The parser accepts exactly Radiant, Mana Flux, Overflux, and Plasmaflux Power Orbs and Warning, Alert, and SOS Flares in the full received form `Your <approved deployable> despawned.`. Formatting codes are removed before matching; another player's line, unrelated entity, spawn text, or punctuation variation is rejected.
+- Configuration migration version 22 enables the feature and its sound for existing installs, gives the sound the project-standard 64% default, and keeps sound/volume on the feature's own **Combat → Deployables** secondary settings page.
+- Static data-flow review confirms that the new handler only reads received game chat, displays a local title, and plays a local client sound. It sends no chat, command, packet, interaction, or network request.
+- The playable JAR contains exactly 320 catalog Shards, 320 Shard item-model definitions, and 320 Shard textures. English and Simplified Chinese each contain 518 identical language keys.
+- Expanded metadata declares `2.8.24-alpha+26.1.2`, Minecraft 26.1.2, Fabric API 0.155.2+26.1.2, Fabric Loader 0.19.3+, Java 25+, and a client-only environment. Class files use major version 69.
+- Binary and Sources artifacts in `build/26.1.2/libs/` are byte-identical to their `release/` copies. Both pass JDK 25 `jar --validate` and `unzip -t`.
+- No Alpha 2.8.24 artifact for Minecraft 26.2 was produced. `tools/build_all_versions.sh` skips 26.2 whenever the release channel is Alpha.
+
+Outstanding Alpha regression boundary:
+
+- Automated parsing tests and archive checks do not replace an authenticated Hypixel timing check. Before wider publication, let at least one Power Orb and one Flare expire naturally and confirm that each exact message produces one large title and one configured sound.
+- The fixed allow-list deliberately fails closed. If Hypixel adds or renames a deployable, it will not trigger until the client-visible name is reviewed and added.
+
+---
+
 # QCloudy_Addition Alpha 2.8.23 single-target validation
 
 Date: 2026-08-16<br>

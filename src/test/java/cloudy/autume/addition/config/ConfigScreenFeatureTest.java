@@ -143,6 +143,23 @@ final class ConfigScreenFeatureTest {
     }
 
     @Test
+    void deployableExpiryAlertIsAnEnabledCombatFeatureWithIndependentAudio() {
+        ModConfig config = new ModConfig();
+        ConfigScreen.Feature feature = ConfigScreen.Feature.DEPLOYABLE_EXPIRY_ALERT;
+
+        assertEquals(ConfigScreen.Category.COMBAT, feature.category);
+        assertEquals(ConfigScreen.FeatureGroup.COMBAT_DEPLOYABLES, feature.group);
+        assertTrue(feature.enabled(config));
+        assertTrue(feature.hasSettings());
+        assertTrue(config.combat.deployableExpiryAudio.sound);
+        assertEquals(64, config.combat.deployableExpiryAudio.volume);
+        assertEquals(null, feature.hudType());
+
+        feature.toggle(config);
+        assertFalse(config.combat.deployableExpiryAlert);
+    }
+
+    @Test
     void requestedTopLevelCategoriesUseTheExactPublishedOrder() {
         assertArrayEquals(new ConfigScreen.Category[]{
                         ConfigScreen.Category.GENERAL,
