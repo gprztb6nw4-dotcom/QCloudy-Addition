@@ -89,7 +89,7 @@ public final class LocationTracker {
         } else if (containsAny(evidence, "crystal hollows", "crystal nucleus", "mithril deposits",
                 "mines of divan", "goblin holdout", "goblin queen's den", "precursor remnants",
                 "lost precursor city", "magma fields", "khazad-dûm", "khazad-dum", "fairy grotto",
-                "jungle temple", "dragon's lair", "jungle")) {
+                "jungle temple", "dragon's lair") || isExactLocation(evidence, "jungle")) {
             return IslandArea.CRYSTAL_HOLLOWS;
         } else if (containsAny(evidence, "dwarven mines", "dwarven village", "dwarven base camp",
                 "the forge", "forge basin", "palace bridge", "royal palace", "aristocrat passage",
@@ -179,6 +179,17 @@ public final class LocationTracker {
     private static boolean containsAny(String evidence, String... needles) {
         for (String needle : needles) if (evidence.contains(needle)) return true;
         return false;
+    }
+
+    /**
+     * Some SkyBlock subareas share a word with a different island. In particular,
+     * Crystal Hollows has an exact "Jungle" subarea while The Park reports
+     * "Jungle Island". Substring matching would incorrectly enable mining HUDs in
+     * The Park, so ambiguous short names must match the complete received location.
+     */
+    private static boolean isExactLocation(String evidence, String expected) {
+        String location = LOCATION_MARKER.matcher(evidence).replaceAll("").trim();
+        return location.equals(expected);
     }
 
     private static List<String> scoreboardLines(Minecraft client) {

@@ -90,7 +90,7 @@
   "config.integration.scan.phase.complete": "最新本地快照已就绪",
   "config.group.hud": "HUD",
   "config.group.connection": "连接",
-  "config.group.fishing": "钓鱼",
+  "config.group.fishing": "咬钩提示",
   "config.group.maps": "地图",
   "config.group.waypoints": "点位",
   "config.group.mining_objectives": "挖矿任务",

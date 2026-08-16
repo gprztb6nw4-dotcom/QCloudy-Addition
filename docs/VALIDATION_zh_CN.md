@@ -1,3 +1,37 @@
+# QCloudy_Addition Alpha 2.8.23 单目标验证
+
+日期：2026-08-16<br>
+Minecraft：26.1.2<br>
+Java：25
+
+已验证产物：
+
+- `release/QCloudy_Addition-Alpha-2.8.23+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.23+26.1.2-sources.jar`
+
+可运行 SHA-256：`36fa8ddee7900758ea29f4a4932fd029d3207d0cd38e82dd150ec4735b37ac5b`<br>
+Sources SHA-256：`0d6afd54988ea346f1cc5870b0b374063a02b7bd9baad9d9f50d9a6ed4dd5a0b`
+
+Alpha 2.8.23 有意只为 Minecraft 26.1.2 构建。本版修复 The Park 的 `Jungle Island` 错误显示挖矿 HUD、隐藏没有任何可用功能的设置分类，并把重复的钓鱼下级分类改名为 `Bite Alerts` / `咬钩提示`。
+
+本工作区已验证：
+
+- Java 25 `clean test build prepareRelease` 成功：31 个 suite、176 项当前测试，0 failure、0 error、0 skip。
+- 地点解析只把精确 `Jungle` 判定为 Crystal Hollows，同时拒绝 `Jungle Island`，因此 Park 证据不会再启用挖矿追踪。
+- 设置侧栏根据实际存在的功能生成；没有任何功能的分类（例如地牢）会被隐藏，而不是打开空白页面。
+- “钓鱼”保留为一级分类，内部下级分类使用不同的 `Bite Alerts` / `咬钩提示` 名称。
+- 可运行 JAR 包含恰好 320 个目录 Shard、320 个 Shard 物品模型定义和 320 张 Shard 纹理；英文与简体中文各有 515 个完全一致的语言键。
+- 展开元数据声明 Minecraft 26.1.2、Fabric API 0.155.2+26.1.2、Fabric Loader 0.19.3+、Java 25+ 与纯客户端环境。
+- `build/26.1.2/libs/` 的可运行与 Sources 产物分别和 `release/` 副本逐字节一致；两个 JAR 均通过 JDK 25 `jar --validate` 与 `unzip -t`。
+- 没有生成任何 Minecraft 26.2 的 Alpha 2.8.23 产物；`tools/build_all_versions.sh` 会在发布通道为 Alpha 时跳过 26.2。
+
+尚未覆盖的 Alpha 实服边界：
+
+- 自动测试与压缩包检查不能代替已登录的游戏内视觉测试。扩大发布前，应在目标整合包实际使用的 GUI Scale 下检查 The Park/Jungle Island、确实为空的提供方分类和钓鱼页面。
+- 按能力探测的提供方集成仍属于尽力而为兼容。未来提供方的变化可能保持未分类，或出现在兼容性缺失报告中，直到 QCA 可以安全识别。
+
+---
+
 # QCloudy_Addition Alpha 2.8.22 双版本验证
 
 日期：2026-08-15<br>

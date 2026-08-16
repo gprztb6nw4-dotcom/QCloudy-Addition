@@ -1,13 +1,13 @@
 # QCloudy_Addition
 
-QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2 and 26.2. It focuses on readable SkyBlock maps, compact objective HUDs, passive visual helpers, pet information, and inventory quality-of-life tools. The mod is bilingual, English-first, and keeps Hypixel-provided names in their original form.
+QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on readable SkyBlock maps, compact objective HUDs, passive visual helpers, pet information, and inventory quality-of-life tools. The mod is bilingual, English-first, and keeps Hypixel-provided names in their original form. Alpha builds are published for Minecraft 26.1.2 only.
 
 ## Quick links
 
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [Current Alpha 2.8.22 changelog](CHANGELOG.md)
+- [Current Alpha 2.8.23 changelog](CHANGELOG.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -17,7 +17,7 @@ The language option translates QCA interface labels only. Hypixel location names
 
 ## Unified SkyBlock mod controls — Alpha
 
-QCA can act as one function-first settings and HUD editor for its own features and installed builds of **SkyHanni**, **Skyblocker**, **Firmament**, **BabyZombieAddons**, and **Feesh**. The separate **Unified Settings Editor** and **Unified HUD Editor** master switches are both disabled by default and can be enabled independently. Every provider scan requires a second confirmation: the first enable without a valid session snapshot and every **Refresh** action open a scope-specific dialog before any work starts. Cancelling the first dialog leaves that master off; cancelling Refresh preserves the last validated snapshot. Restoring an enabled master after restart never starts a silent scan. Confirmed scans open a live progress page. The settings page reports only manageable settings, while the HUD page reports only manageable HUDs. Opening the normal settings menu does not rescan, uninstalled providers are not listed, and disabling both switches cancels pending work and releases the session snapshot. QCA probes live provider capabilities rather than enforcing an exact-version whitelist, so recognised compatible branches can remain available after a provider update while unknown or changed branches are omitted. QCA remains independently loadable on both Minecraft targets.
+QCA can act as one function-first settings and HUD editor for its own features and installed builds of **SkyHanni**, **Skyblocker**, **Firmament**, **BabyZombieAddons**, and **Feesh**. The separate **Unified Settings Editor** and **Unified HUD Editor** master switches are both disabled by default and can be enabled independently. Every provider scan requires a second confirmation: the first enable without a valid session snapshot and every **Refresh** action open a scope-specific dialog before any work starts. Cancelling the first dialog leaves that master off; cancelling Refresh preserves the last validated snapshot. Restoring an enabled master after restart never starts a silent scan. Confirmed scans open a live progress page. The settings page reports only manageable settings, while the HUD page reports only manageable HUDs. Opening the normal settings menu does not rescan, uninstalled providers are not listed, and disabling both switches cancels pending work and releases the session snapshot. QCA probes live provider capabilities rather than enforcing an exact-version whitelist, so recognised compatible branches can remain available after a provider update while unknown or changed branches are omitted.
 
 Native paths and verified classification rules run first. Only provider functions that are still uncategorised are passed to a small deterministic local metadata classifier. It uses fixed weights and a confidence threshold, runs without a model download or network connection, and never decides that two functions are equivalent or writes a provider value.
 
@@ -25,14 +25,13 @@ When several supported mods implement the same exact function, QCA shows one car
 
 The existing **Edit HUD** screen also includes enabled HUDs owned by the selected compatible provider. External panels are labelled with the provider name; dragging or resizing writes the native position/scale only when the mouse is released. This Alpha exposes validated Boolean, enum, bounded numeric, position, and scale values. Provider-specific compound color/keybind objects remain in their native editors until a safe adapter is implemented.
 
-The exact top-level order is **General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events**. Safari is a Hunting subgroup, Garden is a Farming subgroup, and Crimson Isle/Kuudra are Combat subgroups. Every feature has one owner and appears once.
+The top-level order is **General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events**, but a category is hidden when no QCA or discovered provider feature belongs to it. Safari is a Hunting subgroup, Garden is a Farming subgroup, Crimson Isle/Kuudra are Combat subgroups, and Fishing's bite cue is grouped under **Bite Alerts** rather than a duplicate Fishing heading. Every feature has one owner and appears once.
 
 ## Feature categories
 
 ### General
 
 - **Manual Reconnect** — adds one vanilla-sized `Reconnect` button to connection-failed and disconnected screens. The target is captured when the normal connection attempt begins, so the button also works after an initial failure. It reconnects only after the player clicks it; there is no timer, loop, retry counter, command, or automatic join.
-- **Fishing Bite Sound** — an opt-in local cue for Hypixel's short bite window in water or lava. It prefers the local player's directly owned Fishing Hook and uses a short post-cast association window for Hypixel lava hooks whose owner link is absent, then requires the exact visible `!!!` marker beside that hook. It plays the bundled Ciallo OGG once per hook and has an independent 0–100% volume slider at the 64% default. It never casts or reels automatically.
 
 ### Maps
 
@@ -53,6 +52,10 @@ The exact top-level order is **General, Maps, Items & Menus, Combat, Dungeons, S
 - **Tree Critter Timer** — default-on and independently switchable. It reads the nearest visible `Critter in: 26m 47s` Tree Protection Order nameplate and adds that exact countdown to the combined Hunting HUD. It does not start a guessed local timer, so Fun-Sized (60m), Family-Sized (30m), Jumbo (15m), Behemoth (instant), Honeycomb Artifact acceleration, Honey Serendipity instant procs, and future server-side modifiers remain accurate.
 - **Miria Contest** — parses received scoreboard/Tab tier lines such as `COMMON with 151` and `Uncommon requires +99`, then shows the next bracket, exact remaining score, and estimated Safari Ticket only in the combined Hunting HUD. It does not inject into the right sidebar or duplicate its contest timer.
 - **Benefactor & Tree Gifts** — Benefactor state is merged from bounded Tab/scoreboard blocks, the already-open Forest/Desert Temple menu, and the player's exact received donation message. Multi-day donations, countdowns, temple-specific effects, expiration, and account/profile persistence are supported; a newly received donation is protected from a briefly stale open menu. Rare Tree Gift rewards are read from the player's exact personal reward-summary hover and from exact bonus rows inside that same bounded, ownership-proven gift block. This also consumes raw client-received messages canceled by compatible chat compactors; a nearby player's public drop line by itself never arms an alert.
+
+### Fishing
+
+- **Fishing Bite Sound** — an opt-in local cue for Hypixel's short bite window in water or lava. It prefers the local player's directly owned Fishing Hook and uses a short post-cast association window for Hypixel lava hooks whose owner link is absent, then requires the exact visible `!!!` marker beside that hook. It plays the bundled Ciallo OGG once per hook and has an independent 0–100% volume slider at the 64% default. It never casts or reels automatically. Its collapsible subgroup is named **Bite Alerts**, avoiding a redundant `Fishing → Fishing` hierarchy.
 
 ### Hunting
 
@@ -97,7 +100,7 @@ Foraging and Hunting are separate top-level settings categories, while Safari is
 - UI opening animations are enabled by default and can be disabled
 - Optional Mod Menu integration opens QCA's settings directly when Mod Menu is installed
 
-The configuration screen uses a compact BLC-inspired information hierarchy—not copied assets or layout code—with one **Features** tab, the thirteen ordered categories listed above, collapsible subgroups, and searchable function cards. Fishing, Farming, Dungeons, Slayer, Rift, and Events are independent top-level categories. HUD position editing remains available from the bottom-left **Edit HUD** button. Feature cards do not repeat a top-right switch or bottom-right right-click hint, and secondary pages do not repeat the primary enable switch. There is deliberately no catch-all `ALL` category.
+The configuration screen uses a compact BLC-inspired information hierarchy—not copied assets or layout code—with one **Features** tab, ordered available categories, collapsible subgroups, and searchable function cards. A category with no available QCA or provider feature is removed from the sidebar instead of opening an empty page. Fishing uses the **Bite Alerts** subgroup, avoiding the redundant “Fishing → Fishing” hierarchy. HUD position editing remains available from the bottom-left **Edit HUD** button. Feature cards do not repeat a top-right switch or bottom-right right-click hint, and secondary pages do not repeat the primary enable switch. There is deliberately no catch-all `ALL` category.
 
 Inventory and menu tools include the Attribute Shard Fusion Guide, item timestamps, cursor position memory, configurable AOTE/AOTV sounds, and Chat Peek. Every QCA hotkey is edited inline on its existing secondary-settings page instead of opening a separate capture screen. Keyboard keys, mouse buttons 1–5/side buttons, and Ctrl/Shift/Alt/Cmd-Super combinations are supported; while a row is listening, `Esc` clears it to unbound.
 
@@ -105,13 +108,13 @@ Inventory and menu tools include the Attribute Shard Fusion Guide, item timestam
 
 ## Installation
 
-1. Install either Minecraft 26.1.2 with Fabric API 0.155.2+26.1.2, or Minecraft 26.2 with Fabric API 0.154.2+26.2. Both builds require Fabric Loader 0.19.3 or newer and Java 25.
+1. Install Minecraft 26.1.2 with Fabric API 0.155.2+26.1.2. Alpha builds require Fabric Loader 0.19.3 or newer and Java 25.
 2. Put the `QCloudy_Addition-*.jar` whose filename ends in your exact Minecraft version in the instance's `mods` folder. Mod Menu is optional.
 3. Start the game and press `O` or type one of the local settings commands to configure the mod.
 
 ## Building from source
 
-Install JDK 25 and run `./tools/build_all_versions.sh`. One command tests and produces playable and Sources JARs for both Minecraft 26.1.2 and 26.2 in `release/`. A single-target development build remains available through `./gradlew build` (26.1.2 by default) or `./gradlew build -Pminecraft_version=26.2`. The repository includes its own pinned Gradle 9.6.1 Wrapper and Fabric Loom 1.17.17 configuration; the inspected reference mods are not build or runtime dependencies. Pet profile metadata is generated offline from a local NEU repository snapshot and committed into QCA resources. The shipped mod performs no runtime network request and runs without Firmament.
+Install JDK 25 and run `./tools/build_all_versions.sh`. For an Alpha channel this command tests and produces only the Minecraft 26.1.2 playable and Sources JARs in `release/`; non-Alpha channels may build both maintained targets. A normal `./gradlew build` also targets 26.1.2 by default. The repository includes its own pinned Gradle 9.6.1 Wrapper and Fabric Loom 1.17.17 configuration; the inspected reference mods are not build or runtime dependencies. Pet profile metadata is generated offline from a local NEU repository snapshot and committed into QCA resources. The shipped mod performs no runtime network request and runs without Firmament.
 
 ## Safety boundary
 
@@ -127,7 +130,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-Current Alpha 2.8.22 changes: [CHANGELOG.md](CHANGELOG.md)
+Current Alpha 2.8.23 changes: [CHANGELOG.md](CHANGELOG.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 

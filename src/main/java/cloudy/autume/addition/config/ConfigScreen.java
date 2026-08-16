@@ -174,18 +174,19 @@ public final class ConfigScreen extends Screen {
     }
 
     private void drawSidebar(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        List<Category> categories = availableCategories();
         int x = windowX + 8;
         int top = windowY + 43;
         int editY = windowY + windowHeight - 52;
         int viewportHeight = Math.max(20, editY - top - 5);
         int width = Math.max(1, sidebarWidth - 16);
-        int categorySlotHeight = sidebarCategorySlotHeight(windowHeight);
+        int categorySlotHeight = sidebarCategorySlotHeight(windowHeight, categories.size());
         int categoryButtonHeight = Math.min(22, categorySlotHeight - 2);
-        sidebarMaximumScroll = Math.max(0, Category.values().length * categorySlotHeight - viewportHeight);
+        sidebarMaximumScroll = Math.max(0, categories.size() * categorySlotHeight - viewportHeight);
         sidebarScroll = Math.clamp(sidebarScroll, 0, sidebarMaximumScroll);
         int y = top - sidebarScroll;
         graphics.enableScissor(windowX + 1, top, windowX + sidebarWidth, top + viewportHeight);
-        for (Category value : Category.values()) {
+        for (Category value : categories) {
             boolean selected = category == value;
             boolean hovered = AcaUiTheme.contains(mouseX, mouseY, x, y, width, categoryButtonHeight);
             if (selected) graphics.fill(x, y, x + 3, y + categoryButtonHeight, AcaUiTheme.ACCENT);
@@ -417,11 +418,12 @@ public final class ConfigScreen extends Screen {
         int sidebarX = windowX + 8;
         int sidebarY = windowY + 43 - sidebarScroll;
         int sideWidth = sidebarWidth - 16;
-        int categorySlotHeight = sidebarCategorySlotHeight(windowHeight);
+        List<Category> categories = availableCategories();
+        int categorySlotHeight = sidebarCategorySlotHeight(windowHeight, categories.size());
         int categoryButtonHeight = Math.min(22, categorySlotHeight - 2);
         int categoryViewportTop = windowY + 43;
         int categoryViewportBottom = windowY + windowHeight - 57;
-        for (Category value : Category.values()) {
+        for (Category value : categories) {
             if (mouseY >= categoryViewportTop && mouseY < categoryViewportBottom
                     && AcaUiTheme.contains(mouseX, mouseY, sidebarX, sidebarY, sideWidth, categoryButtonHeight)) {
                 category = value;
@@ -513,8 +515,33 @@ public final class ConfigScreen extends Screen {
     }
 
     static int sidebarCategorySlotHeight(int windowHeight) {
+        return sidebarCategorySlotHeight(windowHeight, Category.values().length);
+    }
+
+    static int sidebarCategorySlotHeight(int windowHeight, int categoryCount) {
         int availableHeight = windowHeight - 43 - 52 - 9;
-        return Math.clamp(availableHeight / Category.values().length, 18, 24);
+        return Math.clamp(availableHeight / Math.max(1, categoryCount), 18, 24);
+    }
+
+    private List<Category> availableCategories() {
+        List<Category> featureCategories = UnifiedModIntegration.features().stream()
+                .map(feature -> feature.category)
+                .toList();
+        List<Category> categories = visibleCategories(featureCategories);
+        if (!categories.contains(category)) {
+            category = categories.getFirst();
+            scroll = 0;
+        }
+        return categories;
+    }
+
+    static List<Category> visibleCategories(Iterable<Category> featureCategories) {
+        java.util.EnumSet<Category> present = java.util.EnumSet.noneOf(Category.class);
+        for (Category featureCategory : featureCategories) present.add(featureCategory);
+        if (present.isEmpty()) present.add(Category.GENERAL);
+        return java.util.Arrays.stream(Category.values())
+                .filter(present::contains)
+                .toList();
     }
 
     static boolean opensCompatibilityReport(int mouseButton) {

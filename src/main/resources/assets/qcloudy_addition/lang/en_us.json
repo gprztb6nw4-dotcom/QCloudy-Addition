@@ -90,7 +90,7 @@
   "config.integration.scan.phase.complete": "The latest local snapshot is ready",
   "config.group.hud": "HUD",
   "config.group.connection": "Connection",
-  "config.group.fishing": "Fishing",
+  "config.group.fishing": "Bite Alerts",
   "config.group.maps": "Maps",
   "config.group.waypoints": "Waypoints",
   "config.group.mining_objectives": "Mining Objectives",

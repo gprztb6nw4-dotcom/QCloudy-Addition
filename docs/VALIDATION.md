@@ -1,3 +1,37 @@
+# QCloudy_Addition Alpha 2.8.23 single-target validation
+
+Date: 2026-08-16<br>
+Minecraft: 26.1.2<br>
+Java: 25
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Alpha-2.8.23+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.23+26.1.2-sources.jar`
+
+Playable SHA-256: `36fa8ddee7900758ea29f4a4932fd029d3207d0cd38e82dd150ec4735b37ac5b`<br>
+Sources SHA-256: `0d6afd54988ea346f1cc5870b0b374063a02b7bd9baad9d9f50d9a6ed4dd5a0b`
+
+Alpha 2.8.23 is intentionally built only for Minecraft 26.1.2. It fixes the false mining HUD on The Park's `Jungle Island`, removes unavailable settings categories from the sidebar, and renames the redundant Fishing subgroup to `Bite Alerts` / `咬钩提示`.
+
+Verified in this workspace:
+
+- Java 25 `clean test build prepareRelease` completed successfully: 176 current tests in 31 suites, 0 failures, 0 errors, and 0 skips.
+- Location parsing treats exact `Jungle` as Crystal Hollows while rejecting `Jungle Island`, so Park evidence no longer enables the mining tracker.
+- Settings category availability is derived from the actual feature set; empty categories such as Dungeons are hidden instead of opening an empty page.
+- The Fishing top-level category remains, while its nested group uses the distinct `Bite Alerts` / `咬钩提示` label.
+- The playable JAR contains exactly 320 catalog Shards, 320 Shard item-model definitions, and 320 Shard textures. English and Simplified Chinese each contain 515 identical language keys.
+- Expanded metadata declares Minecraft 26.1.2, Fabric API 0.155.2+26.1.2, Fabric Loader 0.19.3+, Java 25+, and a client-only environment.
+- Binary and Sources artifacts in `build/26.1.2/libs/` are byte-identical to their `release/` copies. Both pass JDK 25 `jar --validate` and `unzip -t`.
+- No Alpha 2.8.23 artifact for Minecraft 26.2 was produced. `tools/build_all_versions.sh` skips 26.2 whenever the release channel is Alpha.
+
+Outstanding Alpha regression boundary:
+
+- Automated tests and archive checks do not replace authenticated in-game visual testing. Verify The Park/Jungle Island, an actually empty provider category, and the Fishing page at the GUI scales used by the target modpack before wider publication.
+- Capability-detected provider integration remains best-effort compatibility. Future provider changes may stay unclassified or appear in the compatibility gaps report until QCA can identify them safely.
+
+---
+
 # QCloudy_Addition Alpha 2.8.22 dual-version validation
 
 Date: 2026-08-15<br>

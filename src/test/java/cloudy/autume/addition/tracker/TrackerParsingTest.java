@@ -40,6 +40,8 @@ final class TrackerParsingTest {
         assertEquals(IslandArea.MINESHAFT, LocationTracker.classifyEvidence("⏣ Glacite Mineshafts"));
         assertEquals(IslandArea.CRYSTAL_HOLLOWS, LocationTracker.classifyEvidence("⏣ Goblin Queen's Den"));
         assertEquals(IslandArea.CRYSTAL_HOLLOWS, LocationTracker.classifyEvidence("⏣ Khazad-dûm"));
+        assertEquals(IslandArea.CRYSTAL_HOLLOWS, LocationTracker.classifyEvidence("⏣ Jungle"));
+        assertEquals(IslandArea.NONE, LocationTracker.classifyEvidence("⏣ Jungle Island"));
         assertEquals(IslandArea.THE_END, LocationTracker.classifyEvidence("⏣ Dragon's Nest"));
         assertEquals(IslandArea.CRIMSON_ISLE, LocationTracker.classifyEvidence("⏣ Crimson Isle"));
         assertEquals(IslandArea.CRIMSON_ISLE, LocationTracker.classifyEvidence("⏣ Ruins of Ashfang"));

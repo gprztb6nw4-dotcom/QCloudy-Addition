@@ -2,6 +2,18 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.8.23] - 2026-08-16
+
+### Fixed
+
+- Fixed The Park's exact `Jungle Island` location being mistaken for the Crystal Hollows `Jungle` subarea, which could show the Mining Tasks & Powders HUD outside a mining island.
+- Empty top-level settings categories are now omitted completely. Categories such as Dungeons appear only when QCA or an installed compatible provider contributes at least one readable feature.
+- Renamed the redundant Fishing → Fishing subgroup to the specific **Bite Alerts** group.
+
+### Build
+
+- Alpha 2.8.23 is published only for Minecraft 26.1.2, following the Alpha-channel target policy.
+
 ## [2.8.22] - 2026-08-15
 
 ### Added

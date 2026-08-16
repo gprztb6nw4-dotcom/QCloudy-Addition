@@ -1,13 +1,13 @@
 # QCloudy_Addition
 
-QCloudy_Addition 是适用于 Minecraft 26.1.2 与 26.2 的纯客户端 Fabric 模组。它专注于更清晰的 SkyBlock 地图、简洁的目标 HUD、被动视觉辅助、宠物信息和背包质量优化。模组以英文为默认界面，并保留 Hypixel 发来的原始名称。
+QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。它专注于更清晰的 SkyBlock 地图、简洁的目标 HUD、被动视觉辅助、宠物信息和背包质量优化。模组以英文为默认界面，并保留 Hypixel 发来的原始名称。Alpha 版本只发布 Minecraft 26.1.2 构建。
 
 ## 快速入口
 
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [当前 Alpha 2.8.22 更新日志](CHANGELOG_zh_CN.md)
+- [当前 Alpha 2.8.23 更新日志](CHANGELOG_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
@@ -17,7 +17,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 与 26.2 的纯客户端 Fabric �
 
 ## 统一 SkyBlock 模组控制——Alpha
 
-QCA 可以作为统一的功能与 HUD 编辑入口，直接控制自己的功能，以及已安装的 **SkyHanni**、**Skyblocker**、**Firmament**、**BabyZombieAddons**、**Feesh** 中能够安全识别的内容。“统一设置编辑”和“统一 HUD 编辑”是两个相互独立且默认关闭的总开关。每一次提供方扫描都必须经过第二次确认：首次开启没有有效会话快照的编辑器，以及每一次点击 **Refresh**，都会先显示与设置或 HUD 范围对应的确认窗口。取消首次确认会保持总开关关闭；取消 Refresh 会保留上一份有效快照。重启后即使总开关仍为开启，也不会静默扫描。确认后才会打开可视化进度页面。设置页只报告可管理设置，HUD 页只报告可管理 HUD。普通打开设置菜单不会扫描，未安装的模组不会显示，两个开关都关闭时会取消待处理工作并释放会话快照。适配不使用精确版本白名单，因此提供方更新后，仍兼容的已识别分支可以继续工作，未知或变化分支则逐项跳过。QCA 在两个 Minecraft 目标版本中仍可独立加载。
+QCA 可以作为统一的功能与 HUD 编辑入口，直接控制自己的功能，以及已安装的 **SkyHanni**、**Skyblocker**、**Firmament**、**BabyZombieAddons**、**Feesh** 中能够安全识别的内容。“统一设置编辑”和“统一 HUD 编辑”是两个相互独立且默认关闭的总开关。每一次提供方扫描都必须经过第二次确认：首次开启没有有效会话快照的编辑器，以及每一次点击 **Refresh**，都会先显示与设置或 HUD 范围对应的确认窗口。取消首次确认会保持总开关关闭；取消 Refresh 会保留上一份有效快照。重启后即使总开关仍为开启，也不会静默扫描。确认后才会打开可视化进度页面。设置页只报告可管理设置，HUD 页只报告可管理 HUD。普通打开设置菜单不会扫描，未安装的模组不会显示，两个开关都关闭时会取消待处理工作并释放会话快照。适配不使用精确版本白名单，因此提供方更新后，仍兼容的已识别分支可以继续工作，未知或变化分支则逐项跳过。当前 Alpha 只发布 Minecraft 26.1.2 构建。
 
 分类首先采用提供方原生路径和已经验证的规则；只有仍未分类的功能才会交给小型、确定性的本地元数据分类器。它使用固定权重和置信度门槛，不下载模型、不联网，也无权判断两个功能是否等价或写入提供方数值。
 
@@ -25,14 +25,13 @@ QCA 可以作为统一的功能与 HUD 编辑入口，直接控制自己的功�
 
 原有 **编辑 HUD** 界面也会显示所选兼容提供方中已经启用的 HUD，并标注模组名称。拖动或缩放第三方 HUD 时只更新预览，松开鼠标才写回其原生位置/缩放。本 Alpha 安全支持已校验的布尔、枚举、有边界数值、位置和缩放；自定义颜色对象、复合快捷键对象等提供方专属复杂编辑器暂时保留在对应模组自己的界面中。
 
-一级分类固定顺序为：**通用、地图、物品与菜单、战斗、地牢、Slayer、挖矿、种地、砍树、钓鱼、狩猎、Rift、活动**。Safari 是狩猎下级组，Garden 是种地下级组，Crimson Isle/Kuudra 是战斗下级组。每个功能只有一个归属，只出现一次。
+一级分类顺序为：**通用、地图、物品与菜单、战斗、地牢、Slayer、挖矿、种地、砍树、钓鱼、狩猎、Rift、活动**，但没有任何 QCA 或已发现提供方功能的分类会直接隐藏。Safari 是狩猎下级组，Garden 是种地下级组，Crimson Isle/Kuudra 是战斗下级组；钓鱼上钩功能使用“咬钩提示”下级组，不再重复显示“钓鱼 → 钓鱼”。每个功能只有一个归属，只出现一次。
 
 ## 功能分类
 
 ### 通用
 
 - **手动重连**：在连接失败和断线界面加入一个原版尺寸的“重新连接”按钮。正常连接尝试开始时就记录目标，所以首次加入失败后也能使用。只有玩家点击按钮才会重新连接；没有倒计时、循环、重试计数、命令或自动加入。
-- **钓鱼上钩提示音**：默认关闭，用于提示 Hypixel 水钓与岩浆钓鱼的短暂收杆窗口。功能优先使用直接归属本地玩家的 Fishing Hook；对 owner 关联缺失的 Hypixel 岩浆鱼钩，则只在真实抛竿后的短窗口内进行安全关联，然后要求鱼钩附近出现精确可见的 `!!!` 标记。每根鱼钩只播放一次内置 Ciallo OGG；独立音量滑块为 0–100%，默认 64%。不会自动抛竿或收杆。
 
 ### 地图
 
@@ -53,6 +52,10 @@ QCA 可以作为统一的功能与 HUD 编辑入口，直接控制自己的功�
 - **Tree Critter 计时**：默认开启且可单独关闭。读取离玩家最近的 Tree Protection Order 可见名称牌 `Critter in: 26m 47s`，把服务器实际倒计时加入综合 Hunting HUD；不自行按物品猜测倒数，因此可准确兼容 Fun-Sized（60m）、Family-Sized（30m）、Jumbo（15m）、Behemoth（立即出现）、Honeycomb Artifact 加速、Honey Serendipity 立即触发及未来服务器修正。
 - **Miria Contest**：解析客户端收到的计分板/Tab 档位行（例如 `COMMON with 151` 与 `Uncommon requires +99`），只在综合 Hunting HUD 中显示下一档、准确差值与预计 Safari Ticket；不再向右侧计分板注入内容，也不重复显示计分板已有的竞赛倒计时。
 - **Benefactor 与 Tree Gift**：将有限范围的 Tab/计分板、已经打开的 Forest/Desert Temple 菜单和玩家本人收到的准确捐赠消息合并为 Benefactor 状态；支持多日捐赠、剩余时间、寺庙对应效果、到期处理和账号/Profile 持久保存，新捐赠也不会被仍未刷新的旧菜单立刻覆盖。十种稀有 Tree Gift 奖励可分别开关：读取玩家本人精确奖励汇总的 hover，也读取同一个经过个人贡献与汇总证明的有限 Gift 区块内精确 BONUS 行；兼容被聊天压缩模组取消显示但客户端已经收到的原始消息。附近玩家单独出现的公开掉落行不会触发。
+
+### 钓鱼
+
+- **钓鱼上钩提示音**：默认关闭，用于提示 Hypixel 水钓与岩浆钓鱼的短暂收杆窗口。功能优先使用直接归属本地玩家的 Fishing Hook；对 owner 关联缺失的 Hypixel 岩浆鱼钩，则只在真实抛竿后的短窗口内进行安全关联，然后要求鱼钩附近出现精确可见的 `!!!` 标记。每根鱼钩只播放一次内置 Ciallo OGG；独立音量滑块为 0–100%，默认 64%。不会自动抛竿或收杆。其下级组名称为“咬钩提示”，不再出现重复的“钓鱼 → 钓鱼”。
 
 ### 狩猎
 
@@ -97,7 +100,7 @@ QCA 可以作为统一的功能与 HUD 编辑入口，直接控制自己的功�
 - 界面打开动画默认开启，也可关闭
 - 安装 Mod Menu 后，可从 Mod Menu 直接进入 QCA 设置
 
-设置页采用受 BLC 信息层级启发、但没有复制其素材或界面代码的紧凑结构：顶部只保留“功能”，左侧为上面列出的十三个一级分类，并使用默认收起的下级组与可搜索功能卡片。钓鱼、种地、地牢、Slayer、Rift 和活动都是独立一级分类；HUD 位置继续从左下角“编辑 HUD”进入。功能卡片不重复绘制右上角开关和右下角右键提示，二级设置也不重复一级功能开关。侧栏没有“全部”分类。
+设置页采用受 BLC 信息层级启发、但没有复制其素材或界面代码的紧凑结构：顶部只保留“功能”，左侧只显示当前确实拥有功能的一级分类，并使用默认收起的下级组与可搜索功能卡片。没有 QCA 或已发现提供方功能的“地牢”等分类会完全隐藏，不再打开空页面；钓鱼功能使用“咬钩提示”下级组。HUD 位置继续从左下角“编辑 HUD”进入。功能卡片不重复绘制右上角开关和右下角右键提示，二级设置也不重复一级功能开关。侧栏没有“全部”分类。
 
 物品与菜单工具包括 Attribute Shard Fusion Guide、物品时间戳、光标位置记忆、AOTE/AOTV 声音自定义和聊天偷窥。所有 QCA 热键都直接在原有二级设置行内进入等待输入，不再跳转到独立捕获菜单；支持键盘、鼠标 1–5/侧键以及 Ctrl、Shift、Alt、Cmd/Super 组合，等待输入时按 `Esc` 会像原版一样清空绑定。
 
@@ -105,13 +108,13 @@ QCA 可以作为统一的功能与 HUD 编辑入口，直接控制自己的功�
 
 ## 安装
 
-1. 选择 Minecraft 26.1.2 + Fabric API 0.155.2+26.1.2，或 Minecraft 26.2 + Fabric API 0.154.2+26.2；两者都需要 Fabric Loader 0.19.3 或更新版本及 Java 25。
+1. 安装 Minecraft 26.1.2 与 Fabric API 0.155.2+26.1.2；Alpha 构建还需要 Fabric Loader 0.19.3 或更新版本及 Java 25。
 2. 将文件名末尾与当前 Minecraft 版本完全一致的 `QCloudy_Addition-*.jar` 放入实例 `mods` 文件夹；Mod Menu 为可选依赖。
 3. 启动游戏后按 `O` 或输入任一本地设置命令进行配置。
 
 ## 从源码构建
 
-安装 JDK 25 后运行 `./tools/build_all_versions.sh`。该命令会测试并在 `release/` 同时生成 Minecraft 26.1.2 与 26.2 的可运行 JAR 和 Sources JAR。单版本开发仍可使用 `./gradlew build`（默认 26.1.2）或 `./gradlew build -Pminecraft_version=26.2`。项目已包含固定为 Gradle 9.6.1 的 Wrapper 与 Fabric Loom 1.17.17；参考模组不是构建或运行依赖。宠物 Profile 元数据由本地 NEU item-repo 快照离线生成并直接打包进 QCA；发布版运行时不会联网，也不需要 Firmament。
+安装 JDK 25 后运行 `./tools/build_all_versions.sh`。当发布通道为 Alpha 时，该命令只会测试并在 `release/` 生成 Minecraft 26.1.2 的可运行 JAR 和 Sources JAR；非 Alpha 通道才可能构建两个维护目标。普通 `./gradlew build` 也默认以 26.1.2 为目标。项目已包含固定为 Gradle 9.6.1 的 Wrapper 与 Fabric Loom 1.17.17；参考模组不是构建或运行依赖。宠物 Profile 元数据由本地 NEU item-repo 快照离线生成并直接打包进 QCA；发布版运行时不会联网，也不需要 Firmament。
 
 ## 安全边界
 
@@ -125,7 +128,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-当前 Alpha 2.8.22 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
+当前 Alpha 2.8.23 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

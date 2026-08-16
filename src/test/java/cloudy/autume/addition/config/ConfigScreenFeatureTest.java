@@ -165,6 +165,22 @@ final class ConfigScreenFeatureTest {
     }
 
     @Test
+    void sidebarHidesCategoriesWithoutAnyAvailableFeature() {
+        var visible = ConfigScreen.visibleCategories(java.util.List.of(
+                ConfigScreen.Category.GENERAL,
+                ConfigScreen.Category.FISHING,
+                ConfigScreen.Category.MINING,
+                ConfigScreen.Category.FISHING));
+
+        assertEquals(java.util.List.of(
+                ConfigScreen.Category.GENERAL,
+                ConfigScreen.Category.MINING,
+                ConfigScreen.Category.FISHING), visible);
+        assertFalse(visible.contains(ConfigScreen.Category.DUNGEONS));
+        assertEquals(24, ConfigScreen.sidebarCategorySlotHeight(380, visible.size()));
+    }
+
+    @Test
     void shardFusionIsAnEnabledInventoryFeatureInItsOwnGroup() {
         ModConfig config = new ModConfig();
         ConfigScreen.Feature feature = ConfigScreen.Feature.SHARD_FUSION_HELPER;

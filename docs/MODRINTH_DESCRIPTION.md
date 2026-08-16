@@ -1,12 +1,12 @@
 # QCloudy_Addition
 
-**A client-only Hypixel SkyBlock utility mod for Fabric on Minecraft 26.1.2 and 26.2.**
+**A client-only Hypixel SkyBlock utility mod for Fabric on Minecraft 26.1.2.**
 
 QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, pet information, a complete offline Attribute Shard Fusion guide/planner, and deeply configurable HUDs into one clean bilingual interface.
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Alpha 2.8.22.** The same QCA-owned feature set is built for Minecraft 26.1.2 and 26.2. Optional third-party settings/HUD adapters use on-demand capability discovery instead of an exact-version whitelist.
+> **Current channel: Alpha 2.8.23 for Minecraft 26.1.2.** Alpha builds use one Minecraft target. Optional third-party settings/HUD adapters use on-demand capability discovery instead of an exact-version whitelist.
 
 ## Main features
 
@@ -16,7 +16,7 @@ The interface is English by default and can be switched to Simplified Chinese. N
 - Separate **Unified Settings Editor** and **Unified HUD Editor** master switches under General; both default to off, work independently, and never hide QCA-owned controls.
 - Every provider scan requires a second confirmation. First enable without a valid snapshot and every Refresh show a scope-specific local dialog before work begins; cancelling does not start a job, restored switches do not scan silently after restart, and confirmed jobs open a visual provider/phase/item progress page.
 - Only installed providers with successfully read capabilities are shown. Native and verified categories run first; a fixed offline classifier handles only remaining uncategorised metadata and cannot merge or change features.
-- Exact top-level order: General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events.
+- Available top-level categories keep this order: General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, Events. Categories with no available feature are hidden.
 - One shared card for one exact function. Right-click selects the provider first, then edits that provider's safe native Boolean, enum, numeric, position, and scale settings.
 - Feesh uses its live delegated-property setters and native save path; enabled, non-empty Feesh overlays use anchor-aware position, scale, and alignment editing through Feesh's own persistence store. Unsupported Feesh branches appear only in Compatibility Gaps.
 - Enabling a shared card enables the selected implementation and disables only exact equivalents in the other compatible providers.
@@ -54,6 +54,12 @@ The Shard database and fallback icons are bundled with the mod. The guide perfor
 - Mithril, Gemstone, and Glacite Powder tracking.
 - Selected HOTM loadout-name display.
 - Support for Dwarven Mines, Crystal Hollows, Glacite Tunnels, and Glacite Mineshafts.
+- Crystal Hollows `Jungle` is matched as an exact location, so The Park's `Jungle Island` cannot activate the Mining HUD.
+
+### Fishing
+
+- The top-level Fishing category contains a **Bite Alerts** subgroup instead of repeating the category name.
+- The optional Ciallo bite cue remains disabled by default and plays only for the local player's detected water or lava bite state.
 
 ### Foraging
 
@@ -77,7 +83,7 @@ The Shard database and fallback icons are bundled with the mod. The guide perfor
 - A manual **Reconnect** button with no timer, retry loop, or automatic join.
 - **Chat Peek** with keyboard, mouse-button, and modifier combinations.
 - In-place hotkey editing, including mouse buttons and multi-key chords.
-- Thirteen ordered top-level categories—General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, and Events—with searchable collapsible groups and exactly one owner for every feature.
+- Available top-level categories follow the documented order, while empty categories are hidden. Searchable collapsible groups keep exactly one owner for every feature.
 
 ## HUD customization
 
@@ -91,16 +97,16 @@ Center-screen alerts have per-feature sound switches and 0–100% volume sliders
 
 Required:
 
-- Minecraft **26.1.2** or **26.2** (use the matching file)
+- Minecraft **26.1.2**
 - Fabric Loader **0.19.3+**
-- Fabric API **0.155.2+26.1.2** for MC 26.1.2, or **0.154.2+26.2** for MC 26.2
+- Fabric API **0.155.2+26.1.2**
 - Java **25**
 
 Optional:
 
-- Mod Menu **18.0.0** for MC 26.1.2, or **20.0.1** for MC 26.2
+- Mod Menu **18.0.0**
 
-Put either `QCloudy_Addition-Alpha-2.8.22+26.1.2.jar` or `QCloudy_Addition-Alpha-2.8.22+26.2.jar` in the instance's `mods` folder, matching the exact game version. Do not install the `-sources.jar` as the playable mod.
+Put `QCloudy_Addition-Alpha-2.8.23+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
 
 Press `O`, open QCA through Mod Menu, or enter `/qca` or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 

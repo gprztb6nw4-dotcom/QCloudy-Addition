@@ -6,8 +6,8 @@
 
 QCloudy_Addition（QCA）是一个以英文为默认语言、提供中英文界面、仅在客户端运行的 Hypixel SkyBlock Fabric 模组。它用一个按“功能”分类的界面统一管理地图、HUD、被动视觉辅助、宠物信息、Attribute Shard 工具和部分客户端体验优化。
 
-> **当前版本：** Alpha 2.8.22<br>
-> **Minecraft：** 26.1.2 与 26.2<br>
+> **当前版本：** Alpha 2.8.23<br>
+> **Minecraft：** 26.1.2<br>
 > **必需：** Java 25、Fabric Loader 0.19.3 或更高版本，以及与 Minecraft 对应的 Fabric API<br>
 > **可选：** Mod Menu，以及经过适配审核的其他 SkyBlock 模组版本<br>
 > **说明：** QCA 是独立的社区项目，与 Hypixel、Mojang、Microsoft、SkyHanni、Skyblocker、Firmament、BabyZombieAddons 和 Feesh 均无隶属或官方认可关系。
@@ -29,14 +29,13 @@ QCloudy_Addition（QCA）是一个以英文为默认语言、提供中英文界�
 
 ## 安装
 
-必须选择与游戏实例 Minecraft 版本完全一致的 JAR。
+本次 Alpha 只提供一个 Minecraft 目标。
 
 | Minecraft | 所需 Fabric API | 可运行文件 |
 |---|---|---|
-| 26.1.2 | 0.155.2+26.1.2 或更高的兼容版本 | `QCloudy_Addition-Alpha-2.8.22+26.1.2.jar` |
-| 26.2 | 0.154.2+26.2 或更高的兼容版本 | `QCloudy_Addition-Alpha-2.8.22+26.2.jar` |
+| 26.1.2 | 0.155.2+26.1.2 或更高的兼容版本 | `QCloudy_Addition-Alpha-2.8.23+26.1.2.jar` |
 
-两个版本都要求 Fabric Loader 0.19.3 或更高版本以及 Java 25。
+该目标要求 Fabric Loader 0.19.3 或更高版本以及 Java 25。
 
 1. 安装对应版本的 Minecraft、Fabric Loader、Fabric API 和 Java。
 2. 从 [GitHub Releases 页面](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/releases)下载可运行的 QCA JAR。
@@ -64,7 +63,7 @@ QCA 独立运行不需要 SkyHanni、Skyblocker、Firmament、BabyZombieAddons�
 
 ### 按功能分类
 
-左侧栏固定使用以下顺序：
+左侧栏只显示当前至少拥有一个可用功能的分类，并对显示出来的分类保持以下顺序：
 
 1. 通用
 2. 地图
@@ -80,7 +79,7 @@ QCA 独立运行不需要 SkyHanni、Skyblocker、Firmament、BabyZombieAddons�
 12. Rift
 13. 活动
 
-Safari 是狩猎下的可折叠分组，Garden 属于 Farming，Crimson Isle 与 Kuudra 属于战斗。同一个功能只归属于一个位置，不会在多个分类中重复出现。可折叠分组默认收起。
+Safari 是狩猎下的可折叠分组，Garden 属于 Farming，Crimson Isle 与 Kuudra 属于战斗。钓鱼中的下级组命名为**咬钩提示**，不再出现“钓鱼 → 钓鱼”。同一个功能只归属于一个位置，不会在多个分类中重复出现。可折叠分组默认收起。
 
 ### 功能卡片
 
@@ -146,7 +145,7 @@ Safari 是狩猎下的可折叠分组，Garden 属于 Farming，Crimson Isle 与
 
 ### 地牢
 
-该分类用于显示已安装外部模组中功能定义匹配、且实时能力检测通过的地牢设置。没有发现可安全使用的能力时，QCA 不会虚构一个替代实现。
+该分类用于显示已安装外部模组中功能定义匹配、且实时能力检测通过的地牢设置。没有发现可安全使用的能力时，QCA 不会虚构一个替代实现，并会隐藏整个空分类。
 
 ### Slayer
 
@@ -155,6 +154,7 @@ Safari 是狩猎下的可折叠分组，Garden 属于 Farming，Crimson Isle 与
 ### 挖矿
 
 - **挖矿任务与粉尘**读取 Dwarven Mines、Crystal Hollows、Glacite Tunnels 和 Glacite Mineshafts 中客户端收到的 Tab 数据。
+- Crystal Hollows 的 `Jungle` 使用完整地点名匹配，因此 The Park 的 `Jungle Island` 不会触发该 HUD。
 - Commission 名称完整显示，并使用单独测量宽度的进度条。
 - 进度可以显示为保留一位小数的百分比，或 current/target 数值。
 - Mithril、Gemstone 与 Glacite Powder 分开追踪。
@@ -175,6 +175,7 @@ Safari 是狩猎下的可折叠分组，Garden 属于 Farming，Crimson Isle 与
 
 ### 钓鱼
 
+- 钓鱼功能归入**咬钩提示**下级组，而不是再次使用“钓鱼”作为组名。
 - **钓鱼上钩声音**默认关闭。
 - 它把附近收到的准确 `!!!` 标记与本地玩家的水钓浮标，或范围受限的 Hypixel 岩浆钓鱼浮标表现进行关联。
 - 每根鱼竿只播放一次内置 Ciallo 声音，音量 0–100%，默认 64%。
@@ -305,7 +306,7 @@ QCA 不会保存密码、Access Token、Hypixel API Key、聊天记录、远程�
 
 ### 游戏无法启动
 
-- 确认可运行 JAR 与 Minecraft 26.1.2 或 26.2 完全匹配。
+- 确认可运行 JAR 是 Minecraft 26.1.2 构建。
 - 确认 Java 25、Fabric Loader 0.19.3+ 和对应 Fabric API。
 - 删除重复或旧版 QCA JAR。
 - 不要把 `-sources.jar` 当作可运行模组放入 `mods`。
@@ -324,7 +325,7 @@ QCA 不会下载 Bazaar 价格。可以使用离线/Ironman/获取速度模式�
 
 ### 外部模组提供者没有出现
 
-适配器会锁定版本并安全关闭。请检查完全一致的模组版本。在 Minecraft 26.2 中，当前外部适配器会主动隐藏，直到对应版本完成审核。
+QCA 不会只因版本号变化就拒绝整个提供者。重新打开设置后，它会再次探测实时配置与原生保存能力；仍兼容的已知字段会继续出现，不能安全理解的新结构会被省略。
 
 ### 真实物品图标与内置 Shard 图标不同
 
@@ -348,7 +349,7 @@ QCA 不会下载 Bazaar 价格。可以使用离线/Ironman/获取速度模式�
 
 ## 验证、许可证与致谢
 
-Alpha 2.8.22 使用 Java 25 为两个 Minecraft 版本构建。当前验证报告会记录本版本准确的自动测试、压缩包、语言与兼容契约检查结果。
+Alpha 2.8.23 使用 Java 25 为 Minecraft 26.1.2 构建。当前验证报告会记录本版本准确的自动测试、压缩包、语言与兼容契约检查结果。
 
 自动测试与压缩包检查不能代替真实 Hypixel 回归、所有 GUI Scale、所有材质包和未来每一种模组组合。准确测试边界请查看[当前验证报告](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/VALIDATION.md)。
 

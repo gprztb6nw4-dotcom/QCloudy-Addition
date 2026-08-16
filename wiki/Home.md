@@ -6,8 +6,8 @@
 
 QCloudy_Addition (QCA) is an English-first, bilingual, client-only Fabric mod for Hypixel SkyBlock. It organizes maps, HUDs, passive visual helpers, pet information, Attribute Shard tools, and selected quality-of-life controls in one function-first interface.
 
-> **Current version:** Alpha 2.8.22<br>
-> **Minecraft:** 26.1.2 and 26.2<br>
+> **Current version:** Alpha 2.8.23<br>
+> **Minecraft:** 26.1.2<br>
 > **Required:** Java 25, Fabric Loader 0.19.3 or newer, and the matching Fabric API<br>
 > **Optional:** Mod Menu and reviewed builds of supported SkyBlock mods<br>
 > **Notice:** QCA is an independent community project. It is not affiliated with or endorsed by Hypixel, Mojang, Microsoft, SkyHanni, Skyblocker, Firmament, BabyZombieAddons, or Feesh.
@@ -29,14 +29,13 @@ QCloudy_Addition (QCA) is an English-first, bilingual, client-only Fabric mod fo
 
 ## Installation
 
-Choose the JAR that exactly matches the Minecraft version used by the instance.
+This Alpha release has one Minecraft target.
 
 | Minecraft | Required Fabric API | Playable file |
 |---|---|---|
-| 26.1.2 | 0.155.2+26.1.2 or newer compatible build | `QCloudy_Addition-Alpha-2.8.22+26.1.2.jar` |
-| 26.2 | 0.154.2+26.2 or newer compatible build | `QCloudy_Addition-Alpha-2.8.22+26.2.jar` |
+| 26.1.2 | 0.155.2+26.1.2 or newer compatible build | `QCloudy_Addition-Alpha-2.8.23+26.1.2.jar` |
 
-Both targets require Fabric Loader 0.19.3 or newer and Java 25.
+This target requires Fabric Loader 0.19.3 or newer and Java 25.
 
 1. Install the matching Minecraft, Fabric Loader, Fabric API, and Java versions.
 2. Download the playable QCA JAR from the [GitHub Releases page](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/releases).
@@ -64,7 +63,7 @@ Use `/qshard [English query]` to open the offline Attribute Shard Guide with an 
 
 ### Function-first categories
 
-The left sidebar always uses this order:
+The left sidebar preserves this order for categories that currently contain at least one available feature. Empty categories are omitted entirely:
 
 1. General
 2. Maps
@@ -80,7 +79,7 @@ The left sidebar always uses this order:
 12. Rift
 13. Events
 
-Safari is a collapsible subgroup under Hunting, Garden belongs under Farming, and Crimson Isle/Kuudra belong under Combat. A function has one owner and appears in one place rather than being duplicated across categories. Collapsible groups start closed.
+Safari is a collapsible subgroup under Hunting, Garden belongs under Farming, and Crimson Isle/Kuudra belong under Combat. The Fishing subgroup is named **Bite Alerts**, avoiding a redundant Fishing → Fishing hierarchy. A function has one owner and appears in one place rather than being duplicated across categories. Collapsible groups start closed.
 
 ### Feature cards
 
@@ -146,7 +145,7 @@ Slot Locking, Storage Overlay, and menu middle-click conversion were removed fro
 
 ### Dungeons
 
-This category contains function-matched settings discovered from compatible live capabilities in installed providers. QCA does not invent a replacement Dungeon implementation when a provider exposes no recognised usable capability.
+This category contains function-matched settings discovered from compatible live capabilities in installed providers. QCA does not invent a replacement Dungeon implementation when a provider exposes no recognised usable capability, and the category itself is hidden when it has no available feature.
 
 ### Slayer
 
@@ -155,6 +154,7 @@ This category contains exact function-matched Slayer settings supplied by compat
 ### Mining
 
 - **Mining Tasks & Powders** reads received Tab data in Dwarven Mines, Crystal Hollows, Glacite Tunnels, and Glacite Mineshafts.
+- Crystal Hollows `Jungle` is matched as an exact received location; The Park's `Jungle Island` therefore cannot activate this HUD.
 - Commission names are shown in full and use a separate measured progress bar.
 - Progress can use one-decimal percentage mode or current/target mode.
 - Mithril, Gemstone, and Glacite Powder are tracked separately.
@@ -175,6 +175,7 @@ Garden and Farming functions exposed through recognised live provider capabiliti
 
 ### Fishing
 
+- Fishing functions are grouped under **Bite Alerts**, not another subgroup named Fishing.
 - **Fishing Bite Sound** is disabled by default.
 - It associates an exact nearby received `!!!` marker with the local player's water hook or bounded Hypixel lava-hook presentation.
 - It plays the bundled Ciallo sound once per hook at a configurable 0–100% volume, default 64%.
@@ -305,7 +306,7 @@ QCA does not store passwords, access tokens, Hypixel API keys, chat history, rem
 
 ### The game does not start
 
-- Confirm that the playable JAR matches Minecraft 26.1.2 or 26.2 exactly.
+- Confirm that the playable JAR is the Minecraft 26.1.2 build.
 - Confirm Java 25, Fabric Loader 0.19.3+, and the matching Fabric API.
 - Remove duplicate/older QCA JARs.
 - Do not put the `-sources.jar` in the mods folder as the playable file.
@@ -348,7 +349,7 @@ Do not include access tokens, session identifiers, private chat, or other secret
 
 ## Validation, license, and credits
 
-Alpha 2.8.22 is built for both supported targets with Java 25. The maintained validation report records the exact automated-test, archive, language, and compatibility-contract checks for this build.
+Alpha 2.8.23 is built for Minecraft 26.1.2 with Java 25. The maintained validation report records the exact automated-test, archive, language, and compatibility-contract checks for this build.
 
 Automated tests and archive checks do not replace an authenticated Hypixel regression, every GUI Scale, every resource pack, or every future modpack combination. See the current [validation report](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/VALIDATION.md) for the exact tested boundary.
 

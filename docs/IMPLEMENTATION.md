@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.8.22` for Minecraft 26.1.2 and 26.2.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.8.23` for Minecraft 26.1.2. Alpha builds currently target 26.1.2 only.
 
 ## 1. Runtime architecture
 
@@ -54,7 +54,7 @@ Give every feature a clear single category and let players customize visual outp
 
 - Local mouse/keyboard input through Minecraft input events and targeted input Mixins.
 - `HudElementRegistry` for screen HUD submission.
-- `GuiGraphicsExtractor` for Minecraft 26.1.2/26.2 text, item, panel, and texture rendering, with target-specific access isolated in `MinecraftClientCompat`.
+- `GuiGraphicsExtractor` for Minecraft 26.1.2 text, item, panel, and texture rendering, with version-specific access isolated in `MinecraftClientCompat`.
 - Local `qcloudy_addition.json` for settings and HUD layout.
 - Bundled `en_us.json` and `zh_cn.json` for QCA-owned labels.
 
@@ -62,7 +62,7 @@ The screen layer derives inputs, buttons, lists, detail viewports, and click tar
 
 ### Implementation
 
-- `ConfigScreen` owns one searchable Features page and thirteen mutually exclusive categories in the required order: General, Maps, Items & Menus, Combat, Dungeons, Slayer, Mining, Farming, Foraging, Fishing, Hunting, Rift, and Events.
+- `ConfigScreen` owns one searchable Features page and preserves the required category order, but computes the visible sidebar from the currently available first-party and provider features. A category such as Dungeons is absent when it owns no visible feature. Fishing's sole first-party cue is placed under the `Bite Alerts` subgroup.
 - Left-click changes a feature's primary state; right-click opens only settings specific to that feature.
 - `HudLayoutScreen` lists only QCA HUDs currently loaded by location/state plus enabled HUDs from the selected compatible provider. Dragging changes position; dragging a border/corner changes that HUD's native scale when available.
 - `PanelStyle` separately stores background color/alpha, border width/color, title color, bold state, shadow state, and scale for Map, Mining, Hunting, and Pet panels.
