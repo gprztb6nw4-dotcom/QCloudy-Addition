@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.8.26` for Minecraft 26.1.2. Alpha builds currently target 26.1.2 only.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.8.27` for Minecraft 26.1.2. Alpha builds currently target 26.1.2 only.
 
 ## 1. Runtime architecture
 
@@ -307,7 +307,7 @@ On by default. One physical click starts one ordinary server connection. No save
 ### Century Cake effect expiry alert
 
 - **Purpose:** retain the real expiry time of every Century Cake bonus through reconnects and offline periods, then present one unambiguous renewal reminder.
-- **Inputs:** exact received `Big Yum! You refresh/gain <bonus> for 48 hours!` chat lines and the local wall clock. The offline catalog contains exactly 20 verified cake/effect pairs and their item-head profiles.
+- **Inputs:** exact received first-activation `Yum! You gain <bonus> for 48 hours!` or refresh `Big Yum! You refresh <bonus> for 48 hours!` chat lines and the local wall clock. Formatting and private-use stat glyphs are normalized before catalog matching. The offline catalog contains exactly 20 verified cake/effect pairs and their item-head profiles.
 - **Implementation:** the normalized bonus resolves to one catalog entry and writes an absolute `now + 48 hours` expiry under the active account/Profile. The once-per-second checker marks newly expired entries before presentation, merges entries found in the same pass, and never creates separate per-effect settings.
 - **Expected effect:** one default-on master alert, a center title, an independently configured local sound at the shared 64% default, and a local chat component. `/cake` and `/centurycakeeffect` open a read-only effects-style screen with cake icons, bonus, rarity, and remaining time.
 - **Default/outbound:** enabled. Nothing runs automatically. The underlined `Click Here For Cake Eating` component carries exactly `/visit northwestcloudy`; Minecraft executes it only after the player clicks the component.

@@ -27,7 +27,7 @@
 | Safari Belt details | Received item ID/lore and already-open milestone-menu items | Tooltip and account/profile-scoped local config cache | None |
 | Dragon highlight | Received Ender Dragon entity and parsed location | Vanilla outline render state | None |
 | Power Orb & SOS despawn alert | Exact received player-owned Power Orb despawn chat; exact locally used Flare ID; received successful Flare placement sound; local monotonic time | Large center title and independently configured local sound | None |
-| Century Cake expiry tracking | Exact received 48-hour refresh chat lines and local wall-clock time | Local timers, effects screen, center/chat alert, local sound | Only a direct click on the underlined renewal text runs exactly `/visit northwestcloudy`; never automatic |
+| Century Cake expiry tracking | Exact received 48-hour first-activation/refresh chat lines and local wall-clock time | Local timers, effects screen, center/chat alert, local sound | Only a direct click on the underlined renewal text runs exactly `/visit northwestcloudy`; never automatic |
 | Pet HUD | Received chat and Tab display names | Text HUD | None |
 | Chat Peek | Physical held key and already received chat history | Temporarily changes local chat rendering/scroll target | None |
 | AOTE/AOTV sound customization | Held-item ID and received nearby sound event | Keeps the original sound or replaces it with a local vanilla sound at configured volume/pitch | None |

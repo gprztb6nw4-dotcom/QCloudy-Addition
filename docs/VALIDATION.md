@@ -1,3 +1,40 @@
+# QCloudy_Addition Alpha 2.8.27 single-target validation
+
+Date: 2026-08-17<br>
+Minecraft: 26.1.2<br>
+Java: 25
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Alpha-2.8.27+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.27+26.1.2-sources.jar`
+
+Playable SHA-256: `7fab6015f1ccfdeea55cc5b3cc6cf3905448e5faa38f3b563edb4b59fb8a863a`<br>
+Sources SHA-256: `84b181de1a42a409f3bb1008b2eab9c3beb4455d8b6d70a0b2673f248852a226`
+
+Alpha 2.8.27 fixes first-time Century Cake activation tracking. The real first-use message now starts the 48-hour timer immediately, including Starborn Century Cake's private-use Hunter Fortune stat glyph, while the existing exact refresh path remains intact.
+
+Verified in this workspace:
+
+- Java 25 `clean test build prepareRelease` completed successfully: 191 current tests in 37 suites, 0 failures, 0 errors, and 0 skips.
+- The parser accepts the exact first-activation form `Yum! You gain <known bonus> for 48 hours!` and the exact refresh form `Big Yum! You refresh <known bonus> for 48 hours!`.
+- Formatting codes and the private-use glyph embedded in `+1 Hunter Fortune` are normalized before catalog matching, so Starborn Century Cake resolves to the existing Hunter Fortune entry.
+- Invented combinations such as `Big Yum! You gain ...` and `Yum! You refresh ...`, unknown effects, unrelated lines, and non-48-hour durations fail closed.
+- The existing 20-cake catalog, absolute real-world expiry persistence, unified alert switch, effects screen, expiry title/sound, merged chat notification, and click-only `/visit northwestcloudy` renewal action are unchanged.
+- Alpha 2.8.26's Power Orb and confirmed Flare lifecycle remain present and unchanged.
+- English and Simplified Chinese each contain 534 identical language keys.
+- Expanded metadata declares `2.8.27-alpha+26.1.2`, Minecraft 26.1.2 and a client-only environment. Class files use Java major version 69.
+- Binary and Sources artifacts in `build/libs/` are byte-identical to their `release/` copies. Both release artifacts pass JDK 25 `jar --validate` and `unzip -t`.
+- No Alpha 2.8.27 artifact for Minecraft 26.2 was produced; current Alpha policy targets only Minecraft 26.1.2.
+
+Outstanding Alpha regression boundary:
+
+- Automated parser, state, archive, and metadata checks do not replace an authenticated Hypixel test. After installing 2.8.27, eat one currently inactive cake—especially Starborn Century Cake—and confirm that `/cake` immediately changes it from inactive to a running 48-hour timer. Then refresh an already-active cake and confirm that its expiry is replaced.
+- A first-activation message missed by an older build cannot be recovered retrospectively from chat history. The player must eat or refresh that cake again while 2.8.27 is running.
+- Natural Power Orb and Warning/Alert/SOS Flare expiry still require the live regression recorded under Alpha 2.8.26.
+
+---
+
 # QCloudy_Addition Alpha 2.8.26 single-target validation
 
 Date: 2026-08-17<br>

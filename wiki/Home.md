@@ -6,7 +6,7 @@
 
 QCloudy_Addition (QCA) is an English-first, bilingual, client-only Fabric mod for Hypixel SkyBlock. It organizes maps, HUDs, passive visual helpers, pet information, Attribute Shard tools, and selected quality-of-life controls in one function-first interface.
 
-> **Current version:** Alpha 2.8.26<br>
+> **Current version:** Alpha 2.8.27<br>
 > **Minecraft:** 26.1.2<br>
 > **Required:** Java 25, Fabric Loader 0.19.3 or newer, and the matching Fabric API<br>
 > **Optional:** Mod Menu and reviewed builds of supported SkyBlock mods<br>
@@ -33,7 +33,7 @@ This Alpha release has one Minecraft target.
 
 | Minecraft | Required Fabric API | Playable file |
 |---|---|---|
-| 26.1.2 | 0.155.2+26.1.2 or newer compatible build | `QCloudy_Addition-Alpha-2.8.26+26.1.2.jar` |
+| 26.1.2 | 0.155.2+26.1.2 or newer compatible build | `QCloudy_Addition-Alpha-2.8.27+26.1.2.jar` |
 
 This target requires Fabric Loader 0.19.3 or newer and Java 25.
 
@@ -350,7 +350,7 @@ Do not include access tokens, session identifiers, private chat, or other secret
 
 ## Validation, license, and credits
 
-Alpha 2.8.26 is built for Minecraft 26.1.2 with Java 25. The maintained validation report records the exact automated-test, archive, language, and compatibility-contract checks for this build.
+Alpha 2.8.27 is built for Minecraft 26.1.2 with Java 25. The maintained validation report records the exact automated-test, archive, language, and compatibility-contract checks for this build.
 
 Automated tests and archive checks do not replace an authenticated Hypixel regression, every GUI Scale, every resource pack, or every future modpack combination. See the current [validation report](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/VALIDATION.md) for the exact tested boundary.
 

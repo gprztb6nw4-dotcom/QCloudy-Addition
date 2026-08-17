@@ -2,6 +2,18 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.8.27] - 2026-08-17
+
+### Fixed
+
+- Fixed newly activated Century Cake effects, including **Starborn Century Cake / +1 Hunter Fortune**, remaining grey and showing `Not active` after the player ate the cake.
+- The tracker now accepts Hypixel's exact first-activation line, `Yum! You gain ... for 48 hours!`, including the private-use stat icon embedded in Hunter Fortune, while retaining the exact `Big Yum! You refresh ... for 48 hours!` refresh path.
+- Removed the incorrect legacy assumption that a first activation could be written as `Big Yum! You gain ...`. Only the two real message forms can create or refresh a 48-hour timer.
+
+### Build
+
+- Alpha 2.8.27 is built only for Minecraft 26.1.2.
+
 ## [2.8.26] - 2026-08-17
 
 ### Fixed

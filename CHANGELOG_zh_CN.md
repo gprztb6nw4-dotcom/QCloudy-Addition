@@ -1,5 +1,17 @@
 # 更新日志
 
+## [2.8.27] - 2026-08-17
+
+### 修复
+
+- 修复首次吃下 Century Cake 后效果仍保持灰色并显示“未生效”的问题，包括 **Starborn Century Cake / +1 Hunter Fortune**。
+- 现在会识别 Hypixel 首次生效时的精确消息 `Yum! You gain ... for 48 hours!`，并正确处理 Hunter Fortune 数值中附带的私用区属性图标；原有 `Big Yum! You refresh ... for 48 hours!` 刷新路径继续保留。
+- 删除错误的旧假设 `Big Yum! You gain ...`。只有两种真实服务器消息可以创建或刷新 48 小时倒计时。
+
+### 构建
+
+- Alpha 2.8.27 仅构建 Minecraft 26.1.2 版本。
+
 ## [2.8.26] - 2026-08-17
 
 ### 修复

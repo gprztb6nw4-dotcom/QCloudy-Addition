@@ -1,3 +1,40 @@
+# QCloudy_Addition Alpha 2.8.27 单目标验证
+
+日期：2026-08-17<br>
+Minecraft：26.1.2<br>
+Java：25
+
+已验证产物：
+
+- `release/QCloudy_Addition-Alpha-2.8.27+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.27+26.1.2-sources.jar`
+
+可运行 SHA-256：`7fab6015f1ccfdeea55cc5b3cc6cf3905448e5faa38f3b563edb4b59fb8a863a`<br>
+Sources SHA-256：`84b181de1a42a409f3bb1008b2eab9c3beb4455d8b6d70a0b2673f248852a226`
+
+Alpha 2.8.27 修复 Century Cake 首次生效追踪。真实首次食用消息现在会立即启动 48 小时计时，包括 Starborn Century Cake 的 Hunter Fortune 私用区属性图标；原有精确刷新路径保持不变。
+
+本工作区已验证：
+
+- Java 25 `clean test build prepareRelease` 成功：37 个 suite、191 项当前测试，0 failure、0 error、0 skip。
+- 解析器接受精确首次生效格式 `Yum! You gain <已知加成> for 48 hours!`，以及精确刷新格式 `Big Yum! You refresh <已知加成> for 48 hours!`。
+- 匹配目录前会清理格式代码与 `+1 Hunter Fortune` 中嵌入的私用区图标，因此 Starborn Century Cake 可以正确对应现有 Hunter Fortune 条目。
+- 错误组合 `Big Yum! You gain ...`、`Yum! You refresh ...`、未知效果、无关消息和非 48 小时时长都会安全拒绝。
+- 原有 20 种蛋糕目录、真实绝对时间持久化、统一提醒开关、效果菜单、到期大字/音效、合并聊天提醒及仅点击才执行的 `/visit northwestcloudy` 续效果操作均未改变。
+- Alpha 2.8.26 的 Power Orb 与已确认 Flare 生命周期保留且未改动。
+- 英文与简体中文各有 534 个完全一致的语言键。
+- 展开元数据声明 `2.8.27-alpha+26.1.2`、Minecraft 26.1.2 与纯客户端环境；class major version 为 69。
+- `build/libs/` 的可运行与 Sources 产物分别和 `release/` 副本逐字节一致；两个 release 产物都通过 JDK 25 `jar --validate` 与 `unzip -t`。
+- 没有生成 Minecraft 26.2 的 Alpha 2.8.27 产物；当前 Alpha 规则只面向 Minecraft 26.1.2。
+
+尚未覆盖的 Alpha 实服边界：
+
+- 自动解析、状态、归档与元数据检查不能代替已登录 Hypixel 的实测。安装 2.8.27 后，应食用一种当前未生效的蛋糕（尤其是 Starborn Century Cake），确认 `/cake` 会立即从“未生效”变为 48 小时倒计时；随后刷新一种已生效蛋糕，确认到期时间被替换。
+- 旧版本已经漏掉的首次生效消息无法从历史聊天中倒推恢复；必须在 2.8.27 运行时再次食用或刷新该蛋糕。
+- Power Orb 以及 Warning/Alert/SOS Flare 的自然到期仍需要完成 Alpha 2.8.26 记录的实服回归。
+
+---
+
 # QCloudy_Addition Alpha 2.8.26 单目标验证
 
 日期：2026-08-17<br>

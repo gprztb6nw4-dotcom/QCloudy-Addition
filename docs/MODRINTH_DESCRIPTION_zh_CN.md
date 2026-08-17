@@ -6,7 +6,7 @@ QCloudy_Addition 将地图、任务追踪、砍树与狩猎辅助、宠物信息
 
 界面默认英文，可在设置中切换简体中文。Hypixel 返回的地点、物品、任务、宠物、皮肤、配件、Shard 和玩家重命名 HOTM 配置始终保留原名，避免翻译改变游戏数据的实际含义。
 
-> **当前通道：Minecraft 26.1.2 的 Alpha 2.8.26。** Alpha 只构建一个 Minecraft 目标。可选第三方设置/HUD 适配使用按需能力探测，不再使用精确版本白名单。
+> **当前通道：Minecraft 26.1.2 的 Alpha 2.8.27。** Alpha 只构建一个 Minecraft 目标。可选第三方设置/HUD 适配使用按需能力探测，不再使用精确版本白名单。
 
 ## 核心功能
 
@@ -109,7 +109,7 @@ HUD 编辑器只显示当前已经加载且确实存在内容的面板。拖动�
 
 - Mod Menu **18.0.0**
 
-将 `QCloudy_Addition-Alpha-2.8.26+26.1.2.jar` 放入实例 `mods` 文件夹。不要把 `-sources.jar` 当作可运行模组安装。
+将 `QCloudy_Addition-Alpha-2.8.27+26.1.2.jar` 放入实例 `mods` 文件夹。不要把 `-sources.jar` 当作可运行模组安装。
 
 默认按 `O`、通过 Mod Menu，或输入 `/qca`、`/qc` 打开设置。这些设置别名和 `/qshard` 都是本地客户端命令，不会发送给 Hypixel。
 
