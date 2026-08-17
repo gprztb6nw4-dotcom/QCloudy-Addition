@@ -2,6 +2,19 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.8.26] - 2026-08-17
+
+### Fixed
+
+- Renamed the Combat setting to the explicit **Power Orb & SOS Despawn Alert** and replaced the incorrect Flare-chat assumption completely.
+- Power Orbs now use only the four exact player-owned `Your <Power Orb> despawned.` chat lines. Warning, Alert, and SOS Flares are tracked separately: an exact Flare item use creates a short candidate and the matching successful placement sound confirms a three-minute local lifecycle.
+- A failed/cooldown-blocked Flare use cannot start a false timer. A confirmed new Flare silently replaces the old record; world/server changes clear it silently; entity unload, distance, and buff range never trigger or suppress the alert.
+- Added separate Power Orb, Flare, center-text, sound, and 0–100% volume controls. The feature and sound default on, with volume at 64%; one lifecycle end produces at most one alert.
+
+### Build
+
+- Alpha 2.8.26 is built only for Minecraft 26.1.2.
+
 ## [2.8.25] - 2026-08-17
 
 ### Added
@@ -20,12 +33,12 @@ All notable public changes to QCloudy_Addition are documented here.
 
 ### Added
 
-- Added **Deployable Expiry Alert** under **Combat → Deployables**. Exact player-owned despawn messages for Radiant, Mana Flux, Overflux, and Plasmaflux Power Orbs and Warning, Alert, and SOS Flares now produce a large English center-screen warning.
+- Added the first **Deployable Expiry Alert** under **Combat → Deployables**. Its original Flare-chat detection was incomplete and has been fully replaced by the confirmed lifecycle implementation in 2.8.26.
 - Added an independent alert sound toggle and 0–100% volume slider for this feature. The sound is enabled by default at 64%.
 
 ### Safety and build
 
-- Detection is restricted to exact received `Your <approved deployable> despawned.` chat lines. It sends no chat, command, packet, interaction, or network request.
+- The feature sends no chat, command, packet, interaction, or network request.
 - Alpha 2.8.24 is built only for Minecraft 26.1.2.
 
 ## [2.8.23] - 2026-08-16

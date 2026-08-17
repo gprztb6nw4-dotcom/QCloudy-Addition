@@ -1,6 +1,6 @@
 # QCloudy_Addition Alpha 2.8.25（Minecraft 26.1.2）
 
-Alpha 2.8.25 加入完整的纯客户端 Century Cake 到期追踪，并保留上一 Alpha 中加入的 Power Orb/Flare 到期提醒。
+Alpha 2.8.25 加入完整的纯客户端 Century Cake 到期追踪。上一 Alpha 遗留的第一版 Deployable 提醒已由 Alpha 2.8.26 完整替代。
 
 ## 新增
 
@@ -13,7 +13,7 @@ Alpha 2.8.25 加入完整的纯客户端 Century Cake 到期追踪，并保留�
 
 ## 保留与改进
 
-- Power Orb 与 Flare 到期提醒继续使用精确收到的 despawn 聊天行进行纯客户端判断。
+- Power Orb 到期提醒继续使用精确收到的 despawn 聊天行进行纯客户端判断；遗留的 Flare 聊天假设并不完整，已从当前版本删除。
 - 提醒设置继续归属于各自功能，不建立共享的分效果列表。
 - 全部倒计时与保存状态均为本地、按 Profile 隔离。
 

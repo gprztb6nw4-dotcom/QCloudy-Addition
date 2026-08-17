@@ -1,3 +1,40 @@
+# QCloudy_Addition Alpha 2.8.26 单目标验证
+
+日期：2026-08-17<br>
+Minecraft：26.1.2<br>
+Java：25
+
+已验证产物：
+
+- `release/QCloudy_Addition-Alpha-2.8.26+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.26+26.1.2-sources.jar`
+
+可运行 SHA-256：`265d271600603b433ac4560a2d576397979056c21590c6595290bcb32043e7e6`<br>
+Sources SHA-256：`42b4ef983a94d3a83245bb71f5a5c6d030e23c49cbeefff1660244c26ead53b4`
+
+Alpha 2.8.26 删除不完整的 Flare 聊天假设，改为成功放置确认后的本地生命周期，同时保留本人 Power Orb 精确消失聊天提醒。功能名称明确为 **Power Orb 与 SOS 消失提醒**。
+
+本工作区已验证：
+
+- Java 25 `clean test build prepareRelease` 成功：37 个 suite、190 项当前测试，0 failure、0 error、0 skip。
+- 解析器只接受四种 Power Orb 的本人精确消失消息，并明确拒绝原来错误假设的 `Your Warning/Alert/SOS Flare despawned.`。
+- Warning、Alert、SOS Flare 使用精确 SkyBlock 物品 ID。道具使用只打开两秒候选窗口；必须在窗口内收到已复核音调和音量的精确烟花发射成功音效，才确认放置并启动三分钟单调计时。
+- 放置失败或冷却中误用不会启动计时。成功放置新 Flare 会静默替换旧生命周期；换世界、换服务器和断线会静默清理活动与候选状态。
+- 判定路径中不存在实体卸载、渲染距离、玩家距离、增益范围或 80 格阈值。已确认的生命周期只在到期时提醒一次，随后立即清理。
+- Power Orb、Flare、中央大字、本地音效与 0–100% 音量均为独立二级设置。功能和音效默认开启，音量默认 64%。
+- 英文与简体中文各有 534 个完全一致的语言键。
+- 展开元数据声明 `2.8.26-alpha+26.1.2`、Minecraft 26.1.2 与纯客户端环境；class major version 为 69。
+- 可运行 JAR 包含三个 Deployable 到期类、Sound Engine 接入、恰好 320 个目录 Shard、320 个 Shard item 定义、320 个 Shard model 与 320 张 Shard 纹理。
+- `build/libs/` 的可运行与 Sources 产物分别和 `release/` 副本逐字节一致；两个 release 产物都通过 JDK 25 `jar --validate` 与 `unzip -t`。
+- 没有生成 Minecraft 26.2 的 Alpha 2.8.26 产物；当前 Alpha 规则只面向 Minecraft 26.1.2。
+
+尚未覆盖的 Alpha 实服边界：
+
+- 自动状态、解析、配置、归档和静态数据流检查不能代替已登录 Hypixel 的实测。扩大公开发布前，应让一种 Power Orb 以及 Warning、Alert、SOS Flare 分别自然到期；确认成功放置只启动一个生命周期，失败/冷却误用不启动，新 Flare 静默替换旧记录，并且到期只产生一次已配置的大字/音效。
+- 精确成功放置音效签名来自已复核的 SkyHanni 实现与当前客户端行为。如果 Hypixel 改动该信号，QCA 会安全拒绝确认，而不是错误启动计时。
+
+---
+
 # QCloudy_Addition Alpha 2.8.25 单目标验证
 
 日期：2026-08-17<br>
@@ -52,12 +89,12 @@ Java：25
 可运行 SHA-256：`12d511b898c43d066b9dd498162fd0e33a7c167440cfb8499af175321d1919c8`<br>
 Sources SHA-256：`7fb0fa2ed9bd0f78a7a153663be8e409e2e61b0e209e8f0affee45fada5d732c`
 
-Alpha 2.8.24 有意只为 Minecraft 26.1.2 构建。本版为玩家本人的四种 Power Orb 与三种 Flare 加入中央大字到期提醒，并带独立、默认 64% 的本地提示音。
+Alpha 2.8.24 是仅面向 Minecraft 26.1.2 的历史归档构建。其 Power Orb 聊天路径有效，但原来的 Flare 聊天假设并不完整，已在 Alpha 2.8.26 中删除并替换。
 
 本工作区已验证：
 
 - Java 25 `clean test build prepareRelease` 成功：32 个 suite、179 项当前测试，0 failure、0 error、0 skip。
-- 解析器只接受 Radiant、Mana Flux、Overflux、Plasmaflux Power Orb 与 Warning、Alert、SOS Flare 的完整 `Your <白名单 Deployable> despawned.` 消息。匹配前去除格式代码；其他玩家的消息、无关实体、生成消息或标点变化都会被拒绝。
+- 解析器可靠接受四种 Power Orb 的精确消息。原来只存在于测试中的 Warning/Alert/SOS Flare 聊天断言并不是已确认的实服信号，当前实现已不再使用。
 - 配置迁移版本 22 会为现有安装启用本功能与音效，使用项目统一的 64% 默认音量，并把音效/音量保留在 **战斗 → Deployables** 功能自己的二级设置页。
 - 静态数据流检查确认新处理器只读取已经收到的游戏聊天、显示本地 Title 并播放客户端本地音效；不发送聊天、命令、数据包、交互或网络请求。
 - 可运行 JAR 包含恰好 320 个目录 Shard、320 个 Shard 物品模型定义和 320 张 Shard 纹理；英文与简体中文各有 518 个完全一致的语言键。
@@ -67,8 +104,8 @@ Alpha 2.8.24 有意只为 Minecraft 26.1.2 构建。本版为玩家本人的四�
 
 尚未覆盖的 Alpha 实服边界：
 
-- 自动解析测试和压缩包检查不能代替已登录 Hypixel 的真实时机测试。扩大发布前，应让至少一种 Power Orb 和一种 Flare 自然到期，确认每条精确消息只产生一次中央大字和一次已配置音效。
-- 固定白名单会安全地拒绝未知内容。如果 Hypixel 新增或改名 Deployable，需要先复核客户端可见名称再加入，未知名称不会被猜测触发。
+- 不应再用这个历史产物验证 Flare 到期行为。Alpha 2.8.26 已用“成功放置确认后的本地生命周期”替换错误的 Flare 聊天分支，并需要重新完成自然到期实服回归。
+- 当前 Power Orb 固定白名单会安全拒绝未知内容。如果 Hypixel 新增或改名 Power Orb，需要先复核客户端可见名称再加入。
 
 ---
 

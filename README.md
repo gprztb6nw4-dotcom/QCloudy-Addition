@@ -7,7 +7,7 @@ QCloudy_Addition is a client-only Fabric mod for Minecraft 26.1.2. It focuses on
 - [Feature list](docs/FEATURES.md)
 - [Implementation notes](docs/IMPLEMENTATION.md)
 - [Modrinth description](docs/MODRINTH_DESCRIPTION.md)
-- [Current Alpha 2.8.25 changelog](CHANGELOG.md)
+- [Current Alpha 2.8.26 changelog](CHANGELOG.md)
 - [Validation](docs/VALIDATION.md)
 - [Compliance](docs/COMPLIANCE.md)
 
@@ -75,7 +75,7 @@ Foraging and Hunting are separate top-level settings categories, while Safari is
 ### Combat
 
 - **Ender Dragon Highlight** — puts Hypixel Ender Dragons in the vanilla outline pipeline while the scoreboard location is The End or Dragon's Nest. The outline color is selectable from red, yellow, cyan, green, purple, and white.
-- **Deployable Expiry Alert** — exact received messages for the local player's four Power Orbs and Warning/Alert/SOS Flares show a large English center title. Its local sound is independently switchable and defaults to 64%.
+- **Power Orb & SOS Despawn Alert** — the four Power Orbs use exact player-owned despawn chat lines. Warning/Alert/SOS Flares use exact item IDs plus the successful placement sound to start a three-minute local lifecycle. Failed uses, entity unload, distance, and buff range do not trigger an alert. Power Orb, Flare, center text, sound, and volume are independently configurable; sound defaults to 64%.
 - **Century Cake Effect Expiry Alert** — one default-on master switch tracks all 20 received cake refreshes for 48 real-world hours, merges simultaneous expiries, and shows a center title plus an underlined chat action. `/cake` and `/centurycakeeffect` open the local timer screen; clicking the chat action runs `/visit northwestcloudy`.
 
 ### Pets
@@ -132,7 +132,7 @@ Implementation and data flow: [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)
 
 Modrinth-ready description: [docs/MODRINTH_DESCRIPTION.md](docs/MODRINTH_DESCRIPTION.md)
 
-Current Alpha 2.8.25 changes: [CHANGELOG.md](CHANGELOG.md)
+Current Alpha 2.8.26 changes: [CHANGELOG.md](CHANGELOG.md)
 
 Publication checklist: [docs/PUBLISHING_CHECKLIST.md](docs/PUBLISHING_CHECKLIST.md)
 

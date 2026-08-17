@@ -13,7 +13,7 @@ import java.time.format.SignStyle;
 import java.time.temporal.ChronoField;
 import java.util.Locale;
 
-final class SkyBlockItemData {
+public final class SkyBlockItemData {
     private static final ZoneId HYPIXEL_ZONE = ZoneId.of("America/New_York");
     private static final DateTimeFormatter LEGACY_TIMESTAMP = new DateTimeFormatterBuilder()
             .parseCaseInsensitive()
@@ -45,7 +45,7 @@ final class SkyBlockItemData {
         return value.replace("-", "");
     }
 
-    static String itemId(ItemStack stack) {
+    public static String itemId(ItemStack stack) {
         return itemId(attributes(stack));
     }
 

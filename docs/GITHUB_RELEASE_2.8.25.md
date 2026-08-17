@@ -1,6 +1,6 @@
 # QCloudy_Addition Alpha 2.8.25 for Minecraft 26.1.2
 
-Alpha 2.8.25 adds a complete, client-side Century Cake expiry tracker and keeps the Power Orb/Flare expiry work introduced in the previous Alpha.
+Alpha 2.8.25 adds a complete, client-side Century Cake expiry tracker. The first Deployable-alert implementation inherited from the previous Alpha is fully superseded by Alpha 2.8.26.
 
 ## Added
 
@@ -13,7 +13,7 @@ Alpha 2.8.25 adds a complete, client-side Century Cake expiry tracker and keeps 
 
 ## Preserved and refined
 
-- Power Orb and Flare expiry alerts remain client-side and depend on exact received despawn chat lines.
+- Power Orb expiry alerts remain client-side and use exact received despawn chat. The inherited Flare-chat assumption was incomplete and has been removed from current builds.
 - Alert settings remain grouped by feature rather than sharing one global per-effect list.
 - All timers and saved state are local and profile-scoped.
 

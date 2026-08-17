@@ -1,5 +1,6 @@
 package cloudy.autume.addition.mixin;
 
+import cloudy.autume.addition.combat.DeployableExpiryAlert;
 import cloudy.autume.addition.hunting.BeeheemothSoundCustomizer;
 import cloudy.autume.addition.inventory.TeleportSoundCustomizer;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -16,6 +17,7 @@ public abstract class SoundEngineMixin {
             target = "Lnet/minecraft/client/resources/sounds/SoundInstance;getIdentifier()Lnet/minecraft/resources/Identifier;"),
             argsOnly = true, ordinal = 0)
     private SoundInstance aca$customizeBeeheemothSound(SoundInstance sound) {
+        DeployableExpiryAlert.onSound(sound);
         return BeeheemothSoundCustomizer.customize(sound);
     }
 

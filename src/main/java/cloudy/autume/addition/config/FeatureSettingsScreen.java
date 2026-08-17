@@ -269,6 +269,12 @@ final class FeatureSettingsScreen extends Screen {
             return rows;
         }
         if (feature == ConfigScreen.Feature.DEPLOYABLE_EXPIRY_ALERT) {
+            rows.add(new Setting(Kind.DEPLOYABLE_POWER_ORB_ALERTS,
+                    "config.setting.deployable_power_orb_alerts"));
+            rows.add(new Setting(Kind.DEPLOYABLE_FLARE_ALERTS,
+                    "config.setting.deployable_flare_alerts"));
+            rows.add(new Setting(Kind.DEPLOYABLE_EXPIRY_CENTER_TEXT,
+                    "config.setting.deployable_center_text"));
             rows.add(new Setting(Kind.DEPLOYABLE_EXPIRY_SOUND, "config.alert.sound"));
             rows.add(new Setting(Kind.DEPLOYABLE_EXPIRY_VOLUME, "config.alert.volume"));
             return rows;
@@ -496,6 +502,12 @@ final class FeatureSettingsScreen extends Screen {
                     config.inventory.etherwarpSoundVolume, 0, 100);
             case FISHING_BITE_VOLUME -> config.fishing.biteAlertVolume = nextPercent(
                     config.fishing.biteAlertVolume, 0, 100);
+            case DEPLOYABLE_POWER_ORB_ALERTS -> config.combat.deployablePowerOrbAlerts =
+                    !config.combat.deployablePowerOrbAlerts;
+            case DEPLOYABLE_FLARE_ALERTS -> config.combat.deployableFlareAlerts =
+                    !config.combat.deployableFlareAlerts;
+            case DEPLOYABLE_EXPIRY_CENTER_TEXT -> config.combat.deployableExpiryCenterText =
+                    !config.combat.deployableExpiryCenterText;
             case DEPLOYABLE_EXPIRY_SOUND -> config.combat.deployableExpiryAudio.sound =
                     !config.combat.deployableExpiryAudio.sound;
             case DEPLOYABLE_EXPIRY_VOLUME -> config.combat.deployableExpiryAudio.volume = nextPercent(
@@ -618,7 +630,8 @@ final class FeatureSettingsScreen extends Screen {
         TIMESTAMP_FORMAT, CURSOR_TOLERANCE,
         INSTANT_SOUND_MODE, INSTANT_CUSTOM_SOUND, INSTANT_SOUND_VOLUME,
         ETHERWARP_SOUND_MODE, ETHERWARP_CUSTOM_SOUND, ETHERWARP_SOUND_VOLUME,
-        FISHING_BITE_VOLUME, DEPLOYABLE_EXPIRY_SOUND, DEPLOYABLE_EXPIRY_VOLUME,
+        FISHING_BITE_VOLUME, DEPLOYABLE_POWER_ORB_ALERTS, DEPLOYABLE_FLARE_ALERTS,
+        DEPLOYABLE_EXPIRY_CENTER_TEXT, DEPLOYABLE_EXPIRY_SOUND, DEPLOYABLE_EXPIRY_VOLUME,
         OPEN_CENTURY_CAKES, CENTURY_CAKE_SOUND, CENTURY_CAKE_VOLUME,
         CHAT_PEEK_KEY, CHAT_SCROLL_TARGET
     }
@@ -704,6 +717,9 @@ final class FeatureSettingsScreen extends Screen {
                         + config.inventory.etherwarpCustomSound.toLowerCase());
                 case ETHERWARP_SOUND_VOLUME -> config.inventory.etherwarpSoundVolume + "%";
                 case FISHING_BITE_VOLUME -> config.fishing.biteAlertVolume + "%";
+                case DEPLOYABLE_POWER_ORB_ALERTS -> onOff(config.combat.deployablePowerOrbAlerts);
+                case DEPLOYABLE_FLARE_ALERTS -> onOff(config.combat.deployableFlareAlerts);
+                case DEPLOYABLE_EXPIRY_CENTER_TEXT -> onOff(config.combat.deployableExpiryCenterText);
                 case DEPLOYABLE_EXPIRY_SOUND -> onOff(config.combat.deployableExpiryAudio.sound);
                 case DEPLOYABLE_EXPIRY_VOLUME -> config.combat.deployableExpiryAudio.volume + "%";
                 case OPEN_CENTURY_CAKES -> ModText.get("config.open");

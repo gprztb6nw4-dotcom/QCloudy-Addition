@@ -47,7 +47,7 @@ final class ModConfigTest {
         assertEquals(1, config.hudStyle.pet.borderThickness);
         assertEquals(1.0f, config.hudStyle.pet.scale);
         assertEquals(1.75f, config.hudStyle.map.scale);
-        assertEquals(23, config.configVersion);
+        assertEquals(24, config.configVersion);
         assertEquals(true, config.manualReconnectButton);
         assertEquals(true, config.pets.showMaxProgress);
         assertEquals(true, config.pets.showOverflowLevel);
@@ -81,6 +81,9 @@ final class ModConfigTest {
         assertEquals(64, config.inventory.etherwarpSoundVolume);
         assertEquals(true, config.hunting.alertSound);
         assertEquals(true, config.combat.deployableExpiryAlert);
+        assertEquals(true, config.combat.deployablePowerOrbAlerts);
+        assertEquals(true, config.combat.deployableFlareAlerts);
+        assertEquals(true, config.combat.deployableExpiryCenterText);
         assertEquals(true, config.combat.deployableExpiryAudio.sound);
         assertEquals(64, config.combat.deployableExpiryAudio.volume);
         assertEquals(true, config.centuryCakes.expiryAlerts);
@@ -147,7 +150,7 @@ final class ModConfigTest {
 
         migrated.normalize();
 
-        assertEquals(23, migrated.configVersion);
+        assertEquals(24, migrated.configVersion);
         assertEquals("VANILLA", migrated.inventory.instantTransmissionSoundMode);
         assertEquals("VANILLA", migrated.inventory.etherwarpSoundMode);
         assertEquals(false, migrated.hunting.safariShards);
@@ -157,6 +160,9 @@ final class ModConfigTest {
         assertEquals(false, migrated.integrations.unifiedSettingsEditor);
         assertEquals(false, migrated.integrations.unifiedHudEditor);
         assertEquals(true, migrated.combat.deployableExpiryAlert);
+        assertEquals(true, migrated.combat.deployablePowerOrbAlerts);
+        assertEquals(true, migrated.combat.deployableFlareAlerts);
+        assertEquals(true, migrated.combat.deployableExpiryCenterText);
         assertEquals(64, migrated.combat.deployableExpiryAudio.volume);
         assertEquals(true, migrated.centuryCakes.expiryAlerts);
         assertEquals(64, migrated.centuryCakes.expiryAudio.volume);

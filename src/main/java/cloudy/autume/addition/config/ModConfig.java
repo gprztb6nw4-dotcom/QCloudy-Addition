@@ -169,6 +169,14 @@ public final class ModConfig {
             centuryCakes.expiryAudio = new AlertAudio();
             configVersion = 23;
         }
+        if (configVersion < 24) {
+            // Flare expiry is tracked from the local player's exact item use
+            // and fixed lifecycle rather than an unreliable chat assumption.
+            combat.deployablePowerOrbAlerts = true;
+            combat.deployableFlareAlerts = true;
+            combat.deployableExpiryCenterText = true;
+            configVersion = 24;
+        }
         hudStyle.map.normalize();
         hudStyle.mining.normalize();
         hudStyle.hunting.normalize();
@@ -488,6 +496,9 @@ public final class ModConfig {
         public boolean enderDragonHighlight = true;
         public int enderDragonHighlightColor = 0xFF405C;
         public boolean deployableExpiryAlert = true;
+        public boolean deployablePowerOrbAlerts = true;
+        public boolean deployableFlareAlerts = true;
+        public boolean deployableExpiryCenterText = true;
         public AlertAudio deployableExpiryAudio = new AlertAudio();
 
         private void normalize() {

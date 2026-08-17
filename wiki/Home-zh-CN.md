@@ -6,7 +6,7 @@
 
 QCloudy_Addition（QCA）是一个以英文为默认语言、提供中英文界面、仅在客户端运行的 Hypixel SkyBlock Fabric 模组。它用一个按“功能”分类的界面统一管理地图、HUD、被动视觉辅助、宠物信息、Attribute Shard 工具和部分客户端体验优化。
 
-> **当前版本：** Alpha 2.8.24<br>
+> **当前版本：** Alpha 2.8.26<br>
 > **Minecraft：** 26.1.2<br>
 > **必需：** Java 25、Fabric Loader 0.19.3 或更高版本，以及与 Minecraft 对应的 Fabric API<br>
 > **可选：** Mod Menu，以及经过适配审核的其他 SkyBlock 模组版本<br>
@@ -33,7 +33,7 @@ QCloudy_Addition（QCA）是一个以英文为默认语言、提供中英文界�
 
 | Minecraft | 所需 Fabric API | 可运行文件 |
 |---|---|---|
-| 26.1.2 | 0.155.2+26.1.2 或更高的兼容版本 | `QCloudy_Addition-Alpha-2.8.24+26.1.2.jar` |
+| 26.1.2 | 0.155.2+26.1.2 或更高的兼容版本 | `QCloudy_Addition-Alpha-2.8.26+26.1.2.jar` |
 
 该目标要求 Fabric Loader 0.19.3 或更高版本以及 Java 25。
 
@@ -140,7 +140,7 @@ Safari 是狩猎下的可折叠分组，Garden 属于 Farming，Crimson Isle 与
 ### 战斗
 
 - **Ender Dragon 高亮**在玩家位于 The End 或 Dragon's Nest 时，把客户端收到的 Hypixel Ender Dragon 加入 Minecraft 原版轮廓渲染；颜色可自定义。
-- **Deployable 到期提醒**在精确收到本人 Radiant、Mana Flux、Overflux、Plasmaflux Power Orb，或 Warning、Alert、SOS Flare 的消失消息时显示英文中央大字；独立本地音效默认 64%。
+- **Power Orb 与 SOS 消失提醒**通过本人精确消失聊天识别 Radiant、Mana Flux、Overflux、Plasmaflux Power Orb。Warning、Alert、SOS Flare 不再使用错误的聊天假设，而是由精确道具使用建立候选、成功放置音效确认，再启动本地三分钟生命周期。放置失败、实体卸载、玩家距离和增益范围都不会触发提醒。Power Orb、Flare、中央大字、音效和 0–100% 音量可分别设置；音量默认 64%。
 - **Crimson Isle 阵营任务**读取收到的 `Faction Quests:` Tab 区块，显示未完成任务的原始名称和进度；已完成任务不会显示。
 - 已安装外部模组中能被实时识别且具备安全读写能力的 Crimson Isle 与 Kuudra 功能，会作为战斗的下级分组出现；不再要求版本号完全匹配。
 
@@ -350,7 +350,7 @@ QCA 不会只因版本号变化就拒绝整个提供者。重新打开设置后�
 
 ## 验证、许可证与致谢
 
-Alpha 2.8.24 使用 Java 25 为 Minecraft 26.1.2 构建。当前验证报告会记录本版本准确的自动测试、压缩包、语言与兼容契约检查结果。
+Alpha 2.8.26 使用 Java 25 为 Minecraft 26.1.2 构建。当前验证报告会记录本版本准确的自动测试、压缩包、语言与兼容契约检查结果。
 
 自动测试与压缩包检查不能代替真实 Hypixel 回归、所有 GUI Scale、所有材质包和未来每一种模组组合。准确测试边界请查看[当前验证报告](https://github.com/gprztb6nw4-dotcom/QCloudy-Addition/blob/main/docs/VALIDATION.md)。
 

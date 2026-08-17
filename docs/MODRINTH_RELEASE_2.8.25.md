@@ -6,6 +6,6 @@
 - Added single and batched center/chat expiry alerts.
 - Added an underlined renewal action that runs `/visit northwestcloudy` only after a direct player click.
 - Added an independent local alert sound, enabled by default at 64%.
-- Preserved the previous Power Orb/Flare expiry alert work.
+- Preserved the first Deployable alert work; its incomplete Flare-chat branch is superseded and removed in Alpha 2.8.26.
 
 Client-only Alpha for Minecraft 26.1.2. Requires Fabric API and Java 25. No automatic cake interaction, command, click, movement, or server query.

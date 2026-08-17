@@ -7,7 +7,7 @@ QCloudy_Addition 是适用于 Minecraft 26.1.2 的纯客户端 Fabric 模组。�
 - [功能总览](docs/FEATURES_zh_CN.md)
 - [实现与数据流](docs/IMPLEMENTATION_zh_CN.md)
 - [Modrinth 中文简介](docs/MODRINTH_DESCRIPTION_zh_CN.md)
-- [当前 Alpha 2.8.25 更新日志](CHANGELOG_zh_CN.md)
+- [当前 Alpha 2.8.26 更新日志](CHANGELOG_zh_CN.md)
 - [验收与验证](docs/VALIDATION_zh_CN.md)
 - [合规说明](docs/COMPLIANCE_zh_CN.md)
 
@@ -75,7 +75,7 @@ QCA 可以作为统一的功能与 HUD 编辑入口，直接控制自己的功�
 ### 战斗
 
 - **末影龙高亮**：当计分板地点为 The End 或 Dragon's Nest 时，将末影龙加入原版轮廓渲染管线；轮廓色可选红、黄、青、绿、紫或白。
-- **Deployable 到期提醒**：精确读取本人四种 Power Orb 与 Warning/Alert/SOS Flare 的消失消息，在屏幕中央显示英文大字；本地音效可独立关闭，默认音量 64%。
+- **Power Orb 与 SOS 消失提醒**：四种 Power Orb 使用本人精确消失聊天行；Warning/Alert/SOS Flare 使用精确物品 ID，并由成功放置音效确认后开始本地三分钟生命周期。放置失败、实体卸载、距离和增益范围不会触发提醒。Power Orb、Flare、中央大字、音效和音量可分别设置；音效默认 64%。
 - **Century Cake 效果过期提醒**：使用一个默认开启的总开关追踪全部 20 种蛋糕效果的真实世界 48 小时倒计时；同批过期会合并提醒，并显示中央大字和带下划线的聊天操作。`/cake` 与 `/centurycakeeffect` 打开本地计时菜单；只有点击聊天操作后才执行 `/visit northwestcloudy`。
 
 ### 宠物
@@ -130,7 +130,7 @@ Hypixel 明确说明所有模组均由玩家自行承担使用风险，未明确
 
 Modrinth 中文发布描述：[docs/MODRINTH_DESCRIPTION_zh_CN.md](docs/MODRINTH_DESCRIPTION_zh_CN.md)
 
-当前 Alpha 2.8.25 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
+当前 Alpha 2.8.26 变化：[CHANGELOG_zh_CN.md](CHANGELOG_zh_CN.md)
 
 发布检查清单：[docs/PUBLISHING_CHECKLIST_zh_CN.md](docs/PUBLISHING_CHECKLIST_zh_CN.md)
 

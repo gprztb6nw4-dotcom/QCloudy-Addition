@@ -6,6 +6,6 @@
 - 加入单个及同批合并的中央/聊天到期提醒。
 - 加入带下划线的续效果操作；只有玩家直接点击后才执行 `/visit northwestcloudy`。
 - 加入独立本地提示音，默认开启且音量为 64%。
-- 保留上一版本的 Power Orb/Flare 到期提醒。
+- 保留第一版 Deployable 提醒；其中不完整的 Flare 聊天分支已在 Alpha 2.8.26 中被替代并删除。
 
 Minecraft 26.1.2 纯客户端 Alpha；需要 Fabric API 与 Java 25。不会自动吃蛋糕、发送命令、点击、移动或查询服务器。

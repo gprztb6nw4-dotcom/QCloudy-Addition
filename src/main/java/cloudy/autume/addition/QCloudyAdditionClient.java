@@ -72,7 +72,10 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
 
         UseItemCallback.EVENT.register((player, level, hand) -> {
             if (player == Minecraft.getInstance().player) {
-                FishingBiteAlert.onRodUse(Minecraft.getInstance(), player.getItemInHand(hand));
+                Minecraft client = Minecraft.getInstance();
+                var stack = player.getItemInHand(hand);
+                FishingBiteAlert.onRodUse(client, stack);
+                DeployableExpiryAlert.onItemUse(client, stack);
             }
             return net.minecraft.world.InteractionResult.PASS;
         });
@@ -91,6 +94,7 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
             }
             HuntingTracker.tick(client);
             FishingBiteAlert.tick(client);
+            DeployableExpiryAlert.tick(client);
         });
 
         ClientReceiveMessageEvents.GAME.register((message, overlay) -> {

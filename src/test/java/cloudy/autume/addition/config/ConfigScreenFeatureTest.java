@@ -151,6 +151,9 @@ final class ConfigScreenFeatureTest {
         assertEquals(ConfigScreen.FeatureGroup.COMBAT_DEPLOYABLES, feature.group);
         assertTrue(feature.enabled(config));
         assertTrue(feature.hasSettings());
+        assertTrue(config.combat.deployablePowerOrbAlerts);
+        assertTrue(config.combat.deployableFlareAlerts);
+        assertTrue(config.combat.deployableExpiryCenterText);
         assertTrue(config.combat.deployableExpiryAudio.sound);
         assertEquals(64, config.combat.deployableExpiryAudio.volume);
         assertEquals(null, feature.hudType());

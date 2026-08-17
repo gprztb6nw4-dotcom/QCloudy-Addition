@@ -6,7 +6,7 @@ QCloudy_Addition brings maps, objective tracking, hunting and foraging helpers, 
 
 The interface is English by default and can be switched to Simplified Chinese. Names received from Hypixel—locations, items, tasks, pets, skins, accessories, Shards, and player-renamed HOTM slots—remain in their original form so translations never change the meaning of game data.
 
-> **Current channel: Alpha 2.8.25 for Minecraft 26.1.2.** Alpha builds use one Minecraft target. Optional third-party settings/HUD adapters use on-demand capability discovery instead of an exact-version whitelist.
+> **Current channel: Alpha 2.8.26 for Minecraft 26.1.2.** Alpha builds use one Minecraft target. Optional third-party settings/HUD adapters use on-demand capability discovery instead of an exact-version whitelist.
 
 ## Main features
 
@@ -48,7 +48,7 @@ The Shard database and fallback icons are bundled with the mod. The guide perfor
 ### Combat
 
 - Configurable-color **Ender Dragon outlines** while in The End or Dragon's Nest.
-- A large **Deployable Expiry Alert** for the local player's four Power Orbs and three Flares, with an independent default-64% local sound.
+- **Power Orb & SOS Despawn Alert**: exact player-owned despawn chat for four Power Orbs, plus confirmed three-minute local lifecycles for Warning/Alert/SOS Flares. Failed uses, entity unload, distance, and buff range do not trigger expiry. Center text and the independent local sound are configurable; sound defaults to 64%.
 - A complete, non-truncating **Crimson Isle faction quest HUD** built from the received Tab widget; completed tasks are hidden once confirmed complete.
 
 ### Mining
@@ -109,7 +109,7 @@ Optional:
 
 - Mod Menu **18.0.0**
 
-Put `QCloudy_Addition-Alpha-2.8.25+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
+Put `QCloudy_Addition-Alpha-2.8.26+26.1.2.jar` in the instance's `mods` folder. Do not install the `-sources.jar` as the playable mod.
 
 Press `O`, open QCA through Mod Menu, or enter `/qca` or `/qc` to open settings. These settings aliases and `/qshard` are local client commands and are not sent to Hypixel.
 

@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.8.25` for Minecraft 26.1.2. Alpha builds currently target 26.1.2 only.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.8.26` for Minecraft 26.1.2. Alpha builds currently target 26.1.2 only.
 
 ## 1. Runtime architecture
 
@@ -296,13 +296,13 @@ On by default. One physical click starts one ordinary server connection. No save
 - **Expected effect:** clean configurable dragon outline, not an altered model or hitbox.
 - **Default/outbound:** on; local rendering only.
 
-### Deployable expiry alert
+### Power Orb & SOS despawn alert
 
 - **Purpose:** warn when the local player's temporary Power Orb or Flare has ended.
-- **Inputs:** exact client-received `Your <name> despawned.` game-chat line and a fixed seven-item allow-list.
-- **Implementation:** strips formatting, requires an exact full-line match, suppresses only duplicate copies received within two seconds, then presents a red bold title. A separate local sound toggle and 0–100% volume value are stored under Combat.
-- **Expected effect:** `<Deployable Name> Despawned!!!` appears in large English center text once per received expiry.
-- **Default/outbound:** feature on; sound on at 64%; no chat, command, packet, interaction, or network request.
+- **Inputs:** exact client-received Power Orb despawn chat lines; the exact `WARNING_FLARE`, `ALERT_FLARE`, or `SOS_FLARE` item ID used by the local player; and the received successful Flare placement sound (`entity.firework_rocket.launch`, pitch 1, volume 3).
+- **Implementation:** Power Orb formatting is stripped before an exact four-name full-line match. A Flare use creates only a two-second pending candidate; the matching placement sound confirms it and starts a three-minute monotonic timer. A confirmed new Flare silently replaces the previous timer. World/server changes and disconnects clear state silently. Entity unload, distance, and buff range are not inputs. Duplicate presentation is suppressed.
+- **Expected effect:** `<Deployable Name> Despawned!!!` appears once in large English center text when the Power Orb message is received or a confirmed Flare lifecycle reaches its end.
+- **Default/outbound:** feature, Power Orb alerts, Flare alerts, center text, and sound on; volume 64%. No chat, command, packet, interaction, or network request.
 
 ### Century Cake effect expiry alert
 

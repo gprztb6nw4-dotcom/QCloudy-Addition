@@ -1,3 +1,40 @@
+# QCloudy_Addition Alpha 2.8.26 single-target validation
+
+Date: 2026-08-17<br>
+Minecraft: 26.1.2<br>
+Java: 25
+
+Validated artifacts:
+
+- `release/QCloudy_Addition-Alpha-2.8.26+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.26+26.1.2-sources.jar`
+
+Playable SHA-256: `265d271600603b433ac4560a2d576397979056c21590c6595290bcb32043e7e6`<br>
+Sources SHA-256: `42b4ef983a94d3a83245bb71f5a5c6d030e23c49cbeefff1660244c26ead53b4`
+
+Alpha 2.8.26 replaces the incomplete Flare chat assumption with a confirmed local lifecycle while preserving exact player-owned Power Orb despawn chat alerts. The feature is explicitly named **Power Orb & SOS Despawn Alert**.
+
+Verified in this workspace:
+
+- Java 25 `clean test build prepareRelease` completed successfully: 190 current tests in 37 suites, 0 failures, 0 errors, and 0 skips.
+- The parser accepts only the four exact received Power Orb lines and explicitly rejects the former `Your Warning/Alert/SOS Flare despawned.` assumptions.
+- Warning, Alert, and SOS Flare use their exact SkyBlock item IDs. An item-use attempt opens only a two-second candidate window; the exact successful Firework Rocket launch sound at the reviewed pitch and volume must confirm placement before the three-minute monotonic lifecycle begins.
+- Failed or cooldown-blocked Flare uses cannot start a timer. A confirmed new Flare silently replaces the previous lifecycle. World/server changes and disconnects clear active and pending state without an alert.
+- Entity unload, render distance, player distance, buff range, and an 80-block threshold are absent from the decision path. A confirmed lifecycle produces one alert at expiry and is then cleared.
+- Power Orb, Flare, center-screen text, local sound, and 0–100% volume are separate secondary settings. The feature and sound default on, and sound volume defaults to 64%.
+- English and Simplified Chinese each contain 534 identical language keys.
+- Expanded metadata declares `2.8.26-alpha+26.1.2`, Minecraft 26.1.2 and a client-only environment. Class files use Java major version 69.
+- The playable JAR contains the three deployable-expiry classes, the Sound Engine hook, exactly 320 catalog Shards, 320 Shard item definitions, 320 Shard models, and 320 Shard textures.
+- Binary and Sources artifacts in `build/libs/` are byte-identical to their `release/` copies. Both release artifacts pass JDK 25 `jar --validate` and `unzip -t`.
+- No Alpha 2.8.26 artifact for Minecraft 26.2 was produced; current Alpha policy targets only Minecraft 26.1.2.
+
+Outstanding Alpha regression boundary:
+
+- Automated state, parser, configuration, archive, and static data-flow checks do not replace an authenticated Hypixel test. Before wider publication, let one Power Orb and each of Warning, Alert, and SOS Flare expire naturally. Confirm that successful placement starts one lifecycle, failed/cooldown-blocked use starts none, replacement is silent, and expiry creates exactly one configured title/sound.
+- The exact successful-placement sound signature is based on the reviewed SkyHanni implementation and current client behavior. If Hypixel changes that signal, QCA fails closed instead of starting an unconfirmed timer.
+
+---
+
 # QCloudy_Addition Alpha 2.8.25 single-target validation
 
 Date: 2026-08-17<br>
@@ -52,12 +89,12 @@ Validated artifacts:
 Playable SHA-256: `12d511b898c43d066b9dd498162fd0e33a7c167440cfb8499af175321d1919c8`<br>
 Sources SHA-256: `7fb0fa2ed9bd0f78a7a153663be8e409e2e61b0e209e8f0affee45fada5d732c`
 
-Alpha 2.8.24 is intentionally built only for Minecraft 26.1.2. It adds a center-screen expiry reminder for the local player's four Power Orbs and three Flares, with an independent local alert sound that defaults to 64%.
+Alpha 2.8.24 is an archived historical build for Minecraft 26.1.2. Its Power Orb chat path was valid, but its original Flare chat assumption was incomplete and has been removed and replaced in Alpha 2.8.26.
 
 Verified in this workspace:
 
 - Java 25 `clean test build prepareRelease` completed successfully: 179 current tests in 32 suites, 0 failures, 0 errors, and 0 skips.
-- The parser accepts exactly Radiant, Mana Flux, Overflux, and Plasmaflux Power Orbs and Warning, Alert, and SOS Flares in the full received form `Your <approved deployable> despawned.`. Formatting codes are removed before matching; another player's line, unrelated entity, spawn text, or punctuation variation is rejected.
+- The parser reliably accepted the four exact Power Orb lines. The former test-only Warning/Alert/SOS Flare chat assertions did not represent a confirmed live server signal and are not part of the current implementation.
 - Configuration migration version 22 enables the feature and its sound for existing installs, gives the sound the project-standard 64% default, and keeps sound/volume on the feature's own **Combat → Deployables** secondary settings page.
 - Static data-flow review confirms that the new handler only reads received game chat, displays a local title, and plays a local client sound. It sends no chat, command, packet, interaction, or network request.
 - The playable JAR contains exactly 320 catalog Shards, 320 Shard item-model definitions, and 320 Shard textures. English and Simplified Chinese each contain 518 identical language keys.
@@ -67,8 +104,8 @@ Verified in this workspace:
 
 Outstanding Alpha regression boundary:
 
-- Automated parsing tests and archive checks do not replace an authenticated Hypixel timing check. Before wider publication, let at least one Power Orb and one Flare expire naturally and confirm that each exact message produces one large title and one configured sound.
-- The fixed allow-list deliberately fails closed. If Hypixel adds or renames a deployable, it will not trigger until the client-visible name is reviewed and added.
+- Do not use this historical artifact to validate Flare expiry behavior. Alpha 2.8.26 replaces the invalid Flare chat branch with a confirmed local placement lifecycle and requires a fresh natural-expiry regression.
+- The current fixed Power Orb allow-list deliberately fails closed. If Hypixel adds or renames a Power Orb, it will not trigger until the client-visible name is reviewed and added.
 
 ---
 
