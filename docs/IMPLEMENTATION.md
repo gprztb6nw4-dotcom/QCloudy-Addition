@@ -1,6 +1,6 @@
 # QCloudy_Addition implementation and data-flow reference
 
-This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Alpha-2.8.28` for Minecraft 26.1.2. Alpha builds currently target 26.1.2 only.
+This document explains what each public feature is for, which client-visible information it consumes, how QCA processes that information, what the player should see, and whether the feature can produce an outbound action. It describes version `Beta-2.9.28` for Minecraft 26.1.2 and 26.2.
 
 ## 1. Runtime architecture
 

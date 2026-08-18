@@ -1,5 +1,32 @@
 # 更新日志
 
+## [2.9.28] - 2026-08-18
+
+面向 Minecraft 26.1.2 与 26.2 的 Beta 汇总版本，包含 Beta 2.8.17 之后 Alpha 2.8.18–2.8.28 完成的内容。
+
+### 新增
+
+- 加入面向已安装 SkyHanni、Skyblocker、Firmament、BabyZombieAddons 与 Feesh 的可选功能化集成。统一设置与统一 HUD 探测拥有独立总开关、扫描进度页、二次确认、Refresh 和只读兼容性缺失报告。
+- 加入 **Power Orb 与 SOS 消失提醒**。本人 Power Orb 读取精确消失聊天；Warning、Alert 与 SOS Flare 使用确认后的本地放置生命周期。提醒不考虑距离、增益范围或实体卸载。
+- 加入统一的 **Century Cake 效果过期提醒**，覆盖全部 20 种 Century Cake，并加入 `/cake`、`/centurycakeeffect`、真实世界 48 小时计时、蛋糕头像效果界面、合并过期通知与仅点击后执行的 `/visit northwestcloudy` 续效果链接。
+
+### 改进
+
+- 提供方扫描改为按需、本地、能力探测，并能容忍提供方版本变化；只显示安全识别的分支，缺失或变化的分支会失败关闭。
+- 设置分类仅在拥有 QCA 或已发现提供方功能时显示；钓鱼使用明确的“咬钩提示”分组，不再重复顶级分类名称。
+- Century Cake 解析支持真实的首次生效与刷新消息，并正确清理 Hypixel 私用区属性图标。
+
+### 修复
+
+- 修复 The Park 的 `Jungle Island` 被误判为 Crystal Hollows `Jungle`，从而在错误岛屿显示挖矿任务与粉尘 HUD 的问题。
+- 修复新生效 Century Cake 仍为灰色，并将 Starborn Century Cake 改为 Hypixel 实际使用的 `Hunting Fortune` 名称。
+- 删除旧的不完整 Flare 聊天假设；放置失败、冷却误点、换服、距离、增益范围与实体卸载均不会制造错误消失提醒。
+
+### 兼容与安全
+
+- Beta 2.9.28 同时构建 Minecraft 26.1.2 与 26.2。QCA 仍是可独立运行的纯客户端 Fabric 模组；可选提供方不是依赖，不支持的分支会被省略。
+- 只有玩家点击 Century Cake 过期消息中带下划线的续效果文字时，才会发送 `/visit northwestcloudy`；不会自动发送任何蛋糕、Deployable、提供方或扫描相关命令。
+
 ## [2.8.28] - 2026-08-18
 
 ### 修复

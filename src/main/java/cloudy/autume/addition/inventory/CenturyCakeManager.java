@@ -109,7 +109,9 @@ public final class CenturyCakeManager {
                 Component.literal(titleText).withStyle(ChatFormatting.BOLD, ChatFormatting.RED),
                 Component.empty(), 6, 50, 10);
 
-        client.gui.getChat().addClientSystemMessage(chatMessage(expired));
+        // LocalPlayer#sendSystemMessage is available on both maintained Minecraft
+        // targets and preserves the interactive renewal component in local chat.
+        client.player.sendSystemMessage(chatMessage(expired));
 
         var audio = ConfigManager.get().centuryCakes.expiryAudio;
         if (audio.sound && audio.volume > 0) {

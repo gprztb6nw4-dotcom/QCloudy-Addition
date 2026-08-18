@@ -2,6 +2,33 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.9.28] - 2026-08-18
+
+Beta consolidation release for Minecraft 26.1.2 and 26.2. It includes the Alpha 2.8.18–2.8.28 work completed since Beta 2.8.17.
+
+### Added
+
+- Added optional function-first integration for installed SkyHanni, Skyblocker, Firmament, BabyZombieAddons, and Feesh builds. Unified settings and HUD discovery have separate master switches, progress screens, explicit confirmation, Refresh actions, and a read-only compatibility-gaps report.
+- Added **Power Orb & SOS Despawn Alert**. Player-owned Power Orbs use exact received despawn chat lines, while Warning, Alert, and SOS Flares use a confirmed local placement lifecycle. Alerts never depend on distance, buff range, or entity unloading.
+- Added the unified **Century Cake Effect Expiry Alert** for all 20 Century Cakes, `/cake` and `/centurycakeeffect`, real-world 48-hour timers, cake-head effects UI, merged expiry notices, and the click-only `/visit northwestcloudy` renewal link.
+
+### Improved
+
+- Provider scanning is on demand, local, capability based, and resilient to provider version drift. Installed providers expose only safely recognised branches; missing or changed branches fail closed.
+- Settings categories now appear only when they contain a QCA or discovered-provider function. Fishing uses the specific **Bite Alerts** subgroup instead of repeating the top-level category name.
+- Century Cake parsing now supports the exact first-activation and refresh message forms, including Hypixel private-use stat glyphs.
+
+### Fixed
+
+- Fixed The Park's `Jungle Island` being mistaken for Crystal Hollows `Jungle`, which could display the Mining Tasks & Powders HUD on the wrong island.
+- Fixed newly activated Century Cakes remaining grey, and corrected Starborn Century Cake to Hypixel's canonical `Hunting Fortune` spelling.
+- Replaced the old incomplete Flare chat assumption. Failed placement, cooldown use, server changes, distance, effect range, and entity unloading no longer create false despawn alerts.
+
+### Compatibility and safety
+
+- Beta 2.9.28 builds for Minecraft 26.1.2 and 26.2. QCA remains a standalone client-only Fabric mod; optional provider integrations are not required and unsupported branches are omitted.
+- `/visit northwestcloudy` is sent only when the player clicks the underlined Century Cake renewal text. No cake, deployable, provider, or scan action sends a command automatically.
+
 ## [2.8.28] - 2026-08-18
 
 ### Fixed
