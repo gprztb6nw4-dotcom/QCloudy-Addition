@@ -1,5 +1,17 @@
 # 更新日志
 
+## [2.8.28] - 2026-08-18
+
+### 修复
+
+- 修复收到精确客户端消息 `Big Yum! You refresh +1<属性图标> Hunting Fortune for 48 hours!` 后，Starborn Century Cake 仍保持灰色的问题。
+- 将内置 Starborn 效果和加成从错误的 `Hunter Fortune` 改为 Hypixel 实际使用的 `Hunting Fortune`；匹配前仍会清理私用区属性图标。
+- 加入带格式与不带格式的真实刷新消息回归测试。旧的错误拼写 `Hunter Fortune` 不再作为第二个别名被接受。
+
+### 构建
+
+- Alpha 2.8.28 仅构建 Minecraft 26.1.2 版本。
+
 ## [2.8.27] - 2026-08-17
 
 ### 修复

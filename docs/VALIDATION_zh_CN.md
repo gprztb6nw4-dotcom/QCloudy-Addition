@@ -1,3 +1,42 @@
+# QCloudy_Addition Alpha 2.8.28 单目标验证
+
+日期：2026-08-18<br>
+Minecraft：26.1.2<br>
+Java：25
+
+已验证产物：
+
+- `release/QCloudy_Addition-Alpha-2.8.28+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.8.28+26.1.2-sources.jar`
+
+可运行 SHA-256：`c83c60bc9c07126481f893b512d0747ee0f70998e0b17d8eca45bae5ed6d7d95`<br>
+Sources SHA-256：`90d1b43d0d35e7a7790eff6b32263913354a7858bd409964072f60d50c87b792`
+
+Alpha 2.8.28 修复收到真实精确刷新消息后，Starborn Century Cake 在 QCA 中仍显示未生效的问题。目录名称已从错误的 `Hunter Fortune` 改为 Hypixel 实际使用的 `Hunting Fortune`。
+
+本工作区已验证：
+
+- Java 25 `clean test build prepareRelease` 成功：37 个 suite、192 项当前测试，0 failure、0 error、0 skip。
+- 清理格式与私用区属性图标后，解析器接受精确消息 `Big Yum! You refresh +1<私用区属性图标> Hunting Fortune for 48 hours!`。
+- 精确首次生效消息 `Yum! You gain +1<私用区属性图标> Hunting Fortune for 48 hours!` 仍受支持。
+- 测试明确拒绝旧的错误拼写 `Hunter Fortune`，防止它以后静默回到目录中。
+- Century Cake 效果界面和悬浮提示现在显示 `Hunting Fortune` 与 `+1 Hunting Fortune`。
+- Starborn 状态仍以 `EPOCH_CAKE_STARBORN` 为键；修正显示和匹配名称不需要迁移玩家保存数据。
+- 原有 20 种蛋糕目录、真实绝对时间持久化、统一提醒开关、效果菜单、到期大字/音效、合并聊天提醒及仅点击才执行的 `/visit northwestcloudy` 续效果操作均未改变。
+- Alpha 2.8.26 的 Power Orb 与已确认 Flare 生命周期保留且未改动。
+- 英文与简体中文各有 534 个完全一致的语言键。
+- 展开元数据声明 `2.8.28-alpha+26.1.2`、Minecraft 26.1.2 与纯客户端环境。
+- 可运行 JAR 包含已修正的 Starborn 目录条目；`build/libs/` 的可运行与 Sources 产物分别和 `release/` 副本逐字节一致，两个 release 产物都通过 JDK 25 `jar --validate` 与 `unzip -t`。
+- 没有生成 Minecraft 26.2 的 Alpha 2.8.28 产物；当前 Alpha 规则只面向 Minecraft 26.1.2。
+
+尚未覆盖的 Alpha 实服边界：
+
+- 自动解析、目录、状态、归档与元数据检查不能代替已登录 Hypixel 的实测。安装 2.8.28 后，请再次刷新或食用 Starborn Century Cake，并确认 `/cake` 会从“未生效”变为 48 小时倒计时。
+- 旧版本已经漏掉的 Starborn 生效或刷新消息无法从历史聊天中倒推恢复；必须在 2.8.28 运行时再次触发该消息。
+- Power Orb 以及 Warning/Alert/SOS Flare 的自然到期仍需要完成 Alpha 2.8.26 记录的实服回归。
+
+---
+
 # QCloudy_Addition Alpha 2.8.27 单目标验证
 
 日期：2026-08-17<br>

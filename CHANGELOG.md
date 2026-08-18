@@ -2,6 +2,18 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.8.28] - 2026-08-18
+
+### Fixed
+
+- Fixed Starborn Century Cake refreshes still remaining grey after the exact client line `Big Yum! You refresh +1<stat icon> Hunting Fortune for 48 hours!`.
+- Corrected the bundled Starborn effect and bonus from the non-canonical `Hunter Fortune` label to Hypixel's actual `Hunting Fortune` name. The private-use stat icon is still normalized before matching.
+- Added regression coverage for the exact formatted and unformatted refresh lines. The previous `Hunter Fortune` spelling now fails closed instead of silently becoming a second alias.
+
+### Build
+
+- Alpha 2.8.28 is built only for Minecraft 26.1.2.
+
 ## [2.8.27] - 2026-08-17
 
 ### Fixed

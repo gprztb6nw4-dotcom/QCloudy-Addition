@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class CenturyCakeCatalogTest {
@@ -24,5 +25,16 @@ final class CenturyCakeCatalogTest {
             assertTrue(url.startsWith("http://textures.minecraft.net/texture/"));
             assertEquals("UNCOMMON", cake.rarity());
         }
+    }
+
+    @Test
+    void starbornUsesTheCanonicalClientReceivedEffectName() {
+        CenturyCakeCatalog.Cake starborn = CenturyCakeCatalog.instance()
+                .byId("EPOCH_CAKE_STARBORN").orElseThrow();
+
+        assertEquals("Hunting Fortune", starborn.effect());
+        assertEquals("+1 Hunting Fortune", starborn.bonus());
+        assertNotNull(CenturyCakeCatalog.instance()
+                .matchEffectText("+1\uE05B Hunting Fortune"));
     }
 }

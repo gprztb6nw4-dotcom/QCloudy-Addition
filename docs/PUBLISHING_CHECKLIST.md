@@ -6,7 +6,7 @@
 |---|---|
 | Name | QCloudy_Addition |
 | Suggested slug | `qcloudy-addition` |
-| Version | `Alpha-2.8.27+26.1.2` |
+| Version | `Alpha-2.8.28+26.1.2` |
 | Release channel | Alpha; fixed Century Cake first-activation tracking |
 | Environment | Client only |
 | Loader | Fabric |
@@ -29,8 +29,8 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 
 - Use `docs/MODRINTH_DESCRIPTION.md` as the English project description.
 - Keep English as the primary description; place `docs/MODRINTH_DESCRIPTION_zh_CN.md` in a linked Chinese page or below the English copy if desired.
-- Upload `release/QCloudy_Addition-Alpha-2.8.27+26.1.2.jar` for Minecraft 26.1.2.
-- Use `docs/MODRINTH_RELEASE_2.8.27.md` as the concise version changelog; the Chinese companion is `docs/MODRINTH_RELEASE_2.8.27_zh_CN.md`.
+- Upload `release/QCloudy_Addition-Alpha-2.8.28+26.1.2.jar` for Minecraft 26.1.2.
+- Use `docs/MODRINTH_RELEASE_2.8.28.md` as the concise version changelog; the Chinese companion is `docs/MODRINTH_RELEASE_2.8.28_zh_CN.md`.
 - Mark Fabric API as required and Mod Menu as optional.
 - Mark client environment as required and server environment as unsupported.
 - Do not mark Firmament, SkyHanni, Skyblocker, BabyzombieAddons, or Feesh as required.
@@ -47,10 +47,10 @@ Suggested GitHub topics: `minecraft`, `fabric`, `hypixel-skyblock`, `skyblock`, 
 - Do not commit `run/`, `run-standalone/`, `.gradle/`, `.gradle-user-home/`, local configs, logs, crash ZIPs, or the supplied reference JARs.
 - Confirm `.gitignore` covers local build/runtime files before the first commit.
 
-## GitHub Alpha 2.8.27
+## GitHub Alpha 2.8.28
 
-- Title: `QCloudy_Addition Alpha 2.8.27 for Minecraft 26.1.2`
-- Use `docs/GITHUB_RELEASE_2.8.27.md` as the English release body and optionally append/link `docs/GITHUB_RELEASE_2.8.27_zh_CN.md`.
+- Title: `QCloudy_Addition Alpha 2.8.28 for Minecraft 26.1.2`
+- Use `docs/GITHUB_RELEASE_2.8.28.md` as the English release body and optionally append/link `docs/GITHUB_RELEASE_2.8.28_zh_CN.md`.
 - Attach the binary JAR and optionally the Sources JAR.
 - Verify uploaded hashes against `docs/VALIDATION.md` after downloading the release once.
 - Mark it as **Pre-release** on GitHub because this is an Alpha, not a stable Release.
