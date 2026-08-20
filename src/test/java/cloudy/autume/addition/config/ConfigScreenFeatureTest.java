@@ -2,6 +2,8 @@ package cloudy.autume.addition.config;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -108,6 +110,14 @@ final class ConfigScreenFeatureTest {
         settings.toggle(config);
         assertFalse(config.integrations.unifiedSettingsEditor);
         assertTrue(config.integrations.unifiedHudEditor);
+    }
+
+    @Test
+    void bothUnifiedEditorMasterSwitchesRemainRegistered() {
+        assertEquals(List.of(
+                        ConfigScreen.Feature.UNIFIED_SETTINGS_EDITOR,
+                        ConfigScreen.Feature.UNIFIED_HUD_EDITOR),
+                ConfigScreen.integrationMasterSwitches());
     }
 
     @Test

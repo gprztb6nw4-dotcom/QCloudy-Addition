@@ -1,31 +1,32 @@
-# QCloudy_Addition Beta 2.9.28 双目标验证
+# QCloudy_Addition Beta 2.9.29 双目标验证
 
-日期：2026-08-18<br>
+日期：2026-08-19<br>
 Minecraft：26.1.2 与 26.2<br>
 Java：25
 
 已验证产物：
 
-- `release/QCloudy_Addition-Beta-2.9.28+26.1.2.jar`
-- `release/QCloudy_Addition-Beta-2.9.28+26.1.2-sources.jar`
-- `release/QCloudy_Addition-Beta-2.9.28+26.2.jar`
-- `release/QCloudy_Addition-Beta-2.9.28+26.2-sources.jar`
+- `release/QCloudy_Addition-Beta-2.9.29+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.9.29+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Beta-2.9.29+26.2.jar`
+- `release/QCloudy_Addition-Beta-2.9.29+26.2-sources.jar`
 
 SHA-256：
 
-- 26.1.2 可运行：`518fc34a40e6587a8711ab490410e60481b746fffcfbecc9fb2350c300f04bee`
-- 26.1.2 Sources：`0954f59968578495f0c86b2173073f8a80cb914fc64f69fd0c3edfd29cd28c3e`
-- 26.2 可运行：`a251e145c5995e6218f85f794b95f1fc8152db7bce90a3751a46fde2e9971fc7`
-- 26.2 Sources：`d90791034e88d07d45fb7cab6cccfee60e6ebe221f1c1c464245ea695dfc61f2`
+- 26.1.2 可运行：`b0eb95e55275f3df55a0674b9832a695e2cacffde0b82b54eb7774bb351acb4f`
+- 26.1.2 Sources：`6c01bcb3a1785099fea3d21c42302a2ecf0ac3ba59bfd97d48db0304252441f4`
+- 26.2 可运行：`989a9abe367ed5f942bf5135304a775588516f9c00cd54f59bb37357b758bdc2`
+- 26.2 Sources：`15236e0bb684a1261cafdd95400ef1b1ed7add037a61d6da230e9ab95230b9a1`
 
-Beta 2.9.28 将 Alpha 2.8.18-2.8.28 的开发内容提升到下一条 Beta 版本线，包括默认关闭的统一兼容模组设置/HUD 框架、Power Orb 与 SOS Flare 消失提醒、Century Cake 追踪和到期界面、Park/Jungle HUD 与空分类修复，以及 Starborn Hunting Fortune 生效路径修复。
+Beta 2.9.29 将 Alpha 2.8.18-2.8.28 的开发内容提升到下一条 Beta 版本线，包括默认关闭的统一兼容模组设置/HUD 框架、Power Orb 与 SOS Flare 消失提醒、Century Cake 追踪和到期界面、Park/Jungle HUD 与空分类修复，以及 Starborn Hunting Fortune 生效路径修复。
 
 本工作区已验证：
 
 - `tools/build_all_versions.sh` 已在两个维护中的 Minecraft 目标上成功完成 `clean test build prepareRelease`。
-- 每个目标均运行 37 个 suite、192 项测试，0 failure、0 error、0 skip。
+- 每个目标均运行 37 个 suite、193 项测试，0 failure、0 error、0 skip。
+- **通用 -> 兼容模组** 默认展开并同时显示两个独立入口：**管理其他模组功能设置** 与 **管理其他模组 HUD**。回归测试要求两者始终完成注册，且持久化默认值均保持关闭。
 - 26.2 构建发现了本地聊天显示 API 差异。Century Cake 到期聊天现改用两个目标都支持的 `LocalPlayer#sendSystemMessage`，保留可点击续效果组件，同时不会向服务器发送聊天消息。
-- 展开元数据分别声明 `2.9.28-beta+26.1.2` 与 `2.9.28-beta+26.2`、对应 Minecraft 目标、所需 Fabric API 版本及纯客户端环境。
+- 展开元数据分别声明 `2.9.29-beta+26.1.2` 与 `2.9.29-beta+26.2`、对应 Minecraft 目标、所需 Fabric API 版本及纯客户端环境。
 - 所有 class 均使用 Java major version 69（Java 25）。
 - 两个目标的英文和简体中文均各含 534 个语言键，且中英文键集完全一致。
 - 两个可运行 JAR 都包含完整 20 种蛋糕目录；Starborn 正确对应 `Hunting Fortune` 与 `+1 Hunting Fortune`。

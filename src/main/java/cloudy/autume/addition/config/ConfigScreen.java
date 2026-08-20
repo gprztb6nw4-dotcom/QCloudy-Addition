@@ -67,6 +67,10 @@ public final class ConfigScreen extends Screen {
     public ConfigScreen(@Nullable Screen parent, @Nullable HudFocus focus) {
         super(Component.literal("QCloudy_Addition"));
         this.parent = parent;
+        // These are the two opt-in master switches for editing other mods.
+        // Keep this one General section open by default so it cannot be
+        // mistaken for the unrelated "Edit HUD" layout button in the sidebar.
+        expandedGroups.add(ModText.get(FeatureGroup.INTEGRATIONS.key));
         if (focus != null) {
             category = switch (focus) {
                 case MAP -> Category.MAPS;
@@ -443,6 +447,11 @@ public final class ConfigScreen extends Screen {
             config.language = "zh_cn".equals(config.language) ? "en_us" : "zh_cn";
             ConfigManager.save();
             UnifiedModIntegration.invalidate();
+            // Group ids are localized display strings in the current UI.
+            // Re-open the integration masters under the newly selected
+            // language so both switches remain immediately visible.
+            expandedGroups.clear();
+            expandedGroups.add(ModText.get(FeatureGroup.INTEGRATIONS.key));
             rebuildWidgets();
             return true;
         }
@@ -484,6 +493,12 @@ public final class ConfigScreen extends Screen {
     static boolean isIntegrationScanMaster(Feature feature) {
         return feature == Feature.UNIFIED_SETTINGS_EDITOR
                 || feature == Feature.UNIFIED_HUD_EDITOR;
+    }
+
+    static List<Feature> integrationMasterSwitches() {
+        return java.util.Arrays.stream(Feature.values())
+                .filter(ConfigScreen::isIntegrationScanMaster)
+                .toList();
     }
 
     @Override

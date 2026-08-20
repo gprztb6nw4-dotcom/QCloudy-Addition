@@ -1,31 +1,32 @@
-# QCloudy_Addition Beta 2.9.28 dual-target validation
+# QCloudy_Addition Beta 2.9.29 dual-target validation
 
-Date: 2026-08-18<br>
+Date: 2026-08-19<br>
 Minecraft: 26.1.2 and 26.2<br>
 Java: 25
 
 Validated artifacts:
 
-- `release/QCloudy_Addition-Beta-2.9.28+26.1.2.jar`
-- `release/QCloudy_Addition-Beta-2.9.28+26.1.2-sources.jar`
-- `release/QCloudy_Addition-Beta-2.9.28+26.2.jar`
-- `release/QCloudy_Addition-Beta-2.9.28+26.2-sources.jar`
+- `release/QCloudy_Addition-Beta-2.9.29+26.1.2.jar`
+- `release/QCloudy_Addition-Beta-2.9.29+26.1.2-sources.jar`
+- `release/QCloudy_Addition-Beta-2.9.29+26.2.jar`
+- `release/QCloudy_Addition-Beta-2.9.29+26.2-sources.jar`
 
 SHA-256:
 
-- 26.1.2 playable: `518fc34a40e6587a8711ab490410e60481b746fffcfbecc9fb2350c300f04bee`
-- 26.1.2 sources: `0954f59968578495f0c86b2173073f8a80cb914fc64f69fd0c3edfd29cd28c3e`
-- 26.2 playable: `a251e145c5995e6218f85f794b95f1fc8152db7bce90a3751a46fde2e9971fc7`
-- 26.2 sources: `d90791034e88d07d45fb7cab6cccfee60e6ebe221f1c1c464245ea695dfc61f2`
+- 26.1.2 playable: `b0eb95e55275f3df55a0674b9832a695e2cacffde0b82b54eb7774bb351acb4f`
+- 26.1.2 sources: `6c01bcb3a1785099fea3d21c42302a2ecf0ac3ba59bfd97d48db0304252441f4`
+- 26.2 playable: `989a9abe367ed5f942bf5135304a775588516f9c00cd54f59bb37357b758bdc2`
+- 26.2 sources: `15236e0bb684a1261cafdd95400ef1b1ed7add037a61d6da230e9ab95230b9a1`
 
-Beta 2.9.28 promotes the Alpha 2.8.18-2.8.28 work to the next Beta line. It includes the opt-in unified provider settings/HUD framework, Power Orb and SOS Flare despawn alerts, Century Cake tracking and expiry UI, the Park/Jungle HUD and empty-category fixes, and the corrected Starborn Hunting Fortune activation path.
+Beta 2.9.29 promotes the Alpha 2.8.18-2.8.28 work to the next Beta line. It includes the opt-in unified provider settings/HUD framework, Power Orb and SOS Flare despawn alerts, Century Cake tracking and expiry UI, the Park/Jungle HUD and empty-category fixes, and the corrected Starborn Hunting Fortune activation path.
 
 Verified in this workspace:
 
 - `tools/build_all_versions.sh` completed `clean test build prepareRelease` successfully for both maintained Minecraft targets.
-- Each target ran 192 tests in 37 suites with 0 failures, 0 errors, and 0 skips.
+- Each target ran 193 tests in 37 suites with 0 failures, 0 errors, and 0 skips.
+- **General -> Supported Mods** opens with both independent controls visible: **Manage Other Mod Settings** and **Manage Other Mod HUDs**. Regression coverage requires both entries to remain registered, and both persisted defaults remain off.
 - The 26.2 build exposed an API difference in local chat delivery. Century Cake expiry chat now uses the cross-target `LocalPlayer#sendSystemMessage` path, preserving its clickable renewal component without sending a server message.
-- Expanded metadata declares `2.9.28-beta+26.1.2` / `2.9.28-beta+26.2`, the matching Minecraft target, required Fabric API version, and a client-only environment.
+- Expanded metadata declares `2.9.29-beta+26.1.2` / `2.9.29-beta+26.2`, the matching Minecraft target, required Fabric API version, and a client-only environment.
 - All class files use Java major version 69 (Java 25).
 - English and Simplified Chinese each contain 534 language keys, and both key sets are identical on both targets.
 - Both JARs contain the complete 20-cake catalog. Starborn resolves to `Hunting Fortune` and `+1 Hunting Fortune`.

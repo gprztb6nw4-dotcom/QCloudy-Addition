@@ -2,6 +2,18 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.9.29] - 2026-08-19
+
+### Fixed
+
+- Made the two independent compatible-mod controls immediately visible under **General → Supported Mods**: **Manage Other Mod Settings** controls recognised feature settings, while **Manage Other Mod HUDs** controls recognised HUD positions.
+- The Supported Mods group now opens by default, preventing the separate settings-management switch from being mistaken for the sidebar's QCA-only **Edit HUD** button.
+- Added regression coverage requiring both master switches to remain registered. Both controls still default to off, keep separate scan/Refresh flows, and do not turn each other on.
+
+### Build
+
+- Beta 2.9.29 builds for Minecraft 26.1.2 and 26.2.
+
 ## [2.9.28] - 2026-08-18
 
 Beta consolidation release for Minecraft 26.1.2 and 26.2. It includes the Alpha 2.8.18–2.8.28 work completed since Beta 2.8.17.
