@@ -1,42 +1,36 @@
-# QCloudy_Addition Beta 2.9.29 双目标验证
+# QCloudy_Addition Alpha 2.9.30 单目标验证
 
-日期：2026-08-19<br>
-Minecraft：26.1.2 与 26.2<br>
+日期：2026-08-21<br>
+Minecraft：26.1.2<br>
 Java：25
 
 已验证产物：
 
-- `release/QCloudy_Addition-Beta-2.9.29+26.1.2.jar`
-- `release/QCloudy_Addition-Beta-2.9.29+26.1.2-sources.jar`
-- `release/QCloudy_Addition-Beta-2.9.29+26.2.jar`
-- `release/QCloudy_Addition-Beta-2.9.29+26.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.9.30+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.9.30+26.1.2-sources.jar`
 
 SHA-256：
 
-- 26.1.2 可运行：`b0eb95e55275f3df55a0674b9832a695e2cacffde0b82b54eb7774bb351acb4f`
-- 26.1.2 Sources：`6c01bcb3a1785099fea3d21c42302a2ecf0ac3ba59bfd97d48db0304252441f4`
-- 26.2 可运行：`989a9abe367ed5f942bf5135304a775588516f9c00cd54f59bb37357b758bdc2`
-- 26.2 Sources：`15236e0bb684a1261cafdd95400ef1b1ed7add037a61d6da230e9ab95230b9a1`
-
-Beta 2.9.29 将 Alpha 2.8.18-2.8.28 的开发内容提升到下一条 Beta 版本线，包括默认关闭的统一兼容模组设置/HUD 框架、Power Orb 与 SOS Flare 消失提醒、Century Cake 追踪和到期界面、Park/Jungle HUD 与空分类修复，以及 Starborn Hunting Fortune 生效路径修复。
+- 26.1.2 可运行：`d718158a693b9bb79c737403dfbff6ad1bca459d5bfb1a3b21814d874e88f6a5`
+- 26.1.2 Sources：`6a6e35d996efd26c9c96992e7e2d08a2e89d00a0b9a2c439a9c37eb946ee7269`
+Alpha 2.9.30 修复 Flare 替换生命周期。已有 Flare 时再次使用已识别的 Warning、Alert 或 SOS Flare，会立即覆盖当前 Flare 和到期时间；即使替换时没有重复首次放置确认信号，旧的三分钟期限也不会继续存在。现在会读取对方块使用路径；如果使用回调漏失，只有精确放置音效与本地玩家手持的已知 Flare 同时成立时才会恢复确认。
 
 本工作区已验证：
 
-- `tools/build_all_versions.sh` 已在两个维护中的 Minecraft 目标上成功完成 `clean test build prepareRelease`。
-- 每个目标均运行 37 个 suite、193 项测试，0 failure、0 error、0 skip。
+- Java 25 已在 Minecraft 26.1.2 上成功完成 `clean test build prepareRelease`。
+- 测试共运行 37 个 suite、197 项测试，0 failure、0 error、0 skip。
+- 回归测试确认：两分钟时重新放置同种 SOS 不需要第二次确认信号就会立即重新开始完整三分钟；第二次使用回调漏失时可由手持的精确 SOS 与放置音效恢复；手持无关物品不能重置当前生命周期。
 - **通用 -> 兼容模组** 默认展开并同时显示两个独立入口：**管理其他模组功能设置** 与 **管理其他模组 HUD**。回归测试要求两者始终完成注册，且持久化默认值均保持关闭。
-- 26.2 构建发现了本地聊天显示 API 差异。Century Cake 到期聊天现改用两个目标都支持的 `LocalPlayer#sendSystemMessage`，保留可点击续效果组件，同时不会向服务器发送聊天消息。
-- 展开元数据分别声明 `2.9.29-beta+26.1.2` 与 `2.9.29-beta+26.2`、对应 Minecraft 目标、所需 Fabric API 版本及纯客户端环境。
+- 展开元数据声明 `2.9.30-alpha+26.1.2`、对应 Minecraft 目标、所需 Fabric API 版本及纯客户端环境。
 - 所有 class 均使用 Java major version 69（Java 25）。
-- 两个目标的英文和简体中文均各含 534 个语言键，且中英文键集完全一致。
-- 两个可运行 JAR 都包含完整 20 种蛋糕目录；Starborn 正确对应 `Hunting Fortune` 与 `+1 Hunting Fortune`。
-- 四个产物全部通过 JDK 25 `jar --validate` 与 `unzip -t`；每个 release 产物都与 `build/<目标>/libs/` 中的对应文件逐字节一致。
+- 英文和简体中文均各含 534 个语言键，且中英文键集完全一致。
+- 可运行 JAR 包含完整 20 种蛋糕目录；Starborn 正确对应 `Hunting Fortune` 与 `+1 Hunting Fortune`。
+- 两个产物全部通过 JDK 25 `jar --validate` 与 `unzip -t`；每个 release 产物都与 `build/libs/` 中的对应文件逐字节一致。
 - 可运行产物仍遵循纯客户端边界：没有加入自动移动、菜单点击、Fusion、战斗、钓鱼或服务器指令循环。
 
 尚未覆盖的实服回归边界：
 
-- 自动测试和归档检查不能代替已登录 Hypixel 的实测。Starborn 首次食用/刷新、Power Orb 与 Warning/Alert/SOS Flare 的自然到期、Century Cake 到期/点击续效果，以及兼容模组设置/HUD 扫描仍需在对应服务器和实际模组组合中回归。
-- 26.2 产物已通过编译、测试、元数据与归档验证，但当前没有完整的 26.2 SkyBlock 兼容模组组合可供游戏内验证；无法支持的兼容项应安全关闭并显示在兼容缺口界面。
+- 自动测试和归档检查不能代替已登录 Hypixel 的实测。仍需实服确认在旧三分钟期限前重新放置 SOS 后，旧期限保持静默且只有新期限到达时提醒。Power Orb 与 Warning/Alert/SOS Flare 的自然到期、Century Cake 到期/点击续效果，以及兼容模组设置/HUD 扫描也仍是实服检查项。
 
 ---
 

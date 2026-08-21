@@ -43,6 +43,66 @@ final class DeployableExpirySessionTest {
     }
 
     @Test
+    void replacingTheSameSosFlareResetsTheFullThreeMinuteTimer() {
+        DeployableExpirySession session = new DeployableExpirySession();
+        long firstPlacement = 1_000L;
+        long replacement = firstPlacement + java.time.Duration.ofMinutes(2).toNanos();
+
+        assertTrue(session.beginFlarePlacement("SOS_FLARE", firstPlacement));
+        assertTrue(session.confirmFlarePlacement(firstPlacement + 1));
+        assertTrue(session.beginFlarePlacement("SOS_FLARE", replacement));
+        assertTrue(session.confirmFlarePlacement(replacement + 1));
+
+        assertNull(session.pollExpired(firstPlacement + DeployableExpirySession.FLARE_LIFETIME_NANOS + 2));
+        assertEquals("SOS Flare Despawned!!!",
+                session.pollExpired(replacement + DeployableExpirySession.FLARE_LIFETIME_NANOS + 1));
+    }
+
+    @Test
+    void replacingSosResetsImmediatelyWhenTheReplacementConfirmationIsMissing() {
+        DeployableExpirySession session = new DeployableExpirySession();
+        long firstPlacement = 1_000L;
+        long replacement = firstPlacement + java.time.Duration.ofMinutes(2).toNanos();
+
+        assertTrue(session.beginFlarePlacement("SOS_FLARE", firstPlacement));
+        assertTrue(session.confirmFlarePlacement(firstPlacement + 1));
+        assertTrue(session.beginFlarePlacement("SOS_FLARE", replacement));
+
+        assertNull(session.pollExpired(firstPlacement + DeployableExpirySession.FLARE_LIFETIME_NANOS + 2));
+        assertEquals("SOS Flare Despawned!!!",
+                session.pollExpired(replacement + DeployableExpirySession.FLARE_LIFETIME_NANOS));
+    }
+
+    @Test
+    void confirmedPlacementSoundCanRecoverWhenTheSecondUseCallbackWasMissed() {
+        DeployableExpirySession session = new DeployableExpirySession();
+        long firstPlacement = 1_000L;
+        long replacement = firstPlacement + java.time.Duration.ofMinutes(2).toNanos();
+
+        assertTrue(session.beginFlarePlacement("SOS_FLARE", firstPlacement));
+        assertTrue(session.confirmFlarePlacement(firstPlacement + 1));
+        assertTrue(session.confirmFlarePlacement("SOS_FLARE", replacement));
+
+        assertNull(session.pollExpired(firstPlacement + DeployableExpirySession.FLARE_LIFETIME_NANOS + 2));
+        assertEquals("SOS Flare Despawned!!!",
+                session.pollExpired(replacement + DeployableExpirySession.FLARE_LIFETIME_NANOS));
+    }
+
+    @Test
+    void aPlacementSoundWhileHoldingAnotherItemDoesNotResetTheActiveSos() {
+        DeployableExpirySession session = new DeployableExpirySession();
+        long firstPlacement = 1_000L;
+        long unrelatedSound = firstPlacement + java.time.Duration.ofMinutes(2).toNanos();
+
+        assertTrue(session.beginFlarePlacement("SOS_FLARE", firstPlacement));
+        assertTrue(session.confirmFlarePlacement(firstPlacement + 1));
+        assertFalse(session.confirmFlarePlacement("FIREWORK_ROCKET", unrelatedSound));
+
+        assertEquals("SOS Flare Despawned!!!",
+                session.pollExpired(firstPlacement + DeployableExpirySession.FLARE_LIFETIME_NANOS + 1));
+    }
+
+    @Test
     void unrelatedItemsAndSilentClearNeverCreateAnAlert() {
         DeployableExpirySession session = new DeployableExpirySession();
         assertFalse(session.beginFlarePlacement("PLASMAFLUX_POWER_ORB", 0L));

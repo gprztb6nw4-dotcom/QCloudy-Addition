@@ -52,7 +52,11 @@ public final class DeployableExpiryAlert {
         if (Math.abs(sound.getPitch() - 1.0f) > 0.001f || Math.abs(sound.getVolume() - 3.0f) > 0.001f) return;
         var config = ConfigManager.get().combat;
         if (!config.deployableExpiryAlert || !config.deployableFlareAlerts) return;
-        FLARE_SESSION.confirmFlarePlacement(System.nanoTime());
+
+        Minecraft client = Minecraft.getInstance();
+        long now = System.nanoTime();
+        if (FLARE_SESSION.confirmFlarePlacement(heldItemId(client, true), now)) return;
+        FLARE_SESSION.confirmFlarePlacement(heldItemId(client, false), now);
     }
 
     public static void tick(Minecraft client) {
@@ -95,5 +99,11 @@ public final class DeployableExpiryAlert {
         trackedLevel = null;
         lastTitle = "";
         lastAlertAt = 0L;
+    }
+
+    private static String heldItemId(Minecraft client, boolean mainHand) {
+        if (client == null || client.player == null) return "";
+        ItemStack stack = mainHand ? client.player.getMainHandItem() : client.player.getOffhandItem();
+        return SkyBlockItemData.itemId(stack);
     }
 }

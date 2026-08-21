@@ -22,17 +22,35 @@ final class DeployableExpirySession {
         if (flare == null) return false;
         pendingFlare = flare;
         pendingUntilNanos = nowNanos + PLACEMENT_CONFIRM_WINDOW_NANOS;
+
+        // Replacing an already active Flare does not reliably repeat the same
+        // placement confirmation signal. Replace its lifecycle at the local use
+        // event so the previous three-minute deadline cannot survive.
+        if (!activeFlare.isEmpty()) {
+            activeFlare = flare;
+            expiresAtNanos = nowNanos + FLARE_LIFETIME_NANOS;
+        }
         return true;
     }
 
     boolean confirmFlarePlacement(long nowNanos) {
-        if (pendingFlare.isEmpty() || nowNanos - pendingUntilNanos > 0) {
-            clearPending();
-            return false;
+        return confirmFlarePlacement("", nowNanos);
+    }
+
+    /**
+     * Confirms a placement candidate, or recovers from a missed use callback by
+     * resolving the exact Flare still held when the placement sound arrives.
+     */
+    boolean confirmFlarePlacement(String heldSkyBlockItemId, long nowNanos) {
+        String confirmedFlare = pendingFlare;
+        if (confirmedFlare.isEmpty() || nowNanos - pendingUntilNanos > 0) {
+            confirmedFlare = FLARES.get(heldSkyBlockItemId);
         }
-        activeFlare = pendingFlare;
-        expiresAtNanos = nowNanos + FLARE_LIFETIME_NANOS;
         clearPending();
+        if (confirmedFlare == null || confirmedFlare.isEmpty()) return false;
+
+        activeFlare = confirmedFlare;
+        expiresAtNanos = nowNanos + FLARE_LIFETIME_NANOS;
         return true;
     }
 

@@ -33,6 +33,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.client.KeyMapping;
@@ -76,6 +77,13 @@ public final class QCloudyAdditionClient implements ClientModInitializer {
                 var stack = player.getItemInHand(hand);
                 FishingBiteAlert.onRodUse(client, stack);
                 DeployableExpiryAlert.onItemUse(client, stack);
+            }
+            return net.minecraft.world.InteractionResult.PASS;
+        });
+
+        UseBlockCallback.EVENT.register((player, level, hand, hitResult) -> {
+            if (player == Minecraft.getInstance().player) {
+                DeployableExpiryAlert.onItemUse(Minecraft.getInstance(), player.getItemInHand(hand));
             }
             return net.minecraft.world.InteractionResult.PASS;
         });

@@ -1,42 +1,36 @@
-# QCloudy_Addition Beta 2.9.29 dual-target validation
+# QCloudy_Addition Alpha 2.9.30 single-target validation
 
-Date: 2026-08-19<br>
-Minecraft: 26.1.2 and 26.2<br>
+Date: 2026-08-21<br>
+Minecraft: 26.1.2<br>
 Java: 25
 
 Validated artifacts:
 
-- `release/QCloudy_Addition-Beta-2.9.29+26.1.2.jar`
-- `release/QCloudy_Addition-Beta-2.9.29+26.1.2-sources.jar`
-- `release/QCloudy_Addition-Beta-2.9.29+26.2.jar`
-- `release/QCloudy_Addition-Beta-2.9.29+26.2-sources.jar`
+- `release/QCloudy_Addition-Alpha-2.9.30+26.1.2.jar`
+- `release/QCloudy_Addition-Alpha-2.9.30+26.1.2-sources.jar`
 
 SHA-256:
 
-- 26.1.2 playable: `b0eb95e55275f3df55a0674b9832a695e2cacffde0b82b54eb7774bb351acb4f`
-- 26.1.2 sources: `6c01bcb3a1785099fea3d21c42302a2ecf0ac3ba59bfd97d48db0304252441f4`
-- 26.2 playable: `989a9abe367ed5f942bf5135304a775588516f9c00cd54f59bb37357b758bdc2`
-- 26.2 sources: `15236e0bb684a1261cafdd95400ef1b1ed7add037a61d6da230e9ab95230b9a1`
-
-Beta 2.9.29 promotes the Alpha 2.8.18-2.8.28 work to the next Beta line. It includes the opt-in unified provider settings/HUD framework, Power Orb and SOS Flare despawn alerts, Century Cake tracking and expiry UI, the Park/Jungle HUD and empty-category fixes, and the corrected Starborn Hunting Fortune activation path.
+- 26.1.2 playable: `d718158a693b9bb79c737403dfbff6ad1bca459d5bfb1a3b21814d874e88f6a5`
+- 26.1.2 sources: `6a6e35d996efd26c9c96992e7e2d08a2e89d00a0b9a2c439a9c37eb946ee7269`
+Alpha 2.9.30 fixes replacement Flare lifecycles. Using a recognised Warning, Alert, or SOS Flare while one is already active immediately replaces the active Flare and expiry, so the prior three-minute deadline cannot survive even when a replacement omits the initial placement-confirmation signal. Use-on-block placement is observed, and an exact placement sound can recover a missed use callback only while the local player holds a recognised Flare.
 
 Verified in this workspace:
 
-- `tools/build_all_versions.sh` completed `clean test build prepareRelease` successfully for both maintained Minecraft targets.
-- Each target ran 193 tests in 37 suites with 0 failures, 0 errors, and 0 skips.
+- Java 25 `clean test build prepareRelease` completed successfully for Minecraft 26.1.2.
+- The test suite ran 197 tests in 37 suites with 0 failures, 0 errors, and 0 skips.
+- Regression coverage confirms that replacing the same SOS at two minutes immediately restarts a complete three-minute timer without requiring a second confirmation signal, a missed second use callback is recovered from the exact held SOS plus placement sound, and an unrelated held item cannot reset the active lifecycle.
 - **General -> Supported Mods** opens with both independent controls visible: **Manage Other Mod Settings** and **Manage Other Mod HUDs**. Regression coverage requires both entries to remain registered, and both persisted defaults remain off.
-- The 26.2 build exposed an API difference in local chat delivery. Century Cake expiry chat now uses the cross-target `LocalPlayer#sendSystemMessage` path, preserving its clickable renewal component without sending a server message.
-- Expanded metadata declares `2.9.29-beta+26.1.2` / `2.9.29-beta+26.2`, the matching Minecraft target, required Fabric API version, and a client-only environment.
+- Expanded metadata declares `2.9.30-alpha+26.1.2`, the matching Minecraft target, required Fabric API version, and a client-only environment.
 - All class files use Java major version 69 (Java 25).
-- English and Simplified Chinese each contain 534 language keys, and both key sets are identical on both targets.
-- Both JARs contain the complete 20-cake catalog. Starborn resolves to `Hunting Fortune` and `+1 Hunting Fortune`.
-- All four artifacts pass JDK 25 `jar --validate` and `unzip -t`. Every release artifact is byte-identical to its corresponding copy under `build/<target>/libs/`.
+- English and Simplified Chinese each contain 534 language keys, and both key sets are identical.
+- The playable JAR contains the complete 20-cake catalog. Starborn resolves to `Hunting Fortune` and `+1 Hunting Fortune`.
+- Both artifacts pass JDK 25 `jar --validate` and `unzip -t`. Every release artifact is byte-identical to its corresponding copy under `build/libs/`.
 - The playable artifacts retain the client-only behavior boundary: no autonomous movement, menu clicking, fusion, combat, fishing, or server-command loop was added.
 
 Outstanding live regression boundary:
 
-- Automated tests and archive checks do not replace an authenticated Hypixel session. Starborn first-use/refresh, natural Power Orb and Warning/Alert/SOS Flare expiry, Century Cake expiry/renewal interaction, and provider-backed settings/HUD discovery still need live regression on the relevant server and installed-mod combinations.
-- The 26.2 artifact is compile-, test-, metadata-, and archive-validated, but a complete 26.2 SkyBlock provider modpack was not available for an in-game compatibility run. Unsupported provider members are expected to fail closed and appear in the compatibility-gap view.
+- Automated tests and archive checks do not replace an authenticated Hypixel session. Replacing SOS before its previous three-minute deadline must still be verified live: the old deadline should remain silent and only the replacement deadline should alert. Natural Power Orb and Warning/Alert/SOS Flare expiry, Century Cake expiry/renewal interaction, and provider-backed settings/HUD discovery also remain live checks.
 
 ---
 

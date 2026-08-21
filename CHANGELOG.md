@@ -2,6 +2,18 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
+## [2.9.30] - 2026-08-21
+
+### Fixed
+
+- Replacing an active Warning, Alert, or SOS Flare now restarts its complete three-minute lifecycle as soon as the recognised replacement use is observed. The previous placement's expiry can no longer produce an early alert, even if the replacement does not repeat the first-placement confirmation signal.
+- Flare placement tracking now also observes use-on-block interactions and can recover when the use callback is missed by pairing the exact successful-placement sound with the Flare held by the local player.
+- Added regression coverage for same-SOS replacement without a second confirmation signal, a missed second use callback, and unrelated held items that must not reset the timer.
+
+### Build
+
+- Alpha 2.9.30 build for Minecraft 26.1.2.
+
 ## [2.9.29] - 2026-08-19
 
 ### Fixed
