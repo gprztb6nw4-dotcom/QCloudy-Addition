@@ -1,4 +1,4 @@
-Alpha 2.9.30 fixes SOS/Flare replacement timing.
+Version 0.2.9 Alpha 30 fixes SOS/Flare replacement timing and adopts the new artifact naming convention.
 
 - Replacing an active Warning, Alert, or SOS Flare now restarts a complete three-minute lifecycle immediately, including replacements that do not repeat the first-placement confirmation signal.
 - The old expiry is invalidated and cannot alert while the replacement remains active.

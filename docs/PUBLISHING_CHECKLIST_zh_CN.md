@@ -6,7 +6,7 @@
 |---|---|
 | 名称 | QCloudy_Addition |
 | 建议slug | `qcloudy-addition` |
-| 版本 | `Alpha-2.9.30+26.1.2` |
+| 版本 | `0.2.9 Alpha 30` |
 | 发布通道 | Alpha；SOS/Flare 重新放置计时修复 |
 | 环境 | 纯客户端 |
 | Loader | Fabric |
@@ -29,8 +29,8 @@
 
 - 英文主描述使用 `docs/MODRINTH_DESCRIPTION.md`。
 - 中文页面或英文描述下方使用 `docs/MODRINTH_DESCRIPTION_zh_CN.md`。
-- Minecraft 26.1.2 使用 `release/QCloudy_Addition-Alpha-2.9.30+26.1.2.jar`。
-- 简洁版本日志使用 `docs/MODRINTH_RELEASE_2.9.30.md`，中文配套为 `docs/MODRINTH_RELEASE_2.9.30_zh_CN.md`。
+- Minecraft 26.1.2 使用 `release/QCloudy_Addition-0.2.9+26.1.2-Alpha-30.jar`。
+- 简洁版本日志使用 `docs/MODRINTH_RELEASE_0.2.9_ALPHA_30.md`，中文配套为 `docs/MODRINTH_RELEASE_0.2.9_ALPHA_30_zh_CN.md`。
 - Fabric API标为必需，Mod Menu标为可选。
 - Client环境标为必需，Server标为不支持。
 - 不要把Firmament、SkyHanni、Skyblocker、BabyzombieAddons或Feesh标为依赖。
@@ -47,10 +47,10 @@
 - 不提交 `run/`、`run-standalone/`、`.gradle/`、`.gradle-user-home/`、本地配置、日志、崩溃ZIP或四个参考JAR。
 - 首次commit前确认 `.gitignore` 覆盖本地构建/运行文件。
 
-## GitHub Alpha 2.9.30
+## GitHub 0.2.9 Alpha 30
 
-- 标题：`QCloudy_Addition Alpha 2.9.30 for Minecraft 26.1.2`
-- 英文正文使用 `docs/GITHUB_RELEASE_2.9.30.md`，可追加或链接 `docs/GITHUB_RELEASE_2.9.30_zh_CN.md`。
+- 标题：`QCloudy_Addition 0.2.9 Alpha 30 for Minecraft 26.1.2`
+- 英文正文使用 `docs/GITHUB_RELEASE_0.2.9_ALPHA_30.md`，可追加或链接 `docs/GITHUB_RELEASE_0.2.9_ALPHA_30_zh_CN.md`。
 - 上传一个可运行 JAR，可选附加对应 Sources JAR；文件名保留 Minecraft 版本。
 - 上传后重新下载一次，并与 `docs/VALIDATION.md` 中哈希比较。
 - GitHub 勾选 **Pre-release**，因为这是 Alpha 而不是稳定 Release。

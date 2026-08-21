@@ -1,4 +1,4 @@
-# QCloudy_Addition Alpha 2.9.30 single-target validation
+# QCloudy_Addition 0.2.9 Alpha 30 single-target validation
 
 Date: 2026-08-21<br>
 Minecraft: 26.1.2<br>
@@ -6,14 +6,14 @@ Java: 25
 
 Validated artifacts:
 
-- `release/QCloudy_Addition-Alpha-2.9.30+26.1.2.jar`
-- `release/QCloudy_Addition-Alpha-2.9.30+26.1.2-sources.jar`
+- `release/QCloudy_Addition-0.2.9+26.1.2-Alpha-30.jar`
+- `release/QCloudy_Addition-0.2.9+26.1.2-Alpha-30-sources.jar`
 
 SHA-256:
 
-- 26.1.2 playable: `d718158a693b9bb79c737403dfbff6ad1bca459d5bfb1a3b21814d874e88f6a5`
-- 26.1.2 sources: `6a6e35d996efd26c9c96992e7e2d08a2e89d00a0b9a2c439a9c37eb946ee7269`
-Alpha 2.9.30 fixes replacement Flare lifecycles. Using a recognised Warning, Alert, or SOS Flare while one is already active immediately replaces the active Flare and expiry, so the prior three-minute deadline cannot survive even when a replacement omits the initial placement-confirmation signal. Use-on-block placement is observed, and an exact placement sound can recover a missed use callback only while the local player holds a recognised Flare.
+- 26.1.2 playable: `731ba81dfd0d0c55263aaf682be4adf2ce4325bbb3c401c3163e8097761ac319`
+- 26.1.2 sources: `ffc4576997997017c720d5d728d381cb3792608745d0ee272ee88fd93ce3b402`
+Version 0.2.9 Alpha 30 fixes replacement Flare lifecycles. Using a recognised Warning, Alert, or SOS Flare while one is already active immediately replaces the active Flare and expiry, so the prior three-minute deadline cannot survive even when a replacement omits the initial placement-confirmation signal. Use-on-block placement is observed, and an exact placement sound can recover a missed use callback only while the local player holds a recognised Flare.
 
 Verified in this workspace:
 
@@ -21,7 +21,7 @@ Verified in this workspace:
 - The test suite ran 197 tests in 37 suites with 0 failures, 0 errors, and 0 skips.
 - Regression coverage confirms that replacing the same SOS at two minutes immediately restarts a complete three-minute timer without requiring a second confirmation signal, a missed second use callback is recovered from the exact held SOS plus placement sound, and an unrelated held item cannot reset the active lifecycle.
 - **General -> Supported Mods** opens with both independent controls visible: **Manage Other Mod Settings** and **Manage Other Mod HUDs**. Regression coverage requires both entries to remain registered, and both persisted defaults remain off.
-- Expanded metadata declares `2.9.30-alpha+26.1.2`, the matching Minecraft target, required Fabric API version, and a client-only environment.
+- Expanded metadata declares `0.2.9-alpha.30+26.1.2`, the matching Minecraft target, required Fabric API version, and a client-only environment.
 - All class files use Java major version 69 (Java 25).
 - English and Simplified Chinese each contain 534 language keys, and both key sets are identical.
 - The playable JAR contains the complete 20-cake catalog. Starborn resolves to `Hunting Fortune` and `+1 Hunting Fortune`.

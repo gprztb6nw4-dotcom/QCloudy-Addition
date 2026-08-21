@@ -2,7 +2,7 @@
 
 All notable public changes to QCloudy_Addition are documented here.
 
-## [2.9.30] - 2026-08-21
+## [0.2.9-alpha.30] - 2026-08-21
 
 ### Fixed
 
@@ -12,7 +12,9 @@ All notable public changes to QCloudy_Addition are documented here.
 
 ### Build
 
-- Alpha 2.9.30 build for Minecraft 26.1.2.
+- Adopted the new artifact convention: `QCloudy_Addition-0.2.9+26.1.2-Alpha-30.jar`.
+- Alpha uses a separate iteration suffix; Beta and Release use only their channel suffix.
+- Alpha 30 is built only for Minecraft 26.1.2.
 
 ## [2.9.29] - 2026-08-19
 

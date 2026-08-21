@@ -1,4 +1,4 @@
-# QCloudy_Addition Alpha 2.9.30 单目标验证
+# QCloudy_Addition 0.2.9 Alpha 30 单目标验证
 
 日期：2026-08-21<br>
 Minecraft：26.1.2<br>
@@ -6,14 +6,14 @@ Java：25
 
 已验证产物：
 
-- `release/QCloudy_Addition-Alpha-2.9.30+26.1.2.jar`
-- `release/QCloudy_Addition-Alpha-2.9.30+26.1.2-sources.jar`
+- `release/QCloudy_Addition-0.2.9+26.1.2-Alpha-30.jar`
+- `release/QCloudy_Addition-0.2.9+26.1.2-Alpha-30-sources.jar`
 
 SHA-256：
 
-- 26.1.2 可运行：`d718158a693b9bb79c737403dfbff6ad1bca459d5bfb1a3b21814d874e88f6a5`
-- 26.1.2 Sources：`6a6e35d996efd26c9c96992e7e2d08a2e89d00a0b9a2c439a9c37eb946ee7269`
-Alpha 2.9.30 修复 Flare 替换生命周期。已有 Flare 时再次使用已识别的 Warning、Alert 或 SOS Flare，会立即覆盖当前 Flare 和到期时间；即使替换时没有重复首次放置确认信号，旧的三分钟期限也不会继续存在。现在会读取对方块使用路径；如果使用回调漏失，只有精确放置音效与本地玩家手持的已知 Flare 同时成立时才会恢复确认。
+- 26.1.2 可运行：`731ba81dfd0d0c55263aaf682be4adf2ce4325bbb3c401c3163e8097761ac319`
+- 26.1.2 Sources：`ffc4576997997017c720d5d728d381cb3792608745d0ee272ee88fd93ce3b402`
+0.2.9 Alpha 30 修复 Flare 替换生命周期。已有 Flare 时再次使用已识别的 Warning、Alert 或 SOS Flare，会立即覆盖当前 Flare 和到期时间；即使替换时没有重复首次放置确认信号，旧的三分钟期限也不会继续存在。现在会读取对方块使用路径；如果使用回调漏失，只有精确放置音效与本地玩家手持的已知 Flare 同时成立时才会恢复确认。
 
 本工作区已验证：
 
@@ -21,7 +21,7 @@ Alpha 2.9.30 修复 Flare 替换生命周期。已有 Flare 时再次使用已�
 - 测试共运行 37 个 suite、197 项测试，0 failure、0 error、0 skip。
 - 回归测试确认：两分钟时重新放置同种 SOS 不需要第二次确认信号就会立即重新开始完整三分钟；第二次使用回调漏失时可由手持的精确 SOS 与放置音效恢复；手持无关物品不能重置当前生命周期。
 - **通用 -> 兼容模组** 默认展开并同时显示两个独立入口：**管理其他模组功能设置** 与 **管理其他模组 HUD**。回归测试要求两者始终完成注册，且持久化默认值均保持关闭。
-- 展开元数据声明 `2.9.30-alpha+26.1.2`、对应 Minecraft 目标、所需 Fabric API 版本及纯客户端环境。
+- 展开元数据声明 `0.2.9-alpha.30+26.1.2`、对应 Minecraft 目标、所需 Fabric API 版本及纯客户端环境。
 - 所有 class 均使用 Java major version 69（Java 25）。
 - 英文和简体中文均各含 534 个语言键，且中英文键集完全一致。
 - 可运行 JAR 包含完整 20 种蛋糕目录；Starborn 正确对应 `Hunting Fortune` 与 `+1 Hunting Fortune`。

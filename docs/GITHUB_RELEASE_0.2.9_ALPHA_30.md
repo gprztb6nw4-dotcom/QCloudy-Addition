@@ -1,6 +1,6 @@
-# QCloudy_Addition Alpha 2.9.30 for Minecraft 26.1.2
+# QCloudy_Addition 0.2.9 Alpha 30 for Minecraft 26.1.2
 
-Alpha 2.9.30 fixes early SOS/Flare despawn alerts after a replacement is placed.
+Version 0.2.9 Alpha 30 fixes early SOS/Flare despawn alerts after a replacement is placed and adopts the new channel-separated artifact naming convention.
 
 ## Fixed
 
@@ -20,11 +20,11 @@ Alpha 2.9.30 fixes early SOS/Flare despawn alerts after a replacement is placed.
 
 Playable mods:
 
-- `QCloudy_Addition-Alpha-2.9.30+26.1.2.jar`
+- `QCloudy_Addition-0.2.9+26.1.2-Alpha-30.jar`
 
 Developer sources:
 
-- `QCloudy_Addition-Alpha-2.9.30+26.1.2-sources.jar`
+- `QCloudy_Addition-0.2.9+26.1.2-Alpha-30-sources.jar`
 
 Install only the playable JAR. Do not install the `-sources.jar` as the mod.
 

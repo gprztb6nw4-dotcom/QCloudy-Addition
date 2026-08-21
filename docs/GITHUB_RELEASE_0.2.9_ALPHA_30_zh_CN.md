@@ -1,6 +1,6 @@
-# QCloudy_Addition Alpha 2.9.30（Minecraft 26.1.2）
+# QCloudy_Addition 0.2.9 Alpha 30（Minecraft 26.1.2）
 
-Alpha 2.9.30 修复重新放置 SOS/Flare 后仍按旧时间提前提醒的问题。
+0.2.9 Alpha 30 修复重新放置 SOS/Flare 后仍按旧时间提前提醒的问题，并启用新的通道分离产物命名规则。
 
 ## 修复
 
@@ -20,11 +20,11 @@ Alpha 2.9.30 修复重新放置 SOS/Flare 后仍按旧时间提前提醒的问�
 
 可运行模组：
 
-- `QCloudy_Addition-Alpha-2.9.30+26.1.2.jar`
+- `QCloudy_Addition-0.2.9+26.1.2-Alpha-30.jar`
 
 开发者源码：
 
-- `QCloudy_Addition-Alpha-2.9.30+26.1.2-sources.jar`
+- `QCloudy_Addition-0.2.9+26.1.2-Alpha-30-sources.jar`
 
 只安装可运行 JAR，不要把 `-sources.jar` 当作模组安装。
 

@@ -16,11 +16,31 @@ def targetFabricApiVersion = targetPlatform.fabricApi
 def targetModMenuVersion = targetPlatform.modMenu
 def targetLoaderVersion = project.loader_version.toString()
 
-version = "${project.release_channel}-${project.mod_version}+${targetMinecraftVersion}"
+def versionCore = project.mod_version.toString()
+def releaseChannelKey = project.release_channel.toString().toLowerCase(Locale.ROOT)
+def canonicalReleaseChannels = [alpha: 'Alpha', beta: 'Beta', release: 'Release']
+def releaseChannel = canonicalReleaseChannels[releaseChannelKey]
+if (releaseChannel == null) {
+    throw new GradleException("Unsupported release channel '${project.release_channel}'. Supported: Alpha, Beta, Release")
+}
+
+def alphaIteration = project.findProperty('alpha_iteration')?.toString()?.trim()
+if (releaseChannelKey == 'alpha' && !(alphaIteration ==~ /[1-9][0-9]*/)) {
+    throw new GradleException("Alpha builds require a positive numeric alpha_iteration")
+}
+
+def channelArtifactSuffix = releaseChannelKey == 'alpha'
+        ? "Alpha-${alphaIteration}"
+        : releaseChannel
+version = "${versionCore}+${targetMinecraftVersion}-${channelArtifactSuffix}"
 group = project.maven_group
 
 def expandedVersion = version.toString()
-def metadataVersion = "${project.mod_version}-${project.release_channel.toString().toLowerCase()}+${targetMinecraftVersion}"
+def metadataVersion = releaseChannelKey == 'alpha'
+        ? "${versionCore}-alpha.${alphaIteration}+${targetMinecraftVersion}"
+        : releaseChannelKey == 'beta'
+        ? "${versionCore}-beta+${targetMinecraftVersion}"
+        : "${versionCore}+${targetMinecraftVersion}"
 def licenseArchiveName = "LICENSE_${project.archives_base_name}"
 
 base {
